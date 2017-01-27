@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const bot = new Discord.Client();
 const config = require('./config.json');
 const fs = require('fs');
+const Sound = require('./model/sound');
 
 const SOUNDS_DIRECTORY = config.soundsDirectory;
 
@@ -67,7 +68,8 @@ function soundExists(soundName, callback) {
     
 }
 
-console.log("Getting ready!");
+
+console.log("Getting bot ready!");
 bot.on('ready', () => {
   console.log('I am ready!');
 });
