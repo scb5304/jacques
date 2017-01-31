@@ -17,6 +17,6 @@
     "mongodb": "2.2.21",
     "mongoose": "4.7.7",
     "node-opus": "0.2.4",
-    "ytdl-core": "0.7.23"
+    "ytdl-core": "0.7.4"
   }
 }

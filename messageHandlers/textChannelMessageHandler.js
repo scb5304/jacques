@@ -10,11 +10,11 @@ var STREAM_VOLUME = 0.225;
 const SOUNDS_DIRECTORY = config.soundsDirectory;
 
 function handleTextChannelMessage(message) {
-	console.log("Received message: " + message.content);
-
+	
 	var prefix = "!";
 	var messageContent = message.content;
 	if (!messageContent.startsWith(prefix)) return;
+	console.log("Received message: " + message.content);
 
 	var member = message.member;
 	if (!member) return;
@@ -53,10 +53,6 @@ function handleTextChannelMessage(message) {
 				.catch(console.error);
 			break;
 	}
-
-	message.delete()
-		 .then(msg => console.log('Consumed message.'))
-		 .catch(console.error);
 }
 
 function alreadySpeaking(voiceChannel) {
@@ -79,7 +75,7 @@ function shutdownJontronBot() {
 	console.log("Stopping...");
 	bot.destroy()
 		.then(function() {
-			Console.log("Shut down successfully.")
+			console.log("Shut down successfully.")
 		})
 		.catch(console.error);
 }
@@ -99,10 +95,7 @@ function streamAudio(voiceChannel, message) {
 			});
 
 			const dispatcher = connection.playStream(stream, streamOptions);
-			dispatcher.once('end', function() {
-				console.log("Disconnecting after streaming audio...")
-				connection.disconnect();
-			});
+		
 			dispatcher.setVolume(STREAM_VOLUME);
 		})
 		.catch(console.error);
