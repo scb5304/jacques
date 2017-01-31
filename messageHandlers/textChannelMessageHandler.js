@@ -10,6 +10,8 @@ var STREAM_VOLUME = 0.225;
 const SOUNDS_DIRECTORY = config.soundsDirectory;
 
 function handleTextChannelMessage(message) {
+	console.log("Received message: " + message.content);
+
 	var prefix = "!";
 	var messageContent = message.content;
 	if (!messageContent.startsWith(prefix)) return;
@@ -21,7 +23,10 @@ function handleTextChannelMessage(message) {
 	if (!voiceChannel) return;
 
 	messageContent = messageContent.substring(1);
+
 	var commandArgs = messageContent.split(" ");
+
+	console.log("Routing message to appropriate call.");
 
 	switch (commandArgs[0]) {
 		case "cancel":
@@ -48,6 +53,10 @@ function handleTextChannelMessage(message) {
 				.catch(console.error);
 			break;
 	}
+
+	message.delete()
+		 .then(msg => console.log('Consumed message.'))
+		 .catch(console.error);
 }
 
 function alreadySpeaking(voiceChannel) {
@@ -60,6 +69,7 @@ function alreadySpeaking(voiceChannel) {
 }
 
 function cancelVoiceConnection(voiceChannel) {
+	console.log("Cancelling voice connection.")
 	var connection = voiceChannel.connection;
 	if (!connection) return;
 	connection.disconnect();
@@ -75,6 +85,7 @@ function shutdownJontronBot() {
 }
 
 function streamAudio(voiceChannel, message) {
+	console.log("Attempting to stream audio...")
 	var streamArg = message.content.split(" ")[1];
 
 	const streamOptions = {
@@ -88,16 +99,22 @@ function streamAudio(voiceChannel, message) {
 			});
 
 			const dispatcher = connection.playStream(stream, streamOptions);
+			dispatcher.once('end', function() {
+				console.log("Disconnecting after streaming audio...")
+				connection.disconnect();
+			});
 			dispatcher.setVolume(STREAM_VOLUME);
 		})
 		.catch(console.error);
 }
 
 function playSound(soundName, voiceChannel) {
+	console.log("Attempting to play sound " + soundName + " in " + voiceChannel.name);
 	var path = SOUNDS_DIRECTORY + soundName;
 	voiceChannel.join().then(connection => {
 			const dispatcher = connection.playFile(path);
 			dispatcher.once('end', function() {
+				console.log("Leaving after playing sound.");
 				connection.disconnect();
 			});
 		})
