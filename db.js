@@ -6,15 +6,12 @@ const Sound = require('./model/sound');
 
 console.log("Getting db ready...");
 mongoose.connect('mongodb://localhost/jontronbot', function() {
-
     console.log('Db connected!');
-
     syncSounds();
-    //clearSoundsCollection();
-    //insertSounds();
-})
+});
 
 function syncSounds() {
+    console.log("Syncing...");
     //Get sounds from database
     Sound.find({}, function(err, sounds) {
         //Get sounds file file system
@@ -68,3 +65,5 @@ function soundsArrayContainsName(sounds, name) {
     }
     return false;
 }
+
+module.exports.syncSounds = syncSounds;

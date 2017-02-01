@@ -4,6 +4,7 @@ const config = require('../config.json');
 const fs = require('fs');
 const Sound = require('../model/sound');
 const ytdl = require('ytdl-core');
+const Db = require('../db');
 
 var STREAM_VOLUME = 0.225;
 
@@ -43,6 +44,9 @@ function handleTextChannelMessage(message) {
 			changeVolume(message);
 			break;
 			//command for last played "uncancel"
+		case "sync":
+			Db.syncSounds();
+			break;
 		default:
 			if (alreadySpeaking(voiceChannel)) return;
 			var soundName = commandArgs[0] + ".mp3";
