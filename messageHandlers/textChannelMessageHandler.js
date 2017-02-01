@@ -42,6 +42,7 @@ function handleTextChannelMessage(message) {
 		case "volume":
 			changeVolume(message);
 			break;
+			//command for last played "uncancel"
 		default:
 			if (alreadySpeaking(voiceChannel)) return;
 			var soundName = commandArgs[0] + ".mp3";
@@ -146,6 +147,10 @@ function changeVolume(message) {
 	} catch (err) {
 		console.error(err);
 	}
+}
+
+function sync() {
+
 }
 
 module.exports.handleTextChannelMessage = handleTextChannelMessage;
