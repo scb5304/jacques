@@ -14,7 +14,7 @@ function handleDirectMessage(message) {
 		sessionId: 1
 	});
 
-	console.log("Received Discord direct message: " + message.content + " from " + message.author.name);
+	console.log("Received Discord direct message: " + message.content + " from " + message.author.displayName);
 	request.on('response', function(response) {
 		var responseMessage = response.result.fulfillment.speech;
 		//Discord API sendMessage()
