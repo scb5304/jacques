@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const bot = require('../jontronbot');
 const config = require('../config.json');
 const fs = require('fs');
-const Sound = require('../model/sound');
+const Sound = require('../model/sound').Sound;;
 const ytdl = require('ytdl-core');
 const Db = require('../db');
 
@@ -49,11 +49,11 @@ function handleTextChannelMessage(message) {
 			break;
 		default:
 			if (alreadySpeaking(voiceChannel)) return;
-			var soundName = commandArgs[0] + ".mp3";
+			var soundName = commandArgs[0];
 
 			soundExists(soundName)
 				.then(function() {
-					playSound(soundName, voiceChannel);
+					playSound(soundName, message.member, voiceChannel);
 				})
 				.catch(console.error);
 			break;
@@ -106,11 +106,12 @@ function streamAudio(voiceChannel, message) {
 		.catch(console.error);
 }
 
-function playSound(soundName, voiceChannel) {
+function playSound(soundName, member, voiceChannel) {
 	console.log("Attempting to play sound " + soundName + " in " + voiceChannel.name);
-	var path = SOUNDS_DIRECTORY + soundName;
+	var path = SOUNDS_DIRECTORY + soundName + ".mp3";
 	voiceChannel.join().then(connection => {
 			const dispatcher = connection.playFile(path);
+			Db.insertSoundEvent(soundName, member.displayName, "play");
 			dispatcher.once('end', function() {
 				console.log("Leaving after playing sound.");
 				connection.disconnect();
@@ -123,7 +124,7 @@ function soundExists(soundName, callback) {
 	return new Promise((resolve, reject) => {
 		fs.readdir(SOUNDS_DIRECTORY, function(err, files) {
 			for (var file of files) {
-				if (file === soundName) {
+				if (file === soundName + ".mp3") {
 					return resolve(true);
 				}
 			}

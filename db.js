@@ -2,7 +2,9 @@ const mongoose = require('mongoose');
 const config = require('./config.json');
 const fs = require('fs');
 const SOUNDS_DIRECTORY = config.soundsDirectory;
-const Sound = require('./model/sound');
+const Sound = require('./model/sound').Sound;
+const SoundEvent = require('./model/sound').SoundEvent;
+//todo require model/soundevent
 
 console.log("Getting db ready...");
 mongoose.connect('mongodb://localhost/jontronbot', function() {
@@ -32,7 +34,7 @@ function syncSounds() {
             for (var file of files) {
                 var isDirectory = fs.lstatSync(SOUNDS_DIRECTORY + "/" + file).isDirectory();
                 if (isDirectory) {
-                    console.log("Not considering creating a sound for directory " + file);
+                    //console.log("Not considering creating a sound for directory " + file);
                     continue;
                 }
 
@@ -54,6 +56,28 @@ function syncSounds() {
     });
 }
 
+function insertSoundEvent(soundName, performedBy, soundCategory) {
+    Sound.findOne({
+        name: soundName
+    }, function(err, sound) {
+        if (err) throw err;
+        if (sound == null) {
+            console.log("Sound was null for " + soundName + ", " + performedBy + ", " + soundCategory);
+        }
+        var soundEvent = SoundEvent({
+            category: soundCategory,
+            date: new Date(),
+            performed_by: performedBy
+        });
+        sound.sound_events.push(soundEvent);
+        sound.save(function(err, doc, numRowsAffected) {
+            if (err) console.log(err);
+            //console.log("Added " + numRowsAffected + " rows: " + doc);
+        });
+    });
+
+}
+
 function soundsArrayContainsName(sounds, name) {
     for (var sound of sounds) {
         var soundName = sound.name + ".mp3";
@@ -67,3 +91,4 @@ function soundsArrayContainsName(sounds, name) {
 }
 
 module.exports.syncSounds = syncSounds;
+module.exports.insertSoundEvent = insertSoundEvent;

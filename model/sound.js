@@ -12,9 +12,11 @@ var soundSchema = new Schema({
 	tags: [String],
 	add_date: Date,
 	added_by: String,
-	sound_events: {type: [soundEventSchema]}
+	sound_events: [soundEventSchema]
 });
 
 var Sound = mongoose.model('Sound', soundSchema);
+var SoundEvent = mongoose.model('SoundEvent', soundEventSchema);
 
-module.exports = Sound;
+module.exports.Sound = Sound;
+module.exports.SoundEvent = SoundEvent;
