@@ -122,14 +122,14 @@ function playSound(soundName, member, voiceChannel) {
 
 function soundExists(soundName, callback) {
 	return new Promise((resolve, reject) => {
-		fs.readdir(SOUNDS_DIRECTORY, function(err, files) {
-			for (var file of files) {
-				if (file === soundName + ".mp3") {
-					return resolve(true);
-				}
+		Sound.findOne({name: soundName}, function (err, doc) {
+			if (err) throw err;
+			if (doc) {
+				return resolve(true);
+			} else {
+				return reject("Sound not found in db: " + soundName);
 			}
-			return reject("Sound not found: " + soundName);
-		});
+		})
 	})
 }
 
