@@ -63,6 +63,7 @@ function insertSoundEvent(soundName, performedBy, soundCategory) {
         if (err) throw err;
         if (sound == null) {
             console.log("Sound was null for " + soundName + ", " + performedBy + ", " + soundCategory);
+            return;
         }
         var soundEvent = SoundEvent({
             category: soundCategory,

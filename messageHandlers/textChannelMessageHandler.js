@@ -31,6 +31,8 @@ function handleTextChannelMessage(message) {
 
 	switch (commandArgs[0]) {
 		case "cancel":
+		//Submitted by Chris Skosnik on Feburary 6th, 2017
+		case "byejon":
 			cancelVoiceConnection(voiceChannel);
 			break;
 		case "stop":
@@ -100,7 +102,10 @@ function streamAudio(voiceChannel, message) {
 			});
 
 			const dispatcher = connection.playStream(stream, streamOptions);
-		
+			dispatcher.once('end', function() {
+					console.log("Leaving after playing sound.");
+					connection.disconnect();
+				});
 			dispatcher.setVolume(STREAM_VOLUME);
 		})
 		.catch(console.error);
@@ -146,16 +151,10 @@ function changeVolume(message) {
 		}
 		STREAM_VOLUME = actualVolume;
 
-		if (currentVoiceConnectionInThisGuild) {
-			currentVoiceConnectionInThisGuild.player.dispatcher.setVolume(STREAM_VOLUME);
-		}
+		currentVoiceConnectionInThisGuild.player.dispatcher.setVolume(STREAM_VOLUME);
 	} catch (err) {
 		console.error(err);
 	}
-}
-
-function sync() {
-
 }
 
 module.exports.handleTextChannelMessage = handleTextChannelMessage;
