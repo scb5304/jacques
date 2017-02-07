@@ -11,7 +11,7 @@ var STREAM_VOLUME = 0.225;
 const SOUNDS_DIRECTORY = config.soundsDirectory;
 
 function handleTextChannelMessage(message) {
-	
+
 	var prefix = "!";
 	var messageContent = message.content;
 	if (!messageContent.startsWith(prefix)) return;
@@ -31,7 +31,7 @@ function handleTextChannelMessage(message) {
 
 	switch (commandArgs[0]) {
 		case "cancel":
-		//Submitted by Chris Skosnik on Feburary 6th, 2017
+			//Submitted by Chris Skosnik on Feburary 6th, 2017
 		case "byejon":
 			cancelVoiceConnection(voiceChannel);
 			break;
@@ -49,13 +49,21 @@ function handleTextChannelMessage(message) {
 		case "sync":
 			Db.syncSounds();
 			break;
+		case "":
+			if (alreadySpeaking(voiceChannel)) return;
+			Db.getRandomSoundName()
+				.then(function(soundName) {
+					playSound(soundName, message.member, voiceChannel, "random");
+				})
+				.catch(console.error);
+			break;
 		default:
 			if (alreadySpeaking(voiceChannel)) return;
 			var soundName = commandArgs[0];
 
-			soundExists(soundName)
+			Db.soundExists(soundName)
 				.then(function() {
-					playSound(soundName, message.member, voiceChannel);
+					playSound(soundName, message.member, voiceChannel, "play");
 				})
 				.catch(console.error);
 			break;
@@ -103,39 +111,26 @@ function streamAudio(voiceChannel, message) {
 
 			const dispatcher = connection.playStream(stream, streamOptions);
 			dispatcher.once('end', function() {
-					console.log("Leaving after playing sound.");
-					connection.disconnect();
-				});
+				console.log("Leaving after playing sound.");
+				connection.disconnect();
+			});
 			dispatcher.setVolume(STREAM_VOLUME);
 		})
 		.catch(console.error);
 }
 
-function playSound(soundName, member, voiceChannel) {
+function playSound(soundName, member, voiceChannel, eventType) {
 	console.log("Attempting to play sound " + soundName + " in " + voiceChannel.name);
 	var path = SOUNDS_DIRECTORY + soundName + ".mp3";
 	voiceChannel.join().then(connection => {
 			const dispatcher = connection.playFile(path);
-			Db.insertSoundEvent(soundName, member.displayName, "play");
+			Db.insertSoundEvent(soundName, member.displayName, eventType);
 			dispatcher.once('end', function() {
 				console.log("Leaving after playing sound.");
 				connection.disconnect();
 			});
 		})
 		.catch(console.error);
-}
-
-function soundExists(soundName, callback) {
-	return new Promise((resolve, reject) => {
-		Sound.findOne({name: soundName}, function (err, doc) {
-			if (err) throw err;
-			if (doc) {
-				return resolve(true);
-			} else {
-				return reject("Sound not found in db: " + soundName);
-			}
-		})
-	})
 }
 
 function changeVolume(message) {

@@ -79,6 +79,35 @@ function insertSoundEvent(soundName, performedBy, soundCategory) {
 
 }
 
+function soundExists(soundName, callback) {
+    return new Promise((resolve, reject) => {
+        Sound.findOne({name: soundName}, function (err, doc) {
+            if (err) throw err;
+            if (doc) {
+                return resolve(true);
+            } else {
+                return reject("Sound not found in db: " + soundName);
+            }
+        })
+    })
+}
+
+function getRandomSoundName() {
+    return new Promise((resolve, reject) => {
+        Sound.count(function(err, count) {
+            var random = Math.floor(Math.random() * count);
+            Sound.findOne(function (err, result) {
+                if (result) {
+                    return resolve(result.name);
+                } else {
+                    return reject("Couldn't get random sound.");
+                }
+                
+            }).skip(random);
+        });
+    })
+}
+
 function soundsArrayContainsName(sounds, name) {
     for (var sound of sounds) {
         var soundName = sound.name + ".mp3";
@@ -93,3 +122,5 @@ function soundsArrayContainsName(sounds, name) {
 
 module.exports.syncSounds = syncSounds;
 module.exports.insertSoundEvent = insertSoundEvent;
+module.exports.soundExists = soundExists;
+module.exports.getRandomSoundName = getRandomSoundName;
