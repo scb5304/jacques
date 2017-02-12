@@ -49,21 +49,33 @@ function handleTextChannelMessage(message) {
 		case "sync":
 			Db.syncSounds();
 			break;
+		case "tag":
+		case "tags":
+		if (alreadySpeaking(voiceChannel)) return;
+			 var tags = commandArgs;
+			 //Remove elements starting at index 0, and remove 1 of them. Basically, tags.remove(0) in Java.
+			 tags.splice(0, 1);
+			 Db.getRandomSoundNameWithTags(tags)
+			 	.then(function(fullSoundName) {
+			 		playSound(fullSoundName, message.member, voiceChannel, "playTag")
+			 	})
+			 	.catch(console.error);
+		 	break;
 		case "":
-			if (alreadySpeaking(voiceChannel)) return;
+		if (alreadySpeaking(voiceChannel)) return;
 			Db.getRandomSoundName()
 				.then(function(fullSoundName) {
-					playSound(fullSoundName, message.member, voiceChannel, "random");
+					playSound(fullSoundName, message.member, voiceChannel, "playRandom");
 				})
 				.catch(console.error);
 			break;
 		default:
-			if (alreadySpeaking(voiceChannel)) return;
+		if (alreadySpeaking(voiceChannel)) return;
 			var soundName = commandArgs[0];
 
 			Db.soundExists(soundName)
 				.then(function(fullSoundName) {
-					playSound(fullSoundName, message.member, voiceChannel, "play");
+					playSound(fullSoundName, message.member, voiceChannel, "playTargeted");
 				})
 				.catch(console.error);
 			break;
