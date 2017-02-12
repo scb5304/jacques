@@ -52,8 +52,8 @@ function handleTextChannelMessage(message) {
 		case "":
 			if (alreadySpeaking(voiceChannel)) return;
 			Db.getRandomSoundName()
-				.then(function(soundName) {
-					playSound(soundName, message.member, voiceChannel, "random");
+				.then(function(fullSoundName) {
+					playSound(fullSoundName, message.member, voiceChannel, "random");
 				})
 				.catch(console.error);
 			break;
@@ -62,8 +62,8 @@ function handleTextChannelMessage(message) {
 			var soundName = commandArgs[0];
 
 			Db.soundExists(soundName)
-				.then(function() {
-					playSound(soundName, message.member, voiceChannel, "play");
+				.then(function(fullSoundName) {
+					playSound(fullSoundName, message.member, voiceChannel, "play");
 				})
 				.catch(console.error);
 			break;
@@ -121,7 +121,7 @@ function streamAudio(voiceChannel, message) {
 
 function playSound(soundName, member, voiceChannel, eventType) {
 	console.log("Attempting to play sound " + soundName + " in " + voiceChannel.name);
-	var path = SOUNDS_DIRECTORY + soundName + ".mp3";
+	var path = SOUNDS_DIRECTORY + soundName;
 	voiceChannel.join().then(connection => {
 			const dispatcher = connection.playFile(path);
 			Db.insertSoundEvent(soundName, member.displayName, eventType);

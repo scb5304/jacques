@@ -21,7 +21,7 @@ function syncSounds() {
             //Loop through sounds in database
             for (var sound of sounds) {
 
-                if (files.indexOf(sound.name + ".mp3") == -1) {
+                if (files.indexOf(sound.name) == -1) {
                     console.log("Removing " + sound.name + " from the database! It's no longer in the file system.");
                     Sound.remove({
                         name: sound.name
@@ -42,7 +42,7 @@ function syncSounds() {
                     console.log("Adding " + file + " to the database! It's in the file system but not the database.");
 
                     var newSound = Sound({
-                        name: file.split("\.")[0],
+                        name: file,
                         add_date: new Date(),
                         added_by: "Server"
                     });
@@ -81,10 +81,10 @@ function insertSoundEvent(soundName, performedBy, soundCategory) {
 
 function soundExists(soundName, callback) {
     return new Promise((resolve, reject) => {
-        Sound.findOne({name: soundName}, function (err, doc) {
+        Sound.findOne({name: new RegExp(soundName, "i")}, function (err, doc) {
             if (err) throw err;
             if (doc) {
-                return resolve(true);
+                return resolve(doc.name);
             } else {
                 return reject("Sound not found in db: " + soundName);
             }
@@ -110,9 +110,8 @@ function getRandomSoundName() {
 
 function soundsArrayContainsName(sounds, name) {
     for (var sound of sounds) {
-        var soundName = sound.name + ".mp3";
         //console.log("Comparing " + soundName + " to " + name);
-        if (soundName === name) {
+        if (sound.name.split("/.")[0] === name) {
             //console.log("True!!");
             return true;
         }
