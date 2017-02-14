@@ -40,6 +40,7 @@ function handleTextChannelMessage(message) {
 			shutdownJontronBot();
 			break;
 		case "stream":
+			if (alreadySpeaking(voiceChannel)) return;
 			streamAudio(voiceChannel, message);
 			break;
 		case "volume":
@@ -158,7 +159,7 @@ function changeVolume(message) {
 		}
 		STREAM_VOLUME = actualVolume;
 
-		currentVoiceConnectionInThisGuild.player.dispatcher.setVolume(STREAM_VOLUME);
+		currentVoiceConnectionInThisGuild.player.dispatcher.setVolumeLogarithmic(STREAM_VOLUME);
 	} catch (err) {
 		console.error(err);
 	}
