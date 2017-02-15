@@ -81,6 +81,10 @@ function handleTextChannelMessage(message) {
 				.catch(console.error);
 			break;
 	}
+
+	if (message.channel.name != "commands") {
+		message.delete();
+	}
 }
 
 function alreadySpeaking(voiceChannel) {
@@ -150,7 +154,7 @@ function changeVolume(message) {
 	var requester = message.member;
 	if (!requester) return;
 	var requestedVolume = message.content.split(" ")[1];
-
+	//todo must be in same channel. must be a number.
 	try {
 		var currentVoiceConnectionInThisGuild = bot.voiceConnections.get(requester.guild.id);
 		var actualVolume = requestedVolume / 100;
