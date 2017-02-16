@@ -80,7 +80,7 @@ function insertSoundEvent(soundName, performedBy, soundCategory) {
 
 }
 
-function soundExists(soundName, callback) {
+function soundExists(soundName) {
     return new Promise((resolve, reject) => {
         Sound.findOne({name: new RegExp(soundName, "i")}, function (err, doc) {
             if (err) throw err;
@@ -91,6 +91,20 @@ function soundExists(soundName, callback) {
             }
         })
     })
+}
+
+function getAllSounds() {
+    return new Promise((resolve, reject) => {
+        Sound.find({}, function(err, sounds) {
+            //console.log(sounds);
+            if (err) throw err;
+            if (sounds) {
+                return resolve(sounds); 
+            } else {
+                return reject("Couldn't get all sounds.");
+            }
+        });
+    });
 }
 
 function getRandomSoundName() {
@@ -149,3 +163,4 @@ module.exports.insertSoundEvent = insertSoundEvent;
 module.exports.soundExists = soundExists;
 module.exports.getRandomSoundName = getRandomSoundName;
 module.exports.getRandomSoundNameWithTags = getRandomSoundNameWithTags;
+module.exports.getAllSounds = getAllSounds;

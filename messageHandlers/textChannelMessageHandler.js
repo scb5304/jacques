@@ -62,6 +62,21 @@ function handleTextChannelMessage(message) {
 			 	})
 			 	.catch(console.error);
 		 	break;
+	 	case "sounds":
+	 	console.log("here");
+	 		Db.getAllSounds()
+	 			.then(function(sounds) {
+	 				var helpText = "";
+	 				sounds.sort();
+	 				var i = 0;
+	 				for (var sound of sounds) {
+	 					helpText += sound.name.split("\.")[0] + ", ";
+	 				}
+	 				helpText = helpText.substring(0, helpText.length - 2);
+	 				message.reply(helpText);
+	 			})
+	 			.catch(console.error);
+	 			break;
 		case "":
 		if (alreadySpeaking(voiceChannel)) return;
 			Db.getRandomSoundName()
