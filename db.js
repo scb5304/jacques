@@ -8,7 +8,7 @@ const util = require('./utility');
 //todo require model/soundevent
 
 console.log("Getting db ready...");
-mongoose.connect('mongodb://localhost/jontronbot', function() {
+mongoose.connect('mongodb://localhost/jacques', function() {
     console.log('Db connected!');
     syncSounds();
 });

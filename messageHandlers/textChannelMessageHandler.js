@@ -1,12 +1,12 @@
 const Discord = require("discord.js");
-const bot = require('../jontronbot');
+const bot = require('../jacques');
 const config = require('../config.json');
 const fs = require('fs');
 const Sound = require('../model/sound').Sound;;
 const ytdl = require('ytdl-core');
 const Db = require('../db');
 
-var STREAM_VOLUME = 0.225;
+var mStreamVolume = 0.225;
 
 const SOUNDS_DIRECTORY = config.soundsDirectory;
 
@@ -63,7 +63,6 @@ function handleTextChannelMessage(message) {
 			 	.catch(console.error);
 		 	break;
 	 	case "sounds":
-	 	console.log("here");
 	 		Db.getAllSounds()
 	 			.then(function(sounds) {
 	 				var helpText = "";
@@ -146,7 +145,7 @@ function streamAudio(voiceChannel, message) {
 				console.log("Leaving after playing sound.");
 				connection.disconnect();
 			});
-			dispatcher.setVolume(STREAM_VOLUME);
+			dispatcher.setVolume(mStreamVolume);
 		})
 		.catch(console.error);
 }
@@ -167,21 +166,29 @@ function playSound(soundName, member, voiceChannel, eventType) {
 
 function changeVolume(message) {
 	var requester = message.member;
-	if (!requester) return;
-	var requestedVolume = message.content.split(" ")[1];
-	//todo must be in same channel. must be a number.
-	try {
-		var currentVoiceConnectionInThisGuild = bot.voiceConnections.get(requester.guild.id);
-		var actualVolume = requestedVolume / 100;
-		if (actualVolume > 1) {
-			actualVolume = 1;
-		}
-		STREAM_VOLUME = actualVolume;
+	var currentVoiceConnection = bot.voiceConnections.get(requester.guild.id);
+	//No voice connection or message author not in current voice channel.
+	if (!currentVoiceConnection || currentVoiceConnection.channel != requester.voiceChannel) return;
 
-		currentVoiceConnectionInThisGuild.player.dispatcher.setVolumeLogarithmic(STREAM_VOLUME);
-	} catch (err) {
-		console.error(err);
+	var requestedVolume = message.content.split(" ")[1];
+	console.log("Requested: " + requestedVolume);
+	if (!requestedVolume) {
+		message.reply("Volume is currently at " + mStreamVolume * 100 + "%");
+		return;
 	}
+
+	//Not a number
+	if (isNaN(requestedVolume)) return;
+
+	var actualVolume = requestedVolume / 100;
+	if (actualVolume > 1) {
+		actualVolume = 1;
+	}
+
+	message.reply("Changing volume from " + (mStreamVolume * 100) + "% to " + requestedVolume + "%")
+	message.delete();
+	mStreamVolume = actualVolume;
+	currentVoiceConnection.player.dispatcher.setVolumeLogarithmic(mStreamVolume);
 }
 
 module.exports.handleTextChannelMessage = handleTextChannelMessage;

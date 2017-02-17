@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const bot = require('../jontronbot');
+const bot = require('../jacques');
 const config = require('../config.json');
 const Sound = require('../model/sound');
 const apiai = require('apiai');
