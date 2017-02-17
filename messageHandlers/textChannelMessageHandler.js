@@ -165,6 +165,13 @@ function playSound(soundName, member, voiceChannel, eventType) {
 }
 
 function changeVolume(message) {
+	var requestedVolume = message.content.split(" ")[1];
+	console.log("Requested: " + requestedVolume);
+	if (!requestedVolume) {
+		message.reply("Volume is currently at " + mStreamVolume * 100 + "%");
+		return;
+	}
+	
 	var requester = message.member;
 	var currentVoiceConnection = bot.voiceConnections.get(requester.guild.id);
 	//No voice connection or message author not in current voice channel.
