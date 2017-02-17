@@ -165,24 +165,17 @@ function playSound(soundName, member, voiceChannel, eventType) {
 }
 
 function changeVolume(message) {
+	message.delete();
 	var requestedVolume = message.content.split(" ")[1];
-	console.log("Requested: " + requestedVolume);
 	if (!requestedVolume) {
 		message.reply("Volume is currently at " + mStreamVolume * 100 + "%");
 		return;
 	}
-	
+
 	var requester = message.member;
 	var currentVoiceConnection = bot.voiceConnections.get(requester.guild.id);
 	//No voice connection or message author not in current voice channel.
 	if (!currentVoiceConnection || currentVoiceConnection.channel != requester.voiceChannel) return;
-
-	var requestedVolume = message.content.split(" ")[1];
-	console.log("Requested: " + requestedVolume);
-	if (!requestedVolume) {
-		message.reply("Volume is currently at " + mStreamVolume * 100 + "%");
-		return;
-	}
 
 	//Not a number
 	if (isNaN(requestedVolume)) return;
@@ -193,7 +186,7 @@ function changeVolume(message) {
 	}
 
 	message.reply("Changing volume from " + (mStreamVolume * 100) + "% to " + requestedVolume + "%")
-	message.delete();
+	
 	mStreamVolume = actualVolume;
 	currentVoiceConnection.player.dispatcher.setVolumeLogarithmic(mStreamVolume);
 }
