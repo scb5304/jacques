@@ -1,9 +1,10 @@
-const Discord = require("discord.js");
+const Discord = require('discord.js');
 const bot = new Discord.Client();
 module.exports = bot;
 const config = require('./config.json');
-const directMessageHandler = require('./messageHandlers/directMessageHandler')
-const textChannelMessageHandler = require('./messageHandlers/textChannelMessageHandler')
+const directMessageHandler = require('./messageHandlers/directMessageHandler');
+const textChannelMessageHandler = require('./messageHandlers/textChannelMessageHandler');
+const logger = require('./logger.js');
 
 bot.on("message", handleMessage);
 
@@ -16,9 +17,9 @@ function handleMessage(message) {
 }
 
 
-console.log("Getting bot ready!");
+logger.info("Getting bot ready!");
 bot.on('ready', () => {
-	console.log('I am ready!');
+	logger.info('I am ready!');
 });
 
 bot.login(config.tokenDev);

@@ -5,16 +5,16 @@ const SOUNDS_DIRECTORY = config.soundsDirectory;
 const Sound = require('./model/sound').Sound;
 const SoundEvent = require('./model/sound').SoundEvent;
 const util = require('./utility');
-//todo require model/soundevent
+const logger = require('./logger.js');
 
-console.log("Getting db ready...");
+logger.info("Getting db ready...");
 mongoose.connect('mongodb://localhost/jacques', function() {
-    console.log('Db connected!');
+    logger.info('Db connected!');
     syncSounds();
 });
 
 function syncSounds() {
-    console.log("Syncing...");
+    logger.info("Syncing...");
     //Get sounds from database
     Sound.find({}, function(err, sounds) {
         //Get sounds file file system
@@ -23,7 +23,7 @@ function syncSounds() {
             for (var sound of sounds) {
 
                 if (files.indexOf(sound.name) == -1) {
-                    console.log("Removing " + sound.name + " from the database! It's no longer in the file system.");
+                    logger.info("Removing " + sound.name + " from the database! It's no longer in the file system.");
                     Sound.remove({
                         name: sound.name
                     }, function(err) {
@@ -35,12 +35,12 @@ function syncSounds() {
             for (var file of files) {
                 var isDirectory = fs.lstatSync(SOUNDS_DIRECTORY + "/" + file).isDirectory();
                 if (isDirectory) {
-                    //console.log("Not considering creating a sound for directory " + file);
+                    //logger.info("Not considering creating a sound for directory " + file);
                     continue;
                 }
 
                 if (!soundsArrayContainsName(sounds, file)) {
-                    console.log("Adding " + file + " to the database! It's in the file system but not the database.");
+                    logger.info("Adding " + file + " to the database! It's in the file system but not the database.");
 
                     var newSound = Sound({
                         name: file,
@@ -63,7 +63,7 @@ function insertSoundEvent(soundName, performedBy, soundCategory) {
     }, function(err, sound) {
         if (err) throw err;
         if (sound == null) {
-            console.log("Sound was null for " + soundName + ", " + performedBy + ", " + soundCategory);
+            logger.info("Sound was null for " + soundName + ", " + performedBy + ", " + soundCategory);
             return;
         }
         var soundEvent = SoundEvent({
@@ -73,8 +73,8 @@ function insertSoundEvent(soundName, performedBy, soundCategory) {
         });
         sound.sound_events.push(soundEvent);
         sound.save(function(err, doc, numRowsAffected) {
-            if (err) console.log(err);
-            //console.log("Added " + numRowsAffected + " rows: " + doc);
+            if (err) logger.info(err);
+            //logger.info("Added " + numRowsAffected + " rows: " + doc);
         });
     });
 
@@ -98,7 +98,7 @@ function soundExists(soundName) {
 function getAllSounds() {
     return new Promise((resolve, reject) => {
         Sound.find({}, function(err, sounds) {
-            //console.log(sounds);
+            //logger.info(sounds);
             if (err) throw err;
             if (sounds) {
                 return resolve(sounds); 
@@ -126,7 +126,7 @@ function getRandomSoundName() {
 }
 
 function getRandomSoundNameWithTags(tags) {
-    console.log("tags: " + tags);
+    logger.info("tags: " + tags);
     return new Promise((resolve, reject) => {
 
         Sound.find({tags: {$all: tags}}, function(err, sounds) {
@@ -135,9 +135,9 @@ function getRandomSoundNameWithTags(tags) {
             if (!sounds) {
                 return reject("Couldn't find sound with those tags.");
             }
-            console.log(sounds);
+            logger.info(sounds);
             var randIndex = util.getRandomInt(0, sounds.length-1);
-            console.log(randIndex + " is the index.");
+            logger.info(randIndex + " is the index.");
             var randomSound = sounds[randIndex];
 
             if (randomSound) {
@@ -153,7 +153,7 @@ function getRandomSoundNameWithTags(tags) {
 function soundsArrayContainsName(sounds, name) {
     for (var sound of sounds) {
         if (sound.name === name) {
-            //console.log("True!!");
+            //logger.info("True!!");
             return true;
         }
     }

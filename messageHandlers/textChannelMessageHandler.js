@@ -5,8 +5,9 @@ const fs = require('fs');
 const Sound = require('../model/sound').Sound;;
 const ytdl = require('ytdl-core');
 const Db = require('../db');
+const logger = require('../logger.js')
 
-var mStreamVolume = 0.225;
+var mStreamVolume = 0.40;
 
 const SOUNDS_DIRECTORY = config.soundsDirectory;
 
@@ -15,7 +16,7 @@ function handleTextChannelMessage(message) {
 	var prefix = "!";
 	var messageContent = message.content;
 	if (!messageContent.startsWith(prefix)) return;
-	console.log("Received message: " + message.content);
+	logger.info("Received message: " + message.content);
 
 	var member = message.member;
 	if (!member) return;
@@ -27,7 +28,7 @@ function handleTextChannelMessage(message) {
 
 	var commandArgs = messageContent.split(" ");
 
-	console.log("Routing message to appropriate call.");
+	logger.info("Routing message to appropriate call.");
 
 	switch (commandArgs[0]) {
 		case "cancel":
@@ -105,29 +106,29 @@ function alreadySpeaking(voiceChannel) {
 	var connection = voiceChannel.connection;
 	var alreadySpeaking = connection && connection.speaking;
 	if (alreadySpeaking) {
-		console.log("Already speaking in channel " + voiceChannel.name);
+		logger.info("Already speaking in channel " + voiceChannel.name);
 	}
 	return alreadySpeaking;
 }
 
 function cancelVoiceConnection(voiceChannel) {
-	console.log("Cancelling voice connection.")
+	logger.info("Cancelling voice connection.")
 	var connection = voiceChannel.connection;
 	if (!connection) return;
 	connection.disconnect();
 }
 
 function shutdownJontronBot() {
-	console.log("Stopping...");
+	logger.info("Stopping...");
 	bot.destroy()
 		.then(function() {
-			console.log("Shut down successfully.")
+			logger.info("Shut down successfully.")
 		})
 		.catch(console.error);
 }
 
 function streamAudio(voiceChannel, message) {
-	console.log("Attempting to stream audio...")
+	logger.info("Attempting to stream audio...")
 	var streamArg = message.content.split(" ")[1];
 
 	const streamOptions = {
@@ -142,7 +143,7 @@ function streamAudio(voiceChannel, message) {
 
 			const dispatcher = connection.playStream(stream, streamOptions);
 			dispatcher.once('end', function() {
-				console.log("Leaving after playing sound.");
+				logger.info("Leaving after playing sound.");
 				connection.disconnect();
 			});
 			dispatcher.setVolume(mStreamVolume);
@@ -151,13 +152,13 @@ function streamAudio(voiceChannel, message) {
 }
 
 function playSound(soundName, member, voiceChannel, eventType) {
-	console.log("Attempting to play sound " + soundName + " in " + voiceChannel.name);
+	logger.info("Attempting to play sound " + soundName + " in " + voiceChannel.name);
 	var path = SOUNDS_DIRECTORY + soundName;
 	voiceChannel.join().then(connection => {
 			const dispatcher = connection.playFile(path);
 			Db.insertSoundEvent(soundName, member.displayName, eventType);
 			dispatcher.once('end', function() {
-				console.log("Leaving after playing sound.");
+				logger.info("Leaving after playing sound.");
 				connection.disconnect();
 			});
 		})
