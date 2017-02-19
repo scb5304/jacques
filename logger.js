@@ -16,8 +16,7 @@ var loggerOptions = {
 
 var logger = new(winston.Logger)({
 	transports: [
-		new(winston.transports.Console)(loggerOptions),
-		new(winston.transports.File)(loggerOptions)
+		new(winston.transports.Console)(loggerOptions)
 	]
 });
 
