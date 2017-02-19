@@ -82,7 +82,9 @@ function insertSoundEvent(soundName, performedBy, soundCategory) {
 
 function soundExists(soundName) {
     return new Promise((resolve, reject) => {
-        Sound.findOne({name: new RegExp(soundName, "i")}, function (err, doc) {
+        //Query for one sound that starts with this soundName, is followed by a period, and any file extension
+        var regex = "^" + soundName + "\..+$";
+        Sound.findOne({name: new RegExp(regex, "i")}, function (err, doc) {
             if (err) throw err;
             if (doc) {
                 return resolve(doc.name);
