@@ -25,6 +25,7 @@ function handleTextChannelMessage(message) {
 	if (!voiceChannel) return;
 
 	messageContent = messageContent.substring(1);
+	messageContent = messageContent.toLowerCase();
 
 	var commandArgs = messageContent.split(" ");
 
@@ -34,6 +35,7 @@ function handleTextChannelMessage(message) {
 		case "cancel":
 			//Submitted by Chris Skosnik on Feburary 6th, 2017
 		case "byejon":
+			logger.info("Received request to cancel voice connection.");
 			cancelVoiceConnection(voiceChannel);
 			break;
 		case "stop":
@@ -41,10 +43,12 @@ function handleTextChannelMessage(message) {
 			shutdownJontronBot();
 			break;
 		case "stream":
+			logger.info("Received request to stream a youtube video.");
 			if (alreadySpeaking(voiceChannel)) return;
 			streamAudio(voiceChannel, message);
 			break;
 		case "volume":
+			logger.info("Received request to change volume.");
 			changeVolume(message);
 			break;
 			//command for last played "uncancel"
@@ -53,52 +57,73 @@ function handleTextChannelMessage(message) {
 			break;
 		case "tag":
 		case "tags":
-		if (alreadySpeaking(voiceChannel)) return;
-			 var tags = commandArgs;
-			 //Remove elements starting at index 0, and remove 1 of them. Basically, tags.remove(0) in Java.
-			 tags.splice(0, 1);
-			 Db.getRandomSoundNameWithTags(tags)
-			 	.then(function(fullSoundName) {
-			 		playSound(fullSoundName, message.member, voiceChannel, "playTag")
-			 	})
-			 	.catch(console.error);
-		 	break;
-	 	case "sounds":
-	 		Db.getAllSounds()
-	 			.then(function(sounds) {
-	 				var helpText = "";
-	 				sounds.sort();
-	 				var i = 0;
-	 				for (var sound of sounds) {
-	 					helpText += sound.name.split("\.")[0] + ", ";
-	 				}
-	 				helpText = helpText.substring(0, helpText.length - 2);
-	 				message.reply(helpText);
-	 			})
-	 			.catch(console.error);
-	 			break;
+			logger.info("Received request to play a sound with tags.");
+			if (alreadySpeaking(voiceChannel)) return;
+			var tags = commandArgs;
+			//Remove elements starting at index 0, and remove 1 of them. Basically, tags.remove(0) in Java.
+			tags.splice(0, 1);
+			Db.getRandomSoundNameWithTags(tags)
+				.then(function(fullSoundName) {
+					playSound(fullSoundName, message.member, voiceChannel, "playTag")
+				})
+				.catch(logger.error);
+			break;
+		case "sounds":
+			logger.info("Attempting to print all sounds.");
+			Db.getAllSounds()
+				.then(function(sounds) {
+					var helpText = "";
+					sounds.sort();
+					var i = 0;
+					for (var sound of sounds) {
+						helpText += sound.name.split("\.")[0] + ", ";
+					}
+					helpText = helpText.substring(0, helpText.length - 2);
+
+					logger.info("length:" + helpText.length);
+					//TODO this is bad.
+					if (helpText.length >= 1500) {
+						message.reply(helpText.substring(0, 1500))
+							.then(msg => logger.info(`Sent a reply to ${msg.author.username}`))
+							.catch(console.error);
+
+						message.reply(helpText.substring(1500))
+						.then(msg => logger.info(`Sent a reply to ${msg.author.username}`))
+						.catch(console.error);
+
+					} else {
+						message.reply(helpText)
+						.then(msg => logger.info(`Sent a reply to ${msg.author.username}`))
+						.catch(console.error);
+					}
+					
+				})
+				.catch(logger.error);
+			break;
 		case "":
-		if (alreadySpeaking(voiceChannel)) return;
+			logger.info("No arguments provided, going to play a random sound.")
+			if (alreadySpeaking(voiceChannel)) return;
 			Db.getRandomSoundName()
 				.then(function(fullSoundName) {
 					playSound(fullSoundName, message.member, voiceChannel, "playRandom");
 				})
-				.catch(console.error);
+				.catch(logger.error);
 			break;
 		default:
-		if (alreadySpeaking(voiceChannel)) return;
+			logger.info("Default case: request to play a sound.");
+			if (alreadySpeaking(voiceChannel)) return;
 			var soundName = commandArgs[0];
 
 			Db.soundExists(soundName)
 				.then(function(fullSoundName) {
 					playSound(fullSoundName, message.member, voiceChannel, "playTargeted");
 				})
-				.catch(console.error);
+				.catch(logger.error);
 			break;
 	}
 
 	if (message.channel.name != "commands") {
-		message.delete();
+		message.delete(5000).catch(logger.error);
 	}
 }
 
@@ -124,7 +149,7 @@ function shutdownJontronBot() {
 		.then(function() {
 			logger.info("Shut down successfully.")
 		})
-		.catch(console.error);
+		.catch(logger.error);
 }
 
 function streamAudio(voiceChannel, message) {
@@ -148,7 +173,7 @@ function streamAudio(voiceChannel, message) {
 			});
 			dispatcher.setVolume(mStreamVolume);
 		})
-		.catch(console.error);
+		.catch(logger.error);
 }
 
 function playSound(soundName, member, voiceChannel, eventType) {
@@ -162,11 +187,10 @@ function playSound(soundName, member, voiceChannel, eventType) {
 				connection.disconnect();
 			});
 		})
-		.catch(console.error);
+		.catch(logger.error);
 }
 
 function changeVolume(message) {
-	message.delete();
 	var requestedVolume = message.content.split(" ")[1];
 	if (!requestedVolume) {
 		message.reply("Volume is currently at " + mStreamVolume * 100 + "%");
@@ -187,7 +211,7 @@ function changeVolume(message) {
 	}
 
 	message.reply("Changing volume from " + (mStreamVolume * 100) + "% to " + requestedVolume + "%")
-	
+
 	mStreamVolume = actualVolume;
 	currentVoiceConnection.player.dispatcher.setVolumeLogarithmic(mStreamVolume);
 }

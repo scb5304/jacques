@@ -98,7 +98,6 @@ function soundExists(soundName) {
 function getAllSounds() {
     return new Promise((resolve, reject) => {
         Sound.find({}, function(err, sounds) {
-            //logger.info(sounds);
             if (err) throw err;
             if (sounds) {
                 return resolve(sounds); 
