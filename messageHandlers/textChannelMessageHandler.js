@@ -123,7 +123,7 @@ function handleTextChannelMessage(message) {
 	}
 
 	if (message.channel.name != "commands") {
-		message.delete(5000).catch(logger.error);
+		message.delete(2000).catch(logger.error);
 	}
 }
 
@@ -158,7 +158,7 @@ function streamAudio(voiceChannel, message) {
 
 	const streamOptions = {
 		seek: 0,
-		volume: 1
+		volume: mStreamVolume
 	};
 	voiceChannel.join()
 		.then(connection => {
@@ -171,7 +171,9 @@ function streamAudio(voiceChannel, message) {
 				logger.info("Leaving after playing sound.");
 				connection.disconnect();
 			});
-			dispatcher.setVolume(mStreamVolume);
+			dispatcher.once('start', function() {
+				dispatcher.setVolume(mStreamVolume);
+			})
 		})
 		.catch(logger.error);
 }

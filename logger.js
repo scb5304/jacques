@@ -1,3 +1,4 @@
+process.env.TZ = 'America/New_York';
 const winston = require('winston');
 const moment = require('moment');
 
