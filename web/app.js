@@ -1,13 +1,16 @@
-var express = require('express');
-var exphbs  = require('express-handlebars');
+const express = require('express');
+const app = express() ;
+const db = require('../db.js');
 
-var app = express();
+app.set('view engine', 'pug')
+app.get('/', function (req, res) {  
+	db.getAllSounds()
+	.then(function(listSounds) {
+		res.render('index', { sounds: listSounds})
+	});
+    
+})
 
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
-app.set('view engine', 'handlebars');
-
-app.get('/', function (req, res) {
-    res.render('home');
-});
-
-app.listen(3000);
+app.listen(3000, function () {  
+    console.log('Example app listening on port 3000!')
+})

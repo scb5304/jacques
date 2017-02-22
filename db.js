@@ -10,7 +10,6 @@ const logger = require('./logger.js');
 logger.info("Getting db ready...");
 mongoose.connect('mongodb://localhost/jacques', function() {
     logger.info('Db connected!');
-    syncSounds();
 });
 
 function syncSounds() {
@@ -104,7 +103,7 @@ function getAllSounds() {
             } else {
                 return reject("Couldn't get all sounds.");
             }
-        });
+        }).sort({name: 'asc'});
     });
 }
 
