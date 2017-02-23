@@ -171,7 +171,7 @@ function streamAudio(voiceChannel, message) {
 				logger.info("Leaving after playing sound.");
 				connection.disconnect();
 			});
-			dispatcher.once('start', function() {
+			dispatcher.once('speaking', function() {
 				dispatcher.setVolume(mStreamVolume);
 			})
 		})
