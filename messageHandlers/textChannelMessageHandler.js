@@ -35,6 +35,7 @@ function handleTextChannelMessage(message) {
 		case "cancel":
 			//Submitted by Chris Skosnik on Feburary 6th, 2017
 		case "byejon":
+		case "byejacques":
 			logger.info("Received request to cancel voice connection.");
 			cancelVoiceConnection(voiceChannel);
 			break;
@@ -172,7 +173,7 @@ function streamAudio(voiceChannel, message) {
 				connection.disconnect();
 			});
 			dispatcher.once('speaking', function() {
-				dispatcher.setVolume(mStreamVolume);
+				dispatcher.setVolumeLogarithmic(mStreamVolume);
 			})
 		})
 		.catch(logger.error);
