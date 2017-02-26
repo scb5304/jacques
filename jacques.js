@@ -22,4 +22,4 @@ bot.on('ready', () => {
 	logger.info('I am ready!');
 });
 
-bot.login(config.tokenDev);
+bot.login(config.token);
