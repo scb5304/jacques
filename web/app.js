@@ -13,7 +13,6 @@ app.use(bodyParser.json());
 var port = 8080;
 var router = express.Router();
 
-<<<<<<< HEAD
 router.use(function(req, res, next) {
     console.log('Something is happening.');
     next();
