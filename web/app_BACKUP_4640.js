@@ -53,8 +53,3 @@ app.use('/api', router);
 
 app.listen(port);
 console.log('Magic happens on port ' + port);
-=======
-app.listen(8080, function () {
-    console.log('Example app listening on port 3000!')
-})
->>>>>>> 20a9cc02fbdd2954a6a53d39f809140a2cb3b2cc
