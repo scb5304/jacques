@@ -16,7 +16,6 @@ function handleMessage(message) {
 	}
 }
 
-
 logger.info("Getting bot ready!");
 bot.on('ready', () => {
 	logger.info('I am ready!');
