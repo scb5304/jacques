@@ -22,3 +22,7 @@ bot.on('ready', () => {
 });
 
 bot.login(config.token);
+
+if (bot.user) {
+	bot.user.setGame("http://jacquesbot.io");
+}

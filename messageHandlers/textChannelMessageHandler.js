@@ -56,6 +56,10 @@ function handleTextChannelMessage(message) {
 		case "sync":
 			Db.syncSounds();
 			break;
+		case "help":
+		case "sounds":
+			message.reply("http://jacquesbot.io");
+			break;
 		case "tag":
 		case "tags":
 			logger.info("Received request to play a sound with tags.");
@@ -66,38 +70,6 @@ function handleTextChannelMessage(message) {
 			Db.getRandomSoundNameWithTags(tags)
 				.then(function(fullSoundName) {
 					playSound(fullSoundName, message.member, voiceChannel, "playTag")
-				})
-				.catch(logger.error);
-			break;
-		case "sounds":
-			logger.info("Attempting to print all sounds.");
-			Db.getAllSounds()
-				.then(function(sounds) {
-					var helpText = "";
-					sounds.sort();
-					var i = 0;
-					for (var sound of sounds) {
-						helpText += sound.name.split("\.")[0] + ", ";
-					}
-					helpText = helpText.substring(0, helpText.length - 2);
-
-					logger.info("length:" + helpText.length);
-					//TODO this is bad.
-					if (helpText.length >= 1500) {
-						message.reply(helpText.substring(0, 1500))
-							.then(msg => logger.info(`Sent a reply to ${msg.author.username}`))
-							.catch(console.error);
-
-						message.reply(helpText.substring(1500))
-						.then(msg => logger.info(`Sent a reply to ${msg.author.username}`))
-						.catch(console.error);
-
-					} else {
-						message.reply(helpText)
-						.then(msg => logger.info(`Sent a reply to ${msg.author.username}`))
-						.catch(console.error);
-					}
-					
 				})
 				.catch(logger.error);
 			break;
