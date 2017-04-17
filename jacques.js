@@ -9,20 +9,19 @@ const logger = require('./logger.js');
 bot.on("message", handleMessage);
 
 function handleMessage(message) {
-	if (message.channel instanceof Discord.DMChannel) {
-		directMessageHandler.handleDirectMessage(message);
-	} else if (message.channel instanceof Discord.TextChannel) {
-		textChannelMessageHandler.handleTextChannelMessage(message);
-	}
+    if (message.channel instanceof Discord.DMChannel) {
+        directMessageHandler.handleDirectMessage(message);
+    } else if (message.channel instanceof Discord.TextChannel) {
+        textChannelMessageHandler.handleTextChannelMessage(message);
+    }
 }
 
 logger.info("Getting bot ready!");
 bot.on('ready', () => {
-	logger.info('I am ready!');
+    logger.info('I am ready!');
+    if (bot.user) {
+        bot.user.setGame("http://jacquesbot.io");
+    }
 });
 
 bot.login(config.token);
-
-if (bot.user) {
-	bot.user.setGame("http://jacquesbot.io");
-}
