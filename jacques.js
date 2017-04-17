@@ -23,5 +23,3 @@ bot.on('ready', () => {
 });
 
 bot.login(config.token);
-
-app.startMeUp()
