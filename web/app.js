@@ -6,8 +6,10 @@ const Sound = require('../model/sound').Sound;
 const path = require('path');
 
 app.use('/raw', express.static(__dirname + '/../sounds'));
-app.use(express.static(__dirname + '/../node_modules'));
-app.use('/static', express.static(__dirname + '/../node_modules'));
+app.use(express.static(__dirname + ''));
+app.use(express.static(__dirname + '/../'));
+app.use(express.static(__dirname + '../'));
+
 
 app.use(bodyParser.urlencoded({
     extended: true
