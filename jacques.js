@@ -5,6 +5,7 @@ const config = require('./config.json');
 const directMessageHandler = require('./messageHandlers/directMessageHandler');
 const textChannelMessageHandler = require('./messageHandlers/textChannelMessageHandler');
 const logger = require('./logger.js');
+const app = require('./web/app.js')
 
 bot.on("message", handleMessage);
 
@@ -22,3 +23,5 @@ bot.on('ready', () => {
 });
 
 bot.login(config.token);
+
+app.startMeUp()
