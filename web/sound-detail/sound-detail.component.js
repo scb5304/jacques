@@ -8,15 +8,15 @@ angular.module('soundDetail')
             $scope.sharedProperties = sharedProperties;
             $scope.labels = [];
             $scope.data = [];
-            $scope.audioUrl
+            $scope.audioUrl = "";
 
-            $scope.lineOptions = {
+            $scope.soundActivityLineOptions = {
                 scales: {
                     yAxes: [{
                         ticks: {
                             beginAtZero: true,
-                            userCallback: function(label, index, labels) {
-                                if (Math.floor(label) == label) {
+                            userCallback: function (label, index, labels) {
+                                if (Math.floor(label) === label) {
                                     return label;
                                 }
                             }
@@ -25,32 +25,34 @@ angular.module('soundDetail')
                 }
             };
 
-            $scope.nutData = [];
-            $scope.nutLabels = ["Targeted", "Random"]
-
-            $scope.barData = []
-            $scope.barLabels = []
-
-            $scope.barOptions = {
+            $scope.soundPlayedByBarOptions = {
                 scales: {
                     xAxes: [{
                         ticks: {
                             beginAtZero: true,
-                            userCallback: function(label, index, labels) {
+                            userCallback: function (label, index, labels) {
                                 if (Math.floor(label) == label) {
                                     return label;
                                 }
                             }
                         },
-                        
+
                     }],
                     yAxes: [{
                         categoryPercentage: 0.4
                     }]
                 }
-            }
+            };
 
-            $scope.$watch('sharedProperties.getSelected()', function(newVal, oldVal) {
+            $scope.soundTypeNutData = [];
+            $scope.soundTypeNutLabels = ["Targeted", "Random"]
+
+            $scope.soundPlayedByBarData = [];
+            $scope.soundPlayedByBarLabels = [];
+
+
+
+            $scope.$watch('sharedProperties.getSelected()', function (newVal, oldVal) {
                 if (newVal) {
                     $scope.labels = getLabels();
                     $scope.data = getData();
@@ -61,12 +63,12 @@ angular.module('soundDetail')
                     var playedByCounts = []
                     var playedByNames = []
 
-                    $scope.barData = []
-                    $scope.barLabels = []
+                    $scope.soundPlayedByBarData = []
+                    $scope.soundPlayedByBarLabels = []
 
-                    $scope.summaryLastPlayed = "N/A"
+                    $scope.summaryLastPlayed = "N/A";
 
-                    if (sound.sound_events.length == 0) {
+                    if (sound.sound_events.length === 0) {
                         console.log("No sound events!");
                     }
                     for (var event of sound.sound_events) {
@@ -78,11 +80,10 @@ angular.module('soundDetail')
 
                         //console.log(event)
                         if (!playedByNames.includes(event.performed_by)) {
-                            console.log("Pushing " + event.performed_by)
-                            playedByNames.push(event.performed_by)
+                            playedByNames.push(event.performed_by);
                             playedByCounts.push(0)
                         }
-                        var indexOfName = playedByNames.indexOf(event.performed_by)
+                        var indexOfName = playedByNames.indexOf(event.performed_by);
 
                         //console.log(indexOfName)
                         playedByCounts[indexOfName]++;
@@ -90,7 +91,6 @@ angular.module('soundDetail')
 
                         if ($scope.summaryLastPlayed === "N/A") {
                             $scope.summaryLastPlayed = new Date(event.date)
-                            console.log("New last played: " + $scope.summaryLastPlayed)
                         } else {
                             var possibleLastPlayedDate = new Date(event.date);
                             if (possibleLastPlayedDate > $scope.summaryLastPlayed) {
@@ -98,24 +98,27 @@ angular.module('soundDetail')
                             }
                         }
                     }
-                    $scope.barLabels = playedByNames
-                    $scope.barData = playedByCounts
+                    $scope.soundPlayedByBarLabels = playedByNames;
+                    $scope.soundPlayedByBarData = playedByCounts;
 
-                    console.log("Labels: " + $scope.barLabels)
-                    console.log("Data: " + $scope.barData)
-
-                    $scope.nutData = playTypeCounts;
+                    $scope.soundTypeNutData = playTypeCounts;
                     $scope.audioUrl = $sce.trustAsResourceUrl("http://jacquesbot.io/raw/" + sound.name);
 
                     $scope.summaryPlayCount = sound.sound_events.length;
-                    $scope.summaryAddDate = new Date(sound.add_date).toLocaleString("en", {year: 'numeric', month: 'long', day: 'numeric'})
-                    $scope.summaryLastPlayed = $scope.summaryLastPlayed.toLocaleString("en", {year: 'numeric', month: 'long', day: 'numeric'})
+                    $scope.summaryAddDate = new Date(sound.add_date).toLocaleString("en", {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    })
+                    $scope.summaryLastPlayed = $scope.summaryLastPlayed.toLocaleString("en", {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    })
 
-                    if (($scope.summaryAddDate+"") === "February 26, 2017") {
+                    if (($scope.summaryAddDate + "") === "February 26, 2017") {
                         $scope.summaryAddDate = $scope.summaryAddDate + " (Legacy)"
                     }
-
-                    $scope.query = "shiton"
                 }
             });
 
@@ -124,7 +127,7 @@ angular.module('soundDetail')
             }
 
             function calcMonthName(date) {
-                return date.toLocaleString("en", { month: "long" });
+                return date.toLocaleString("en", {month: "long"});
             }
 
             function removeOldSoundEvents(soundEvents) {
@@ -138,7 +141,6 @@ angular.module('soundDetail')
             }
 
             function getLabels() {
-                console.log("here");
                 var lastSixMonths = getLastSixMonths();
                 var labels = [];
                 for (var monthInt of lastSixMonths) {

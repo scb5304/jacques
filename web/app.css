@@ -49,7 +49,7 @@ md-sidenav md-list {
     padding: 0px 0px 8px 0px;
 }
 
-.borderBottomListItem {
+.border-bottom-list-item {
     border-bottom: 1px solid #EEEEEE;
 }
 
@@ -102,48 +102,48 @@ md-button.menuBtn > md-icon {
   margin-bottom: 0px;
 }
 
-#soundAudio {
+#sound-audio {
     width: 390px;
     margin-bottom: 16px;
 }
 
-#soundTitle {
+#sound-title {
     margin-bottom: 0px;
 }
 
-#soundActivity {
+#sound-activity-card {
     width: 500px;
     padding: 8px;
 }
 
-.soundType {
+.sound-type-card {
     width: 500px;
     padding: 8px;
 }
 
-#soundPerformedBy {
+#sound-performed-by-card {
     width: 500px;
     padding: 8px;
 }
 
-.soundSummary {
+.sound-summary-card {
     width: 500px;
     padding: 8px;
 }
 
-#soundSummaryContent {
+#sound-summary-card-content {
   margin: 0 auto;
 }
 
-#soundNutChart {
+#sound-type-nut-chart {
   margin: 0 auto;
 }
 
-#soundLineChart {
+#sound-activity-line-chart {
   margin: 0 auto;
 }
 
-#soundBarChart {
+#sound-performed-by-chart {
   margin: 0 auto;
 }
 
