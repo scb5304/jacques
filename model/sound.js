@@ -9,6 +9,7 @@ var soundEventSchema = new Schema({
 
 var soundSchema = new Schema({
 	name: String,
+	category: String,
 	tags: [String],
 	add_date: Date,
 	added_by: String,

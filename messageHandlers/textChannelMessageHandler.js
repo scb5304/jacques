@@ -2,13 +2,14 @@ const Discord = require("discord.js");
 const bot = require('../jacques');
 const config = require('../config.json');
 const fs = require('fs');
-const Sound = require('../model/sound').Sound;;
+const Sound = require('../model/sound').Sound;
 const ytdl = require('ytdl-core');
 const Db = require('../db');
 const logger = require('../logger.js')
+const util = require('../utility');
 
 var mStreamVolume = 0.40;
-const HELP_TEXT = "Jacques is a soundboard bot. To play a sound, type ! followed by the name of the sound. If you don't supply a sound name, it will play a random one. You can also " +
+const HELP_STRING = "Jacques is a soundboard bot. To play a sound, type ! followed by the name of the sound. If you don't supply a sound name, it will play a random one. You can also " +
     "stream the audio of a youtube video with !stream.\n\n" +
     "Visit Jacques online at http://jacquesbot.io for a list of sounds, or use !helptext if you really want a text dump."
 const SOUNDS_DIRECTORY = config.soundsDirectory;
@@ -18,13 +19,14 @@ function handleTextChannelMessage(message) {
     var prefix = "!";
     var messageContent = message.content;
     if (!messageContent.startsWith(prefix)) return;
-    logger.info("Received message: " + message.content);
 
     var member = message.member;
     if (!member) return;
 
     var voiceChannel = member.voiceChannel;
     if (!voiceChannel) return;
+
+    logger.info("Received message: " + message.content + " from " + message.member.displayName + " on server " + message.guild);
 
     messageContent = messageContent.substring(1);
     messageContent = messageContent.toLowerCase();
@@ -35,68 +37,38 @@ function handleTextChannelMessage(message) {
 
     switch (commandArgs[0]) {
         case "cancel":
-            //Submitted by Chris Skosnik on Feburary 6th, 2017
+        //Submitted by Chris Skosnik on Feburary 6th, 2017
         case "byejon":
         case "byejacques":
-            logger.info("Received request to cancel voice connection.");
+            logger.info("Cancel voice connection.");
             cancelVoiceConnection(voiceChannel);
             break;
-        case "stop":
-            if (member.displayName != "Spitsonpuppies") return;
-            shutdownJontronBot();
-            break;
         case "stream":
-            logger.info("Received request to stream a youtube video.");
-            if (alreadySpeaking(voiceChannel)) return;
+            logger.info("Stream a youtube video.");
+            if (alreadySpeaking(message)) return;
             streamAudio(voiceChannel, message);
             break;
         case "volume":
-            logger.info("Received request to change volume.");
+            logger.info("Change the volume.");
             changeVolume(message);
             break;
-            //command for last played "uncancel"
         case "sync":
+            if (member.displayName != "Spitsonpuppies") return;
+            logger.info("Sync the database.");
             Db.syncSounds();
             break;
         case "help":
         case "sounds":
-            message.reply(HELP_TEXT);
+            logger.info("Help.");
+            message.reply(HELP_STRING);
             break;
         case "helptext":
-            logger.info("Attempting to print all sounds.");
-            Db.getAllSounds()
-                .then(function(sounds) {
-                    var helpText = "";
-                    sounds.sort();
-                    var i = 0;
-                    for (var sound of sounds) {
-                        helpText += sound.name.split("\.")[0] + ", ";
-                    }
-                    helpText = helpText.substring(0, helpText.length - 2);
-
-                    logger.info("length:" + helpText.length);
-                    //TODO this is bad.
-                    if (helpText.length >= 1500) {
-                        message.reply(helpText.substring(0, 1500))
-                            .then(msg => logger.info(`Sent a reply to ${msg.author.username}`))
-                            .catch(console.error);
-
-                        message.reply(helpText.substring(1500))
-                            .then(msg => logger.info(`Sent a reply to ${msg.author.username}`))
-                            .catch(console.error);
-
-                    } else {
-                        message.reply(helpText)
-                            .then(msg => logger.info(`Sent a reply to ${msg.author.username}`))
-                            .catch(console.error);
-                    }
-
-                })
-                .catch(logger.error);
+            logger.info("Help text sound dump.")
+            sendSoundDump(message);
             break;
         case "":
             logger.info("No arguments provided, going to play a random sound.")
-            if (alreadySpeaking(voiceChannel)) return;
+            if (alreadySpeaking(message)) return;
             Db.getRandomSoundName()
                 .then(function(fullSoundName) {
                     playSound(fullSoundName, message.member, voiceChannel, "playRandom");
@@ -104,8 +76,8 @@ function handleTextChannelMessage(message) {
                 .catch(logger.error);
             break;
         default:
-            logger.info("Default case: request to play a sound.");
-            if (alreadySpeaking(voiceChannel)) return;
+            logger.info("Default case: request to play a specific sound.");
+            if (alreadySpeaking(message)) return;
             var soundName = commandArgs[0];
 
             Db.soundExists(soundName)
@@ -121,39 +93,40 @@ function handleTextChannelMessage(message) {
     }
 }
 
-function alreadySpeaking(voiceChannel) {
-    var connection = voiceChannel.connection;
-    var alreadySpeaking = connection && connection.speaking;
-    if (alreadySpeaking) {
-        logger.info("Already speaking in channel " + voiceChannel.name);
+function alreadySpeaking(message) {
+    var currentVoiceConnection = bot.voiceConnections.get(message.guild.id);
+
+    if (currentVoiceConnection) {
+        logger.info("Already speaking in channel " + currentVoiceConnection.channel.name);
+        return true;
     }
-    return alreadySpeaking;
+    return false;
 }
 
 function cancelVoiceConnection(voiceChannel) {
-    logger.info("Cancelling voice connection.")
     var connection = voiceChannel.connection;
     if (!connection) return;
     connection.disconnect();
 }
 
-function shutdownJontronBot() {
-    logger.info("Stopping...");
-    bot.destroy()
-        .then(function() {
-            logger.info("Shut down successfully.")
-        })
-        .catch(logger.error);
-}
-
 function streamAudio(voiceChannel, message) {
     logger.info("Attempting to stream audio...")
-    var streamArg = message.content.split(" ")[1];
+    var secondsToSeek = 0;
+
+    var streamArg = message.content.split(" ")[1]; //entire youtube URL
+    var timeArg = streamArg.split("\?t=")[1]; // 3m4s
+
+    if (timeArg) {
+        secondsToSeek = util.secondsFromTimeArg(timeArg);
+    }
+
+    logger.info("Seconds: " + secondsToSeek)
 
     const streamOptions = {
-        seek: 0,
+        seek: secondsToSeek,
         volume: mStreamVolume
     };
+
     voiceChannel.join()
         .then(connection => {
             const stream = ytdl(streamArg, {
@@ -210,6 +183,26 @@ function changeVolume(message) {
 
     mStreamVolume = actualVolume;
     currentVoiceConnection.player.dispatcher.setVolumeLogarithmic(mStreamVolume);
+}
+
+function sendSoundDump(message) {
+    logger.info("Attempting to print all sounds.");
+    Db.getAllSounds()
+        .then(function(sounds) {
+            var helpText = "";
+            sounds.sort();
+            for (var sound of sounds) {
+                helpText += sound.name.split("\.")[0] + ", ";
+            }
+            helpText = helpText.substring(0, helpText.length - 2);
+
+            var helpTextSegments = helpText.match(/.{1,1500}/g);
+            for (var helpTextSegment of helpTextSegments) {
+                message.reply(helpTextSegment)
+                    .catch(console.error);
+            }
+        })
+        .catch(logger.error);
 }
 
 module.exports.handleTextChannelMessage = handleTextChannelMessage;
