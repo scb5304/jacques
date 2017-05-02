@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const db = require('../db.js');
-const Sound = require('../model/sound').Sound;
+const db = require('../common/data/db.js');
+const Sound = require('../common/model/sound').Sound;
 const path = require('path');
 
 app.use('/raw', express.static(__dirname + '/../sounds'));

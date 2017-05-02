@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
-const config = require('./config.json');
+const config = require('./../../config.json');
 const fs = require('fs');
 const SOUNDS_DIRECTORY = config.soundsDirectory;
-const Sound = require('./model/sound').Sound;
-const SoundEvent = require('./model/sound').SoundEvent;
-const util = require('./utility');
-const logger = require('./logger.js');
+const Sound = require('./../model/sound').Sound;
+const SoundEvent = require('./../model/sound').SoundEvent;
+const util = require('./../util/utility');
+const logger = require('./../util/logger.js');
 
 logger.info("Getting db ready...");
 mongoose.connect('mongodb://localhost/jacques', function() {
