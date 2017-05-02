@@ -1,12 +1,12 @@
 const Discord = require("discord.js");
 const bot = require('../jacques');
-const config = require('../config.json');
+const config = require('../../config.json');
 const fs = require('fs');
-const Sound = require('../model/sound').Sound;
+const Sound = require('../../common/model/sound').Sound;
 const ytdl = require('ytdl-core');
-const Db = require('../db');
-const logger = require('../logger.js')
-const util = require('../utility');
+const Db = require('../../common/data/db');
+const logger = require('../../common/util/logger.js')
+const util = require('../../common/util/utility');
 
 var mStreamVolume = 0.40;
 const HELP_STRING = "Jacques is a soundboard bot. To play a sound, type ! followed by the name of the sound. If you don't supply a sound name, it will play a random one. You can also " +

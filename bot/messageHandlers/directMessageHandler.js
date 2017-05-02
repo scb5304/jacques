@@ -1,9 +1,9 @@
 const Discord = require("discord.js");
 const bot = require('../jacques');
-const config = require('../config.json');
-const Sound = require('../model/sound');
+const config = require('../../config.json');
+const Sound = require('../../common/model/sound');
 const apiai = require('apiai');
-const logger = require('../logger.js');
+const logger = require('../../common/util/logger.js');
 const SOUNDS_DIRECTORY = config.soundsDirectory;
 const APIAI_KEY = config.apiaiKey;
 

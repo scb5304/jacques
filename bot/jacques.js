@@ -1,10 +1,10 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 module.exports = bot;
-const config = require('./config.json');
+const config = require('./../config.json');
 const directMessageHandler = require('./messageHandlers/directMessageHandler');
 const textChannelMessageHandler = require('./messageHandlers/textChannelMessageHandler');
-const logger = require('./logger.js');
+const logger = require('./../common/util/logger.js');
 
 bot.on("message", handleMessage);
 
