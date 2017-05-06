@@ -18,7 +18,13 @@ module.exports = function(config) {
         './node_modules/angular/angular.js',
         './node_modules/angular-ui-router/release/angular-ui-router.js',
         './node_modules/angular-mocks/angular-mocks.js',
-        './web/sound-list/sound-list-component.spec.js'
+        './web/app.module.js',
+        './web/app.config.js',
+        './web/core/core.module.js',
+        './web/sound-list/sound-list.module.js',
+        './web/sound-list/sound-list.template.html',
+        './web/sound-list/sound-list.component.js',
+        './web/sound-list/sound-list.component.spec.js',
     ],
 
 

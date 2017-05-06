@@ -50,7 +50,11 @@ angular.module('soundDetail')
             $scope.soundPlayedByBarData = [];
             $scope.soundPlayedByBarLabels = [];
 
-
+            $scope.getSelectedName = function() {
+                if ($scope.sharedProperties && $scope.sharedProperties.getSelected()) {
+                    return $scope.sharedProperties.getSelected().cleanedName;
+                }
+            };
 
             $scope.$watch('sharedProperties.getSelected()', function (newVal, oldVal) {
                 if (newVal) {
@@ -87,7 +91,6 @@ angular.module('soundDetail')
 
                         //console.log(indexOfName)
                         playedByCounts[indexOfName]++;
-                        console.log(playedByCounts)
 
                         if ($scope.summaryLastPlayed === "N/A") {
                             $scope.summaryLastPlayed = new Date(event.date)

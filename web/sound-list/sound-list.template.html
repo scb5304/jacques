@@ -3,8 +3,8 @@
     <input ng-model="query" />
 </md-input-container>
 <md-list>
-    <md-list-item class="border-bottom-list-item" ng-repeat="sound in (filteredSounds = (sharedProperties.getSounds() | filter: {name: query}))">
-        <md-button aria-label="sound.name" ng-click="doThing(sound)">
+    <md-list-item class="border-bottom-list-item" ng-repeat="sound in (filteredSounds = (getSounds() | filter: {name: query}))">
+        <md-button aria-label="sound.name" ng-click="updateSelected(sound)">
             <span class="preserveCase" ng-bind="sound.cleanedName"></span>
         </md-button>
     </md-list-item>

@@ -31,10 +31,7 @@ angular.module('jacquesApp', [
         id: "8cb435f90aef47610d4c8j8"
     };
 
-    console.log("hello")
-
     this.toggleList = function() {
-        console.log("ah, hello there")
         $mdSidenav('left').toggle()
     }
 
