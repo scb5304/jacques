@@ -15,8 +15,15 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-        './node_modules/angular/angular.js',
+        "./node_modules/moment/moment.js",
+        "./node_modules/angular/angular.min.js",
+        "../node_modules/angular-aria/angular-aria.js",
         './node_modules/angular-ui-router/release/angular-ui-router.js',
+        "./node_modules/angular-animate/angular-animate.js",
+        "./node_modules/angular-material/angular-material.js",
+        "./node_modules/angular-messages/angular-messages.js",
+        "./node_modules/chart.js/dist/Chart.js",
+        "./node_modules/angular-chart.js/dist/angular-chart.js",
         './node_modules/angular-mocks/angular-mocks.js',
         './web/app.module.js',
         './web/app.config.js',
@@ -25,6 +32,10 @@ module.exports = function(config) {
         './web/sound-list/sound-list.template.html',
         './web/sound-list/sound-list.component.js',
         './web/sound-list/sound-list.component.spec.js',
+        './web/sound-detail/sound-detail.module.js',
+        './web/sound-detail/sound-detail.template.html',
+        './web/sound-detail/sound-detail.component.js',
+        './web/sound-detail/sound-detail.component.spec.js'
     ],
 
 

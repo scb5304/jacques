@@ -125,7 +125,7 @@ angular.module('soundDetail')
                 }
             });
 
-            function calcMonthDiff(dateTo, dateFrom) {
+            this.calcMonthDiff = function calcMonthDiff(dateTo, dateFrom) {
                 return dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear()));
             }
 

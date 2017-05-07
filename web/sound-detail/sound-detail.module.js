@@ -1,7 +1,6 @@
 'use strict';
 
 angular.module('soundDetail', [
-  'core.sound',
   'chart.js',
 ]).config(['ChartJsProvider', function (ChartJsProvider) {
     // Configure all charts
