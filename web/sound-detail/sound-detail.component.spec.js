@@ -2,51 +2,56 @@
 
 describe('soundDetail', function() {
 
-    // Load the module that contains the `phoneList` component before each test
+    var SoundChartsDataService;
+
     beforeEach(function() {
         module('soundDetail');
-       
     })
 
-    // Test the controller
-    describe('SoundDetailController', function() {
-        var $httpBackend, ctrl, sharedPropertiesMock, scope, mockSce;
+    beforeEach(inject(function(_SoundChartsDataService_) {
+        SoundChartsDataService = _SoundChartsDataService_;
+    }));
 
-        beforeEach(inject(function($componentController, _$httpBackend_, $rootScope) {
-            $httpBackend = _$httpBackend_;
-            scope = $rootScope.$new();
-            ctrl = $componentController('soundDetail', {
-                $scope: scope,
-                sharedProperties: sharedPropertiesMock,
-                $sce: mockSce
-            });
-        }));
+    // Test the service
+    describe('SoundChartsDataService', function() {
 
-        it('calcMonthDiff should return a difference of 0 for two today\'s dates', function() {
-            var diff = ctrl.calcMonthDiff(new Date(), new Date())
-            expect(diff).toEqual(0);
+        it('Should add 2 and 2', function() {
+            let randomCount = SoundChartsDataService.calculatePlayTypeCount(testSound, "playRandom");
+            expect(randomCount).toEqual(3);
         });
 
-        it('calcMonthDiff should return a difference of 2 for March (this year) and January (this year)', function() {
-            let januaryDate = new Date();
-            januaryDate.setMonth(0);
-            let marchDate = new Date();
-            marchDate.setMonth(2);
-
-            var diff = ctrl.calcMonthDiff(marchDate, januaryDate);
-            expect(diff).toEqual(2);
-        });
-
-        it('calcMonthDiff should return a difference of 9 for July (this year) and September (last year)', function() {
-            let julyDate = new Date();
-            julyDate.setMonth(7);
-            let septemberDate = new Date();
-            septemberDate.setMonth(10);
-            septemberDate.setFullYear(septemberDate.getFullYear() - 1);
-
-            var diff = ctrl.calcMonthDiff(julyDate, septemberDate);
-            expect(diff).toEqual(9);
-        });
     });
 
+
+
 });
+
+const testSound = {
+    "_id": "58b35fdc8561f709c60f40c1",
+    "name": "bowser.mp3",
+    "add_date": "2017-02-26T23:08:12.629Z",
+    "added_by": "Server",
+    "__v": 4,
+    "sound_events": [{
+        "_id": "58b3999650d9093808d12761",
+        "performed_by": "Eldre Hund",
+        "date": "2017-02-27T03:14:30.142Z",
+        "category": "playRandom"
+    }, {
+        "_id": "58cb4dba90aef47610d4c8e7",
+        "performed_by": "Eldre Hund",
+        "date": "2017-03-17T02:45:14.174Z",
+        "category": "playRandom"
+    }, {
+        "_id": "58cf00740480db123133f2db",
+        "performed_by": "Eldre Hund",
+        "date": "2017-03-19T22:04:36.036Z",
+        "category": "playRandom"
+    }, {
+        "_id": "590b2fd3e2ff822dbc8badaf",
+        "performed_by": "Valle",
+        "date": "2017-05-04T13:42:43.097Z",
+        "category": "playTargeted"
+    }],
+    "tags": []
+}
