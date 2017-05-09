@@ -13,10 +13,14 @@ angular
     .controller('AppController', function AppController($http, sharedProperties, $mdSidenav) {
 
         $http.get('http://jacquesbot.io/api/sounds').then(function(sounds) {
-            for (var sound of sounds.data) {
+            var clientSounds = [];
+            for (var i = 0; i < sounds.data.length; i++) {
+                var sound = sounds.data[i];
                 sound.cleanedName = sound.name.split("\.")[0];
+                clientSounds.push(sound);
             }
-            sharedProperties.setSounds(sounds.data);
+
+            sharedProperties.setSounds(clientSounds);
             sharedProperties.setSelected(sharedProperties.getSounds()[0])
         })
 
@@ -40,7 +44,9 @@ angular
                 return selected;
             },
             setSelected: function(newSelected) {
+                console.log("setting selected");
                 selected = newSelected;
+                console.log("done setting selected");
             }
         }
     });

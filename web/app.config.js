@@ -2,7 +2,7 @@
 
 angular
     .module('jacquesApp')
-    .config(($mdIconProvider, $mdThemingProvider) => {
+    .config(function($mdIconProvider, $mdThemingProvider) {
         $mdThemingProvider.theme('default')
             .primaryPalette('green')
             .accentPalette('deep-orange');

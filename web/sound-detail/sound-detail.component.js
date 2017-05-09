@@ -9,9 +9,11 @@ angular
             function SoundDetailController($scope, sharedProperties, SoundToolsService, $sce) {
                 $scope.sharedProperties = sharedProperties;
                 $scope.SoundToolsService = SoundToolsService;
+                console.log("hello?");
 
                 $scope.$watch('sharedProperties.getSelected()', function(newSound, oldSound) {
                     if (newSound) {
+                        console.log("hello2?");
                         onSoundSelected(newSound);
                     }
                 });
@@ -37,18 +39,19 @@ angular
                 function updateSummaryCard(sound) {
                     $scope.summaryPlayCount = sound.sound_events.length;
 
-                    let addedDate = new Date(sound.add_date);
+                    var addedDate = new Date(sound.add_date);
                     $scope.summaryAddDate = formatMonthDayYear(addedDate);
                     if ($scope.summaryAddDate === "February 26, 2017") {
                         $scope.summaryAddDate = $scope.summaryAddDate + " (Legacy)";
                     }
 
-                    let lastPlayedDate = SoundToolsService.calculateLastPlayedOnDate(sound);
+                    var lastPlayedDate = SoundToolsService.calculateLastPlayedOnDate(sound);
                     $scope.summaryLastPlayed = lastPlayedDate ? formatMonthDayYear(lastPlayedDate) : "N/A";
                 }
 
                 function updateActivityChart(sound) {
-                    let lastSixMonthsInIntegers = SoundToolsService.getSoundActivityMonths(6);
+                    var lastSixMonthsInIntegers = SoundToolsService.getSoundActivityMonths(6);
+                    console.log(lastSixMonthsInIntegers);
                     $scope.labels = SoundToolsService.calculateSoundActivityLabels(lastSixMonthsInIntegers);
                     $scope.data = SoundToolsService.calculateSoundActivityCounts(sound, lastSixMonthsInIntegers);
                 }
