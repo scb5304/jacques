@@ -41,7 +41,7 @@ angular
                         }
                     }
                 }
-                return [countsByMonth];
+                return countsByMonth;
             },
             calculateSoundPlayedByLabels: function(sound) {
                 var soundEvents = sound.sound_events;

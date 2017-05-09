@@ -50,7 +50,7 @@ angular
                 function updateActivityChart(sound) {
                     var lastSixMonthsInIntegers = SoundToolsService.getSoundActivityMonths(6);
                     $scope.labels = SoundToolsService.calculateSoundActivityLabels(lastSixMonthsInIntegers);
-                    $scope.data = SoundToolsService.calculateSoundActivityCounts(sound, lastSixMonthsInIntegers);
+                    $scope.data = [SoundToolsService.calculateSoundActivityCounts(sound, lastSixMonthsInIntegers)];
                 }
 
                 function updatePlayedByChart(sound) {

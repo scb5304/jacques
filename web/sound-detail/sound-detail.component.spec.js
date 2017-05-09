@@ -37,12 +37,17 @@ describe('Sound Detail', function () {
     		it('should produce an array of sound activity labels that are all Strings.', function() {
     			var testMonths = [0, 1, 2, 3, 4, 5];
     			var soundActivityLabels = SoundChartsDataService.calculateSoundActivityLabels(testMonths);
-    			for (var label in soundActivityLabels) {
-    				expect(label).toEqual(jasmine.any(String));
-    			}
+    			soundActivityLabels.forEach(function(label) {
+					expect(label).toEqual(jasmine.any(String));
+    			});
     		});
 
-    		//TODO sound activity counts
+    		it('should properly tally the number of times a sound was played in the provided months.', function() {
+    			var lastSixMonthInts = SoundChartsDataService.getSoundActivityMonths(6);
+    			var soundActivityCounts = SoundChartsDataService.calculateSoundActivityCounts(testSoundBowser, lastSixMonthInts);
+    			var expectedSoundActivityCounts = [0, 0, 1, 2, 0, 1];
+    			expect(soundActivityCounts).toEqual(expectedSoundActivityCounts);
+    		})
 
     	});
         describe('Play Type Chart', function() {
@@ -71,23 +76,23 @@ describe('Sound Detail', function () {
         	it('should properly calculate which users have played a sound.', function() {
         		var playedByLabelsBowser = SoundChartsDataService.calculateSoundPlayedByLabels(testSoundBowser);
         		var expectedLabelsBowser = ["Eldre Hund", "Valle"];
-        		expect(JSON.stringify(expectedLabelsBowser)).toEqual(JSON.stringify(playedByLabelsBowser));
+        		expect(expectedLabelsBowser).toEqual(playedByLabelsBowser);
 
 				var playedByLabelsCups = SoundChartsDataService.calculateSoundPlayedByLabels(testSoundCups);
         		var expectedLabelsCups = ["Captain Dogbeard", "Nathe-kyuuun~", "banana jam", "Valle", "Velenys", "Spitsonpuppies"];
-        		expect(JSON.stringify(expectedLabelsCups)).toEqual(JSON.stringify(playedByLabelsCups));
+        		expect(expectedLabelsCups).toEqual(playedByLabelsCups);
         	});
 
         	it('should properly calculate the numbers of times users have played a sound.', function() {
         		var playedByLabelsBowser = SoundChartsDataService.calculateSoundPlayedByLabels(testSoundBowser);
         		var playedByCountsBowser = SoundChartsDataService.calculateSoundPlayedByCounts(testSoundBowser, playedByLabelsBowser);
         		var expectedPlayedByCountsBowser = [3, 1];
-        		expect(JSON.stringify(playedByCountsBowser)).toEqual(JSON.stringify(expectedPlayedByCountsBowser));
+        		expect(playedByCountsBowser).toEqual(expectedPlayedByCountsBowser);
 
         		var playedByLabelsCups = SoundChartsDataService.calculateSoundPlayedByLabels(testSoundCups);
         		var playedByCountsCups = SoundChartsDataService.calculateSoundPlayedByCounts(testSoundCups, playedByLabelsCups);
         		var expectedPlayedByCountsCups = [4, 1, 1, 1, 1, 1];
-        		expect(JSON.stringify(playedByCountsCups)).toEqual(JSON.stringify(expectedPlayedByCountsCups));
+        		expect(playedByCountsCups).toEqual(expectedPlayedByCountsCups);
         	})
         });
     });
