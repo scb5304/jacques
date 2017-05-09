@@ -5,10 +5,10 @@ angular
     .module('soundDetail')
     .component('soundDetail', {
         templateUrl: 'sound-detail/sound-detail.template.html',
-        controller: ['$scope', 'sharedProperties', 'SoundChartsDataService', '$sce',
-            function SoundDetailController($scope, sharedProperties, SoundToolsService, $sce) {
+        controller: ['$scope', 'sharedProperties', 'SoundDetailChartsHelper', '$sce',
+            function SoundDetailController($scope, sharedProperties, SoundDetailChartsHelper, $sce) {
                 $scope.sharedProperties = sharedProperties;
-                $scope.SoundToolsService = SoundToolsService;
+                $scope.SoundDetailChartsHelper = SoundDetailChartsHelper;
 
                 $scope.$watch('sharedProperties.getSelected()', function(newSound, oldSound) {
                     if (newSound) {
@@ -43,26 +43,26 @@ angular
                         $scope.summaryAddDate = $scope.summaryAddDate + " (Legacy)";
                     }
 
-                    var lastPlayedDate = SoundToolsService.calculateLastPlayedOnDate(sound);
+                    var lastPlayedDate = SoundDetailChartsHelper.calculateLastPlayedOnDate(sound);
                     $scope.summaryLastPlayed = lastPlayedDate ? formatMonthDayYear(lastPlayedDate) : "N/A";
                 }
 
                 function updateActivityChart(sound) {
-                    var lastSixMonthsInIntegers = SoundToolsService.getSoundActivityMonths(6);
-                    $scope.labels = SoundToolsService.calculateSoundActivityLabels(lastSixMonthsInIntegers);
-                    $scope.data = [SoundToolsService.calculateSoundActivityCounts(sound, lastSixMonthsInIntegers)];
+                    var lastSixMonthsInIntegers = SoundDetailChartsHelper.getSoundActivityMonths(6);
+                    $scope.labels = SoundDetailChartsHelper.calculateSoundActivityLabels(lastSixMonthsInIntegers);
+                    $scope.data = [SoundDetailChartsHelper.calculateSoundActivityCounts(sound, lastSixMonthsInIntegers)];
                 }
 
                 function updatePlayedByChart(sound) {
-                    $scope.soundPlayedByBarLabels = SoundToolsService.calculateSoundPlayedByLabels(sound);
-                    $scope.soundPlayedByBarData = SoundToolsService.calculateSoundPlayedByCounts(sound, $scope.soundPlayedByBarLabels);
+                    $scope.soundPlayedByBarLabels = SoundDetailChartsHelper.calculateSoundPlayedByLabels(sound);
+                    $scope.soundPlayedByBarData = SoundDetailChartsHelper.calculateSoundPlayedByCounts(sound, $scope.soundPlayedByBarLabels);
                 }
 
                 function updatePlayTypeChart(sound) {
                     $scope.soundTypeNutLabels = ["Targeted", "Random"];
                     $scope.soundTypeNutData = [
-                        SoundToolsService.calculatePlayTypeCount(sound, "playTargeted"),
-                        SoundToolsService.calculatePlayTypeCount(sound, "playRandom")
+                        SoundDetailChartsHelper.calculatePlayTypeCount(sound, "playTargeted"),
+                        SoundDetailChartsHelper.calculatePlayTypeCount(sound, "playRandom")
                     ];
                 }
 

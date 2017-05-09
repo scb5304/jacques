@@ -38,7 +38,9 @@ module.exports = function(config) {
         './web/sound-detail/sound-detail.module.js',
         './web/sound-detail/sound-detail.template.html',
         './web/sound-detail/sound-detail.component.js',
-        './web/sound-detail/sound-detail.component.spec.js'
+        './web/sound-detail/sound-detail.component.spec.js',
+        './web/sound-detail/service/sound-detail-charts-helper.service.js',
+        './web/sound-detail/service/sound-detail-charts-helper.service.spec.js'
     ],
 
 
