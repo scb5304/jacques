@@ -1,5 +1,3 @@
 'use strict';
 
-angular.module('floating', [
-    'core.sound'
-]);
+angular.module('floating', []);

@@ -4,7 +4,6 @@
 angular
     .module('jacquesApp', [
         'ngMaterial',
-        'core',
         'soundDetail',
         'soundList',
         'floating',
