@@ -12,15 +12,13 @@ angular
     ])
     .controller('AppController', function AppController($http, sharedProperties, $mdSidenav) {
 
-        $http.get('http://jacquesbot.io/api/sounds').then(function(sounds) {
-            var clientSounds = [];
-            for (var i = 0; i < sounds.data.length; i++) {
-                var sound = sounds.data[i];
+        $http.get('http://jacquesbot.io/api/sounds').then(function(soundsJSON) {
+            var sounds = soundsJSON.data;
+            sounds.forEach(function(sound) {
                 sound.cleanedName = sound.name.split("\.")[0];
-                clientSounds.push(sound);
-            }
+            });
 
-            sharedProperties.setSounds(clientSounds);
+            sharedProperties.setSounds(sounds);
             sharedProperties.setSelected(sharedProperties.getSounds()[0])
         })
 
