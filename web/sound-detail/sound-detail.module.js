@@ -4,19 +4,17 @@ angular
     .module('soundDetail', ['chart.js'])
     .service('SoundChartsDataService', function() {
 
-        function getLastSixMonths() {
-            var lastSixMonths = [];
-            for (var i = 5; i >= 0; i--) {
-                var date = new Date();
-                date.setMonth(date.getMonth() - i);
-                lastSixMonths.push(date.getMonth());
-            }
-            return lastSixMonths;
-        }
-
         return {
-            calculateSoundActivityLabels(sound) {
-                var months = getLastSixMonths();
+            getSoundActivityMonths(numberOfMonths) {
+                var monthsInPast = [];
+                for (var i = numberOfMonths - 1; i >= 0; i--) {
+                    var date = new Date();
+                    date.setMonth(date.getMonth() - i);
+                    monthsInPast.push(date.getMonth());
+                }
+                return monthsInPast;
+            },
+            calculateSoundActivityLabels(months) {
                 var labels = [];
                 for (var monthInt of months) {
                     var formattedMonth = moment().month(monthInt).format('MMMM');
@@ -24,10 +22,12 @@ angular
                 }
                 return labels;
             },
-            calculateSoundActivityCounts(sound, labels) {
-                var lastSixMonths = getLastSixMonths();
+            calculateSoundActivityCounts(sound, months) {
                 var soundEvents = sound.sound_events;
-                var lastSixMonthsCounts = [0, 0, 0, 0, 0, 0];
+                var countsByMonth = [];
+                for (let month of months) {
+                    countsByMonth.push(0);
+                }
 
                 //Loop through the sound events
                 for (var soundEvent of soundEvents) {
@@ -35,15 +35,14 @@ angular
 
                     //For each sound event, loop through each of the last six months
                     for (var i = 0; i < 6; i++) {
-                        var month = lastSixMonths[i];
+                        var month = months[i];
                         //If this sound event belongs to this month, increment the appropriate count index
                         if (eventDate.getMonth() == month) {
-                            lastSixMonthsCounts[i]++;
+                            countsByMonth[i]++;
                         }
-
                     }
                 }
-                return [lastSixMonthsCounts];
+                return [countsByMonth];
             },
             calculateSoundPlayedByLabels(sound) {
                 let soundEvents = sound.sound_events;

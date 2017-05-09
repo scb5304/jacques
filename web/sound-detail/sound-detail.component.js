@@ -1,7 +1,8 @@
 'use strict';
 
 // Register `soundDetail` component, along with its associated controller and template
-angular.module('soundDetail')
+angular
+    .module('soundDetail')
     .component('soundDetail', {
         templateUrl: 'sound-detail/sound-detail.template.html',
         controller: ['$scope', 'sharedProperties', 'SoundChartsDataService', '$sce',
@@ -39,7 +40,7 @@ angular.module('soundDetail')
                     let addedDate = new Date(sound.add_date);
                     $scope.summaryAddDate = formatMonthDayYear(addedDate);
                     if ($scope.summaryAddDate === "February 26, 2017") {
-                        $scope.summaryAddDate = $scope.summaryAddDate + " (Legacy)"
+                        $scope.summaryAddDate = $scope.summaryAddDate + " (Legacy)";
                     }
 
                     let lastPlayedDate = SoundToolsService.calculateLastPlayedOnDate(sound);
@@ -47,8 +48,9 @@ angular.module('soundDetail')
                 }
 
                 function updateActivityChart(sound) {
-                    $scope.labels = SoundToolsService.calculateSoundActivityLabels(sound);
-                    $scope.data = SoundToolsService.calculateSoundActivityCounts(sound, $scope.labels);
+                    let lastSixMonthsInIntegers = SoundToolsService.getSoundActivityMonths(6);
+                    $scope.labels = SoundToolsService.calculateSoundActivityLabels(lastSixMonthsInIntegers);
+                    $scope.data = SoundToolsService.calculateSoundActivityCounts(sound, lastSixMonthsInIntegers);
                 }
 
                 function updatePlayedByChart(sound) {
