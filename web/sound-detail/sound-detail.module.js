@@ -5,7 +5,7 @@ angular
     .service('SoundChartsDataService', function() {
 
         return {
-            getSoundActivityMonths: function getSoundActivityMonths(numberOfMonths) {
+            getSoundActivityMonths: function(numberOfMonths) {
                 var monthsInPast = [];
                 for (var i = numberOfMonths - 1; i >= 0; i--) {
                     var date = new Date();
@@ -14,7 +14,7 @@ angular
                 }
                 return monthsInPast;
             },
-            calculateSoundActivityLabels: function calculateSoundActivityLabels(months) {
+            calculateSoundActivityLabels: function(months) {
                 var labels = [];
                 for (var i = 0; i < months.length; i++) {
                     var formattedMonth = moment().month(months[i]).format('MMMM');
@@ -22,7 +22,7 @@ angular
                 }
                 return labels;
             },
-            calculateSoundActivityCounts: function calculateSoundActivityCounts(sound, months) {
+            calculateSoundActivityCounts: function(sound, months) {
                 var soundEvents = sound.sound_events;
                 var countsByMonth = [];
                 for (var i = 0; i < months.length; i++) {
@@ -43,7 +43,7 @@ angular
                 }
                 return [countsByMonth];
             },
-            calculateSoundPlayedByLabels: function calculateSoundPlayedByLabels(sound) {
+            calculateSoundPlayedByLabels: function(sound) {
                 var soundEvents = sound.sound_events;
                 var labels = [];
                 for (var i = 0; i < soundEvents.length; i++) {
@@ -54,7 +54,7 @@ angular
                 }
                 return labels;
             },
-            calculateSoundPlayedByCounts: function calculateSoundPlayedByCounts(sound, labels) {
+            calculateSoundPlayedByCounts: function(sound, labels) {
                 var soundEvents = sound.sound_events;
                 var counts = [];
 
@@ -71,7 +71,7 @@ angular
                 }
                 return counts;
             },
-            calculatePlayTypeCount: function calculatePlayTypeCount(sound, playType) {
+            calculatePlayTypeCount: function(sound, playType) {
                 var soundEvents = sound.sound_events;
                 var count = 0;
                 for (var i = 0; i < soundEvents.length; i++) {
@@ -81,7 +81,7 @@ angular
                 }
                 return count;
             },
-            calculateLastPlayedOnDate: function calculateLastPlayedOnDate(sound) {
+            calculateLastPlayedOnDate: function(sound) {
                 var soundEvents = sound.sound_events;
                 var lastPlayedDate;
                 for (var i = 0; i < soundEvents.length; i++) {

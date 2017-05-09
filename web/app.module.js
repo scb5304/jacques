@@ -44,9 +44,7 @@ angular
                 return selected;
             },
             setSelected: function(newSelected) {
-                console.log("setting selected");
                 selected = newSelected;
-                console.log("done setting selected");
             }
         }
     });
