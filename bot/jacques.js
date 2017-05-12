@@ -1,6 +1,3 @@
-var fs = require('fs');
-var Discord = require('discord.js');
-
 var config = require('./../config.json');
 var logger = require('./../common/util/logger.js');
 var util = require('./../common/util/utility.js');
@@ -11,16 +8,11 @@ var soundboard = require('./soundboard.js');
 var streamer = require('./streamer.js');
 var messenger = require('./messenger.js');
 
-var prefix = "!";
-
 var bot;
+var site = "http://jacquesbot.io";
 
-function fly() {
-    bot = new Discord.Client();
-    bot.login(config.token);
-    bot.on("ready", onReady);
-    bot.on("message", onMessage);
-    Db.connect();
+function initialize(discordBot) {
+    bot = discordBot;
 }
 
 function onReady() {
@@ -30,18 +22,12 @@ function onReady() {
     }
 }
 
-function onMessage(message) {
-    if (message.channel instanceof Discord.TextChannel) {
-        onTextChannelMessage(message);
-    } else if (message.channel instanceof Discord.DMChannel) {
-        onDirectChannelMessage(message);
-    }
-}
-
 function onTextChannelMessage(message) {
-    var messageContent = message.content;
-    if (!messageContent.startsWith(prefix)) {
+    var cleanedMessageContent = message.content.trim();
+    if (!cleanedMessageContent.startsWith(config.prefix)) {
         return;
+    } else {
+        cleanedMessageContent = cleanedMessageContent.substring(1);
     }
 
     var member = message.member;
@@ -56,27 +42,25 @@ function onTextChannelMessage(message) {
         return;
     }
 
-    logger.info("Received potentially valid Jacques message: " + messageContent + " from " +
+    logger.info("Received potentially valid Jacques message: " + message.content + " from " +
         member.displayName + " in voice channel " + voiceChannel.name + " on server " + message.guild);
     logger.info("Handing off to routeTextChannelMessage...");
-    routeTextChannelMessage(message);
+    routeTextChannelMessage(message, cleanedMessageContent);
 }
 
 function onDirectChannelMessage(message) {
     message.reply("I don't know how to do shit here. Squawk.");
 }
 
-function routeTextChannelMessage(message) {
-    var messageContent = message.content.substring(1);
-
-    var commandArgs = parseCommandArgs(messageContent);
+function routeTextChannelMessage(message, cleanedMessageContent) {
+    var commandArgs = parseCommandArgs(cleanedMessageContent);
     var baseCommandArg = commandArgs[0];
 
     if (!baseCommandArg) {
         playRandomSound(message);
     } else {
-        baseCommandArg = baseCommandArg.toLowerCase();
-        switch (baseCommandArg) {
+        var lowerBaseCommandArg = baseCommandArg.toLowerCase();
+        switch (lowerBaseCommandArg) {
             case "cancel":
             case "byejon":
             case "byejacques":
@@ -85,11 +69,11 @@ function routeTextChannelMessage(message) {
                 break;
             case "stream":
                 logger.info("Stream audio.");
-                streamAudio(message);
+                streamAudio(message, commandArgs);
                 break;
             case "volume":
                 logger.info("Change volume.");
-                changeVolume(message);
+                changeVolume(message, commandArgs);
                 break;
             case "sync":
                 logger.info("Sync.");
@@ -125,13 +109,13 @@ function cancelVoiceConnection(message) {
     connection.disconnect();
 }
 
-function streamAudio(message) {
+function streamAudio(message, commandArgs) {
     if (alreadySpeaking(message)) return;
     var streamLink = commandArgs.length > 1 ? commandArgs[1] : null;
     streamer.streamAudio(message.member.voiceChannel, streamLink);
 }
 
-function changeVolume(message) {
+function changeVolume(message, commandArgs) {
     var currentVoiceConnection = bot.voiceConnections.get(message.member.guild.id);
     var requestedVolume = commandArgs.length > 1 ? commandArgs[1] : null;
     streamer.changeVolume(message, requestedVolume, currentVoiceConnection);
@@ -149,7 +133,7 @@ function help(message) {
 function sendSoundDump(message) {
     Db.getAllSounds()
         .then(function(sounds) {
-            messenger.sendSounds(sounds, message);
+            messenger.sendSounds(message, sounds);
         })
         .catch(logger.error);
 }
@@ -186,5 +170,7 @@ function alreadySpeaking(message) {
     return false;
 }
 
-module.exports.fly = fly;
-module.exports.routeTextChannelMessage = routeTextChannelMessage;
+module.exports.initialize = initialize;
+module.exports.onReady = onReady;
+module.exports.onTextChannelMessage = onTextChannelMessage;
+module.exports.onDirectChannelMessage = onDirectChannelMessage;

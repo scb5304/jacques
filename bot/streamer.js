@@ -87,7 +87,7 @@ function changeVolume(message, requestedVolume, voiceConnection) {
     streamVolume = actualVolume;
 
     if (voiceConnection) {
-        currentVoiceConnection.player.dispatcher.setVolumeLogarithmic(streamVolume);
+        voiceConnection.player.dispatcher.setVolumeLogarithmic(streamVolume);
     }
 }
 
