@@ -4,7 +4,10 @@
   "description": "Discord soundboard bot",
   "main": "index.js",
   "scripts": {
-    "start": "node jacques.js"
+    "start": "node jacques.js",
+    "test": "npm-run-all -p -l testClient testServer",
+    "testClient": "karma start",
+    "testServer": "mocha \"bot/jacques.spec.js\""
   },
   "author": "Steven Brown",
   "license": "Apache-2.0",
@@ -20,6 +23,7 @@
     "apiai": "4.0.0",
     "apiai-promise": "1.0.0",
     "body-parser": "1.16.1",
+    "chai": "3.5.0",
     "chart.js": "2.5.0",
     "discord.js": "^11.0.0",
     "express": "4.14.1",
@@ -29,12 +33,15 @@
     "karma-chrome-launcher": "2.0.0",
     "karma-jasmine": "1.1.0",
     "karma-phantomjs-launcher": "1.0.4",
+    "mocha": "3.3.0",
     "moment": "2.18.1",
     "mongodb": "2.2.22",
     "mongoose": "4.8.1",
     "node-datetime": "1.0.0",
     "node-opus": "^0.2.4",
+    "npm-run-all": "4.0.2",
     "pug": "2.0.0-beta11",
+    "sinon": "2.2.0",
     "winston": "2.3.1",
     "ytdl-core": "0.8.1"
   }

@@ -7,10 +7,12 @@ const SoundEvent = require('./../model/sound').SoundEvent;
 const util = require('./../util/utility');
 const logger = require('./../util/logger.js');
 
-logger.info("Getting db ready...");
-mongoose.connect('mongodb://localhost/jacques', function() {
-    logger.info('Db connected!');
-});
+function connect() {
+    logger.info("Getting db ready...");
+    mongoose.connect('mongodb://localhost/jacques', function() {
+        logger.info('Db connected!');
+    });
+}
 
 function syncSounds() {
     logger.info("Syncing...");
@@ -83,7 +85,7 @@ function soundExists(soundName) {
     return new Promise((resolve, reject) => {
         //Query for one sound that starts with this soundName, is followed by a period, and any file extension
         var regex = "^" + soundName + "\\..+$";
-        Sound.findOne({name: new RegExp(regex, "i")}, function (err, doc) {
+        Sound.findOne({ name: new RegExp(regex, "i") }, function(err, doc) {
             if (err) throw err;
             if (doc) {
                 return resolve(doc.name);
@@ -99,11 +101,11 @@ function getAllSounds() {
         Sound.find({}, function(err, sounds) {
             if (err) throw err;
             if (sounds) {
-                return resolve(sounds); 
+                return resolve(sounds);
             } else {
                 return reject("Couldn't get all sounds.");
             }
-        }).sort({name: 'asc'});
+        }).sort({ name: 'asc' });
     });
 }
 
@@ -111,13 +113,13 @@ function getRandomSoundName() {
     return new Promise((resolve, reject) => {
         Sound.count(function(err, count) {
             var random = Math.floor(Math.random() * count);
-            Sound.findOne(function (err, result) {
+            Sound.findOne(function(err, result) {
                 if (result) {
                     return resolve(result.name);
                 } else {
                     return reject("Couldn't get random sound.");
                 }
-                
+
             }).skip(random);
         });
     });
@@ -127,14 +129,14 @@ function getRandomSoundNameWithTags(tags) {
     logger.info("tags: " + tags);
     return new Promise((resolve, reject) => {
 
-        Sound.find({tags: {$all: tags}}, function(err, sounds) {
+        Sound.find({ tags: { $all: tags } }, function(err, sounds) {
             if (err) throw err;
 
             if (!sounds) {
                 return reject("Couldn't find sound with those tags.");
             }
             logger.info(sounds);
-            var randIndex = util.getRandomInt(0, sounds.length-1);
+            var randIndex = util.getRandomInt(0, sounds.length - 1);
             logger.info(randIndex + " is the index.");
             var randomSound = sounds[randIndex];
 
@@ -158,6 +160,7 @@ function soundsArrayContainsName(sounds, name) {
     return false;
 }
 
+module.exports.connect = connect;
 module.exports.syncSounds = syncSounds;
 module.exports.insertSoundEvent = insertSoundEvent;
 module.exports.soundExists = soundExists;

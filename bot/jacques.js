@@ -1,5 +1,4 @@
 var fs = require('fs');
-var ytdl = require('ytdl-core');
 var Discord = require('discord.js');
 
 var config = require('./../config.json');
@@ -8,218 +7,184 @@ var util = require('./../common/util/utility.js');
 var Db = require('./../common/data/db');
 var Sound = require('./../common/model/sound').Sound;
 
-var bot = new Discord.Client();
-var mStreamVolume = 0.40;
-var HELP_STRING = "Jacques is a soundboard bot. To play a sound, type ! followed by the name of the sound. If you don't supply a sound name, it will play a random one. You can also " +
-    "stream the audio of a youtube video with !stream.\n\n" +
-    "Visit Jacques online at http://jacquesbot.io for a list of sounds, or use !helptext if you really want a text dump."
-var SOUNDS_DIRECTORY = config.soundsDirectory;
+var soundboard = require('./soundboard.js');
+var streamer = require('./streamer.js');
+var messenger = require('./messenger.js');
 
-bot.on("message", handleMessage);
+var prefix = "!";
 
-function handleMessage(message) {
-    if (message.channel instanceof Discord.TextChannel) {
-        handleTextChannelMessage(message);
+var bot;
+
+function fly() {
+    bot = new Discord.Client();
+    bot.login(config.token);
+    bot.on("ready", onReady);
+    bot.on("message", onMessage);
+    Db.connect();
+}
+
+function onReady() {
+    logger.info("I'm ready, I'm ready.");
+    if (bot.user) {
+        bot.user.setGame(site);
     }
 }
 
-logger.info("Getting bot ready!");
-bot.on('ready', () => {
-    logger.info('I am ready!');
-    if (bot.user) {
-        bot.user.setGame("http://jacquesbot.io");
+function onMessage(message) {
+    if (message.channel instanceof Discord.TextChannel) {
+        onTextChannelMessage(message);
+    } else if (message.channel instanceof Discord.DMChannel) {
+        onDirectChannelMessage(message);
     }
-});
+}
 
-bot.login(config.token);
-
-function handleTextChannelMessage(message) {
-
-    var prefix = "!";
+function onTextChannelMessage(message) {
     var messageContent = message.content;
-    if (!messageContent.startsWith(prefix)) return;
+    if (!messageContent.startsWith(prefix)) {
+        return;
+    }
 
     var member = message.member;
-    if (!member) return;
+    if (!member) {
+        logger.info("Message has no guild member.");
+        return;
+    }
 
     var voiceChannel = member.voiceChannel;
-    if (!voiceChannel) return;
-
-    logger.info("Received message: " + message.content + " from " + message.member.displayName + " on server " + message.guild);
-
-    messageContent = messageContent.substring(1);
-    messageContent = messageContent.toLowerCase();
-
-    var commandArgs = messageContent.split(" ");
-
-    logger.info("Routing message to appropriate call.");
-
-    switch (commandArgs[0]) {
-        case "cancel":
-        //Submitted by Chris Skosnik on Feburary 6th, 2017
-        case "byejon":
-        case "byejacques":
-            logger.info("Cancel voice connection.");
-            cancelVoiceConnection(voiceChannel);
-            break;
-        case "stream":
-            logger.info("Stream a youtube video.");
-            if (alreadySpeaking(message)) return;
-            streamAudio(voiceChannel, message);
-            break;
-        case "volume":
-            logger.info("Change the volume.");
-            changeVolume(message);
-            break;
-        case "sync":
-            if (member.displayName !== "Spitsonpuppies") return;
-            logger.info("Sync the database.");
-            Db.syncSounds();
-            break;
-        case "help":
-        case "sounds":
-            logger.info("Help.");
-            message.reply(HELP_STRING);
-            break;
-        case "helptext":
-            logger.info("Help text sound dump.")
-            sendSoundDump(message);
-            break;
-        case "":
-            logger.info("No arguments provided, going to play a random sound.")
-            if (alreadySpeaking(message)) return;
-            Db.getRandomSoundName()
-                .then(function(fullSoundName) {
-                    playSound(fullSoundName, message.member, voiceChannel, "playRandom");
-                })
-                .catch(logger.error);
-            break;
-        default:
-            logger.info("Default case: request to play a specific sound.");
-            if (alreadySpeaking(message)) return;
-            var soundName = commandArgs[0];
-
-            Db.soundExists(soundName)
-                .then(function(fullSoundName) {
-                    playSound(fullSoundName, message.member, voiceChannel, "playTargeted");
-                })
-                .catch(logger.error);
-            break;
+    if (!voiceChannel) {
+        logger.info("Guild member not in a voice channel.");
+        return;
     }
 
-    if (message.channel.name !== "commands") {
-        message.delete(2000).catch(logger.error);
-    }
+    logger.info("Received potentially valid Jacques message: " + messageContent + " from " +
+        member.displayName + " in voice channel " + voiceChannel.name + " on server " + message.guild);
+    logger.info("Handing off to routeTextChannelMessage...");
+    routeTextChannelMessage(message);
 }
 
-function alreadySpeaking(message) {
-    var currentVoiceConnection = bot.voiceConnections.get(message.guild.id);
-
-    if (currentVoiceConnection) {
-        logger.info("Already speaking in channel " + currentVoiceConnection.channel.name);
-        return true;
-    }
-    return false;
+function onDirectChannelMessage(message) {
+    message.reply("I don't know how to do shit here. Squawk.");
 }
 
-function cancelVoiceConnection(voiceChannel) {
-    var connection = voiceChannel.connection;
+function routeTextChannelMessage(message) {
+    var messageContent = message.content.substring(1);
+
+    var commandArgs = parseCommandArgs(messageContent);
+    var baseCommandArg = commandArgs[0];
+
+    if (!baseCommandArg) {
+        playRandomSound(message);
+    } else {
+        baseCommandArg = baseCommandArg.toLowerCase();
+        switch (baseCommandArg) {
+            case "cancel":
+            case "byejon":
+            case "byejacques":
+                logger.info("Cancel voice connection.");
+                cancelVoiceConnection(message);
+                break;
+            case "stream":
+                logger.info("Stream audio.");
+                streamAudio(message);
+                break;
+            case "volume":
+                logger.info("Change volume.");
+                changeVolume(message);
+                break;
+            case "sync":
+                logger.info("Sync.");
+                sync();
+                break;
+            case "help":
+            case "sounds":
+                logger.info("Help.");
+                help(message);
+                break;
+            case "helptext":
+                logger.info("Sound dump.");
+                sendSoundDump(message);
+                break;
+            default:
+                logger.info("Default: play targeted sound.");
+                playTargetedSound(message, baseCommandArg);
+                break;
+        }
+    }
+
+    cleanUp(message);
+};
+
+function playRandomSound(message) {
+    if (alreadySpeaking(message)) return;
+    soundboard.playRandomSound(message);
+}
+
+function cancelVoiceConnection(message) {
+    var connection = message.member.voiceChannel.connection;
     if (!connection) return;
     connection.disconnect();
 }
 
-function streamAudio(voiceChannel, message) {
-    logger.info("Attempting to stream audio...")
-    var secondsToSeek = 0;
-
-    var streamArg = message.content.split(" ")[1]; //entire youtube URL
-    var timeArg = streamArg.split("\?t=")[1]; // 3m4s
-
-    if (timeArg) {
-        secondsToSeek = util.secondsFromTimeArg(timeArg);
-    }
-
-    logger.info("Seconds: " + secondsToSeek)
-
-    const streamOptions = {
-        seek: secondsToSeek,
-        volume: mStreamVolume
-    };
-
-    voiceChannel.join()
-        .then(connection => {
-            const stream = ytdl(streamArg, {
-                filter: 'audioonly'
-            });
-
-            const dispatcher = connection.playStream(stream, streamOptions);
-            dispatcher.once('end', function() {
-                logger.info("Leaving after playing sound.");
-                connection.disconnect();
-            });
-            dispatcher.once('speaking', function() {
-                dispatcher.setVolumeLogarithmic(mStreamVolume);
-            })
-        })
-        .catch(logger.error);
-}
-
-function playSound(soundName, member, voiceChannel, eventType) {
-    logger.info("Attempting to play sound " + soundName + " in " + voiceChannel.name);
-    var path = SOUNDS_DIRECTORY + soundName;
-    voiceChannel.join().then(connection => {
-            const dispatcher = connection.playFile(path);
-            Db.insertSoundEvent(soundName, member.displayName, eventType);
-            dispatcher.once('end', function() {
-                logger.info("Leaving after playing sound.");
-                connection.disconnect();
-            });
-        })
-        .catch(logger.error);
+function streamAudio(message) {
+    if (alreadySpeaking(message)) return;
+    var streamLink = commandArgs.length > 1 ? commandArgs[1] : null;
+    streamer.streamAudio(message.member.voiceChannel, streamLink);
 }
 
 function changeVolume(message) {
-    var requestedVolume = message.content.split(" ")[1];
-    if (!requestedVolume) {
-        message.reply("Volume is currently at " + mStreamVolume * 100 + "%");
-        return;
-    }
+    var currentVoiceConnection = bot.voiceConnections.get(message.member.guild.id);
+    var requestedVolume = commandArgs.length > 1 ? commandArgs[1] : null;
+    streamer.changeVolume(message, requestedVolume, currentVoiceConnection);
+}
 
-    var requester = message.member;
-    var currentVoiceConnection = bot.voiceConnections.get(requester.guild.id);
-    //No voice connection or message author not in current voice channel.
-    if (!currentVoiceConnection || currentVoiceConnection.channel != requester.voiceChannel) return;
+function sync() {
+    if (member.displayName !== "Spitsonpuppies") return;
+    Db.syncSounds();
+}
 
-    //Not a number
-    if (isNaN(requestedVolume)) return;
-
-    var actualVolume = requestedVolume / 100;
-    if (actualVolume > 1) {
-        actualVolume = 1;
-    }
-
-    message.reply("Changing volume from " + (mStreamVolume * 100) + "% to " + requestedVolume + "%")
-
-    mStreamVolume = actualVolume;
-    currentVoiceConnection.player.dispatcher.setVolumeLogarithmic(mStreamVolume);
+function help(message) {
+    messenger.sendHelp(message);
 }
 
 function sendSoundDump(message) {
-    logger.info("Attempting to print all sounds.");
     Db.getAllSounds()
         .then(function(sounds) {
-            var helpText = "";
-            sounds.sort();
-            for (var sound of sounds) {
-                helpText += sound.name.split("\.")[0] + ", ";
-            }
-            helpText = helpText.substring(0, helpText.length - 2);
-
-            var helpTextSegments = helpText.match(/.{1,1500}/g);
-            for (var helpTextSegment of helpTextSegments) {
-                message.reply(helpTextSegment)
-                    .catch(console.error);
-            }
+            messenger.sendSounds(sounds, message);
         })
         .catch(logger.error);
 }
+
+function playTargetedSound(message, soundName) {
+    if (alreadySpeaking(message)) return;
+    soundboard.playTargetedSound(message, soundName);
+}
+
+function cleanUp(message) {
+    messenger.deleteMessage(message);
+}
+
+function parseCommandArgs(messageContent) {
+    var commandArgs = messageContent.split(" ");
+    commandArgs.forEach(function(commandArg, i, array) {
+        if (commandArg === " " || commandArg === "") {
+            array.splice(i, 1);
+        }
+    });
+    logger.info("commandArgs: " + commandArgs);
+    return commandArgs;
+}
+
+function alreadySpeaking(message) {
+    if (!bot) return;
+    var currentVoiceConnection = bot.voiceConnections.get(message.guild.id);
+
+    if (currentVoiceConnection) {
+        message.reply("Already speaking in channel " + currentVoiceConnection.channel.name);
+        return true;
+    }
+
+    return false;
+}
+
+module.exports.fly = fly;
+module.exports.routeTextChannelMessage = routeTextChannelMessage;
