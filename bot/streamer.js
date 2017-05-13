@@ -82,7 +82,7 @@ function changeVolume(message, requestedVolume, voiceConnection) {
 }
 
 function getVolume() {
-    return mStreamVolume; 
+    return streamVolume; 
 }
 
 module.exports.streamAudio = streamAudio;
