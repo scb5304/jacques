@@ -5,7 +5,8 @@ var logger = require('./../common/util/logger.js');
 function playRandomSound(message) {
     Db.getRandomSoundName()
         .then(function(fullSoundName) {
-            playSound(fullSoundName, message.member, message.member.voiceChannel, "playRandom");
+            playSound(fullSoundName, message.member.voiceChannel);
+            insertSoundEvent(fullSoundName, message.member.displayName, "playRandom");
         })
         .catch(logger.error);
 }
@@ -13,24 +14,33 @@ function playRandomSound(message) {
 function playTargetedSound(message, soundName) {
     Db.soundExists(soundName)
         .then(function(fullSoundName) {
-            playSound(fullSoundName, message.member, message.member.voiceChannel, "playTargeted");
+            playSound(fullSoundName, message.member.voiceChannel);
+            insertSoundEvent(fullSoundName, message.member.displayName, "playTargeted");
         })
         .catch(logger.error);
 }
 
-function playSound(soundName, member, voiceChannel, eventType) {
+function playSound(soundName, voiceChannel) {
     logger.info("Attempting to play sound " + soundName + " in " + voiceChannel.name);
     var path = config.soundsDirectory + soundName;
-    logger.info("Sound path: " + path);
-    voiceChannel.join().then(function(connection) {
+    voiceChannel.join()
+        .then(function(connection) {
             const dispatcher = connection.playFile(path);
-            Db.insertSoundEvent(soundName, member.displayName, eventType);
             dispatcher.once('end', function() {
                 logger.info("Leaving after playing sound.");
                 connection.disconnect();
             });
         })
         .catch(logger.error);
+}
+
+function insertSoundEvent(soundName, memberName, eventType) {
+    console.log("insert sound event...");
+    try {
+        Db.insertSoundEvent(soundName, memberName, eventType);
+    } catch (err) {
+        logger.error(err);
+    }
 }
 
 module.exports.playRandomSound = playRandomSound;
