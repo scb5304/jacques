@@ -7,7 +7,7 @@
     "start": "node jacques.js",
     "test": "npm-run-all -p -l testClient testServer --silent",
     "testClient": "karma start",
-    "testServer": "mocha \"bot/jacques.spec.js\""
+    "testServer": "mocha ./bot/*.spec.js"
   },
   "author": "Steven Brown",
   "license": "Apache-2.0",
