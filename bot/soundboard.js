@@ -35,7 +35,6 @@ function playSound(soundName, voiceChannel) {
 }
 
 function insertSoundEvent(soundName, memberName, eventType) {
-    console.log("insert sound event...");
     try {
         Db.insertSoundEvent(soundName, memberName, eventType);
     } catch (err) {

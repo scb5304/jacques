@@ -35,3 +35,4 @@ function printVolume(message, volume) {
 module.exports.sendHelp = sendHelp;
 module.exports.sendSounds = sendSounds;
 module.exports.deleteMessage = deleteMessage;
+module.exports.printVolume = printVolume;
