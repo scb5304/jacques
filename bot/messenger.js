@@ -28,6 +28,10 @@ function deleteMessage(message) {
     }
 }
 
+function printVolume(message, volume) {
+    message.reply("Volume is currently at " + (volume * 100) + "%");
+}
+
 module.exports.sendHelp = sendHelp;
 module.exports.sendSounds = sendSounds;
 module.exports.deleteMessage = deleteMessage;

@@ -6,12 +6,9 @@ var ytdl = require('ytdl-core');
 var streamVolume = 0.40;
 
 function streamAudio(voiceChannel, streamLink) {
-    logger.info("Attempting to stream audio...");
     if (!streamLink) {
         logger.info("Stream requested with no link.");
         return;
-    } else {
-        logger.info(streamLink);
     }
 
     const streamOptions = {
@@ -40,8 +37,7 @@ function streamAudio(voiceChannel, streamLink) {
 function calculateStreamSeekSeconds(streamLink) {
     var secondsToSeek = 0;
 
-    var timeArg = streamLink.split("\?t=")[1]; // 3m4s
-
+    var timeArg = streamLink.split("t=")[1]; // 3m4s
     if (!timeArg) {
         return secondsToSeek;
     }
@@ -56,9 +52,9 @@ function calculateStreamSeekSeconds(streamLink) {
         }
     } else if (timeArg.includes("s")) {
         var secs = timeArg.split("s")[0];
-        secondsToSeek += secs;
+        secondsToSeek += Number(secs);
     } else {
-        secondsToSeek = timeArg;
+        secondsToSeek = Number(timeArg);
     }
     if (secondsToSeek) {
         logger.info("URL wants to start at a given time: " + secondsToSeek);
@@ -67,12 +63,6 @@ function calculateStreamSeekSeconds(streamLink) {
 }
 
 function changeVolume(message, requestedVolume, voiceConnection) {
-    logger.info("Change the volume.");
-    if (!requestedVolume) {
-        message.reply("Volume is currently at " + streamVolume * 100 + "%");
-        return;
-    }
-
     var requester = message.member;
     
     //Not a number
@@ -91,5 +81,10 @@ function changeVolume(message, requestedVolume, voiceConnection) {
     }
 }
 
+function getVolume() {
+    return mStreamVolume; 
+}
+
 module.exports.streamAudio = streamAudio;
 module.exports.changeVolume = changeVolume;
+module.exports.getVolume = getVolume;

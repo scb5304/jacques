@@ -25,27 +25,27 @@ function onReady() {
 function onTextChannelMessage(message) {
     var cleanedMessageContent = message.content.trim();
     if (!cleanedMessageContent.startsWith(config.prefix)) {
-        return;
+        return false;
     } else {
+        logger.info("Received potentially valid Jacques message: " + message.content);
         cleanedMessageContent = cleanedMessageContent.substring(1);
     }
 
     var member = message.member;
     if (!member) {
         logger.info("Message has no guild member.");
-        return;
+        return false;
     }
 
     var voiceChannel = member.voiceChannel;
     if (!voiceChannel) {
         logger.info("Guild member not in a voice channel.");
-        return;
+        return false;
     }
 
-    logger.info("Received potentially valid Jacques message: " + message.content + " from " +
-        member.displayName + " in voice channel " + voiceChannel.name + " on server " + message.guild);
-    logger.info("Handing off to routeTextChannelMessage...");
+    logger.info("Valid Jacques message " + message.content + " from " + member.displayName + " in voice channel " + voiceChannel.name + " on server " + message.guild.name);
     routeTextChannelMessage(message, cleanedMessageContent);
+    return true;
 }
 
 function onDirectChannelMessage(message) {
@@ -72,8 +72,8 @@ function routeTextChannelMessage(message, cleanedMessageContent) {
                 streamAudio(message, commandArgs);
                 break;
             case "volume":
-                logger.info("Change volume.");
-                changeVolume(message, commandArgs);
+                logger.info("Volume.");
+                volume(message, commandArgs);
                 break;
             case "sync":
                 logger.info("Sync.");
@@ -105,8 +105,8 @@ function playRandomSound(message) {
 
 function cancelVoiceConnection(message) {
     var connection = message.member.voiceChannel.connection;
-    if (!connection) return;
     connection.disconnect();
+    
 }
 
 function streamAudio(message, commandArgs) {
@@ -115,10 +115,16 @@ function streamAudio(message, commandArgs) {
     streamer.streamAudio(message.member.voiceChannel, streamLink);
 }
 
-function changeVolume(message, commandArgs) {
+function volume(message, commandArgs) {
     var currentVoiceConnection = bot.voiceConnections.get(message.member.guild.id);
     var requestedVolume = commandArgs.length > 1 ? commandArgs[1] : null;
-    streamer.changeVolume(message, requestedVolume, currentVoiceConnection);
+    if (requestedVolume) {
+        logger.info("Change the volume.");
+        streamer.changeVolume(message, requestedVolume, currentVoiceConnection);
+    } else {
+        logger.info("Print the volume.");
+        messenger.printVolume(message, streamer.getVolume());
+    }
 }
 
 function sync() {

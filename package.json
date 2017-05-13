@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node jacques.js",
-    "test": "npm-run-all -p -l testClient testServer",
+    "test": "npm-run-all -p -l testClient testServer --silent",
     "testClient": "karma start",
     "testServer": "mocha \"bot/jacques.spec.js\""
   },
