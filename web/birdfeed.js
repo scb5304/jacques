@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const db = require('../common/data/db.js');
 const Sound = require('../common/model/sound').Sound;
 const path = require('path');
+const logger = require('../common/util/logger.js');
 
 app.use('/raw', express.static(__dirname + '/../sounds'));
 app.use(express.static(__dirname + '/../'));
@@ -22,7 +23,6 @@ router.use(function(req, res, next) {
     res.setHeader("Access-Control-Allow-Credentials", "true");
     res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
     res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-    console.log('Received request: ' + JSON.stringify(req.body));
     next();
 });
 
@@ -38,11 +38,13 @@ router.route('/sounds')
         db.getAllSounds()
             .then(function(sounds) {
                 if (sounds) {
+                    logger.info("Got sounds: " + sounds);
                     res.json(sounds);
                 } else {
+                    logger.info("Now you fucked up");
                     res.send("Now you fucked up");
                 }
-            }).catch(console.error)
+            }).catch(logger.error)
     })
     .post(function(req, res) {
         console.log("Got POST request");
