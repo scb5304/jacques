@@ -105,8 +105,9 @@ function playRandomSound(message) {
 
 function cancelVoiceConnection(message) {
     var connection = message.member.voiceChannel.connection;
-    connection.disconnect();
-    
+    if (connection) {
+    	connection.disconnect();
+    }
 }
 
 function streamAudio(message, commandArgs) {
