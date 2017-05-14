@@ -35,12 +35,16 @@ router.get('/', function(req, res) {
 
 router.route('/sounds')
     .get(function(req, res) {
+        logger.info("Received request for sounds.");
+        console.log("Received request for sounds.");
         db.getAllSounds()
             .then(function(sounds) {
                 if (sounds) {
                     logger.info("Got sounds: " + sounds);
+                    console.log("Got sounds: " + sounds);
                     res.json(sounds);
                 } else {
+                    console.log("Now you fucked up");
                     logger.info("Now you fucked up");
                     res.send("Now you fucked up");
                 }
