@@ -86,5 +86,6 @@ function getVolume() {
 }
 
 module.exports.streamAudio = streamAudio;
+module.exports.calculateStreamSeekSeconds = calculateStreamSeekSeconds;
 module.exports.changeVolume = changeVolume;
 module.exports.getVolume = getVolume;

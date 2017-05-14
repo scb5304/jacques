@@ -9,17 +9,14 @@ var config = require('./../config.json');
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();
-    console.log("Before!");
-})
+});
 
 afterEach(function() {
     this.sandbox.restore()
-    console.log("After!");
-})
+});
 
 describe("messenger", function() {
     beforeEach(function() {
-        this.sandbox = sinon.sandbox.create();
         this.message = {
             reply: function() {
                 return new Promise(function(resolve, reject) {
@@ -27,7 +24,7 @@ describe("messenger", function() {
                 });
             }
         };
-    })
+    });
 
     describe("sendSounds", function() {
         it("replies to the message once for 1500 characters", function() {
