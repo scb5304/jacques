@@ -8,5 +8,6 @@ angular
             .accentPalette('deep-orange');
         $mdIconProvider
             .icon("menu", "assets/svg/menu.svg", 24)
+            .icon("github", "assets/svg/github-circle.svg", 24)
             .icon("invite", "assets/svg/person_add.svg", 24);
     });
