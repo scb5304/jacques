@@ -1,8 +1,9 @@
-var config = require('./../config.json');
-var logger = require('./../common/util/logger.js');
-var util = require('./../common/util/utility.js');
+var Discord = require('discord.js');
+
 var Db = require('./../common/data/db');
 var Sound = require('./../common/model/sound').Sound;
+var config = require('./../config.json');
+var logger = require('./../common/util/logger.js');
 
 var soundboard = require('./soundboard.js');
 var streamer = require('./streamer.js');
@@ -11,14 +12,26 @@ var messenger = require('./messenger.js');
 var bot;
 var site = "http://jacquesbot.io";
 
-function initialize(discordBot) {
-    bot = discordBot;
+function initialize() {
+	Db.connect();
+	bot = new Discord.Client();
+	bot.login(config.token);
+    bot.on("ready", onReady);
+    bot.on("message", onMessage);
 }
 
 function onReady() {
     logger.info("I'm ready, I'm ready.");
     if (bot.user) {
         bot.user.setGame(site);
+    }
+}
+
+function onMessage(message) {
+    if (message.channel instanceof Discord.TextChannel) {
+        onTextChannelMessage(message);
+    } else if (message.channel instanceof Discord.DMChannel) {
+        onDirectChannelMessage(message);
     }
 }
 
