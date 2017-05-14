@@ -191,6 +191,3 @@ function alreadySpeaking(message) {
 }
 
 module.exports.initialize = initialize;
-module.exports.onReady = onReady;
-module.exports.onTextChannelMessage = onTextChannelMessage;
-module.exports.onDirectChannelMessage = onDirectChannelMessage;
