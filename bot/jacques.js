@@ -191,3 +191,4 @@ function alreadySpeaking(message) {
 }
 
 module.exports.initialize = initialize;
+module.exports.onTextChannelMessage = onTextChannelMessage;

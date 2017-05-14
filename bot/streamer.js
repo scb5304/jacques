@@ -47,7 +47,8 @@ function calculateStreamSeekSeconds(streamLink) {
         secondsToSeek += Number(mins) * 60;
 
         if (timeArg.includes("s")) {
-            var secs = timeArg.split("m")[0].split("s")[0];
+            var secs = timeArg.split("m")[1].split("s")[0];
+            logger.info("secs after: " + secs);
             secondsToSeek += Number(secs);
         }
     } else if (timeArg.includes("s")) {
