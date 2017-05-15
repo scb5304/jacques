@@ -2,3 +2,13 @@ sudo: true
 language: node_js
 node_js:
   - "6"
+  
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install autoconf
+  - sudo apt-get install libtool
+  - cd deps/opus
+  - ./autogen.sh
+  - ./configure --enable-static --disable-shared --with-pic
+  - mkdir -p ../config/opus/[os]/[arch]
+  - cp config.h ../config/opus/[os]/[arch]
