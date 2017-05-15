@@ -2,7 +2,6 @@ var Discord = require('discord.js');
 
 var Db = require('./../common/data/db');
 var Sound = require('./../common/model/sound').Sound;
-var config = require('./../config.json');
 var logger = require('./../common/util/logger.js');
 
 var soundboard = require('./soundboard.js');
@@ -11,11 +10,12 @@ var messenger = require('./messenger.js');
 
 var bot;
 var site = "http://jacquesbot.io";
+var prefix = process.env.JACQUES_PREFIX;
 
 function initialize() {
 	Db.connect();
 	bot = new Discord.Client();
-	bot.login(config.token);
+	bot.login(process.env.JACQUES_TOKEN);
     bot.on("ready", onReady);
     bot.on("message", onMessage);
 }
@@ -37,13 +37,16 @@ function onMessage(message) {
 
 function onTextChannelMessage(message) {
     var cleanedMessageContent = message.content.trim();
-    if (!cleanedMessageContent.startsWith(config.prefix)) {
+    console.log("CLEANED MESSAGE CONTENT: " + cleanedMessageContent)
+    if (!cleanedMessageContent.startsWith(prefix)) {
+        console.log("CLEANED MESSAGE CONTENT: " + cleanedMessageContent)
         return false;
     } else {
+        console.log("CLEANED MESSAGE CONTENT: " + cleanedMessageContent)
         logger.info("Received potentially valid Jacques message: " + message.content);
         cleanedMessageContent = cleanedMessageContent.substring(1);
     }
-
+    console.log("CLEANED MESSAGE CONTENT: " + cleanedMessageContent)
     var member = message.member;
     if (!member) {
         logger.info("Message has no guild member.");

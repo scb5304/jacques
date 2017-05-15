@@ -1,6 +1,7 @@
 var Db = require('./../common/data/db');
-var config = require('./../config.json');
 var logger = require('./../common/util/logger.js');
+
+var SOUNDS_DIRECTORY = process.env.JACQUES_SOUNDS_DIRECTORY;
 
 function playRandomSound(message) {
     Db.getRandomSoundName()
@@ -22,7 +23,7 @@ function playTargetedSound(message, soundName) {
 
 function playSound(soundName, voiceChannel) {
     logger.info("Attempting to play sound " + soundName + " in " + voiceChannel.name);
-    var path = config.soundsDirectory + soundName;
+    var path = SOUNDS_DIRECTORY + soundName;
     voiceChannel.join()
         .then(function(connection) {
             const dispatcher = connection.playFile(path);

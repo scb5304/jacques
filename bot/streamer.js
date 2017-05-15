@@ -1,5 +1,4 @@
 var Db = require('./../common/data/db');
-var config = require('./../config.json');
 var logger = require('./../common/util/logger.js');
 var ytdl = require('ytdl-core');
 

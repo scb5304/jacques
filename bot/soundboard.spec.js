@@ -1,3 +1,4 @@
+require('dotenv').config({path: './../.env'});
 var Discord = require('discord.js');
 var sinon = require('sinon');
 var chai = require('chai');
@@ -5,18 +6,17 @@ var chai = require('chai');
 var logger = require('./../common/util/logger.js');
 var soundboard = require('./soundboard');
 var Db = require('./../common/data/db.js');
-var config = require('./../config.json');
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();
     this.message = {};
     this.message.member = {};
     this.message.voiceChannel = {};
-})
+});
 
 afterEach(function() {
     this.sandbox.restore()
-})
+});
 
 //Adds a fake voice channel to a message that returns a fake promise when join() is called.
 //If a test needs to complete upon this occurring, a "done" object can be passed that will be invoked.

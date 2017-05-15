@@ -1,3 +1,4 @@
+require('dotenv').config({path: './../.env'});
 var Discord = require('discord.js');
 var sinon = require('sinon');
 var chai = require('chai');
@@ -5,7 +6,6 @@ var chai = require('chai');
 var logger = require('./../common/util/logger.js');
 var messenger = require('./messenger');
 var Db = require('./../common/data/db.js');
-var config = require('./../config.json');
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();

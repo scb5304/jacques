@@ -1,3 +1,5 @@
+require('dotenv').config({path: require('app-root-path') + "/.env"});
+
 var Discord = require('discord.js');
 var sinon = require('sinon');
 var chai = require('chai');
@@ -8,15 +10,15 @@ var soundboard = require('./soundboard');
 var streamer = require('./streamer');
 var messenger = require('./messenger');
 var Db = require('./../common/data/db.js');
-var config = require('./../config.json');
+var prefix = process.env.JACQUES_PREFIX;
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();
-})
+});
 
 afterEach(function() {
     this.sandbox.restore()
-})
+});
 
 describe('onTextChannelMessage', function() {
 
@@ -32,27 +34,27 @@ describe('onTextChannelMessage', function() {
         this.message.member.voiceChannel.name = "Weenie Hut General";
         this.message.channel.name = "commands";
         this.message.guild.name = "The Jelly Spotters";
-    })
+    });
 
     describe('not valid jacques messages', function() {
         it('does not route a message if does not start with prefix', function() {
             this.message.content = "Hey what's up?";
             var routed = jacques.onTextChannelMessage(this.message);
             chai.assert.isFalse(routed);
-        })
+        });
 
         it('does not route a message if it does not have a guild member', function() {
             this.message.member = null;
-            this.message.content = config.prefix + "questionforye";
+            this.message.content = prefix + "questionforye";
             var routed = jacques.onTextChannelMessage(this.message);
             chai.assert.isFalse(routed);
-        })
-    })
+        });
+    });
 
     describe('playing random sounds', function() {
         it('does not route prefix if user not in a voice channel', function() {
             this.message.member.voiceChannel = null;
-            this.message.content = config.prefix;
+            this.message.content = prefix;
 
             var routed = jacques.onTextChannelMessage(this.message);
             chai.assert.isFalse(routed);
@@ -60,7 +62,7 @@ describe('onTextChannelMessage', function() {
 
         it('routes prefix to play a random sound', function() {
             var soundboardStub = this.sandbox.stub(soundboard, "playRandomSound");
-            this.message.content = config.prefix;
+            this.message.content = prefix;
 
             jacques.onTextChannelMessage(this.message);
             sinon.assert.calledWith(soundboardStub, this.message);
@@ -68,7 +70,7 @@ describe('onTextChannelMessage', function() {
 
         it('routes prefix with whitespaces to play a random sound', function() {
             var soundboardStub = this.sandbox.stub(soundboard, "playRandomSound");
-            this.message.content = " " + config.prefix + "  ";
+            this.message.content = " " + prefix + "  ";
 
             jacques.onTextChannelMessage(this.message);
             sinon.assert.calledWith(soundboardStub, this.message);
@@ -79,7 +81,7 @@ describe('onTextChannelMessage', function() {
         it('routes prefix mySound to play targeted sound mySound', function() {
             var soundboardStub = this.sandbox.stub(soundboard, "playTargetedSound");
             var soundName = "mySound";
-            this.message.content = config.prefix + soundName;
+            this.message.content = prefix + soundName;
 
             jacques.onTextChannelMessage(this.message);
             sinon.assert.calledWith(soundboardStub, this.message, soundName);
@@ -88,7 +90,7 @@ describe('onTextChannelMessage', function() {
         it('routes prefix mySound with whitespaces to play targeted sound mySound', function() {
             var soundboardStub = this.sandbox.stub(soundboard, "playTargetedSound");
             var soundName = "mySound";
-            this.message.content = "   " + config.prefix + soundName + " ";
+            this.message.content = "   " + prefix + soundName + " ";
 
             jacques.onTextChannelMessage(this.message);
             sinon.assert.calledWith(soundboardStub, this.message, soundName);
@@ -98,7 +100,7 @@ describe('onTextChannelMessage', function() {
     describe('sending help messages', function() {
         it('routes prefix help to send a help message', function() {
             var messengerStub = this.sandbox.stub(messenger, "sendHelp");
-            this.message.content = config.prefix + "help";
+            this.message.content = prefix + "help";
 
             jacques.onTextChannelMessage(this.message);
             sinon.assert.calledWith(messengerStub, this.message);
@@ -106,7 +108,7 @@ describe('onTextChannelMessage', function() {
 
         it('routes prefix sounds to send a help mesage', function() {
             var messengerStub = this.sandbox.stub(messenger, "sendHelp");
-            this.message.content = config.prefix + "sounds";
+            this.message.content = prefix + "sounds";
 
             jacques.onTextChannelMessage(this.message);
             sinon.assert.calledWith(messengerStub, this.message);
@@ -127,25 +129,25 @@ describe('onTextChannelMessage', function() {
                     return resolve(stubbedSounds);
                 });
             });
-            this.message.content = config.prefix + "helptext";
+            this.message.content = prefix + "helptext";
             jacques.onTextChannelMessage(this.message);
         });
     });
 
     describe('canceling jacques', function() {
         it('routes prefix cancel to cancel current voice connection', function() {
-            this.message.content = config.prefix + "cancel";
+            this.message.content = prefix + "cancel";
             var disconnectSpy = this.sandbox.spy(this.message.member.voiceChannel.connection, "disconnect");
 
             jacques.onTextChannelMessage(this.message);
             chai.assert.isTrue(disconnectSpy.called);
         });
         it('routes prefix byejacques to cancel current voice connection', function() {
-            this.message.content = config.prefix + "byejacques";
+            this.message.content = prefix + "byejacques";
             var disconnectSpy = this.sandbox.spy(this.message.member.voiceChannel.connection, "disconnect");
 
             jacques.onTextChannelMessage(this.message);
             chai.assert.isTrue(disconnectSpy.called);
-        })
+        });
     });
-})
+});

@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const config = require('./../../config.json');
 const fs = require('fs');
-const SOUNDS_DIRECTORY = config.soundsDirectory;
+const SOUNDS_DIRECTORY = process.env.SOUNDS_DIRECTORY;
 const Sound = require('./../model/sound').Sound;
 const SoundEvent = require('./../model/sound').SoundEvent;
 const util = require('./../util/utility');
@@ -125,35 +124,9 @@ function getRandomSoundName() {
     });
 }
 
-function getRandomSoundNameWithTags(tags) {
-    logger.info("tags: " + tags);
-    return new Promise((resolve, reject) => {
-
-        Sound.find({ tags: { $all: tags } }, function(err, sounds) {
-            if (err) throw err;
-
-            if (!sounds) {
-                return reject("Couldn't find sound with those tags.");
-            }
-            logger.info(sounds);
-            var randIndex = util.getRandomInt(0, sounds.length - 1);
-            logger.info(randIndex + " is the index.");
-            var randomSound = sounds[randIndex];
-
-            if (randomSound) {
-                return resolve(randomSound.name);
-            } else {
-                return reject("Got sounds with tags: " + tags + " but failed to play a random one.");
-            }
-        });
-
-    })
-}
-
 function soundsArrayContainsName(sounds, name) {
     for (var sound of sounds) {
         if (sound.name === name) {
-            //logger.info("True!!");
             return true;
         }
     }
@@ -165,5 +138,4 @@ module.exports.syncSounds = syncSounds;
 module.exports.insertSoundEvent = insertSoundEvent;
 module.exports.soundExists = soundExists;
 module.exports.getRandomSoundName = getRandomSoundName;
-module.exports.getRandomSoundNameWithTags = getRandomSoundNameWithTags;
 module.exports.getAllSounds = getAllSounds;
