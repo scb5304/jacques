@@ -7,3 +7,4 @@ logs.txt
 .env
 .coveralls.yml
 coverage/
+npm-debug.log
