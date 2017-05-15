@@ -1,10 +1,8 @@
+sudo: true
 language: node_js
 node_js:
-  - "6"
+  - "7"
 before_install:
-  - sudo apt-get update
-  - sudo apt-get install autoconf
-  - sudo apt-get install libtool
   - sudo apt-get install build-essential
 after_success:
 - npm run coveralls
