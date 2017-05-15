@@ -89,7 +89,7 @@ function routeTextChannelMessage(message, cleanedMessageContent) {
                 break;
             case "sync":
                 logger.info("Sync.");
-                sync();
+                sync(message);
                 break;
             case "help":
             case "sounds":
@@ -140,8 +140,8 @@ function volume(message, commandArgs) {
     }
 }
 
-function sync() {
-    if (member.displayName !== "Spitsonpuppies") return;
+function sync(message) {
+    if (message.member.displayName !== "Spitsonpuppies") return;
     Db.syncSounds();
 }
 
