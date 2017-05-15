@@ -6,10 +6,9 @@ angular
         'ngMaterial',
         'soundDetail',
         'soundList',
-        'floating',
         'chart.js',
     ])
-    .controller('AppController', function AppController($http, sharedProperties, $mdSidenav) {
+    .controller('AppController', function AppController($http, sharedProperties, $mdSidenav, $mdDialog) {
 
         $http.get('http://jacquesbot.io/api/sounds').then(function(soundsJSON) {
             var sounds = soundsJSON.data;
@@ -25,6 +24,21 @@ angular
             $mdSidenav('left').toggle()
         }
 
+        this.showHelp = function() {
+            $mdDialog.show({
+                templateUrl: 'help.html',
+                clickOutsideToClose: true,
+                controller: this.HelpDialogController,
+                controllerAs: "$ctrl"
+            });
+        }
+
+        this.HelpDialogController = function() {
+            var self = this;
+            self.closeDialog = function() {
+                $mdDialog.hide();
+            }
+        }
     })
     .service('sharedProperties', function() {
         var sounds = [];

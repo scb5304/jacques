@@ -1,0 +1,48 @@
+<md-dialog class="sound-dialog">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+            	<span><md-icon id="help-dialog-icon" md-svg-icon="help"/></span>
+                <h2>Help</h2>
+                <span flex></span>
+		        <md-button class="md-icon-button" ng-click="$ctrl.closeDialog()" aria-label="Close help">
+		          <md-icon id="help-close-icon" id="help-dialog-icon" md-svg-icon="close"/>
+		        </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <p>Jacques can <a href="https://discordapp.com/oauth2/authorize?client_id=280071400583331840&scope=bot&permissions=3243008">invited to any server</a>. He can then be summoned into a voice channel by typing a recognizable command in a text channel. If the text channel is not named "commands," Jacques will delete the message shortly after to keep the server tidy.</p>
+
+                <h2 class="help-dialog-title md-headline">Playing Sounds</h2> 
+                <p>Currently, users cannot add their own sound clips to Jacques. The list of available sounds is available here at <a href="http://jacquesbot.io">jacquesbot.io</a> along with play statistics.</p>
+
+                <h4>!</h4>
+                <p>A lone exclamation point in any text channel will trigger Jacques to play a random sound clip.</p>
+
+                <h4>!soundname</h4>
+                <p>Jacques will play the passed sound provided that it exists.</p>
+
+                <h4>!help </h4>
+                <p>Links to Jacques' site to display list of stored sounds.</p>
+
+                <h4>!helptext</h4> 
+                <p>Spits out a raw text dump of all sounds stored in Jacques' database.</p>
+
+                <h2 class="help-dialog-title md-headline">Streaming Youtube Videos</h2>
+                <h4>!stream</h4>
+                <p>Summons Jacques to the user's current voice channel to play the audio of the passed youtube URL. The link can optionally include the time at which the stream should begin.</p>
+                <b>Example:</b> !stream https://www.youtube.com/watch?v=jdB4ER_-mSY 
+
+                <h4>!volume</h4>
+                <p>Prints the current stream volume (from 0 to 100). If a volume is passed, then it will be adjusted accordingly. If Jacques is currently streaming audio, the volume will be adjusted real-time. Stream volume does not affect the volume of Jacques' sound clips.</p>
+	        	<p><b>Example:</b> !volume (prints volume)<p>
+	        	<p><b>Example:</b> !volume 50 (sets stream volume to 50%)</p>
+	        	
+                <h2 class="help-dialog-title  md-headline">Leaving a Voice Channel</h2>
+                <h4>!cancel</h4>
+                <p>If Jacques is currently in the same voice channel as you, this will cause him to disconnect immediately.</p>   
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>

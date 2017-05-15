@@ -153,6 +153,22 @@ md-button.menuBtn > md-icon {
     max-width: 500px;
 }
 
+#help-dialog-icon {
+    margin-right: 8px;
+}
+
+md-icon svg {
+  fill: inherit;
+}
+
+#help-close-icon {
+    fill: white;
+}
+
+.help-dialog-title {
+    margin-top: 24px;
+    border-bottom: 1px solid #CCCCCC;
+}
 
 /* Utils */
 
