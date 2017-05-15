@@ -1,4 +1,5 @@
-require('dotenv').config({path: './../.env'});
+require('dotenv').config({path: require('app-root-path') + "/.env"});
+
 var Discord = require('discord.js');
 var sinon = require('sinon');
 var chai = require('chai');

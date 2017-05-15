@@ -37,16 +37,12 @@ function onMessage(message) {
 
 function onTextChannelMessage(message) {
     var cleanedMessageContent = message.content.trim();
-    console.log("CLEANED MESSAGE CONTENT: " + cleanedMessageContent)
     if (!cleanedMessageContent.startsWith(prefix)) {
-        console.log("CLEANED MESSAGE CONTENT: " + cleanedMessageContent)
         return false;
     } else {
-        console.log("CLEANED MESSAGE CONTENT: " + cleanedMessageContent)
         logger.info("Received potentially valid Jacques message: " + message.content);
         cleanedMessageContent = cleanedMessageContent.substring(1);
     }
-    console.log("CLEANED MESSAGE CONTENT: " + cleanedMessageContent)
     var member = message.member;
     if (!member) {
         logger.info("Message has no guild member.");
