@@ -8,8 +8,8 @@
     "test": "npm-run-all -p -l testClient testServer --silent",
     "testClient": "karma start",
     "testServer": "mocha ./bot/*.spec.js",
-    "cover": "istanbul cover node_modules/mocha/bin/_mocha ./bot/*.spec.js -- -R spec",
-    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls"
+    "cover": "karma start & istanbul cover node_modules/mocha/bin/_mocha ./bot/*.spec.js -- -R spec",
+    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info && cat ./coverage/lcov-report-client/lcov.info | coveralls"
   },
   "author": "Steven Brown",
   "license": "Apache-2.0",
