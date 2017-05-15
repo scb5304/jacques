@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const fs = require('fs');
-const SOUNDS_DIRECTORY = process.env.SOUNDS_DIRECTORY;
+const SOUNDS_DIRECTORY = process.env.JACQUES_SOUNDS_DIRECTORY;
 const Sound = require('./../model/sound').Sound;
 const SoundEvent = require('./../model/sound').SoundEvent;
 const util = require('./../util/utility');
