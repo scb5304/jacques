@@ -6,3 +6,4 @@ logs.txt
 .idea
 .env
 .coveralls.yml
+coverage/
