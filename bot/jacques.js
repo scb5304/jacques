@@ -61,7 +61,7 @@ function onTextChannelMessage(message) {
 }
 
 function onDirectChannelMessage(message) {
-    //message.reply("I don't know how to do shit here. Squawk.");
+    //TODO
 }
 
 function routeTextChannelMessage(message, cleanedMessageContent) {
