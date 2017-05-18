@@ -21,11 +21,15 @@ function streamAudio(voiceChannel, streamLink) {
                 filter: 'audioonly'
             });
 
+            stream.on('info', function(info) {
+                var streamLength = Number(info.length_seconds) * 1000;
+                setTimeout(function() {
+                    console.log("We're done here, disconnect!");
+                    connection.disconnect();
+                }, streamLength);
+            })
+
             const dispatcher = connection.playStream(stream, streamOptions);
-            dispatcher.once('end', function() {
-                logger.info("Leaving after playing sound.");
-                connection.disconnect();
-            });
             dispatcher.once('speaking', function() {
                 dispatcher.setVolumeLogarithmic(streamVolume);
             })
