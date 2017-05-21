@@ -5,8 +5,8 @@ angular
     .module('soundDetail')
     .component('soundDetail', {
         templateUrl: 'sound-detail/sound-detail.template.html',
-        controller: ['$scope', 'sharedProperties', 'SoundDetailChartsHelper', '$sce',
-            function SoundDetailController($scope, sharedProperties, SoundDetailChartsHelper, $sce) {
+        controller: ['$location', '$scope', 'sharedProperties', 'SoundDetailChartsHelper', '$sce',
+            function SoundDetailController($location, $scope, sharedProperties, SoundDetailChartsHelper, $sce) {
                 $scope.sharedProperties = sharedProperties;
                 $scope.SoundDetailChartsHelper = SoundDetailChartsHelper;
 
@@ -23,6 +23,7 @@ angular
                 };
 
                 function onSoundSelected(sound) {
+                    $location.path(sound.cleanedName)
                     updateAudioFile(sound);
                     updateSummaryCard(sound);
                     updateActivityChart(sound);

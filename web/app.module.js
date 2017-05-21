@@ -8,16 +8,25 @@ angular
         'soundList',
         'chart.js',
     ])
-    .controller('AppController', function AppController($http, sharedProperties, $mdSidenav, $mdDialog) {
+    .controller('AppController', function AppController($location, $http, sharedProperties, $mdSidenav, $mdDialog) {
 
         $http.get('http://jacquesbot.io/api/sounds').then(function(soundsJSON) {
             var sounds = soundsJSON.data;
+            var soundFromURL;
             sounds.forEach(function(sound) {
                 sound.cleanedName = sound.name.split("\.")[0];
+                if ("/" + sound.cleanedName == $location.path()) {
+                    soundFromURL = sound;
+                }
             });
 
             sharedProperties.setSounds(sounds);
-            sharedProperties.setSelected(sharedProperties.getSounds()[0])
+
+            if (soundFromURL) {
+                sharedProperties.setSelected(soundFromURL);
+            } else {
+                sharedProperties.setSelected(sharedProperties.getSounds()[0]);
+            }
         })
 
         this.toggleList = function() {
