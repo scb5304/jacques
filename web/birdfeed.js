@@ -61,7 +61,7 @@ router.route('/sounds/:sound_name')
     });
 
 app.use('/api', router);
-app.get('/*', function(req, res) {
+app.get('/', function(req, res) {
     res.sendFile(__dirname + "/index.html");
 });
 
