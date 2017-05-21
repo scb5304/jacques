@@ -9,7 +9,7 @@ const logger = require('../common/util/logger.js');
 
 var appRoot = require('app-root-path');
 var webRoot = appRoot + "/web";
-var nodeModulesRoot = appRoot + "/node_modules";
+var nodeModulesRoot = appRoot + "/node_modules/..";
 
 console.log("Jacques Root: " + appRoot);
 console.log("'Web' Root: " + webRoot);
