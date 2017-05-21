@@ -10,7 +10,7 @@ angular
     ])
     .controller('AppController', function AppController($location, $http, sharedProperties, $mdSidenav, $mdDialog) {
 
-        $http.get('http://localhost:8080/api/sounds').then(function(soundsJSON) {
+        $http.get('http://jacquesbot.io/api/sounds').then(function(soundsJSON) {
             var sounds = soundsJSON.data;
             var soundFromURL;
             sounds.forEach(function(sound) {
