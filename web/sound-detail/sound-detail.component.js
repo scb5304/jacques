@@ -23,7 +23,7 @@ angular
                 };
 
                 function onSoundSelected(sound) {
-                    $location.path(sound.cleanedName)
+                    $location.path(sound.cleanedName);
                     updateAudioFile(sound);
                     updateSummaryCard(sound);
                     updateActivityChart(sound);
