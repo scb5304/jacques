@@ -68,7 +68,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('*', function(req, res) {
-    res.send("404. That's an error!", 404);
+    res.sendFile(__dirname + "/fourOhFour.html");
 });
 
 app.listen(port);

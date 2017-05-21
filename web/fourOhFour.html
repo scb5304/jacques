@@ -1,0 +1,64 @@
+<!doctype html>
+<html ng-app="jacquesApp">
+
+<head>
+    <base href="./">
+    <link rel="stylesheet" href="../node_modules/angular-material/angular-material.min.css">
+    <title>Jacques</title>
+    <link rel="icon" type="image/png" href="assets/img/jacques_icon_bird2.png">
+</head>
+
+<body ng-cloak layout="column" ng-controller="AppController as app">
+<md-toolbar layout="row" class="md-toolbar-tools">
+    <img id="toolbarIcon" src="assets/img/jacques_icon.png" />
+    <h1>Jacques</h1>
+
+    <span flex></span>
+    <a target="_blank" ng-click="app.showHelp()">
+        <md-button class="md-icon-button" aria-label="Help">
+            <md-icon md-svg-icon="help">
+            </md-icon>
+        </md-button>
+    </a>
+    <a target="_blank" href="https://discordapp.com/oauth2/authorize?client_id=280071400583331840&scope=bot&permissions=3243008">
+        <md-button class="md-icon-button" aria-label="Invite">
+            <md-icon md-svg-icon="invite">
+            </md-icon>
+        </md-button>
+    </a>
+    <a target="_blank" href="https://github.com/scb5304/jacques">
+        <md-button class="md-icon-button" aria-label="Github">
+            <md-icon md-svg-icon="github">
+            </md-icon>
+        </md-button>
+    </a>
+</md-toolbar>
+<div flex layout="row">
+    Everybody's high on consolation
+    Everybody's trying to tell me what's right for me
+    My daddy tried to bore me with a sermon
+    But it's plain to see that they can't comfort me
+    Sorry Charlie for the imposition
+    I think I've got it, got the strength to carry on
+    I need a drink and a quick decision
+    Now it's up to me, ooh what will be
+    She's gone, oh I, oh I'd
+    Better learn how to face it
+    She's gone, oh I, oh I'd
+    Pay the devil to replace her
+    She's gone, what went wrong
+    Get up in the morning look in the mirror
+    I'm worn as her tooth brush hanging in the stand
+    My face ain't looking any younger
+    Now I can see love's taken her toll on me
+    She's gone, oh I, oh I'd
+    Better learn how to face it
+    She's gone, oh I, oh I'd
+    Pay the devil to replace her
+    She's gone, what went wrong
+</div>
+
+<link rel="stylesheet" href="app.css">
+</body>
+
+</html>
