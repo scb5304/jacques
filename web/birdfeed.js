@@ -7,17 +7,14 @@ const Sound = require('../common/model/sound').Sound;
 const path = require('path');
 const logger = require('../common/util/logger.js');
 
-var appRoot = require('app-root-path');
-var webRoot = appRoot + "/web";
-var nodeModulesRoot = appRoot + "/node_modules/..";
+const appRoot = require('app-root-path');
+const soundsPath = appRoot + "/sounds/..";
+const webPath = appRoot + "/web/..";
+const nodeModulesPath = appRoot + "/node_modules/..";
 
-console.log("Jacques Root: " + appRoot);
-console.log("'Web' Root: " + webRoot);
-console.log("Node modules root: " + nodeModulesRoot);
-
-app.use('/raw', express.static(__dirname + '/../sounds'));
-app.use(express.static(nodeModulesRoot));
-app.use(express.static(webRoot));
+app.use('/raw', express.static(soundsPath));
+app.use(express.static(webPath));
+app.use(express.static(nodeModulesPath));
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -65,7 +62,7 @@ router.route('/sounds/:sound_name')
 
 app.use('/api', router);
 app.get('/*', function(req, res) {
-    res.sendFile(__dirname + "/index.html");
+    res.sendFile("./index.html");
 });
 
 app.listen(port);
