@@ -7,12 +7,12 @@ const Sound = require('../common/model/sound').Sound;
 const path = require('path');
 const logger = require('../common/util/logger.js');
 
-const appRoot = require('app-root-path');
-const soundsPath = appRoot + "/sounds/..";
-const webPath = appRoot + "/web/..";
-const nodeModulesPath = appRoot + "/node_modules/..";
+var appRoot = require('app-root-path');
+var soundsPath = appRoot + "/sounds";
+var webPath = appRoot + "/web";
+var nodeModulesPath = appRoot + "/node_modules/..";
 
-app.use('/raw', express.static(soundsPath));
+app.use('/raw', express.static(__dirname + '/../sounds'));
 app.use(express.static(webPath));
 app.use(express.static(nodeModulesPath));
 
