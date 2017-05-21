@@ -9,11 +9,13 @@ const logger = require('../common/util/logger.js');
 
 var appRoot = require('app-root-path');
 var webRoot = appRoot + "/web";
+var nodeModulesRoot = appRoot + "/node_modules";
 
 console.log("Jacques Root: " + appRoot);
 console.log("'Web' Root: " + webRoot);
 
 app.use('/raw', express.static(__dirname + '/../sounds'));
+app.use(express.static(nodeModulesRoot));
 app.use(express.static(webRoot));
 
 app.use(bodyParser.urlencoded({
