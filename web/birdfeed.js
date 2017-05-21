@@ -61,8 +61,14 @@ router.route('/sounds/:sound_name')
     });
 
 app.use('/api', router);
+
+
 app.get('/', function(req, res) {
     res.sendFile(__dirname + "/index.html");
+});
+
+app.get('*', function(req, res) {
+    res.send("404. That's an error!", 404);
 });
 
 app.listen(port);
