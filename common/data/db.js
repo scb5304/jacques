@@ -17,44 +17,53 @@ function syncSounds() {
     logger.info("Syncing...");
     //Get sounds from database
     Sound.find({}, function(err, sounds) {
-        //Get sounds file file system
+        //Get sounds from file system
         fs.readdir(SOUNDS_DIRECTORY, function(err, files) {
-            //Loop through sounds in database
-            for (var sound of sounds) {
+            //If there are any sounds who have data stored in the database but do not exist in the file system, remove them
+            removeSoundsInDatabaseNotInFileSystem(files, sounds);
 
-                if (files.indexOf(sound.name) == -1) {
-                    logger.info("Removing " + sound.name + " from the database! It's no longer in the file system.");
-                    Sound.remove({
-                        name: sound.name
-                    }, function(err) {
-                        if (err) throw err;
-                    });
-                }
-            }
-            //Loop through sounds in file system
-            for (var file of files) {
-                var isDirectory = fs.lstatSync(SOUNDS_DIRECTORY + "/" + file).isDirectory();
-                if (isDirectory) {
-                    //logger.info("Not considering creating a sound for directory " + file);
-                    continue;
-                }
-
-                if (!soundsArrayContainsName(sounds, file)) {
-                    logger.info("Adding " + file + " to the database! It's in the file system but not the database.");
-
-                    var newSound = Sound({
-                        name: file,
-                        add_date: new Date(),
-                        added_by: "Server"
-                    });
-                    newSound.save(function(err) {
-                        if (err) throw err;
-                    });
-
-                }
-            }
+            //If there are any sounds who do not have data stored in the database but do exist in the file system, add them
+            addSoundsToDatabaseInFileSystem(files, sounds);
         });
     });
+}
+
+function removeSoundsInDatabaseNotInFileSystem(files, sounds) {
+    for (var sound of sounds) {
+        var notInFileSystem = files.indexOf(sound.name) == -1;
+        if (notInFileSystem) {
+            logger.info("Removing " + sound.name + " from the database! It's no longer in the file system.");
+            Sound.remove({
+                name: sound.name
+            }, function(err) {
+                if (err) throw err;
+            });
+        }
+    }
+}
+
+function addSoundsToDatabaseInFileSystem(files, sounds) {
+    for (var file of files) {
+        var isDirectory = fs.lstatSync(SOUNDS_DIRECTORY + "/" + file).isDirectory();
+        if (isDirectory) {
+            continue;
+        }
+
+        var inFileSystemNotDatabase = !soundsArrayContainsName(sounds, file);
+        if (inFileSystemNotDatabase) {
+            logger.info("Adding " + file + " to the database! It's in the file system but not the database.");
+
+            var newSound = Sound({
+                name: file,
+                add_date: new Date(),
+                added_by: "Server"
+            });
+            newSound.save(function(err) {
+                if (err) throw err;
+            });
+
+        }
+    }
 }
 
 function insertSoundEvent(soundName, performedBy, soundCategory) {
