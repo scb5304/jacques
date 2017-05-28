@@ -2,13 +2,11 @@
 
 describe('soundList', function() {
 
-    // Load the module that contains the `phoneList` component before each test
     beforeEach(function() {
         module('soundList');
         module('chart.js');
     })
 
-    // Test the controller
     describe('SoundListController', function() {
         var $httpBackend, ctrl, sharedPropertiesMock, scope;
 

@@ -12,7 +12,8 @@ function streamAudio(voiceChannel, streamLink) {
 
     const streamOptions = {
         seek: calculateStreamSeekSeconds(streamLink),
-        volume: streamVolume
+        volume: streamVolume,
+        passes: 2
     };
 
     voiceChannel.join()
@@ -23,7 +24,6 @@ function streamAudio(voiceChannel, streamLink) {
 
             stream.on('info', function(info) {
                 var streamLength = Number(info.length_seconds) * 1000;
-                console.log("Stream length: " + streamLength);
                 setTimeout(function() {
                     console.log("We're done here, disconnect!");
                     connection.disconnect();
