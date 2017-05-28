@@ -107,7 +107,8 @@ function getAllSounds() {
     return new Promise((resolve, reject) => {
     	var soundsProjection = { 
 		    __v: false,
-		    _id: false
+		    _id: false,
+		    "sound_events._id": false
 		};
 
         Sound.find({}, soundsProjection, function(err, sounds) {
