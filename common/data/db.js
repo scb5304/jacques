@@ -82,8 +82,7 @@ function insertSoundEvent(soundName, performedBy, soundCategory) {
         });
         sound.sound_events.push(soundEvent);
         sound.save(function(err, doc, numRowsAffected) {
-            if (err) logger.info(err);
-            //logger.info("Added " + numRowsAffected + " rows: " + doc);
+            if (err) throw err;
         });
     });
 
@@ -106,14 +105,20 @@ function soundExists(soundName) {
 
 function getAllSounds() {
     return new Promise((resolve, reject) => {
-        Sound.find({}, function(err, sounds) {
+    	var soundsProjection = { 
+		    __v: false,
+		    _id: false
+		};
+
+        Sound.find({}, soundsProjection, function(err, sounds) {
             if (err) throw err;
             if (sounds) {
                 return resolve(sounds);
             } else {
                 return reject("Couldn't get all sounds.");
             }
-        }).sort({ name: 'asc' });
+        })
+        .sort({ name: 'asc' });
     });
 }
 
