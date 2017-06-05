@@ -12,7 +12,8 @@ var loggerOptions = {
 	"colorize": true,
 	level: 'silly',
 	handleExceptions: true,
-	humanReadableUnhandledException: true
+	humanReadableUnhandledException: true,
+	prettyPrint:true
 };
 
 var logger = new(winston.Logger)({

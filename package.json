@@ -38,6 +38,8 @@
     "mongoose": "4.8.1",
     "node-datetime": "1.0.0",
     "node-opus": "^0.2.4",
+    "readdirp": "2.1.0",
+    "save": "2.3.0",
     "sinon": "2.2.0",
     "winston": "2.3.1",
     "ytdl-core": "0.14.1"

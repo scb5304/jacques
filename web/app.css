@@ -111,6 +111,10 @@ md-button.menuBtn > md-icon {
     margin-bottom: 0px;
 }
 
+#sound-category-subtitle {
+    margin-top: 0px;
+}
+
 #sound-activity-card {
     width: 500px;
     padding: 8px;

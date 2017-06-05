@@ -102,7 +102,7 @@ function routeTextChannelMessage(message, cleanedMessageContent) {
                 break;
             default:
                 logger.info("Default: play targeted sound.");
-                playTargetedSound(message, baseCommandArg);
+                playParameterizedSound(message, commandArgs);
                 break;
         }
     }
@@ -157,9 +157,35 @@ function sendSoundDump(message) {
         .catch(logger.error);
 }
 
-function playTargetedSound(message, soundName) {
+function playParameterizedSound(message, commandArgs) {
     if (alreadySpeaking(message)) return;
-    soundboard.playTargetedSound(message, soundName);
+    var firstCommandArg = commandArgs[0];
+    var secondCommandArg = commandArgs.length > 1 ? commandArgs[1] : null;
+
+    var soundName;
+    var soundCategoryName;
+
+    Db.categoryExists(firstCommandArg)
+        .then(function(category) {
+            if (category != null) {
+                soundCategoryName = category.name;
+                logger.info("Category exists: " + category.name);
+                if (secondCommandArg != null) {
+                    soundName = secondCommandArg;
+                    logger.info("Play targeted category sound: " + soundName);
+                    soundboard.playTargetedSound(message, soundName, soundCategoryName);
+                } else {
+                    logger.info("Play random category sound: " + soundCategoryName);
+                    soundboard.playRandomSound(message, soundCategoryName);
+                }
+            } else {
+                soundCategoryName = firstCommandArg;
+                logger.info("Category does not exist: " + soundCategoryName);
+                soundName = firstCommandArg;
+                soundboard.playTargetedSound(message, soundName);
+            }
+        })
+        .catch(logger.error);
 }
 
 function cleanUp(message) {
@@ -173,7 +199,6 @@ function parseCommandArgs(messageContent) {
             array.splice(i, 1);
         }
     });
-    logger.info("commandArgs: " + commandArgs);
     return commandArgs;
 }
 
