@@ -26,7 +26,6 @@ function streamAudio(voiceChannel, streamLink) {
                 logger.info("Leaving after playing sound.");
                 connection.disconnect();
             });
-            const dispatcher = connection.playStream(stream, streamOptions);
             
             dispatcher.once('speaking', function() {
                 dispatcher.setVolumeLogarithmic(streamVolume);
