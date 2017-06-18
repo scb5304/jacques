@@ -5,7 +5,8 @@ const SOUNDS_DIRECTORY = process.env.JACQUES_SOUNDS_DIRECTORY;
 function getSoundPathFromSound(sound) {
 	var soundsDirectoryCleansed = path.join(SOUNDS_DIRECTORY);
     var rootPath = path.resolve(soundsDirectoryCleansed);
-    var soundPath = path.join(rootPath, sound.category, sound.name);
+
+	return path.join(rootPath, sound.category, sound.name);
 }
 
 function soundExistsInFileSystem(soundPath) {
