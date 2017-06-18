@@ -42,7 +42,7 @@ angular
                 }
 
                 function updateAudioFile(sound) {
-                    $scope.audioUrl = $sce.trustAsResourceUrl("http://jacquesbot.io/raw/" + sound.name);
+                    $scope.audioUrl = $sce.trustAsResourceUrl("http://jacquesbot.io/raw/" + sound.category + "/" + sound.name);
                 }
 
                 function updateSummaryCard(sound) {
