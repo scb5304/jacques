@@ -76,6 +76,7 @@ function performSync(sounds, categories) {
                     }
                 }
                 if (oldSoundPath !== newSoundPath) {
+		    logger.info("Expected: " + oldSoundPath + ", found " + newSoundPath);
                     fs.rename(oldSoundPath, newSoundPath, function(err) {
                         logger.info("Wrong category! Moved " + oldSoundPath + " to " + newSoundPath);
                     });
