@@ -1,5 +1,7 @@
 <h1 id="sound-title" class="md-display-2">{{getSelectedSoundName()}}</h1>
+<md-divider> </md-divider>
 <h5 id="sound-category-subtitle" class="md-subhead">Category: {{getSelectedSoundCategory()}}</h5>
+
 <audio id="sound-audio" controls data-ng-src="{{audioUrl}}"></audio>
 <div layout-gt-sm="row" layout="column">
     <md-card class="sound-summary-card">

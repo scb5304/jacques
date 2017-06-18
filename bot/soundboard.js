@@ -1,8 +1,33 @@
 var Db = require('./../common/data/db');
 var logger = require('./../common/util/logger.js');
-const fs = require('fs');
-const path = require('path');
-const SOUNDS_DIRECTORY = process.env.JACQUES_SOUNDS_DIRECTORY;
+var fsReader = require('./fileSystemReader.js');
+
+function playParameterizedSound(message, firstCommandArg, secondCommandArg) {
+    var soundName;
+    var soundCategoryName;
+
+    Db.categoryExists(firstCommandArg)
+        .then(function(category) {
+            if (category != null) {
+                soundCategoryName = category.name;
+                logger.info("Category exists: " + category.name);
+                if (secondCommandArg != null) {
+                    soundName = secondCommandArg;
+                    logger.info("Play targeted category sound: " + soundName);
+                    playTargetedSound(message, soundName, soundCategoryName);
+                } else {
+                    logger.info("Play random category sound: " + soundCategoryName);
+                    playRandomSound(message, soundCategoryName);
+                }
+            } else {
+                soundCategoryName = firstCommandArg;
+                logger.info("Category does not exist: " + soundCategoryName);
+                soundName = firstCommandArg;
+                playTargetedSound(message, soundName);
+            }
+        })
+        .catch(logger.error);
+}
 
 function playRandomSound(message, categoryName) {
     Db.getRandomSound(categoryName)
@@ -38,11 +63,9 @@ function playTargetedSound(message, soundName, categoryName) {
 }
 
 function playSound(sound, voiceChannel) {
-    var soundsDirectoryCleansed = path.join(SOUNDS_DIRECTORY);
-    var rootPath = path.resolve(soundsDirectoryCleansed);
-    var soundPath = path.join(rootPath, sound.category, sound.name);
+    var soundPath = fsReader.getSoundPathFromSound(sound);
 
-    if (!fs.existsSync(soundPath)) {
+    if (!fsReader.soundExistsInFileSystem(soundPath)) {
         logger.error("Couldn't find sound at " + soundPath);
         return;
     }
@@ -66,5 +89,6 @@ function insertSoundEvent(sound, memberName, eventType) {
     }
 }
 
+module.exports.playParameterizedSound = playParameterizedSound;
 module.exports.playRandomSound = playRandomSound;
-module.exports.playTargetedSound = playTargetedSound;
+module.exports.playSound = playSound;

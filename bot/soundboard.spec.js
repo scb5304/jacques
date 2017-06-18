@@ -3,9 +3,10 @@ require('dotenv').config({path: require('app-root-path') + "/.env"});
 var Discord = require('discord.js');
 var sinon = require('sinon');
 var chai = require('chai');
-
 var logger = require('./../common/util/logger.js');
+var path = require('path');
 var soundboard = require('./soundboard');
+var fileSystemReader = require('./fileSystemReader.js');
 var Db = require('./../common/data/db.js');
 
 beforeEach(function() {
@@ -39,11 +40,20 @@ describe("playRandomSound", function() {
         //if voiceChannel#join is called, then the test is a success.
         mockVoiceChannelJoin(this.message, done);
 
+        var sound = {name:"1910.mp3", category: "default"};
         //Stub the database to return a random sound name
-        this.sandbox.stub(Db, "getRandomSoundName").callsFake(function() {
+        this.sandbox.stub(Db, "getRandomSound").callsFake(function() {
             return new Promise(function(resolve, reject) {
-                return resolve("1910.mp3");
+                return resolve(sound);
             });
+        });
+        //Stub the fileSystemReader to return a sound path
+        this.sandbox.stub(fileSystemReader, "getSoundPathFromSound").callsFake(function() {
+            return "C:/sounds/default/1910.mp3";
+        });
+        //Stub the fileSystemReader to say it exists in the file system
+        this.sandbox.stub(fileSystemReader, "soundExistsInFileSystem").callsFake(function() {
+            return true;
         });
 
         //Play a random sound, which should query the database then join a voice channel, ending the test.
@@ -55,10 +65,19 @@ describe("playRandomSound", function() {
         mockVoiceChannelJoin(this.message, null);
 
         //Stub the database to return a random sound name
-        this.sandbox.stub(Db, "getRandomSoundName").callsFake(function() {
+        this.sandbox.stub(Db, "getRandomSound").callsFake(function() {
             return new Promise(function(resolve, reject) {
-                return resolve("1910.mp3");
+                return resolve({name:"1910.mp3"});
             });
+        });
+
+        //Stub the fileSystemReader to return a sound path
+        this.sandbox.stub(fileSystemReader, "getSoundPathFromSound").callsFake(function() {
+            return "C:/sounds/default/1910.mp3";
+        });
+        //Stub the fileSystemReader to say it exists in the file system
+        this.sandbox.stub(fileSystemReader, "soundExistsInFileSystem").callsFake(function() {
+            return true;
         });
 
         //Test succeeds if the spy sees the insert method is called
@@ -71,21 +90,39 @@ describe("playRandomSound", function() {
     });
 });
 
-describe("playTargetedSound", function() {
+describe("playParameterizedSound", function() {
     it("should query for a specific sound, then join a voice channel", function(done) {
         var soundName = "fif.mp3";
+        var sound = {name: soundName, category: "default"};
 
         //if voiceChannel#join is called, then the test is a success.
         mockVoiceChannelJoin(this.message, done);
 
-        //Stub the database to say the sound exists
-        var dbStub = this.sandbox.stub(Db, "soundExists").callsFake(function() {
+        //Stub the database to say no category exists since it's being passed null (no secondCommandArg)
+        this.sandbox.stub(Db, "categoryExists").callsFake(function() {
             return new Promise(function(resolve, reject) {
-                return resolve(soundName);
+                return resolve(null);
             });
         });
 
+        //Stub the database to say the sound exists
+        this.sandbox.stub(Db, "soundExists").callsFake(function() {
+            return new Promise(function(resolve, reject) {
+                return resolve(sound);
+            });
+        });
+
+        //Stub the fileSystemReader to return a sound path
+        this.sandbox.stub(fileSystemReader, "getSoundPathFromSound").callsFake(function() {
+            return "C:/sounds/default/fif.mp3";
+        });
+
+        //Stub the fileSystemReader to say it exists in the file system
+        this.sandbox.stub(fileSystemReader, "soundExistsInFileSystem").callsFake(function() {
+            return true;
+        });
+
         //Play a targeted sound, which should query the database then join a voice channel, ending the test.
-        soundboard.playTargetedSound(this.message, soundName);
+        soundboard.playParameterizedSound(this.message, soundName);
     });
-})
+});

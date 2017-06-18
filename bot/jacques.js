@@ -161,31 +161,7 @@ function playParameterizedSound(message, commandArgs) {
     if (alreadySpeaking(message)) return;
     var firstCommandArg = commandArgs[0];
     var secondCommandArg = commandArgs.length > 1 ? commandArgs[1] : null;
-
-    var soundName;
-    var soundCategoryName;
-
-    Db.categoryExists(firstCommandArg)
-        .then(function(category) {
-            if (category != null) {
-                soundCategoryName = category.name;
-                logger.info("Category exists: " + category.name);
-                if (secondCommandArg != null) {
-                    soundName = secondCommandArg;
-                    logger.info("Play targeted category sound: " + soundName);
-                    soundboard.playTargetedSound(message, soundName, soundCategoryName);
-                } else {
-                    logger.info("Play random category sound: " + soundCategoryName);
-                    soundboard.playRandomSound(message, soundCategoryName);
-                }
-            } else {
-                soundCategoryName = firstCommandArg;
-                logger.info("Category does not exist: " + soundCategoryName);
-                soundName = firstCommandArg;
-                soundboard.playTargetedSound(message, soundName);
-            }
-        })
-        .catch(logger.error);
+    soundboard.playParameterizedSound(message, firstCommandArg, secondCommandArg);
 }
 
 function cleanUp(message) {

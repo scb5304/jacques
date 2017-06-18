@@ -11,6 +11,7 @@ body {
     padding: 0px;
 }
 
+
 /* Toolbar area */
 
 .menu {
@@ -34,19 +35,57 @@ md-toolbar h1 {
 
 /* Sidenav area */
 
-md-list .md-button {
+md-sidenav {
+    overflow-y: hidden;
+}
+
+md-sidenav md-list {
+    flex: 1;
+    flex-direction: column;
+}
+
+md-sidenav md-list .md-button {
     color: inherit;
     font-weight: 500;
     text-align: left;
     width: 100%;
 }
 
-md-list .md-button.selected {
+md-sidenav md-list .md-button.selected {
     color: #03a9f4;
 }
 
-md-sidenav md-list {
-    padding: 0px 0px 8px 0px;
+sound-list {
+    display: flex;
+    flex-direction: column;
+}
+
+#sound-list-floater {
+    flex: 1;
+    flex-direction: column;
+    padding-bottom: 1vh;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+#sound-search-input-container {
+    margin-left: 16px;
+    margin-right: 16px;
+    margin-bottom: 0px;
+}
+
+#sound-list-category-dropdown-container {
+    margin-left: 16px;
+    margin-right: 16px;
+    display: inline
+}
+
+#sound-list-category-label {
+
+}
+
+#sound-list-category-dropdown {
+    min-width: 65%;
+    margin-left: 1vh;
 }
 
 .border-bottom-list-item {
@@ -96,14 +135,9 @@ md-button.menuBtn > md-icon {
     transition: all 100ms ease-out 30ms;
 }
 
-#soundSearch {
-  margin-left: 16px;
-  margin-right: 16px;
-  margin-bottom: 0px;
-}
-
 #sound-audio {
     width: 390px;
+    margin-top: 8px;
     margin-bottom: 16px;
 }
 
@@ -112,7 +146,8 @@ md-button.menuBtn > md-icon {
 }
 
 #sound-category-subtitle {
-    margin-top: 0px;
+    margin-top: 8px;
+    margin-bottom: 0px;
 }
 
 #sound-activity-card {
@@ -136,19 +171,19 @@ md-button.menuBtn > md-icon {
 }
 
 #sound-summary-card-content {
-  margin: 0 auto;
+    margin: 0 auto;
 }
 
 #sound-type-nut-chart {
-  margin: 0 auto;
+    margin: 0 auto;
 }
 
 #sound-activity-line-chart {
-  margin: 0 auto;
+    margin: 0 auto;
 }
 
 #sound-performed-by-chart {
-  margin: 0 auto;
+    margin: 0 auto;
 }
 
 #content img {
@@ -162,7 +197,7 @@ md-button.menuBtn > md-icon {
 }
 
 md-icon svg {
-  fill: inherit;
+    fill: inherit;
 }
 
 #help-close-icon {
@@ -173,6 +208,7 @@ md-icon svg {
     margin-top: 24px;
     border-bottom: 1px solid #CCCCCC;
 }
+
 
 /* Utils */
 
