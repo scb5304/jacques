@@ -16,9 +16,19 @@ angular
                     }
                 });
 
-                $scope.getSelectedName = function() {
+                $scope.getSelectedSoundName = function() {
                     if ($scope.sharedProperties && $scope.sharedProperties.getSelected()) {
                         return $scope.sharedProperties.getSelected().cleanedName;
+                    }
+                };
+
+                $scope.getSelectedSoundCategory = function() {
+                    if ($scope.sharedProperties && $scope.sharedProperties.getSelected()) {
+                        var category = $scope.sharedProperties.getSelected().category;
+                        if (!category || category === "") {
+                            return "none";
+                        }
+                        return category;
                     }
                 };
 

@@ -102,7 +102,7 @@ function routeTextChannelMessage(message, cleanedMessageContent) {
                 break;
             default:
                 logger.info("Default: play targeted sound.");
-                playTargetedSound(message, baseCommandArg);
+                playParameterizedSound(message, commandArgs);
                 break;
         }
     }
@@ -157,9 +157,11 @@ function sendSoundDump(message) {
         .catch(logger.error);
 }
 
-function playTargetedSound(message, soundName) {
+function playParameterizedSound(message, commandArgs) {
     if (alreadySpeaking(message)) return;
-    soundboard.playTargetedSound(message, soundName);
+    var firstCommandArg = commandArgs[0];
+    var secondCommandArg = commandArgs.length > 1 ? commandArgs[1] : null;
+    soundboard.playParameterizedSound(message, firstCommandArg, secondCommandArg);
 }
 
 function cleanUp(message) {
@@ -173,7 +175,6 @@ function parseCommandArgs(messageContent) {
             array.splice(i, 1);
         }
     });
-    logger.info("commandArgs: " + commandArgs);
     return commandArgs;
 }
 

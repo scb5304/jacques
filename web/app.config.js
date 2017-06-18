@@ -7,6 +7,7 @@ angular
             .primaryPalette('green')
             .accentPalette('deep-orange');
         $mdIconProvider
+            .icon("view-list", "assets/svg/view-list.svg", 24)
             .icon("menu", "assets/svg/menu.svg", 24)
             .icon("help", "assets/svg/help-circle-outline.svg", 24)
             .icon("github", "assets/svg/github-circle.svg", 24)

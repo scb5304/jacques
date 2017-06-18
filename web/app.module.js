@@ -10,6 +10,7 @@ angular
     ])
     .service('sharedProperties', function() {
         var sounds = [];
+        var categories = [];
         var selected;
 
         return {
@@ -18,6 +19,12 @@ angular
             },
             setSounds: function(newSounds) {
                 sounds = newSounds;
+            },
+            getCategories: function() {
+                return categories;
+            },
+            setCategories: function(newCategories) {
+                categories = newCategories;
             },
             getSelected: function() {
                 return selected;

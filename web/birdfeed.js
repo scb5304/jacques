@@ -4,6 +4,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const db = require('../common/data/db.js');
 const Sound = require('../common/model/sound').Sound;
+const Category = require('../common/model/category').Category;
 const path = require('path');
 const logger = require('../common/util/logger.js');
 
@@ -57,6 +58,28 @@ router.route('/sounds/:sound_name')
         }, function(err, sound) {
             if (err) res.send(err);
             res.json(sound);
+        });
+    });
+
+router.route('/categories')
+    .get(function(req, res) {
+        db.getAllCategories()
+            .then(function(categories) {
+                if (categories) {
+                    res.json(categories);
+                } else {
+                    logger.info("Now you fucked up");
+                }
+            }).catch(logger.error)
+    });
+
+router.route('/categories/:category_name')
+    .get(function(req, res) {
+        Category.findOne({
+            name: req.params.category_name
+        }, function(err, category) {
+            if (err) res.send(err);
+            res.json(category);
         });
     });
 
