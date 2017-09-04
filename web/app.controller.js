@@ -16,7 +16,7 @@ angular
             });
         });
 
-        $http.get('http://jacquesbot.io/api/sounds').then(function(soundsJSON) {
+        $http.get('http://localhost:8080/api/sounds').then(function(soundsJSON) {
             self.fetchCategories();
 
             var sounds = soundsJSON.data;

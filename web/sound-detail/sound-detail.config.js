@@ -4,7 +4,8 @@ angular
         // Configure all charts
         ChartJsProvider.setOptions({
             chartColors: ['#FF5722', '#A5D6A7'],
-            responsive: false,
+            responsive: true,
+            maintainAspectRatio: false
         });
         //Configure line charts
         ChartJsProvider.setOptions('line', {
@@ -19,6 +20,14 @@ angular
                         }
                     }
                 }]
+            }
+        });
+        //Configre doughnut charts
+        ChartJsProvider.setOptions('doughnut', {
+            responsive: true,
+            legend: {
+                display: true,
+                position: "bottom"
             }
         });
         //Configure horizontal bar charts
@@ -36,7 +45,7 @@ angular
 
                 }],
                 yAxes: [{
-                    categoryPercentage: 0.4
+                    
                 }]
             }
         });

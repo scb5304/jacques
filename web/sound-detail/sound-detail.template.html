@@ -1,55 +1,60 @@
 <h1 id="sound-title" class="md-display-2">{{getSelectedSoundName()}}</h1>
 <md-divider> </md-divider>
-<h5 id="sound-category-subtitle" class="md-subhead">Category: {{getSelectedSoundCategory()}}</h5>
 
 <audio id="sound-audio" controls data-ng-src="{{audioUrl}}"></audio>
-<div layout-gt-sm="row" layout="column">
-    <md-card class="sound-summary-card">
-        <md-card-title>
-            <md-card-title-text>
-                <span class="md-headline">Summary</span>
-            </md-card-title-text>
-        </md-card-title>
-        <md-card-content id="sound-summary-card-content" class="sound-summary-card">
-            <md-list>
-                <md-list-item class="border-bottom-list-item">Category: N/A</md-list-item>
-                <md-list-item class="border-bottom-list-item">Tags: N/A</md-list-item>
-                <md-list-item class="border-bottom-list-item">Play count: {{summaryPlayCount}}</md-list-item>
-                <md-list-item class="border-bottom-list-item">Added: {{summaryAddDate}}</md-list-item>
-                <md-list-item class="border-bottom-list-item">Last played on: {{summaryLastPlayed}}</md-list-item>
-            </md-list>
-        </md-card-content>
-    </md-card>
-    <md-card id="sound-activity-card">
-        <md-card-title>
-            <md-card-title-text>
-                <span class="md-headline">Activity</span>
-            </md-card-title-text>
-        </md-card-title>
-        <md-card-content>
-            <canvas id="sound-activity-line-chart" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-click="onClick" width="450" height="245" />
-        </md-card-content>
-    </md-card>
-</div>
-<div layout-gt-sm="row" layout="column">
-    <md-card class="sound-type-card">
-        <md-card-title>
-            <md-card-title-text>
-                <span class="md-headline">Play Type</span>
-            </md-card-title-text>
-        </md-card-title>
-        <md-card-content class="sound-type-card">
-            <canvas id="sound-type-nut-chart" class="chart chart-doughnut" chart-data="soundTypeNutData" chart-labels="soundTypeNutLabels" height="220"></canvas>
-        </md-card-content>
-    </md-card>
-    <md-card id="sound-performed-by-card">
-        <md-card-title>
-            <md-card-title-text>
-                <span class="md-headline">Played By</span>
-            </md-card-title-text>
-        </md-card-title>
-        <md-card-content>
-            <canvas id="sound-performed-by-chart" class="chart-horizontal-bar" chart-data="soundPlayedByBarData" chart-labels="soundPlayedByBarLabels" width="450" height="220"></canvas>
-        </md-card-content>
-    </md-card>
+
+<div>
+<md-grid-list flex md-cols-xs="1" md-cols-sm="1" md-cols-md="1" md-cols-gt-md="2" 
+    md-row-height-xs="2:1" md-row-height-sm="2:1" md-row-height-md="2.2:1" md-row-height-gt-md="2.2:1"
+    md-gutter="40">
+    <md-grid-tile md-colspan="1">
+    <div layout-fill layout="column">
+        <h3 class="md-title sound-chart-title">Summary</h5>
+        <md-card layout-fill>
+            
+            <md-card-content flex layout-fill>
+                <md-list>
+                    <md-list-item class="border-bottom-list-item">Category: {{getSelectedSoundCategory()}}</md-list-item>
+                    <md-list-item class="border-bottom-list-item">Play count: {{summaryPlayCount}}</md-list-item>
+                    <md-list-item hide-xs class="border-bottom-list-item">Added: {{summaryAddDate}}</md-list-item>
+                    <md-list-item hide-xs class="border-bottom-list-item">Last played on: {{summaryLastPlayed}}</md-list-item>
+                </md-list>
+            </md-card-content>
+        </md-card>
+        </div>
+    </md-grid-tile>
+
+    <md-grid-tile md-colspan="1">
+    <div layout-fill layout="column">
+        <h3 class="md-title sound-chart-title">Recent activity</h5>
+        <md-card layout-fill style="padding: 12px">
+            <md-card-content flex layout-fill>
+                <canvas class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-click="onClick"/>
+            </md-card-content>
+        </md-card>
+        </div>
+    </md-grid-tile>
+
+    <md-grid-tile md-colspan="1">
+    <div layout-fill layout="column">
+        <h3 class="md-title sound-chart-title">How it's played</h5>
+        <md-card layout-fill>
+            <md-card-content flex layout-fill >
+                <canvas id="sound-type-nut-chart" class="chart chart-doughnut" chart-data="soundTypeNutData" chart-labels="soundTypeNutLabels"/>
+            </md-card-content>
+        </md-card>
+        </div>
+    </md-grid-tile>
+
+    <md-grid-tile md-colspan="1">
+    <div layout-fill layout="column">
+        <h3 class="md-title sound-chart-title">Most played by</h5>
+        <md-card layout-fill>
+            <md-card-content flex layout-fill >
+                <canvas id="sound-performed-by-chart" class="chart-horizontal-bar" chart-data="soundPlayedByBarData" chart-labels="soundPlayedByBarLabels"></canvas>
+            </md-card-content>
+        </md-card>
+        </div>
+    </md-grid-tile>
+</md-grid-list>
 </div>

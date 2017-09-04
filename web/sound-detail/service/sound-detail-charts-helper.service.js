@@ -67,6 +67,11 @@ angular
                     });
                 });
 
+                //Having at least one '0' entry will make sure the graph still appears
+                if (counts.length == 0) {
+                    counts.push(0);
+                }
+
                 return counts;
             },
             calculatePlayTypeCount: function(sound, playType) {

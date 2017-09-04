@@ -142,48 +142,20 @@ md-button.menuBtn > md-icon {
 }
 
 #sound-title {
+    margin-top: 8px;
     margin-bottom: 0px;
+}
+
+.sound-chart-title {
+    margin: 0px !important;
+    padding-top: 10px;
+    padding-left: 8px;
+    padding-bottom: 2px;
 }
 
 #sound-category-subtitle {
     margin-top: 8px;
     margin-bottom: 0px;
-}
-
-#sound-activity-card {
-    width: 500px;
-    padding: 8px;
-}
-
-.sound-type-card {
-    width: 500px;
-    padding: 8px;
-}
-
-#sound-performed-by-card {
-    width: 500px;
-    padding: 8px;
-}
-
-.sound-summary-card {
-    width: 500px;
-    padding: 8px;
-}
-
-#sound-summary-card-content {
-    margin: 0 auto;
-}
-
-#sound-type-nut-chart {
-    margin: 0 auto;
-}
-
-#sound-activity-line-chart {
-    margin: 0 auto;
-}
-
-#sound-performed-by-chart {
-    margin: 0 auto;
 }
 
 #content img {
