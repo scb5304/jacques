@@ -40,15 +40,31 @@ md-sidenav {
 }
 
 md-sidenav md-list {
+    padding-top: 0px !important;
     flex: 1;
     flex-direction: column;
 }
 
-md-sidenav md-list .md-button {
+.sound-list-item {
+    padding: 0px !important; 
+    margin: 0px !important; 
+    align-items: stretch !important;
+}
+
+.sound-list-item-button {
+    padding: 0px !important; 
+    margin: 0px !important;
+
     color: inherit;
-    font-weight: 500;
+    font-weight: normal;
     text-align: left;
     width: 100%;
+}
+
+.sound-list-item-button-text {
+    padding-left: 20px;
+    padding-right: 20px;
+    text-transform: none;
 }
 
 md-sidenav md-list .md-button.selected {
@@ -220,10 +236,6 @@ span.name {
     font-weight: bold;
     font-size: 1.1em;
     padding-left: 5px;
-}
-
-.preserveCase {
-    text-transform: none;
 }
 
 .hint {
