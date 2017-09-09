@@ -16,7 +16,7 @@ angular
             });
         });
 
-        $http.get('http://jacquesbot.io/api/sounds').then(function(soundsJSON) {
+        $http.get('http://localhost:8080/api/sounds').then(function(soundsJSON) {
             self.fetchCategories();
 
             var sounds = soundsJSON.data;
@@ -38,7 +38,7 @@ angular
         });
 
         this.fetchCategories = function() {
-            $http.get('http://jacquesbot.io/api/categories').then(function(categoriesJSON) {
+            $http.get('http://localhost:8080/api/categories').then(function(categoriesJSON) {
                 var categories = categoriesJSON.data;
                 sharedProperties.setCategories(categories);
             });
