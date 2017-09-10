@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var soundEventSchema = new Schema({
@@ -16,8 +16,8 @@ var soundSchema = new Schema({
 	sound_events: [soundEventSchema]
 });
 
-var Sound = mongoose.model('Sound', soundSchema);
-var SoundEvent = mongoose.model('SoundEvent', soundEventSchema);
+var Sound = mongoose.model("Sound", soundSchema);
+var SoundEvent = mongoose.model("SoundEvent", soundEventSchema);
 
 module.exports.Sound = Sound;
 module.exports.SoundEvent = SoundEvent;

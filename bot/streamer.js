@@ -1,5 +1,5 @@
-var logger = require('./../common/util/logger.js');
-var ytdl = require('ytdl-core');
+var logger = require("./../common/util/logger.js");
+var ytdl = require("ytdl-core");
 
 var streamVolume = 0.40;
 
@@ -18,16 +18,16 @@ function streamAudio(voiceChannel, streamLink) {
     voiceChannel.join()
         .then(function(connection) {
             const stream = ytdl(streamLink, {
-                filter: 'audioonly'
+                filter: "audioonly"
             });
 
             const dispatcher = connection.playStream(stream, streamOptions);
-            dispatcher.once('end', function() {
+            dispatcher.once("end", function() {
                 logger.info("Leaving after playing sound.");
                 connection.disconnect();
             });
             
-            dispatcher.once('speaking', function() {
+            dispatcher.once("speaking", function() {
                 dispatcher.setVolumeLogarithmic(streamVolume);
             })
         })

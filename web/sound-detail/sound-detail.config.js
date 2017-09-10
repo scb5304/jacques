@@ -1,14 +1,14 @@
 angular
-    .module('soundDetail')
-    .config(['ChartJsProvider', function(ChartJsProvider) {
+    .module("soundDetail")
+    .config(["ChartJsProvider", function(ChartJsProvider) {
         // Configure all charts
         ChartJsProvider.setOptions({
-            chartColors: ['#FF5722', '#A5D6A7'],
+            chartColors: ["#FF5722", "#A5D6A7"],
             responsive: true,
             maintainAspectRatio: false
         });
         //Configure line charts
-        ChartJsProvider.setOptions('line', {
+        ChartJsProvider.setOptions("line", {
             scales: {
                 yAxes: [{
                     ticks: {
@@ -23,7 +23,7 @@ angular
             }
         });
         //Configre doughnut charts
-        ChartJsProvider.setOptions('doughnut', {
+        ChartJsProvider.setOptions("doughnut", {
             responsive: true,
             legend: {
                 display: true,
@@ -31,7 +31,7 @@ angular
             }
         });
         //Configure horizontal bar charts
-        ChartJsProvider.setOptions('horizontalBar', {
+        ChartJsProvider.setOptions("horizontalBar", {
             scales: {
                 xAxes: [{
                     ticks: {

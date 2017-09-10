@@ -1,12 +1,12 @@
-var Discord = require('discord.js');
+var Discord = require("discord.js");
 
-var Db = require('./../common/data/db');
-var Sound = require('./../common/model/sound').Sound;
-var logger = require('./../common/util/logger.js');
+var Db = require("./../common/data/db");
+var Sound = require("./../common/model/sound").Sound;
+var logger = require("./../common/util/logger.js");
 
-var soundboard = require('./soundboard.js');
-var streamer = require('./streamer.js');
-var messenger = require('./messenger.js');
+var soundboard = require("./soundboard.js");
+var streamer = require("./streamer.js");
+var messenger = require("./messenger.js");
 
 var bot;
 var site = "http://jacquesbot.io";

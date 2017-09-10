@@ -1,19 +1,19 @@
-'use strict';
+"use strict";
 
-describe('soundList', function() {
+describe("soundList", function() {
 
     beforeEach(function() {
-        module('soundList');
-        module('chart.js');
+        module("soundList");
+        module("chart.js");
     })
 
-    describe('SoundListController', function() {
+    describe("SoundListController", function() {
         var $httpBackend, ctrl, sharedPropertiesMock, scope;
 
         beforeEach(inject(function($componentController, _$httpBackend_, $rootScope) {
             $httpBackend = _$httpBackend_;
             scope = $rootScope.$new();
-            ctrl = $componentController('soundList', {
+            ctrl = $componentController("soundList", {
                 $scope: scope,
                 sharedProperties: sharedPropertiesMock
             });

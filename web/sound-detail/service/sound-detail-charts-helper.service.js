@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 angular
-    .module('soundDetail')
-    .service('SoundDetailChartsHelper', function() {
+    .module("soundDetail")
+    .service("SoundDetailChartsHelper", function() {
         return {
             getSoundActivityMonths: function(numberOfMonths) {
                 var monthsInPast = [];
@@ -16,7 +16,7 @@ angular
             calculateSoundActivityLabels: function(months) {
                 var labels = [];
                 months.forEach(function(month) {
-                    var formattedMonth = moment().month(month).format('MMMM');
+                    var formattedMonth = moment().month(month).format("MMMM");
                     labels.push(formattedMonth);
                 });
 

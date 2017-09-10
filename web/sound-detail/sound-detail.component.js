@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 
 // Register `soundDetail` component, along with its associated controller and template
 angular
-    .module('soundDetail')
-    .component('soundDetail', {
-        templateUrl: 'sound-detail/sound-detail.template.html',
-        controller: ['$location', '$scope', 'sharedProperties', 'SoundDetailChartsHelper', '$sce',
+    .module("soundDetail")
+    .component("soundDetail", {
+        templateUrl: "sound-detail/sound-detail.template.html",
+        controller: ["$location", "$scope", "sharedProperties", "SoundDetailChartsHelper", "$sce",
             function SoundDetailController($location, $scope, sharedProperties, SoundDetailChartsHelper, $sce) {
                 $scope.sharedProperties = sharedProperties;
                 $scope.SoundDetailChartsHelper = SoundDetailChartsHelper;
 
-                $scope.$watch('sharedProperties.getSelected()', function(newSound, oldSound) {
+                $scope.$watch("sharedProperties.getSelected()", function(newSound, oldSound) {
                     if (newSound) {
                         onSoundSelected(newSound);
                     }
@@ -79,9 +79,9 @@ angular
 
                 function formatMonthDayYear(date) {
                     return date.toLocaleString("en", {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric"
                     });
                 }
             }

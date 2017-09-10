@@ -1,16 +1,16 @@
-const mongoose = require('mongoose');
-const fs = require('fs');
+const mongoose = require("mongoose");
+const fs = require("fs");
 const SOUNDS_DIRECTORY = process.env.JACQUES_SOUNDS_DIRECTORY;
-const Sound = require('./../model/sound').Sound;
-const SoundEvent = require('./../model/sound').SoundEvent;
-const Category = require('./../model/category').Category;
-const util = require('./../util/utility');
-const logger = require('./../util/logger.js');
+const Sound = require("./../model/sound").Sound;
+const SoundEvent = require("./../model/sound").SoundEvent;
+const Category = require("./../model/category").Category;
+const util = require("./../util/utility");
+const logger = require("./../util/logger.js");
 
 function connect() {
     logger.info("Getting db ready...");
-    mongoose.connect('mongodb://localhost/jacques', function () {
-        logger.info('Db connected!');
+    mongoose.connect("mongodb://localhost/jacques", function () {
+        logger.info("Db connected!");
     });
 }
 
@@ -96,7 +96,7 @@ function getAllSounds() {
                 return reject("Couldn't get all sounds.");
             }
         })
-            .sort({name: 'asc'});
+            .sort({name: "asc"});
     });
 }
 
@@ -115,7 +115,7 @@ function getAllCategories() {
                 return reject("Couldn't get all categories.");
             }
         })
-            .sort({name: 'asc'});
+            .sort({name: "asc"});
     });
 }
 

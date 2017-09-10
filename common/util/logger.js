@@ -1,16 +1,16 @@
-process.env.TZ = 'America/New_York';
-const winston = require('winston');
-const moment = require('moment');
+process.env.TZ = "America/New_York";
+const winston = require("winston");
+const moment = require("moment");
 
 var loggerOptions = {
 	timestamp: function() {
 		var now = moment();
-		var fmtd = now.format('MM/DD/YYYY h:mm:ss a')
+		var fmtd = now.format("MM/DD/YYYY h:mm:ss a")
 		return fmtd;
 	},
 	filename: "logs.txt",
 	"colorize": true,
-	level: 'silly',
+	level: "silly",
 	handleExceptions: true,
 	humanReadableUnhandledException: true,
 	prettyPrint:true

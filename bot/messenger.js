@@ -1,4 +1,4 @@
-var logger = require('./../common/util/logger.js');
+var logger = require("./../common/util/logger.js");
 
 var HELP_STRING = "Jacques is a soundboard bot. To play a sound, type ! followed by the name of the sound. If you don't supply a sound name, it will play a random one. You can also " +
     "stream the audio of a youtube video with !stream.\n\n" +

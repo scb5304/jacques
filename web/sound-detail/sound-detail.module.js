@@ -1,3 +1,3 @@
-'use strict';
+"use strict";
 
-angular.module('soundDetail', ['chart.js']);
+angular.module("soundDetail", ["chart.js"]);

@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var categorySchema = new Schema({
@@ -6,6 +6,6 @@ var categorySchema = new Schema({
 	aliases: [String]
 });
 
-var Category = mongoose.model('Category', categorySchema);
+var Category = mongoose.model("Category", categorySchema);
 
 module.exports.Category = Category;

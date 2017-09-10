@@ -1,12 +1,12 @@
-require('dotenv').config({path: require('app-root-path') + "/.env"});
+require("dotenv").config({path: require("app-root-path") + "/.env"});
 
-var Discord = require('discord.js');
-var sinon = require('sinon');
-var chai = require('chai');
+var Discord = require("discord.js");
+var sinon = require("sinon");
+var chai = require("chai");
 
-var logger = require('./../common/util/logger.js');
-var streamer = require('./streamer');
-var Db = require('./../common/data/db.js');
+var logger = require("./../common/util/logger.js");
+var streamer = require("./streamer");
+var Db = require("./../common/data/db.js");
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();

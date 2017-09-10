@@ -5,7 +5,7 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: "",
 
     client: {
       captureConsole: true
@@ -13,7 +13,7 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
+    frameworks: ["jasmine"],
 
 
     // list of files / patterns to load in the browser
@@ -21,26 +21,26 @@ module.exports = function(config) {
         "./node_modules/moment/moment.js",
         "./node_modules/angular/angular.min.js",
         "../node_modules/angular-aria/angular-aria.js",
-        './node_modules/angular-ui-router/release/angular-ui-router.js',
+        "./node_modules/angular-ui-router/release/angular-ui-router.js",
         "./node_modules/angular-animate/angular-animate.js",
         "./node_modules/angular-material/angular-material.js",
         "./node_modules/angular-messages/angular-messages.js",
         "./node_modules/chart.js/dist/Chart.js",
         "./node_modules/angular-chart.js/dist/angular-chart.js",
-        './node_modules/angular-mocks/angular-mocks.js',
-        './web/app.module.js',
-        './web/app.config.js',
-        './web/core/core.module.js',
-        './web/sound-list/sound-list.module.js',
-        './web/sound-list/sound-list.template.html',
-        './web/sound-list/sound-list.component.js',
-        './web/sound-list/sound-list.component.spec.js',
-        './web/sound-detail/sound-detail.module.js',
-        './web/sound-detail/sound-detail.template.html',
-        './web/sound-detail/sound-detail.component.js',
-        './web/sound-detail/sound-detail.component.spec.js',
-        './web/sound-detail/service/sound-detail-charts-helper.service.js',
-        './web/sound-detail/service/sound-detail-charts-helper.service.spec.js'
+        "./node_modules/angular-mocks/angular-mocks.js",
+        "./web/app.module.js",
+        "./web/app.config.js",
+        "./web/core/core.module.js",
+        "./web/sound-list/sound-list.module.js",
+        "./web/sound-list/sound-list.template.html",
+        "./web/sound-list/sound-list.component.js",
+        "./web/sound-list/sound-list.component.spec.js",
+        "./web/sound-detail/sound-detail.module.js",
+        "./web/sound-detail/sound-detail.template.html",
+        "./web/sound-detail/sound-detail.component.js",
+        "./web/sound-detail/sound-detail.component.spec.js",
+        "./web/sound-detail/service/sound-detail-charts-helper.service.js",
+        "./web/sound-detail/service/sound-detail-charts-helper.service.spec.js"
     ],
 
 
@@ -51,18 +51,18 @@ module.exports = function(config) {
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: { './web/**/*.js': ['coverage'] },
+    preprocessors: { "./web/**/*.js": ["coverage"] },
 
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'coverage'],
+    reporters: ["progress", "coverage"],
 
     coverageReporter: {
-        type: 'lcovonly',
-        dir: 'coverage/',
-        subdir: 'lcov-report-client'
+        type: "lcovonly",
+        dir: "coverage/",
+        subdir: "lcov-report-client"
     },
 
 
@@ -85,7 +85,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS'],
+    browsers: ["PhantomJS"],
 
 
     // Continuous Integration mode

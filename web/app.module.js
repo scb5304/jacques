@@ -1,14 +1,14 @@
-'use strict';
+"use strict";
 
 // Define the `jacquesApp` module
 angular
-    .module('jacquesApp', [
-        'ngMaterial',
-        'soundDetail',
-        'soundList',
-        'chart.js',
+    .module("jacquesApp", [
+        "ngMaterial",
+        "soundDetail",
+        "soundList",
+        "chart.js",
     ])
-    .service('sharedProperties', function() {
+    .service("sharedProperties", function() {
         var sounds = [];
         var categories = [];
         var selected;

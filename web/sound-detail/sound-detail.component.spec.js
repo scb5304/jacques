@@ -1,18 +1,18 @@
-'use strict';
+"use strict";
 
-describe('Sound Detail', function () {
+describe("Sound Detail", function () {
 
     var SoundDetailChartsHelper;
 
     beforeEach(function () {
-        module('soundDetail');
+        module("soundDetail");
     });
 
     beforeEach(inject(function (_SoundDetailChartsHelper_) {
         SoundDetailChartsHelper = _SoundDetailChartsHelper_;
     }));
 
-    describe('Sound Detail Component', function () {
+    describe("Sound Detail Component", function () {
     	
     });
 });

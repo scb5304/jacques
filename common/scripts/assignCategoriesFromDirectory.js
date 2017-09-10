@@ -1,22 +1,22 @@
-const Db = require('../data/db');
-const mongoose = require('mongoose');
-const fs = require('fs');
+const Db = require("../data/db");
+const mongoose = require("mongoose");
+const fs = require("fs");
 var SOUNDS_DIRECTORY = "./../../sounds/";
-const Sound = require('./../model/sound').Sound;
-const SoundEvent = require('./../model/sound').SoundEvent;
-const Category = require('./../model/category').Category;
-const util = require('./../util/utility');
-const logger = require('./../util/logger.js');
+const Sound = require("./../model/sound").Sound;
+const SoundEvent = require("./../model/sound").SoundEvent;
+const Category = require("./../model/category").Category;
+const util = require("./../util/utility");
+const logger = require("./../util/logger.js");
 
-const readdirp = require('readdirp');
-const path = require('path');
+const readdirp = require("readdirp");
+const path = require("path");
 
 connect();
 
 function connect() {
     logger.info("Getting db ready...");
-    mongoose.connect('mongodb://localhost/jacques', function() {
-        logger.info('Db connected!');
+    mongoose.connect("mongodb://localhost/jacques", function() {
+        logger.info("Db connected!");
         assignCategoriesFromDirectory();
     });
 }
@@ -32,16 +32,16 @@ function assignCategoriesFromDirectory() {
         logger.info("Found one: " + directory);
     }*/
     stream
-        .on('warn', function(err) {
-            logger.error('non-fatal error', err);
+        .on("warn", function(err) {
+            logger.error("non-fatal error", err);
         })
-        .on('error', function(err) {
-            logger.error('fatal error', err);
+        .on("error", function(err) {
+            logger.error("fatal error", err);
         })
-        .on('data', function(entry) {
+        .on("data", function(entry) {
             fileSystemSounds.push(entry);
         })
-        .on('end', function() {
+        .on("end", function() {
             for (var file of fileSystemSounds) {
                 let soundName = file.name;
                 let soundDirectory = file.parentDir;

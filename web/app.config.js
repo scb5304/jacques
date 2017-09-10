@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
 angular
-    .module('jacquesApp')
+    .module("jacquesApp")
     .config(function($mdIconProvider, $mdThemingProvider, $locationProvider) {
-        $mdThemingProvider.theme('default')
-            .primaryPalette('green')
-            .accentPalette('deep-orange');
+        $mdThemingProvider.theme("default")
+            .primaryPalette("green")
+            .accentPalette("deep-orange");
         $mdIconProvider
             .icon("view-list", "assets/svg/view-list.svg", 24)
             .icon("menu", "assets/svg/menu.svg", 24)
@@ -15,5 +15,5 @@ angular
             .icon("invite", "assets/svg/person_add.svg", 24);
         $locationProvider
             .html5Mode(false)
-            .hashPrefix('');
+            .hashPrefix("");
     });

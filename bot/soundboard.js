@@ -1,6 +1,6 @@
-var Db = require('./../common/data/db');
-var logger = require('./../common/util/logger.js');
-var fsReader = require('./fileSystemReader.js');
+var Db = require("./../common/data/db");
+var logger = require("./../common/util/logger.js");
+var fsReader = require("./fileSystemReader.js");
 
 function playParameterizedSound(message, firstCommandArg, secondCommandArg) {
     var soundName;
@@ -73,7 +73,7 @@ function playSound(sound, voiceChannel) {
     voiceChannel.join()
         .then(function(connection) {
             const dispatcher = connection.playFile(soundPath);
-            dispatcher.once('end', function() {
+            dispatcher.once("end", function() {
                 logger.info("Leaving after playing sound.");
                 connection.disconnect();
             });
