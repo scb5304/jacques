@@ -109,7 +109,7 @@ function routeTextChannelMessage(message, cleanedMessageContent) {
     }
 
     cleanUp(message);
-};
+}
 
 function playRandomSound(message) {
     if (alreadySpeaking(message)) return;
