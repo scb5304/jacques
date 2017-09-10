@@ -76,6 +76,7 @@ function routeTextChannelMessage(message, cleanedMessageContent) {
             case "cancel":
             case "byejon":
             case "byejacques":
+            case "stop":
                 logger.info("Cancel voice connection.");
                 cancelVoiceConnection(message);
                 break;
