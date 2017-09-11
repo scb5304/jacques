@@ -21,7 +21,7 @@ function sendSounds(message, sounds) {
 
     helpTextSegments.forEach(function(helpTextSegment) {
         message.reply(helpTextSegment).catch(console.error);
-    })
+    });
 }
 
 function deleteMessage(message) {

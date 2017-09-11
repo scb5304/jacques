@@ -12,7 +12,7 @@ angular.module("soundList")
 
                 $scope.getSounds = function getSounds() {
                     return sharedProperties.getSounds();
-                }
+                };
 
                 $scope.getCategories = function getCategories() {
                     var sounds = $scope.getSounds();
@@ -23,9 +23,9 @@ angular.module("soundList")
                         if (sound.category && derivedCategories.indexOf(sound.category) == -1) {
                             derivedCategories.push(sound.category);
                         }
-                    })
+                    });
                     derivedCategories.sort();
-                    soundCategories = soundCategories.concat(derivedCategories)
+                    soundCategories = soundCategories.concat(derivedCategories);
                     return soundCategories;
                 }
 

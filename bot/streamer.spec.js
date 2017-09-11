@@ -13,7 +13,7 @@ beforeEach(function() {
 });
 
 afterEach(function() {
-    this.sandbox.restore()
+    this.sandbox.restore();
 });
 
 describe("streamer", function() {

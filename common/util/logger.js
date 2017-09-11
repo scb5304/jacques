@@ -5,7 +5,7 @@ const moment = require("moment");
 var loggerOptions = {
 	timestamp: function() {
 		var now = moment();
-		var fmtd = now.format("MM/DD/YYYY h:mm:ss a")
+		var fmtd = now.format("MM/DD/YYYY h:mm:ss a");
 		return fmtd;
 	},
 	filename: "logs.txt",

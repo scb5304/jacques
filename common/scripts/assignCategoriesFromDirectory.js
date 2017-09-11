@@ -55,7 +55,7 @@ function assignCategoriesFromDirectory() {
                         } else {
                             logger.info("Couldn't update sound " + soundName + " to have category " + soundDirectory);
                         }
-                    })
+                    });
                 }
             }
         })

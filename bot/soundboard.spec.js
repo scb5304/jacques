@@ -17,7 +17,7 @@ beforeEach(function() {
 });
 
 afterEach(function() {
-    this.sandbox.restore()
+    this.sandbox.restore();
 });
 
 //Adds a fake voice channel to a message that returns a fake promise when join() is called.

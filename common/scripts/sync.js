@@ -109,7 +109,7 @@ function createDirectoriesForCategories(categories) {
     for (category of categories) {
         var dirPath = SOUNDS_DIRECTORY + category.name;
         if (!fs.existsSync(dirPath)) {
-            console.log("making directory at " + dirPath)
+            logger.info("Making directory at " + dirPath);
             fs.mkdirSync(dirPath);
         }
     }

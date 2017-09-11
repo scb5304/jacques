@@ -92,7 +92,7 @@ angular
 
                 soundEvents.forEach(function(soundEvent) {
                     if (!lastPlayedDate) {
-                        lastPlayedDate = new Date(soundEvent.date)
+                        lastPlayedDate = new Date(soundEvent.date);
                     } else {
                         var possibleLastPlayedDate = new Date(soundEvent.date);
                         if (possibleLastPlayedDate > lastPlayedDate) {
@@ -103,5 +103,5 @@ angular
 
                 return lastPlayedDate;
             }
-        }
-    })
+        };
+    });

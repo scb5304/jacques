@@ -5,7 +5,7 @@ describe("soundList", function() {
     beforeEach(function() {
         module("soundList");
         module("chart.js");
-    })
+    });
 
     describe("SoundListController", function() {
         var $httpBackend, ctrl, sharedPropertiesMock, scope;

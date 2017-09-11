@@ -45,7 +45,7 @@ angular
         }
 
         this.toggleList = function() {
-            $mdSidenav("left").toggle()
+            $mdSidenav("left").toggle();
         };
 
         this.showHelp = function() {

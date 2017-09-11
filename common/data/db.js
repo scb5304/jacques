@@ -61,7 +61,7 @@ function soundExists(soundName, soundCategory) {
             } else {
                 return reject("Sound not found in db: " + soundName);
             }
-        })
+        });
     });
 }
 

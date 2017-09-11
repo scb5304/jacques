@@ -48,7 +48,7 @@ describe("SoundDetailChartsHelper", function() {
             var soundActivityCounts = SoundDetailChartsHelper.calculateSoundActivityCounts(testSoundBowser, lastSixMonthInts);
             var expectedSoundActivityCounts = [0, 0, 1, 2, 0, 1];
             expect(soundActivityCounts).toEqual(expectedSoundActivityCounts);
-        })
+        });
 
     });
     describe("Play Type Chart", function() {

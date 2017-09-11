@@ -41,7 +41,7 @@ router.route("/sounds")
                 } else {
                     logger.info("Now you fucked up");
                 }
-            }).catch(logger.error)
+            }).catch(logger.error);
     })
     .post(function(req, res) {
         console.log("Got POST request");

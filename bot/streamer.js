@@ -29,7 +29,7 @@ function streamAudio(voiceChannel, streamLink) {
             
             dispatcher.once("speaking", function() {
                 dispatcher.setVolumeLogarithmic(streamVolume);
-            })
+            });
         })
         .catch(logger.error);
 }
@@ -73,7 +73,7 @@ function changeVolume(message, requestedVolume, voiceConnection) {
         actualVolume = 1;
     }
 
-    message.reply("Changing volume from " + (streamVolume * 100) + "% to " + requestedVolume + "%")
+    message.reply("Changing volume from " + (streamVolume * 100) + "% to " + requestedVolume + "%");
     streamVolume = actualVolume;
 
     if (voiceConnection) {
