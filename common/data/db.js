@@ -14,10 +14,6 @@ function connect() {
     });
 }
 
-function syncSounds() {
-    logger.error("Syncing from Jacques was removed...");
-}
-
 function insertSoundEvent(soundName, performedBy, eventCategory) {
     Sound.findOne({
         name: soundName
@@ -137,7 +133,6 @@ function getRandomSound(soundCategory) {
 }
 
 module.exports.connect = connect;
-module.exports.syncSounds = syncSounds;
 module.exports.insertSoundEvent = insertSoundEvent;
 module.exports.soundExists = soundExists;
 module.exports.categoryExists = categoryExists;

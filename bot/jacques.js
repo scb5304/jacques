@@ -88,10 +88,6 @@ function routeTextChannelMessage(message, cleanedMessageContent) {
                 logger.info("Volume.");
                 volume(message, commandArgs);
                 break;
-            case "sync":
-                logger.info("Sync.");
-                sync(message);
-                break;
             case "help":
             case "sounds":
                 logger.info("Help.");
@@ -139,11 +135,6 @@ function volume(message, commandArgs) {
         logger.info("Print the volume.");
         messenger.printVolume(message, streamer.getVolume());
     }
-}
-
-function sync(message) {
-    if (message.member.displayName !== "Spitsonpuppies") return;
-    Db.syncSounds();
 }
 
 function help(message) {

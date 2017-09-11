@@ -47,7 +47,6 @@ function playTargetedSound(message, soundName, categoryName) {
     Db.soundExists(soundName, categoryName)
         .then(function(sound) {
             if (sound) {
-                console.log("I found a sound with name " + sound.name + " and category " + sound.category);
                 playSound(sound, message.member.voiceChannel);
                 if (categoryName) {
                     insertSoundEvent(sound, message.member.displayName, "playCategoryTargeted");
