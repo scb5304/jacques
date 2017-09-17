@@ -1,6 +1,5 @@
 {
 	"env": {
-		"browser": 1,
 		"node": 1
 	}, 
     "rules": {
