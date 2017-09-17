@@ -1,12 +1,8 @@
 {
-	"env": {
-		
-	}, 
     "rules": {
 		"no-use-before-define": ["error", { "functions": false, "classes": false, "variables": true }]
     },
     "globals": {
-    	"angular": 1,
     	"moment": 1
     }
 }
