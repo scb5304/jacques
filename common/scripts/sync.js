@@ -59,7 +59,7 @@ function onSoundWithNameInFileSystemAlreadyInDatabaseOnce(fileEntry, sound, allC
     var oldSoundPath = path.join(fileEntry.fullPath);
     var newSoundPath = path.join(ROOT_PATH, "default", sound.name);
 
-    for (category of allCategories) {
+    for (var category of allCategories) {
         if (soundCategory === category.name) {
             newSoundPath = path.join(ROOT_PATH, category.name, sound.name);
             break;

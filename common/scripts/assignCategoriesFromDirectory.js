@@ -63,7 +63,7 @@ function assignCategoriesFromDirectory() {
 
 function soundsWithName(fileSystemSounds, name) {
     var matchedSounds = [];
-    for (sound of fileSystemSounds) {
+    for (var sound of fileSystemSounds) {
         if (sound.name === name) {
             matchedSounds.push(sound);
         }
