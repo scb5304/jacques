@@ -60,7 +60,9 @@ function onTextChannelMessage(message) {
 }
 
 function onDirectChannelMessage(message) {
-    messenger.sendHelp(message);
+    if (message.displayName !== "Jacques") {
+        messenger.sendHelp(message);
+    }
 }
 
 function routeTextChannelMessage(message, cleanedMessageContent) {
