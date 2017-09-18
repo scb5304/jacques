@@ -1,7 +1,10 @@
 {
    "env":{
       "browser":true,
-      "node":true
+      "node":true,
+      "mocha":true,
+      "jasmine":true,
+      "phantomjs":true
    },
    "rules":{
       "no-use-before-define":[
