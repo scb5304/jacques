@@ -13,14 +13,14 @@ function sendSounds(message, sounds) {
 
     sounds.sort();
     sounds.forEach(function(sound) {
-        helpText += sound.name.split("\.")[0] + ", ";
+        helpText += sound.name.split(".")[0] + ", ";
     });
 
     helpText = helpText.substring(0, helpText.length - 2);
     var helpTextSegments = helpText.match(/.{1,1500}/g);
 
     helpTextSegments.forEach(function(helpTextSegment) {
-        message.reply(helpTextSegment).catch(console.error);
+        message.reply(helpTextSegment).catch(logger.error);
     });
 }
 
