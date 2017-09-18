@@ -12,9 +12,9 @@ var site = "http://jacquesbot.io";
 var prefix = process.env.JACQUES_PREFIX;
 
 function initialize() {
-	Db.connect();
-	bot = new Discord.Client();
-	bot.login(process.env.JACQUES_TOKEN);
+    Db.connect();
+    bot = new Discord.Client();
+    bot.login(process.env.JACQUES_TOKEN);
     bot.on("ready", onReady);
     bot.on("message", onMessage);
 }
@@ -116,12 +116,14 @@ function playRandomSound(message) {
 function cancelVoiceConnection(message) {
     var connection = message.member.voiceChannel.connection;
     if (connection) {
-    	connection.disconnect();
+        connection.disconnect();
     }
 }
 
 function streamAudio(message, commandArgs) {
-    if (alreadySpeaking(message)) return;
+    if (alreadySpeaking(message)) {
+        return;
+    }
     var streamLink = commandArgs.length > 1 ? commandArgs[1] : null;
     streamer.streamAudio(message.member.voiceChannel, streamLink);
 }

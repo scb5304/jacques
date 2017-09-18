@@ -1,4 +1,4 @@
-require("dotenv").config({path: require("app-root-path") + "/.env"});
+require("dotenv").config({ path: require("app-root-path") + "/.env" });
 
 var sinon = require("sinon");
 var soundboard = require("./soundboard");
@@ -22,9 +22,9 @@ function mockVoiceChannelJoin(message, done) {
     message.member.voiceChannel = {
         join: function() {
             return new Promise(function(resolve, reject) {
-            	if (done) {
-            		done();
-            	}
+                if (done) {
+                    done();
+                }
                 return reject("It's only a test.");
             });
         }
@@ -36,7 +36,7 @@ describe("playRandomSound", function() {
         //if voiceChannel#join is called, then the test is a success.
         mockVoiceChannelJoin(this.message, done);
 
-        var sound = {name:"1910.mp3", category: "default"};
+        var sound = { name: "1910.mp3", category: "default" };
         //Stub the database to return a random sound name
         this.sandbox.stub(Db, "getRandomSound").callsFake(function() {
             return new Promise(function(resolve) {
@@ -57,13 +57,13 @@ describe("playRandomSound", function() {
     });
 
     it("should insert a sound event", function(done) {
-    	//We need to mock this part so we can even get to inserting a sound event.
+        //We need to mock this part so we can even get to inserting a sound event.
         mockVoiceChannelJoin(this.message, null);
 
         //Stub the database to return a random sound name
         this.sandbox.stub(Db, "getRandomSound").callsFake(function() {
             return new Promise(function(resolve, reject) {
-                return resolve({name:"1910.mp3"});
+                return resolve({ name: "1910.mp3" });
             });
         });
 
@@ -80,7 +80,7 @@ describe("playRandomSound", function() {
         this.sandbox.stub(Db, "insertSoundEvent").callsFake(function() {
             done();
         });
-        
+
         //Play a random sound, which should afterwards insert a sound event.
         soundboard.playRandomSound(this.message);
     });
@@ -89,7 +89,7 @@ describe("playRandomSound", function() {
 describe("playParameterizedSound", function() {
     it("should query for a specific sound, then join a voice channel", function(done) {
         var soundName = "fif.mp3";
-        var sound = {name: soundName, category: "default"};
+        var sound = { name: soundName, category: "default" };
 
         //if voiceChannel#join is called, then the test is a success.
         mockVoiceChannelJoin(this.message, done);

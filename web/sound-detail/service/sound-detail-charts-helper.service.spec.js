@@ -43,7 +43,7 @@ describe("SoundDetailChartsHelper", function() {
         });
 
         it("should properly tally the number of times a sound was played in the provided months.", function() {
-        	//To ensure our dummy sounds don't fail later due to sound event stamps, pretend the last 6 months are Dec/Jan/Feb/Mar/Apr/May
+            //To ensure our dummy sounds don't fail later due to sound event stamps, pretend the last 6 months are Dec/Jan/Feb/Mar/Apr/May
             var lastSixMonthInts = [11, 0, 1, 2, 3, 4];
             var soundActivityCounts = SoundDetailChartsHelper.calculateSoundActivityCounts(testSoundBowser, lastSixMonthInts);
             var expectedSoundActivityCounts = [0, 0, 1, 2, 0, 1];

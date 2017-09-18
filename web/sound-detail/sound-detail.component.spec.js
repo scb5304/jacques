@@ -13,6 +13,6 @@ describe("Sound Detail", function () {
     }));
 
     describe("Sound Detail Component", function () {
-    	
+        
     });
 });
