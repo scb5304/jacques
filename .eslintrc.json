@@ -1,14 +1,21 @@
 {
-	"env": {
-		"browser": 1,
-		"node": 1
-	}, 
-    "rules": {
-		"no-use-before-define": ["error", { "functions": false, "classes": false, "variables": true }]
-    },
-    "globals": {
-    	"angular": 1,
-    	"moment": 1
-    },
-    "extends": "eslint:recommended"
+   "env":{
+      "browser":true,
+      "node":true
+   },
+   "rules":{
+      "no-use-before-define":[
+         "error",
+         {
+            "functions":false,
+            "classes":false,
+            "variables":true
+         }
+      ]
+   },
+   "globals":{
+      "angular":true,
+      "moment":true
+   },
+   "extends":"eslint:recommended"
 }
