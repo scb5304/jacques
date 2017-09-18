@@ -1,7 +1,6 @@
 var Discord = require("discord.js");
 
 var Db = require("./../common/data/db");
-var Sound = require("./../common/model/sound").Sound;
 var logger = require("./../common/util/logger.js");
 
 var soundboard = require("./soundboard.js");
@@ -61,7 +60,7 @@ function onTextChannelMessage(message) {
 }
 
 function onDirectChannelMessage(message) {
-    //TODO
+    messenger.sendHelp(message);
 }
 
 function routeTextChannelMessage(message, cleanedMessageContent) {

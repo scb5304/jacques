@@ -2,7 +2,7 @@ var logger = require("./../common/util/logger.js");
 
 var HELP_STRING = "Jacques is a soundboard bot. To play a sound, type ! followed by the name of the sound. If you don't supply a sound name, it will play a random one. You can also " +
     "stream the audio of a youtube video with !stream.\n\n" +
-    "Visit Jacques online at http://jacquesbot.io for a list of sounds, or use !helptext if you really want a text dump.";
+    "Visit Jacques online at http://jacquesbot.io for a list of sounds and additional help.";
 
 function sendHelp(message) {
     message.reply(HELP_STRING);
