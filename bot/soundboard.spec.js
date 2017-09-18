@@ -1,10 +1,6 @@
 require("dotenv").config({path: require("app-root-path") + "/.env"});
 
-var Discord = require("discord.js");
 var sinon = require("sinon");
-var chai = require("chai");
-var logger = require("./../common/util/logger.js");
-var path = require("path");
 var soundboard = require("./soundboard");
 var fileSystemReader = require("./fileSystemReader.js");
 var Db = require("./../common/data/db.js");
@@ -43,7 +39,7 @@ describe("playRandomSound", function() {
         var sound = {name:"1910.mp3", category: "default"};
         //Stub the database to return a random sound name
         this.sandbox.stub(Db, "getRandomSound").callsFake(function() {
-            return new Promise(function(resolve, reject) {
+            return new Promise(function(resolve) {
                 return resolve(sound);
             });
         });

@@ -1,13 +1,9 @@
 require("dotenv").config({path: require("app-root-path") + "/.env"});
 
-var Discord = require("discord.js");
 var sinon = require("sinon");
 var chai = require("chai");
-
-var logger = require("./../common/util/logger.js");
 var jacques = require("./jacques");
 var soundboard = require("./soundboard");
-var streamer = require("./streamer");
 var messenger = require("./messenger");
 var Db = require("./../common/data/db.js");
 var prefix = process.env.JACQUES_PREFIX;
@@ -118,14 +114,14 @@ describe("onTextChannelMessage", function() {
             var self = this;
             var stubbedSounds = ["dunkeroni", "spaghetti", "fif", "nicememe"];
 
-            var messengerStub = this.sandbox.stub(messenger, "sendSounds").callsFake(function(message, sounds) {
+            this.sandbox.stub(messenger, "sendSounds").callsFake(function(message, sounds) {
                 chai.expect(message).to.equal(self.message);
                 chai.expect(sounds).to.equal(stubbedSounds);
                 done();
             });
 
             this.sandbox.stub(Db, "getAllSounds").callsFake(function() {
-                return new Promise(function(resolve, reject) {
+                return new Promise(function(resolve) {
                     return resolve(stubbedSounds);
                 });
             });

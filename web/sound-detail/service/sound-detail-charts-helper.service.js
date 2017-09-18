@@ -60,7 +60,7 @@ angular
                 labels.forEach(function(label, i) {
                     counts.push(0);
 
-                    soundEvents.forEach(function(soundEvent, j) {
+                    soundEvents.forEach(function(soundEvent) {
                         if (soundEvent.performed_by === label) {
                             counts[i]++;
                         }

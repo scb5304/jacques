@@ -13,7 +13,7 @@ angular
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        userCallback: function(label, index, labels) {
+                        userCallback: function(label, index) {
                             if (Math.floor(label) === label) {
                                 return label;
                             }
@@ -36,7 +36,7 @@ angular
                 xAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        userCallback: function(label, index, labels) {
+                        userCallback: function(label, index) {
                             if (Math.floor(label) == label) {
                                 return label;
                             }

@@ -6,7 +6,7 @@ angular
 
         var self = this;
 
-        $rootScope.$on("$locationChangeSuccess", function(event) {
+        $rootScope.$on("$locationChangeSuccess", function() {
             var sounds = sharedProperties.getSounds();
 
             sounds.forEach(function(sound) {

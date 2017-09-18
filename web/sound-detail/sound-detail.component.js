@@ -10,7 +10,7 @@ angular
                 $scope.sharedProperties = sharedProperties;
                 $scope.SoundDetailChartsHelper = SoundDetailChartsHelper;
 
-                $scope.$watch("sharedProperties.getSelected()", function(newSound, oldSound) {
+                $scope.$watch("sharedProperties.getSelected()", function(newSound) {
                     if (newSound) {
                         onSoundSelected(newSound);
                     }
