@@ -60,7 +60,7 @@ function onTextChannelMessage(message) {
 }
 
 function onDirectChannelMessage(message) {
-    if (message.author.username !== "Jacques") {
+    if (message.author.username !== bot.user.username) {
         messenger.sendHelp(message);
     }
 }
