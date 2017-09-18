@@ -62,7 +62,7 @@ describe("playRandomSound", function() {
 
         //Stub the database to return a random sound name
         this.sandbox.stub(Db, "getRandomSound").callsFake(function() {
-            return new Promise(function(resolve, reject) {
+            return new Promise(function(resolve) {
                 return resolve({ name: "1910.mp3" });
             });
         });

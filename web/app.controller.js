@@ -22,7 +22,7 @@ angular
             var sounds = soundsJSON.data;
             var soundFromURL;
             sounds.forEach(function(sound) {
-                sound.cleanedName = sound.name.split("\.")[0];
+                sound.cleanedName = sound.name.split(".")[0];
                 if ("/" + sound.cleanedName === $location.path()) {
                     soundFromURL = sound;
                 }
