@@ -15,7 +15,8 @@
    },
    "globals":{
       "angular":true,
-      "moment":true
+      "moment":true,
+      "Promise":true
    },
    "extends":"eslint:recommended"
 }
