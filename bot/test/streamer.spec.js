@@ -2,7 +2,7 @@ require("dotenv").config({path: require("app-root-path") + "/.env"});
 
 var sinon = require("sinon");
 var chai = require("chai");
-var streamer = require("./streamer");
+var streamer = require("./../streamer");
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();
