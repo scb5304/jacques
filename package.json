@@ -7,7 +7,7 @@
     "start": "node jacques.js",
     "test": "npm-run-all -p -l testClient testServer --silent",
     "testClient": "karma start",
-    "testServer": "mocha ./bot/*.spec.js",
+    "testServer": "mocha ./bot/test/*.spec.js",
     "cover": "karma start & istanbul cover node_modules/mocha/bin/_mocha ./bot/test/*.spec.js -- -R spec",
     "coveralls": "npm run cover -- --report lcovonly && grunt lcovMerge && cat ./coverage/mergeLcov.info | coveralls"
   },
