@@ -38,7 +38,7 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
-    	"./web/birdfeed.js"
+        "./web/birdfeed.js"
     ],
 
 
