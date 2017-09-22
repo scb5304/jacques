@@ -12,7 +12,7 @@ function streamAudio(voiceChannel, streamLink) {
     const streamOptions = {
         seek: calculateStreamSeekSeconds(streamLink),
         volume: streamVolume,
-        passes: 2
+        passes: 6
     };
 
     voiceChannel.join()
