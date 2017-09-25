@@ -23,6 +23,16 @@ angular
             getCategories: function() {
                 return categories;
             },
+            getCategoryNames: function() {
+                if (!categories) {
+                    return [];
+                }
+                var categoryNames = [];
+                categories.forEach(function(category) {
+                    categoryNames.push(category.name);
+                });
+                return categoryNames;
+            },
             setCategories: function(newCategories) {
                 categories = newCategories;
             },

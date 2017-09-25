@@ -15,25 +15,16 @@ angular.module("soundList")
                 };
 
                 $scope.getCategories = function getCategories() {
-                    var sounds = $scope.getSounds();
-                    var soundCategories = ["all"];
-                    var derivedCategories = [];
-
-                    sounds.forEach(function(sound) {
-                        if (sound.category && derivedCategories.indexOf(sound.category) == -1) {
-                            derivedCategories.push(sound.category);
-                        }
-                    });
-                    derivedCategories.sort();
-                    soundCategories = soundCategories.concat(derivedCategories);
-                    return soundCategories;
-                }
+                    var defaultCategories = ["all"];
+                    var soundCategories = sharedProperties.getCategoryNames();
+                    return defaultCategories.concat(soundCategories);
+                };
 
                 $scope.updateSelected = function updateSelected(sound) {
                     $scope.sharedProperties.setSelected(sound);
-                }
+                };
 
-                $scope.categoryFilter = function categoryFilter(sound) {
+                $scope.soundMatchesFilter = function soundMatchesFilter(sound) {
                     return $scope.selectedCategory === "all" || $scope.selectedCategory === sound.category;
                 }
             }

@@ -9,11 +9,11 @@
     </md-input-container>
 </div>
 <md-content>
-<md-list>
-    <md-list-item class="sound-list-item border-bottom-list-item" ng-repeat="sound in (filteredSounds = (getSounds() | filter: {name: soundSearchQuery} | filter: categoryFilter))">
-        <md-button class="sound-list-item-button" aria-label="sound.name" ng-click="updateSelected(sound)">
-            <span class="sound-list-item-button-text" ng-bind="sound.cleanedName"></span>
-        </md-button>
-    </md-list-item>
-</md-list>
+    <md-list>
+        <md-list-item class="sound-list-item border-bottom-list-item" ng-repeat="sound in (filteredSounds = (getSounds() | filter: {name: soundSearchQuery} | filter: soundMatchesFilter))">
+            <md-button class="sound-list-item-button" aria-label="sound.name" ng-click="updateSelected(sound)">
+                <span class="sound-list-item-button-text" ng-bind="sound.cleanedName"></span>
+            </md-button>
+        </md-list-item>
+    </md-list>
 </md-content>

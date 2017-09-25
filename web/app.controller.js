@@ -42,7 +42,7 @@ angular
                 var categories = categoriesJSON.data;
                 sharedProperties.setCategories(categories);
             });
-        }
+        };
 
         this.toggleList = function() {
             $mdSidenav("left").toggle();
