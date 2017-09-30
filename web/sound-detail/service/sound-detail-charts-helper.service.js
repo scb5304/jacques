@@ -41,38 +41,41 @@ angular
 
                 return countsByMonth;
             },
-            calculateSoundPlayedByLabels: function(sound) {
+            calculateSoundPlayedByLabelsAndCounts: function(sound, labelsArray, countsArray) {
+                //Pull out each unique user from the sound's events
                 var soundEvents = sound.sound_events;
-                var labels = [];
                 soundEvents.forEach(function(soundEvent) {
                     var playedByLabel = soundEvent.performed_by;
-                    if (labels.indexOf(playedByLabel) == -1) {
-                        labels.push(playedByLabel);
+                    if (labelsArray.indexOf(playedByLabel) === -1) {
+                        labelsArray.push(playedByLabel);
                     }
                 });
 
-                return labels;
-            },
-            calculateSoundPlayedByCounts: function(sound, labels) {
-                var soundEvents = sound.sound_events;
-                var counts = [];
-
-                labels.forEach(function(label, i) {
-                    counts.push(0);
+                //Get the number of sound events each of those unique users are responsible for
+                labelsArray.forEach(function(label, i) {
+                    countsArray.push(0);
 
                     soundEvents.forEach(function(soundEvent) {
                         if (soundEvent.performed_by === label) {
-                            counts[i]++;
+                            countsArray[i]++;
                         }
                     });
                 });
 
-                //Having at least one '0' entry will make sure the graph still appears
-                if (counts.length == 0) {
-                    counts.push(0);
-                }
+                //To sort both simultaneously, combine them into a list of objects, then sort them together.
+                var combinedArray = [];
+                countsArray.forEach(function(value, i) {
+                    combinedArray.push({"label": labelsArray[i], "value": value});
+                });
+                combinedArray.sort(function(a, b) {
+                    return ((a.value < b.value) ? 1 : ((a.value === b.value) ? 0 : -1));
+                });
 
-                return counts;
+                //Pull the values out for use in the chart (two arrays)
+                combinedArray.forEach(function(combinedEntry, j) {
+                   labelsArray[j] = combinedEntry.label;
+                   countsArray[j] = combinedEntry.value;
+                });
             },
             calculatePlayTypeCount: function(sound, playType) {
                 var soundEvents = sound.sound_events;

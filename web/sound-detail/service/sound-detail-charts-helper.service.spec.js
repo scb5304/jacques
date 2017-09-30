@@ -169,23 +169,33 @@ describe("SoundDetailChartsHelper", function() {
     });
     describe("Played By Chart", function() {
         it("should properly calculate which users have played a sound.", function() {
-            var playedByLabelsBowser = SoundDetailChartsHelper.calculateSoundPlayedByLabels(testSoundBowser);
+            var playedByLabelsBowser = [];
+            var playedByLabelsCounts = [];
+            SoundDetailChartsHelper.calculateSoundPlayedByLabelsAndCounts(testSoundBowser, playedByLabelsBowser, playedByLabelsCounts);
+
             var expectedLabelsBowser = ["Eldre Hund", "Valle"];
             expect(expectedLabelsBowser).toEqual(playedByLabelsBowser);
 
-            var playedByLabelsCups = SoundDetailChartsHelper.calculateSoundPlayedByLabels(testSoundCups);
+            var playedByLabelsCups = [];
+            var playedByCountsCups = [];
+
+            SoundDetailChartsHelper.calculateSoundPlayedByLabelsAndCounts(testSoundCups, playedByLabelsCups, playedByCountsCups);
             var expectedLabelsCups = ["Captain Dogbeard", "Nathe-kyuuun~", "banana jam", "Valle", "Velenys", "Spitsonpuppies"];
             expect(expectedLabelsCups).toEqual(playedByLabelsCups);
         });
 
         it("should properly calculate the numbers of times users have played a sound.", function() {
-            var playedByLabelsBowser = SoundDetailChartsHelper.calculateSoundPlayedByLabels(testSoundBowser);
-            var playedByCountsBowser = SoundDetailChartsHelper.calculateSoundPlayedByCounts(testSoundBowser, playedByLabelsBowser);
+            var playedByLabelsBowser = [];
+            var playedByCountsBowser = [];
+            SoundDetailChartsHelper.calculateSoundPlayedByLabelsAndCounts(testSoundBowser, playedByLabelsBowser, playedByCountsBowser);
+
             var expectedPlayedByCountsBowser = [3, 1];
             expect(playedByCountsBowser).toEqual(expectedPlayedByCountsBowser);
 
-            var playedByLabelsCups = SoundDetailChartsHelper.calculateSoundPlayedByLabels(testSoundCups);
-            var playedByCountsCups = SoundDetailChartsHelper.calculateSoundPlayedByCounts(testSoundCups, playedByLabelsCups);
+            var playedByLabelsCups = [];
+            var playedByCountsCups = [];
+            SoundDetailChartsHelper.calculateSoundPlayedByLabelsAndCounts(testSoundCups, playedByLabelsCups, playedByCountsCups);
+
             var expectedPlayedByCountsCups = [4, 1, 1, 1, 1, 1];
             expect(playedByCountsCups).toEqual(expectedPlayedByCountsCups);
         })

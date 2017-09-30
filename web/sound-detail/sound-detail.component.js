@@ -65,8 +65,15 @@ angular
                 }
 
                 function updatePlayedByChart(sound) {
-                    $scope.soundPlayedByBarLabels = SoundDetailChartsHelper.calculateSoundPlayedByLabels(sound);
-                    $scope.soundPlayedByBarData = SoundDetailChartsHelper.calculateSoundPlayedByCounts(sound, $scope.soundPlayedByBarLabels);
+                    var playedByLabels = [];
+                    var playedByCounts = [];
+
+                    SoundDetailChartsHelper.calculateSoundPlayedByLabelsAndCounts(sound, playedByLabels, playedByCounts);
+                    playedByLabels = playedByLabels.slice(0, 10);
+                    playedByCounts = playedByCounts.slice(0, 10);
+
+                    $scope.soundPlayedByBarLabels = playedByLabels;
+                    $scope.soundPlayedByBarData = playedByCounts;
                 }
 
                 function updatePlayTypeChart(sound) {
