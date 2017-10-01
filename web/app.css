@@ -156,6 +156,7 @@ md-button.menuBtn > md-icon {
     max-width: 500px;
     margin-top: 8px;
     margin-bottom: 16px;
+    margin-left: -12px;
 }
 
 #sound-title {
