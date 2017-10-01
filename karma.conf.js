@@ -27,12 +27,12 @@ module.exports = function(config) {
         "./node_modules/chart.js/dist/Chart.js",
         "./node_modules/angular-chart.js/dist/angular-chart.js",
         "./node_modules/angular-mocks/angular-mocks.js",
-        "./web/app.module.js",
-        "./web/app.config.js",
-        "./web/sound-list/sound-list.module.js",
-        "./web/sound-detail/sound-detail.module.js",
-        "./web/**/*.js",
-        "./web/**/*.html"
+        "jacques-web/app.module.js",
+        "jacques-web/app.config.js",
+        "jacques-web/sound-list/sound-list.module.js",
+        "jacques-web/sound-detail/sound-detail.module.js",
+        "jacques-web/**/*.js",
+        "jacques-web/**/*.html"
     ],
 
 
