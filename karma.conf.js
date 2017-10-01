@@ -38,13 +38,13 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
-        "./web/birdfeed.js"
+        "./jacques-web/jacques-web.js"
     ],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: { "./web/**/!(*.spec).js": ["coverage"] },
+    preprocessors: { "./jacques-web/**/!(*.spec).js": ["coverage"] },
 
 
     // test results reporter to use
