@@ -89,19 +89,10 @@ sound-list {
     margin-bottom: 0px;
 }
 
-#sound-list-category-dropdown-container {
+#sound-category-input-container {
     margin-left: 16px;
     margin-right: 16px;
-    display: inline
-}
-
-#sound-list-category-label {
-
-}
-
-#sound-list-category-dropdown {
-    min-width: 65%;
-    margin-left: 1vh;
+    margin-bottom: 0px;
 }
 
 .border-bottom-list-item {
