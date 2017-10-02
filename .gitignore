@@ -1,10 +1,7 @@
-config.json
-node_modules/
-sounds/
-tags.js
-logs.txt
 .idea
 .env
 .coveralls.yml
 coverage/
-web/npm-debug.log
+node_modules/
+sounds/
+npm-debug.log
