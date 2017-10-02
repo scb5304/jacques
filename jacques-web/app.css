@@ -167,6 +167,10 @@ md-button.menuBtn > md-icon {
     margin-bottom: 0px;
 }
 
+#sound-summary-card-content {
+    background-color: white;
+}
+
 #content img {
     display: block;
     height: auto;
