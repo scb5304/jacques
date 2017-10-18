@@ -17,17 +17,17 @@ angular
             });
         });
 
-        $rootScope.$on('$locationChangeStart', function(event) {
-        	var sidenav = $mdSidenav("left");
-        	
-		    if (sidenav.isOpen()) {
-		    	sidenav.close();
-		        event.preventDefault();
-		    } else if (angular.element(document.body).hasClass('md-dialog-is-showing')) {
-		    	event.preventDefault();
-		    	$mdDialog.cancel();
-		    }
-		});
+        $rootScope.$on("$locationChangeStart", function(event) {
+            var sidenav = $mdSidenav("left");
+
+            if (sidenav.isOpen()) {
+                sidenav.close();
+                event.preventDefault();
+            } else if (angular.element(document.body).hasClass('md-dialog-is-showing')) {
+                event.preventDefault();
+                $mdDialog.cancel();
+            }
+        });
 
         $http.get("http://jacquesbot.io/api/sounds").then(function(soundsJSON) {
             self.fetchCategories();
