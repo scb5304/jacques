@@ -50,7 +50,9 @@ function onSoundInFileSystemNotInDatabase(soundName, categoryName) {
         category: categoryName
     });
     newSound.save(function(err) {
-        if (err) throw err;
+        if (err) {
+            logger.error(err);
+        }
     });
 }
 
@@ -122,7 +124,7 @@ function performSync(sounds, categories) {
                     });
                 }
             }
-        })
+        });
 }
 
 function soundsInDatabaseWithName(sounds, name) {

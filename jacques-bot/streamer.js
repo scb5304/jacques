@@ -66,7 +66,10 @@ function changeVolume(message, requestedVolume, voiceConnection) {
     var requester = message.member;
     
     //Not a number
-    if (isNaN(requestedVolume)) return;
+    if (isNaN(requestedVolume)) {
+        logger.error("Not a number: " + requestedVolume);
+        return;
+    }
 
     var actualVolume = requestedVolume / 100;
     if (actualVolume > 1) {

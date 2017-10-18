@@ -42,5 +42,5 @@ angular
             setSelected: function(newSelected) {
                 selected = newSelected;
             }
-        }
+        };
     });

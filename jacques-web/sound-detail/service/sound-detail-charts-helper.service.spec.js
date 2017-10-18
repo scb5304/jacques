@@ -165,7 +165,7 @@ describe("SoundDetailChartsHelper", function() {
             expect(unexpectedCountBowser).toEqual(0);
             var unexpectedCountCups = SoundDetailChartsHelper.calculatePlayTypeCount(testSoundCups, "playPajamas");
             expect(unexpectedCountCups).toEqual(0);
-        })
+        });
     });
     describe("Played By Chart", function() {
         it("should properly calculate which users have played a sound.", function() {

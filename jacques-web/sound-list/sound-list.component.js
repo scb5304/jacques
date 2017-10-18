@@ -26,7 +26,7 @@ angular.module("soundList")
 
                 $scope.soundMatchesFilter = function soundMatchesFilter(sound) {
                     return $scope.selectedCategory === "all" || $scope.selectedCategory === sound.category;
-                }
+                };
             }
         ]
     });

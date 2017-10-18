@@ -37,7 +37,7 @@ angular
                     ticks: {
                         beginAtZero: true,
                         userCallback: function(label) {
-                            if (Math.floor(label) == label) {
+                            if (Math.floor(label) === label) {
                                 return label;
                             }
                         }

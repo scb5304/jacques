@@ -63,5 +63,5 @@ angular
             self.closeDialog = function() {
                 $mdDialog.hide();
             }
-        }
+        };
     });

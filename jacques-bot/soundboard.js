@@ -6,12 +6,12 @@ function playParameterizedSound(message, firstCommandArg, secondCommandArg) {
     var soundName;
     var soundCategoryName;
 
-    Db.categoryExists(firstCommandArg)
+    Db.getCategoryFromName(firstCommandArg)
         .then(function(category) {
-            if (category != null) {
+            if (category) {
                 soundCategoryName = category.name;
                 logger.info("Category exists: " + category.name);
-                if (secondCommandArg != null) {
+                if (secondCommandArg) {
                     soundName = secondCommandArg;
                     logger.info("Play targeted category sound: " + soundName);
                     playTargetedSound(message, soundName, soundCategoryName);
@@ -19,14 +19,14 @@ function playParameterizedSound(message, firstCommandArg, secondCommandArg) {
                     logger.info("Play random category sound: " + soundCategoryName);
                     playRandomSound(message, soundCategoryName);
                 }
-            } else {
-                soundCategoryName = firstCommandArg;
-                logger.info("Category does not exist: " + soundCategoryName);
-                soundName = firstCommandArg;
-                playTargetedSound(message, soundName);
             }
         })
-        .catch(logger.error);
+        .catch(function() {
+            soundCategoryName = firstCommandArg;
+            logger.info("Category does not exist: " + soundCategoryName);
+            soundName = firstCommandArg;
+            playTargetedSound(message, soundName);
+        });
 }
 
 function playRandomSound(message, categoryName) {
@@ -44,7 +44,7 @@ function playRandomSound(message, categoryName) {
 
 function playTargetedSound(message, soundName, categoryName) {
     logger.info("Play targeted sound: sound " + soundName + ", category " + categoryName);
-    Db.soundExists(soundName, categoryName)
+    Db.getSoundFromNameAndCategory(soundName, categoryName)
         .then(function(sound) {
             if (sound) {
                 playSound(sound, message.member.voiceChannel);

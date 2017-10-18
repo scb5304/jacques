@@ -109,7 +109,9 @@ function routeTextChannelMessage(message, cleanedMessageContent) {
 }
 
 function playRandomSound(message) {
-    if (alreadySpeaking(message)) return;
+    if (alreadySpeaking(message)) {
+        return;
+    }
     soundboard.playRandomSound(message);
 }
 
@@ -174,7 +176,9 @@ function parseCommandArgs(messageContent) {
 }
 
 function alreadySpeaking(message) {
-    if (!bot) return;
+    if (!bot) {
+        return;
+    }
     var currentVoiceConnection = bot.voiceConnections.get(message.guild.id);
 
     if (currentVoiceConnection) {

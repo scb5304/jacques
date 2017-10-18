@@ -95,14 +95,14 @@ describe("playParameterizedSound", function() {
         mockVoiceChannelJoin(this.message, done);
 
         //Stub the database to say no category exists since it's being passed null (no secondCommandArg)
-        this.sandbox.stub(Db, "categoryExists").callsFake(function() {
+        this.sandbox.stub(Db, "getCategoryFromName").callsFake(function() {
             return new Promise(function(resolve, reject) {
-                return resolve(null);
+                return reject("Category doesn't exist.");
             });
         });
 
         //Stub the database to say the sound exists
-        this.sandbox.stub(Db, "soundExists").callsFake(function() {
+        this.sandbox.stub(Db, "getSoundFromNameAndCategory").callsFake(function() {
             return new Promise(function(resolve, reject) {
                 return resolve(sound);
             });

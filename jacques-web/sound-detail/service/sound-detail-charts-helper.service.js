@@ -33,7 +33,7 @@ angular
                     var eventDate = new Date(soundEvent.date);
 
                     months.forEach(function(month, i) {
-                        if (eventDate.getMonth() == month) {
+                        if (eventDate.getMonth() === month) {
                             countsByMonth[i]++;
                         }
                     });

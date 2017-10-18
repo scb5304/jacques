@@ -35,25 +35,21 @@ md-toolbar h1 {
 
 /* Sidenav area */
 
-md-sidenav {
-    
-}
-
 md-sidenav md-list {
-    padding-top: 0px !important;
+    padding-top: 0px;
     flex: 1;
     flex-direction: column;
 }
 
 .sound-list-item {
     padding: 0px !important; 
-    margin: 0px !important; 
-    align-items: stretch !important;
+    margin: 0px; 
+    align-items: stretch;
 }
 
 .sound-list-item-button {
-    padding: 0px !important; 
-    margin: 0px !important;
+    padding: 0px; 
+    margin: 0px;
 
     color: inherit;
     font-weight: normal;
@@ -109,40 +105,6 @@ sound-list {
     overflow-y: scroll
 }
 
-#content .md-button.share {
-    background-color: transparent;
-    border: none;
-    width: 48px;
-    height: 48px;
-    margin: 8px auto 16px 0;
-    position: absolute;
-    top: 10px;
-    right: 25px;
-}
-
-#content md-icon.avatar {
-    margin-top: 10px;
-}
-
-#content .md-button.share > md-icon {
-    fill: black;
-    width: 36px;
-    height: 36px;
-}
-
-md-button.menuBtn > md-icon {
-    fill: white;
-    width: 24px;
-    height: 24px;
-}
-
-#content .md-button.share:active > md-icon {
-    background-color: #dadada;
-    border-radius: 75%;
-    padding: 4px;
-    transition: all 100ms ease-out 30ms;
-}
-
 #sound-audio {
     width: 100%;
     max-width: 500px;
@@ -157,7 +119,7 @@ md-button.menuBtn > md-icon {
 }
 
 .sound-chart-title {
-    margin: 0px !important;
+    margin: 0px;
     padding-top: 10px;
     padding-left: 8px;
     padding-bottom: 2px;
@@ -193,76 +155,4 @@ md-icon svg {
 .help-dialog-title {
     margin-top: 24px;
     border-bottom: 1px solid #CCCCCC;
-}
-
-
-/* Utils */
-
-.content-wrapper {
-    position: relative;
-}
-
-
-/* Typography support coming in 0.8.0 */
-
-md-toolbar h1 {
-    font-size: 1.250em;
-    font-weight: 400;
-}
-
-.avatar {
-    position: relative;
-    width: 128px;
-    height: 128px;
-    border: 1px solid #ddd;
-    border-radius: 50%;
-    display: inline-block;
-    overflow: hidden;
-    margin: 0px;
-    vertical-align: middle;
-    zoom: 0.70;
-    transform: translateZ(0);
-    -webkit-transform: scale(0.70);
-    -moz-transform: scale(0.70);
-}
-
-md-bottom-sheet md-icon {
-    margin-right: 20px;
-}
-
-span.name {
-    font-weight: bold;
-    font-size: 1.1em;
-    padding-left: 5px;
-}
-
-.hint {
-    /* Position the hint */
-    position: absolute;
-    left: 2px;
-    right: auto;
-    bottom: 7px;
-    /* Copy styles from ng-messages */
-    font-size: 12px;
-    line-height: 14px;
-    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-    /* Set our own color */
-    color: grey;
-}
-
-.inputdemoErrorsAdvanced .hint.ng-hide,
-.inputdemoErrorsAdvanced .hint.ng-enter,
-.inputdemoErrorsAdvanced .hint.ng-leave.ng-leave-active {
-    bottom: 26px;
-    opacity: 0;
-}
-
-.inputdemoErrorsAdvanced .hint.ng-leave,
-.inputdemoErrorsAdvanced .hint.ng-enter.ng-enter-active {
-    bottom: 7px;
-    opacity: 1;
-}
-
-.sound-dialog {
-    width: 50%;
 }

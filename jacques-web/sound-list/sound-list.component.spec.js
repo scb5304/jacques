@@ -29,7 +29,7 @@ describe("soundList", function() {
                     return [];
                 },
                 getCategoryNames: function() {
-                    return []
+                    return [];
                 },
                 setSelected: function() {
 
@@ -59,7 +59,7 @@ describe("soundList", function() {
 
         it("combines categories sent by the Jacques API with 'all'.", function() {
             spyOn(sharedPropertiesMock, "getCategoryNames").and.callFake(function() {
-                return ["jontron", "imaqtpie"]
+                return ["jontron", "imaqtpie"];
             });
             var categories = scope.getCategories();
             expect(categories.length).toEqual(3);
