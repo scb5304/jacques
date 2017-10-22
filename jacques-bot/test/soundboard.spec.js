@@ -103,7 +103,7 @@ describe("playParameterizedSound", function() {
 
         //Stub the database to say the sound exists
         this.sandbox.stub(Db, "getSoundFromNameAndCategory").callsFake(function() {
-            return new Promise(function(resolve, reject) {
+            return new Promise(function(resolve) {
                 return resolve(sound);
             });
         });

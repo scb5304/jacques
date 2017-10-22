@@ -4,8 +4,6 @@ const fs = require("fs");
 var SOUNDS_DIRECTORY = "./../../sounds/";
 const Sound = require("./../model/sound").Sound;
 const SoundEvent = require("./../model/sound").SoundEvent;
-const Category = require("./../model/category").Category;
-const util = require("./../util/utility");
 const logger = require("./../util/logger.js");
 
 const readdirp = require("readdirp");
@@ -131,16 +129,6 @@ function soundsInDatabaseWithName(sounds, name) {
     var matchedSounds = [];
     for (var sound of sounds) {
         if (sound.name === name) {
-            matchedSounds.push(sound);
-        }
-    }
-    return matchedSounds;
-}
-
-function soundsWithCategory(sounds, category) {
-    var matchedSounds = [];
-    for (var sound of sounds) {
-        if (sound.category === category) {
             matchedSounds.push(sound);
         }
     }

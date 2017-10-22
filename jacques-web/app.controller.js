@@ -12,7 +12,7 @@ angular
             sounds.forEach(function(sound) {
                 if ("/" + sound.cleanedName === $location.path()) {
                     sharedProperties.setSelected(sound);
-                    $mdSidenav("left").close()
+                    $mdSidenav("left").close();
                 }
             });
         });
@@ -74,6 +74,6 @@ angular
             var self = this;
             self.closeDialog = function() {
                 $mdDialog.hide();
-            }
+            };
         };
     });

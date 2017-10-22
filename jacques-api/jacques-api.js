@@ -1,7 +1,6 @@
 require("dotenv").config({path: "./../.env"});
 
 const express = require("express");
-const path = require("path");
 const bodyParser = require("body-parser");
 const db = require("../common/data/db.js");
 const Sound = require("../common/model/sound").Sound;
@@ -36,7 +35,7 @@ router.route("/sounds")
                 res.status(500).send({error: "Failed to get sounds. Error: " + err});
             });
     })
-    .post(function(req, res) {
+    .post(function(req) {
         console.log("Got POST request");
         console.log(req.body);
     });

@@ -2,6 +2,14 @@ var Db = require("./../common/data/db");
 var logger = require("./../common/util/logger.js");
 var fsReader = require("./fileSystemReader.js");
 
+function insertSoundEvent(sound, memberName, eventType) {
+    try {
+        Db.insertSoundEvent(sound.name, memberName, eventType);
+    } catch (err) {
+        logger.error(err);
+    }
+}
+
 function playParameterizedSound(message, firstCommandArg, secondCommandArg) {
     var soundName;
     var soundCategoryName;
@@ -78,14 +86,6 @@ function playSound(sound, voiceChannel) {
             });
         })
         .catch(logger.error);
-}
-
-function insertSoundEvent(sound, memberName, eventType) {
-    try {
-        Db.insertSoundEvent(sound.name, memberName, eventType);
-    } catch (err) {
-        logger.error(err);
-    }
 }
 
 module.exports.playParameterizedSound = playParameterizedSound;

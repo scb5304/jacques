@@ -63,8 +63,6 @@ function calculateStreamSeekSeconds(streamLink) {
 }
 
 function changeVolume(message, requestedVolume, voiceConnection) {
-    var requester = message.member;
-    
     //Not a number
     if (isNaN(requestedVolume)) {
         logger.error("Not a number: " + requestedVolume);

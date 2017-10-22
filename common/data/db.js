@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const fs = require("fs");
 const Sound = require("./../model/sound").Sound;
 const SoundEvent = require("./../model/sound").SoundEvent;
 const Category = require("./../model/category").Category;
@@ -75,7 +74,7 @@ function getCategoryFromName(categoryName) {
                 return resolve(category);
             }
         });
-    })
+    });
 }
 
 function getAllSounds() {

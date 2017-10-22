@@ -155,7 +155,9 @@ function sendSoundDump(message) {
 }
 
 function playParameterizedSound(message, commandArgs) {
-    if (alreadySpeaking(message)) return;
+    if (alreadySpeaking(message)) {
+        return;
+    }
     var firstCommandArg = commandArgs[0];
     var secondCommandArg = commandArgs.length > 1 ? commandArgs[1] : null;
     soundboard.playParameterizedSound(message, firstCommandArg, secondCommandArg);

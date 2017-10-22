@@ -198,6 +198,6 @@ describe("SoundDetailChartsHelper", function() {
 
             var expectedPlayedByCountsCups = [4, 1, 1, 1, 1, 1];
             expect(playedByCountsCups).toEqual(expectedPlayedByCountsCups);
-        })
+        });
     });
 });
