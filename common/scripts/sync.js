@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const fs = require("fs");
 var SOUNDS_DIRECTORY = "./../../sounds/";
 const Sound = require("./../model/sound").Sound;
-const SoundEvent = require("./../model/sound").SoundEvent;
 const logger = require("./../util/logger.js");
 
 const readdirp = require("readdirp");
@@ -11,23 +10,9 @@ const path = require("path");
 
 const ROOT_PATH = path.resolve(path.join(SOUNDS_DIRECTORY));
 
-function createDirectoriesForCategories(categories) {
-    for (var category of categories) {
-        var dirPath = SOUNDS_DIRECTORY + category.name;
-        if (!fs.existsSync(dirPath)) {
-            logger.info("Making directory at " + dirPath);
-            fs.mkdirSync(dirPath);
-        }
-    }
-}
-
 function beginSync() {
-    Db.getAllCategories().then(function(categories) {
-        createDirectoriesForCategories(categories);
-
-        Db.getAllSounds().then(function(sounds) {
-            performSync(sounds, categories);
-        });
+    Db.getAllSounds().then(function(dbSounds) {
+        performSync(dbSounds);
     });
 }
 
@@ -39,13 +24,12 @@ function connect() {
     });
 }
 
-function onSoundInFileSystemNotInDatabase(soundName, categoryName) {
+function onSoundInFileSystemNotInDatabase(soundName) {
     logger.info("Adding " + soundName + " to the database! It's in the file system but not the database.");
     var newSound = Sound({
         name: soundName,
         add_date: new Date(),
         added_by: "Server",
-        category: categoryName
     });
     newSound.save(function(err) {
         if (err) {
@@ -54,17 +38,9 @@ function onSoundInFileSystemNotInDatabase(soundName, categoryName) {
     });
 }
 
-function onSoundWithNameInFileSystemAlreadyInDatabaseOnce(fileEntry, sound, allCategories) {
-    var soundCategory = sound.category;
+function onSoundWithNameInFileSystemAlreadyInDatabase(fileEntry, sound) {
     var oldSoundPath = path.join(fileEntry.fullPath);
-    var newSoundPath = path.join(ROOT_PATH, "default", sound.name);
-
-    for (var category of allCategories) {
-        if (soundCategory === category.name) {
-            newSoundPath = path.join(ROOT_PATH, category.name, sound.name);
-            break;
-        }
-    }
+    var newSoundPath = ROOT_PATH;
 
     if (oldSoundPath !== newSoundPath) {
         logger.info("Expected: " + oldSoundPath + ", found " + newSoundPath);
@@ -72,13 +48,13 @@ function onSoundWithNameInFileSystemAlreadyInDatabaseOnce(fileEntry, sound, allC
             if (err) {
                 logger.error(err);
             } else {
-                logger.info("Wrong category! Moved " + oldSoundPath + " to " + newSoundPath);
+                logger.info("Wrong location! Moved " + oldSoundPath + " to " + newSoundPath);
             }
         });
     }
 }
 
-function performSync(sounds, categories) {
+function performSync(dbSounds) {
     logger.info("Beginning read directory stream...");
     var stream = readdirp({ root: ROOT_PATH });
     var fileSystemSoundNames = [];
@@ -93,23 +69,22 @@ function performSync(sounds, categories) {
         .on("data", function(entry) {
             fileSystemSoundNames.push(entry.name);
             var soundName = entry.name;
-            var soundCategoryInFileSystem = entry.parentDir;
-            var soundsWithName = soundsInDatabaseWithName(sounds, soundName);
+            var soundsWithName = soundsInDatabaseWithName(dbSounds, soundName);
 
             if (soundsWithName.length === 0) {
-                onSoundInFileSystemNotInDatabase(soundName, soundCategoryInFileSystem);
+                onSoundInFileSystemNotInDatabase(soundName);
             } else if (soundsWithName.length === 1) {
                 var soundWithName = soundsWithName[0];
-                onSoundWithNameInFileSystemAlreadyInDatabaseOnce(entry, soundWithName, categories);
+                onSoundWithNameInFileSystemAlreadyInDatabase(entry, soundWithName);
             } else {
-                logger.info("More than one sound named " + soundName + "! Arbitrary desired location; leaving it in " + soundCategoryInFileSystem);
+                logger.error("More than one sound named " + soundName + "!");
             }
         })
         .on("end", function() {
-            //We've moved sounds to the correct categories and added them to the database if they aren't there.
+            //We've added them sounds to the database if they aren't there.
             //Now we need to see if there are sounds no longer in the file system but still in the database.
             //We can't do that mid-stream; the stream is for reading files. This is a situation where the file we care about is NOT in the file system.
-            for (var sound of sounds) {
+            for (var sound of dbSounds) {
                 var notInFileSystem = fileSystemSoundNames.indexOf(sound.name) === -1;
                 if (notInFileSystem) {
                     logger.info("Removing " + sound.name + " from the database! It's no longer in the file system.");

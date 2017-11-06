@@ -4,7 +4,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const db = require("../common/data/db.js");
 const Sound = require("../common/model/sound").Sound;
-const Category = require("../common/model/category").Category;
 const logger = require("../common/util/logger.js");
 
 const app = express();
@@ -51,27 +50,6 @@ router.route("/sounds/:sound_name")
             } else {
                 res.json(sound);
             }
-        });
-    });
-
-router.route("/categories")
-    .get(function(req, res) {
-        db.getAllCategories()
-            .then(function(categories) {
-                res.json(categories);
-            }).catch(function(error) {
-                logger.error(error);
-                res.status(500).send({error: "Failed to get categories. Error: " + err});
-            });
-    });
-
-router.route("/categories/:category_name")
-    .get(function(req, res) {
-        Category.findOne({
-            name: req.params.category_name
-        }, function(err, category) {
-            if (err) res.send(err);
-            res.json(category);
         });
     });
 

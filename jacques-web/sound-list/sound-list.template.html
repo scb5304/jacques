@@ -3,16 +3,10 @@
         <label>Search</label>
         <input ng-model="soundSearchQuery" />
     </md-input-container>
-    <md-input-container id="sound-category-input-container" class="md-block">
-        <label>Category</label>
-        <md-select ng-model="selectedCategory" placeholder="Select a category">
-            <md-option ng-value="category" ng-repeat="category in getCategories()">{{category}}</md-option>
-        </md-select>
-    </md-input-container>
 </div>
 <md-content>
     <md-list>
-        <md-list-item class="sound-list-item border-bottom-list-item" ng-repeat="sound in (filteredSounds = (getSounds() | filter: {name: soundSearchQuery} | filter: soundMatchesFilter))">
+        <md-list-item class="sound-list-item border-bottom-list-item" ng-repeat="sound in (filteredSounds = (getSounds() | filter: {name: soundSearchQuery}))">
             <md-button class="sound-list-item-button" aria-label="sound.name" ng-click="updateSelected(sound)">
                 <span class="sound-list-item-button-text" ng-bind="sound.cleanedName"></span>
             </md-button>

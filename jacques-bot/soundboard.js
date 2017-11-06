@@ -10,61 +10,25 @@ function insertSoundEvent(sound, memberName, eventType) {
     }
 }
 
-function playParameterizedSound(message, firstCommandArg, secondCommandArg) {
-    var soundName;
-    var soundCategoryName;
-
-    Db.getCategoryFromName(firstCommandArg)
-        .then(function(category) {
-            if (category) {
-                soundCategoryName = category.name;
-                logger.info("Category exists: " + category.name);
-                if (secondCommandArg) {
-                    soundName = secondCommandArg;
-                    logger.info("Play targeted category sound: " + soundName);
-                    playTargetedSound(message, soundName, soundCategoryName);
-                } else {
-                    logger.info("Play random category sound: " + soundCategoryName);
-                    playRandomSound(message, soundCategoryName);
-                }
-            }
-        })
-        .catch(function() {
-            soundCategoryName = firstCommandArg;
-            logger.info("Category does not exist: " + soundCategoryName);
-            soundName = firstCommandArg;
-            playTargetedSound(message, soundName);
-        });
-}
-
-function playRandomSound(message, categoryName) {
-    Db.getRandomSound(categoryName)
+function playRandomSound(message) {
+    Db.getRandomSound()
         .then(function(sound) {
             playSound(sound, message.member.voiceChannel);
-            if (categoryName) {
-                insertSoundEvent(sound, message.member.displayName, "playCategoryRandom");
-            } else {
-                insertSoundEvent(sound, message.member.displayName, "playRandom");
-            }
+            insertSoundEvent(sound, message.member.displayName, "playRandom");
         })
         .catch(logger.error);
 }
 
-function playTargetedSound(message, soundName, categoryName) {
-    logger.info("Play targeted sound: sound " + soundName + ", category " + categoryName);
-    Db.getSoundFromNameAndCategory(soundName, categoryName)
+function playTargetedSound(message, soundName) {
+    logger.info("Play targeted sound: sound " + soundName);
+    Db.getSoundFromName(soundName)
         .then(function(sound) {
             if (sound) {
                 playSound(sound, message.member.voiceChannel);
-                if (categoryName) {
-                    insertSoundEvent(sound, message.member.displayName, "playCategoryTargeted");
-                } else {
-                    insertSoundEvent(sound, message.member.displayName, "playTargeted");
-                }
+                insertSoundEvent(sound, message.member.displayName, "playTargeted");
             } else {
-                logger.info("Sound " + soundName + " does not exist with category " + categoryName);
+                logger.info("Sound " + soundName + " does not exist.");
             }
-
         })
         .catch(logger.error);
 }
@@ -88,6 +52,6 @@ function playSound(sound, voiceChannel) {
         .catch(logger.error);
 }
 
-module.exports.playParameterizedSound = playParameterizedSound;
+module.exports.playTargetedSound = playTargetedSound;
 module.exports.playRandomSound = playRandomSound;
 module.exports.playSound = playSound;

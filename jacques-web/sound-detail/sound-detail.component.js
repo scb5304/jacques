@@ -22,16 +22,6 @@ angular
                     }
                 };
 
-                $scope.getSelectedSoundCategory = function() {
-                    if ($scope.sharedProperties && $scope.sharedProperties.getSelected()) {
-                        var category = $scope.sharedProperties.getSelected().category;
-                        if (!category || category === "") {
-                            return "none";
-                        }
-                        return category;
-                    }
-                };
-
                 function onSoundSelected(sound) {
                     $location.path(sound.cleanedName);
                     updateAudioFile(sound);
@@ -42,7 +32,7 @@ angular
                 }
 
                 function updateAudioFile(sound) {
-                    $scope.audioUrl = $sce.trustAsResourceUrl("http://jacquesbot.io/raw/" + sound.category + "/" + sound.name);
+                    $scope.audioUrl = $sce.trustAsResourceUrl("http://jacquesbot.io/raw/" + sound.name);
                 }
 
                 function updateSummaryCard(sound) {

@@ -75,21 +75,21 @@ describe("onTextChannelMessage", function() {
 
     describe("playing targeted sounds", function() {
         it("routes prefix mySound to play targeted sound mySound", function() {
-            var soundboardStub = this.sandbox.stub(soundboard, "playParameterizedSound");
+            var soundboardStub = this.sandbox.stub(soundboard, "playTargetedSound");
             var soundName = "mySound";
             this.message.content = prefix + soundName;
 
             jacques.onTextChannelMessage(this.message);
-            sinon.assert.calledWith(soundboardStub, this.message, soundName, null);
+            sinon.assert.calledWith(soundboardStub, this.message, soundName);
         });
 
         it("routes prefix mySound with whitespaces to play targeted sound mySound", function() {
-            var soundboardStub = this.sandbox.stub(soundboard, "playParameterizedSound");
+            var soundboardStub = this.sandbox.stub(soundboard, "playTargetedSound");
             var soundName = "mySound";
             this.message.content = "   " + prefix + soundName + " ";
 
             jacques.onTextChannelMessage(this.message);
-            sinon.assert.calledWith(soundboardStub, this.message, soundName, null);
+            sinon.assert.calledWith(soundboardStub, this.message, soundName);
         });
     });
 

@@ -6,7 +6,7 @@ function getSoundPathFromSound(sound) {
 	var soundsDirectoryCleansed = path.join(SOUNDS_DIRECTORY);
     var rootPath = path.resolve(soundsDirectoryCleansed);
 
-	return path.join(rootPath, sound.category, sound.name);
+	return path.join(rootPath, sound.name);
 }
 
 function soundExistsInFileSystem(soundPath) {

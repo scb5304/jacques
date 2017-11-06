@@ -86,7 +86,7 @@ describe("playRandomSound", function() {
     });
 });
 
-describe("playParameterizedSound", function() {
+describe("playTargetedSound", function() {
     it("should query for a specific sound, then join a voice channel", function(done) {
         var soundName = "fif.mp3";
         var sound = { name: soundName, category: "default" };
@@ -94,15 +94,8 @@ describe("playParameterizedSound", function() {
         //if voiceChannel#join is called, then the test is a success.
         mockVoiceChannelJoin(this.message, done);
 
-        //Stub the database to say no category exists since it's being passed null (no secondCommandArg)
-        this.sandbox.stub(Db, "getCategoryFromName").callsFake(function() {
-            return new Promise(function(resolve, reject) {
-                return reject("Category doesn't exist.");
-            });
-        });
-
         //Stub the database to say the sound exists
-        this.sandbox.stub(Db, "getSoundFromNameAndCategory").callsFake(function() {
+        this.sandbox.stub(Db, "getSoundFromName").callsFake(function() {
             return new Promise(function(resolve) {
                 return resolve(sound);
             });
@@ -119,6 +112,6 @@ describe("playParameterizedSound", function() {
         });
 
         //Play a targeted sound, which should query the database then join a voice channel, ending the test.
-        soundboard.playParameterizedSound(this.message, soundName);
+        soundboard.playTargetedSound(this.message, soundName);
     });
 });
