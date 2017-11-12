@@ -40,7 +40,7 @@ function onSoundInFileSystemNotInDatabase(soundName) {
 
 function onSoundWithNameInFileSystemAlreadyInDatabase(fileEntry, sound) {
     var oldSoundPath = path.join(fileEntry.fullPath);
-    var newSoundPath = ROOT_PATH;
+    var newSoundPath = path.join(ROOT_PATH, sound.name);
 
     if (oldSoundPath !== newSoundPath) {
         logger.info("Expected: " + oldSoundPath + ", found " + newSoundPath);
