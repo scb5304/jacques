@@ -20,8 +20,8 @@ db.connect();
 router.use(function(req, res, next) {
     if (req.method === "GET") {
         res.header("Access-Control-Allow-Origin", "*");
-        next();
     }
+    next();
 });
 
 router.route("/sounds")
