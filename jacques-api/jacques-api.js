@@ -9,6 +9,7 @@ const logger = require("../common/util/logger.js");
 const app = express();
 const router = express.Router();
 const port = 8081;
+const fs = require("fs");
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -34,9 +35,16 @@ router.route("/sounds")
                 res.status(500).send({error: "Failed to get sounds. Error: " + err});
             });
     })
-    .post(function(req) {
-        console.log("Got POST request");
-        console.log(req.body);
+    .post(function(req, res) {
+        var base64Data = req.body.sound.replace(/^data:audio\/mp3;base64,/, "");
+        fs.writeFile("out.mp3", base64Data, 'base64', function(err) {
+            if (err) {
+                logger.error(err);
+                res.status(500).send({error: "Couldn't save file."});
+            } else {
+                res.send("Saved file!");
+            }
+        });
     });
 
 router.route("/sounds/:sound_name")
