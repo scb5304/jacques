@@ -1,6 +1,6 @@
 var Db = require("./../common/data/db");
 var logger = require("./../common/util/logger.js");
-var fsReader = require("./fileSystemReader.js");
+var fsReader = require("./../common/util/fileSystemReader.js");
 
 function insertSoundEvent(sound, memberName, eventType) {
     try {

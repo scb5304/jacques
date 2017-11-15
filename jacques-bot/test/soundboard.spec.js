@@ -2,7 +2,7 @@ require("dotenv").config({ path: require("app-root-path") + "/.env" });
 
 var sinon = require("sinon");
 var soundboard = require("./../soundboard");
-var fileSystemReader = require("./../fileSystemReader.js");
+var fileSystemReader = require("./../../common/util/fileSystemReader.js");
 var Db = require("./../../common/data/db.js");
 
 beforeEach(function() {
