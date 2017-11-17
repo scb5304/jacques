@@ -25,6 +25,7 @@
     "apiai": "4.0.0",
     "apiai-promise": "1.0.0",
     "app-root-path": "2.0.1",
+    "bluebird": "3.5.1",
     "body-parser": "1.16.1",
     "chai": "3.5.0",
     "chart.js": "2.5.0",
