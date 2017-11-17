@@ -34,7 +34,7 @@ function playTargetedSound(message, soundName) {
 }
 
 function playSound(sound, voiceChannel) {
-    var soundPath = fsReader.getSoundPathFromSound(sound);
+    var soundPath = fsReader.getSoundPathFromSound(sound) + ".mp3";
 
     if (!fsReader.soundExistsInFileSystem(soundPath)) {
         logger.error("Couldn't find sound at " + soundPath);

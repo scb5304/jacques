@@ -40,16 +40,25 @@ function insertSoundEvent(soundName, performedBy, eventCategory) {
 }
 
 function getSoundFromName(soundName) {
-    var regex = "^" + soundName + "\\..+$";
-    var args = {name: new RegExp(regex, "i")};
-
     return new Promise((resolve, reject) => {
-        //Query for one sound that starts with this soundName, is followed by a period, and any file extension
-        Sound.findOne(args, function (err, sound) {
-            if (err || !sound) {
+        Sound.findOne({name: soundName}, function (err, sound) {
+            if (err) {
                 return reject("Couldn't get sound from db: " + soundName + ". Error: " + err);
             } else {
                 return resolve(sound);
+            }
+        });
+    });
+}
+
+function deleteSoundWithName(soundName) {
+    return new Promise((resolve, reject) => {
+        Sound.remove({name: soundName}, function(err) {
+            if (err) {
+                logger.error(err);
+                return reject(err);
+            } else {
+                return resolve();
             }
         });
     });
@@ -92,3 +101,4 @@ module.exports.insertSoundEvent = insertSoundEvent;
 module.exports.getSoundFromName = getSoundFromName;
 module.exports.getRandomSound = getRandomSound;
 module.exports.getAllSounds = getAllSounds;
+module.exports.deleteSoundWithName = deleteSoundWithName;
