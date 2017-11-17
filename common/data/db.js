@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+mongoose.Promise = require('bluebird');
 const Sound = require("./../model/sound").Sound;
 const SoundEvent = require("./../model/sound").SoundEvent;
 const util = require("./../util/utility");
