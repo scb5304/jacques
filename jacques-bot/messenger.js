@@ -24,6 +24,19 @@ function sendSounds(message, sounds) {
     });
 }
 
+function sendDirectMessage(user, message) {
+    if (user !== null) {
+        var dmChannel = user.dmChannel;
+        if (dmChannel) {
+            dmChannel.send(message);
+        } else {
+            user.createDM().then(function(dmChannel) {
+                dmChannel.send(message);
+            }).catch(logger.error);
+        }
+    }
+}
+
 function deleteMessage(message) {
     if (message.channel.name !== "commands") {
         message.delete(2000).catch(logger.error);
@@ -36,5 +49,6 @@ function printVolume(message, volume) {
 
 module.exports.sendHelp = sendHelp;
 module.exports.sendSounds = sendSounds;
+module.exports.sendDirectMessage = sendDirectMessage;
 module.exports.deleteMessage = deleteMessage;
 module.exports.printVolume = printVolume;

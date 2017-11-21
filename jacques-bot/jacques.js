@@ -6,6 +6,8 @@ var logger = require("./../common/util/logger.js");
 var soundboard = require("./soundboard.js");
 var streamer = require("./streamer.js");
 var messenger = require("./messenger.js");
+var UIDGenerator = require('uid-generator');
+
 
 var bot;
 var site = "http://jacquesbot.io";
@@ -98,6 +100,9 @@ function routeTextChannelMessage(message, cleanedMessageContent) {
                 logger.info("Sound dump.");
                 sendSoundDump(message);
                 break;
+            case "upload":
+                sendUploadToken(message);
+                break;
             default:
                 logger.info("Default: play targeted sound.");
                 playTargetedSound(message, commandArgs);
@@ -152,6 +157,17 @@ function sendSoundDump(message) {
             messenger.sendSounds(message, sounds);
         })
         .catch(logger.error);
+}
+
+function sendUploadToken(message) {
+    var author = message.author;
+    var token = createTokenForUser(author);
+    var messageToSend = "Here's your birdfeed: " + token;
+    messenger.sendDirectMessage(author, messageToSend);
+}
+
+function createTokenForUser(user) {
+    return new UIDGenerator(UIDGenerator.BASE16, 10).generateSync();
 }
 
 function playTargetedSound(message, commandArgs) {
