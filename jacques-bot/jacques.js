@@ -101,7 +101,7 @@ function routeTextChannelMessage(message, cleanedMessageContent) {
                 sendSoundDump(message);
                 break;
             case "upload":
-                sendUploadToken(message);
+                sendUploadBirdfeed(message);
                 break;
             default:
                 logger.info("Default: play targeted sound.");
@@ -159,15 +159,28 @@ function sendSoundDump(message) {
         .catch(logger.error);
 }
 
-function sendUploadToken(message) {
-    var author = message.author;
-    var token = createTokenForUser(author);
-    var messageToSend = "Here's your birdfeed: " + token;
-    messenger.sendDirectMessage(author, messageToSend);
+function sendUploadBirdfeed(message) {
+    //GuildMember represents a member of a guild with guild-specific fields and methods.
+    //It has a User field that contains the generic Discord user data.
+    var guildMember = message.member;
+    if (!guildMember || !guildMember.user) {
+        return;
+    }
+
+    //TODO check role
+    createBirdfeedForDiscordUser(guildMember.user);
 }
 
-function createTokenForUser(user) {
-    return new UIDGenerator(UIDGenerator.BASE16, 10).generateSync();
+function createBirdfeedForDiscordUser(user) {
+    var token = new UIDGenerator(UIDGenerator.BASE16, 10).generateSync();
+    Db.insertOrUpdateDiscordUserWithToken(user, token).then(function() {
+        var messageToSend = "Here's your birdfeed: " + token;
+        messenger.sendDirectMessage(user, messageToSend);
+    }).catch(function(err) {
+        logger.error(err);
+        var messageToSend = "I couldn't get any birdfeed for you. Oops. Squawk.";
+        messenger.sendDirectMessage(user, messageToSend);
+    });
 }
 
 function playTargetedSound(message, commandArgs) {
