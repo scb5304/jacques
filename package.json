@@ -37,6 +37,7 @@
     "moment": "2.18.1",
     "mongodb": "2.2.22",
     "mongoose": "4.8.1",
+    "mongoose-sanitizer": "1.0.0",
     "node-datetime": "1.0.0",
     "node-opus": "^0.2.4",
     "readdirp": "2.1.0",
