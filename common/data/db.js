@@ -57,7 +57,6 @@ function deleteSoundWithName(soundName) {
     return new Promise((resolve, reject) => {
         Sound.remove({name: soundName}, function (err) {
             if (err) {
-                logger.error(err);
                 return reject(err);
             } else {
                 return resolve();
@@ -110,6 +109,18 @@ function getUserFromDiscordId(discordId) {
     });
 }
 
+function getUserFromBirdfeed(birdfeed) {
+    return new Promise((resolve, reject) => {
+        User.findOne({birdfeed_token: birdfeed}, function (err, user) {
+            if (err) {
+                return reject("Couldn't find user with birdfeed: " + birdfeed + ". Error: " + err);
+            } else {
+                return resolve(user);
+            }
+        })
+    });
+}
+
 function insertOrUpdateDiscordUserWithToken(discordUser, token) {
     return new Promise((resolve, reject) => {
         User.findOneAndUpdate({discord_id: discordUser.id}, {
@@ -137,4 +148,5 @@ module.exports.getRandomSound = getRandomSound;
 module.exports.getAllSounds = getAllSounds;
 module.exports.deleteSoundWithName = deleteSoundWithName;
 module.exports.getUserFromDiscordId = getUserFromDiscordId;
+module.exports.getUserFromBirdfeed = getUserFromBirdfeed;
 module.exports.insertOrUpdateDiscordUserWithToken = insertOrUpdateDiscordUserWithToken;

@@ -40,7 +40,7 @@ function onSoundInFileSystemNotInDatabase(soundName) {
 
 function onSoundWithNameInFileSystemAlreadyInDatabase(fileEntry, sound) {
     var oldSoundPath = path.join(fileEntry.fullPath);
-    var newSoundPath = path.join(ROOT_PATH, sound.name);
+    var newSoundPath = path.join(ROOT_PATH, sound.name + ".mp3");
 
     if (oldSoundPath !== newSoundPath) {
         logger.info("Expected: " + oldSoundPath + ", found " + newSoundPath);
@@ -68,7 +68,7 @@ function performSync(dbSounds) {
         })
         .on("data", function(entry) {
             fileSystemSoundNames.push(entry.name);
-            var soundName = entry.name;
+            var soundName = path.parse(entry.name).name;
             var soundsWithName = soundsInDatabaseWithName(dbSounds, soundName);
 
             if (soundsWithName.length === 0) {
@@ -85,7 +85,7 @@ function performSync(dbSounds) {
             //Now we need to see if there are sounds no longer in the file system but still in the database.
             //We can't do that mid-stream; the stream is for reading files. This is a situation where the file we care about is NOT in the file system.
             for (var sound of dbSounds) {
-                var notInFileSystem = fileSystemSoundNames.indexOf(sound.name) === -1;
+                var notInFileSystem = fileSystemSoundNames.indexOf(sound.name + ".mp3") === -1;
                 if (notInFileSystem) {
                     logger.info("Removing " + sound.name + " from the database! It's no longer in the file system.");
                     Sound.remove({
