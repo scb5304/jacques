@@ -119,7 +119,7 @@ function insertOrUpdateDiscordUserWithToken(discordUser, token) {
                 birdfeed_date_time: new Date(),
             }
         }, {
-            upsert: true
+            upsert: true, returnNewDocument: true
         }, function (err, user) {
             if (err || !user) {
                 return reject("Couldn't update find/update user: " + discordUser.username + ". Error: " + err);

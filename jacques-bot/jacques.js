@@ -160,26 +160,53 @@ function sendSoundDump(message) {
 }
 
 function sendUploadBirdfeed(message) {
-    //GuildMember represents a member of a guild with guild-specific fields and methods.
-    //It has a User field that contains the generic Discord user data.
+    var user = message.author;
     var guildMember = message.member;
-    if (!guildMember || !guildMember.user) {
+
+    if (!user) {
+        logger.error("This upload message doesn't have a user.");
+        return;
+    }
+    if (!guildMember.guild) {
+        logger.error("This upload message doesn't have a guild member with a guild.");
         return;
     }
 
-    //TODO check role
-    createBirdfeedForDiscordUser(guildMember.user);
+    var messageBase = "Hello. You requested a sound upload on '" + guildMember.guild.name + "'. ";
+    var messageToSend;
+
+    if (userHasUploadPermissions(guildMember)) {
+        createBirdfeedForDiscordUser(guildMember.user).then(function(birdfeed) {
+            messageToSend = messageBase + "Here is your birdfeed: " + birdfeed + ". Please copy it, visit http://jacquesbot.io, and include it in your sound upload.";
+            messenger.sendDirectMessage(user, messageToSend);
+        }).catch(function(err) {
+            messageToSend = messageBase + "Sorry, but there was an error giving you birdfeed. Which is unfortunate, because I'm starving.";
+            messenger.sendDirectMessage(user, messageToSend);
+            logger.error(err);
+        });
+    } else {
+        messageToSend = messageBase + "Sorry, but you need the 'Attach Files' permission to upload sounds for this server.";
+        messenger.sendDirectMessage(user, messageToSend);
+    }
+}
+
+function userHasUploadPermissions(guildMember) {
+    try {
+        return guildMember.hasPermission("ATTACH_FILES");
+    } catch(err) {
+        logger.error(err);
+        return false;
+    }
 }
 
 function createBirdfeedForDiscordUser(user) {
-    var token = new UIDGenerator(UIDGenerator.BASE16, 10).generateSync();
-    Db.insertOrUpdateDiscordUserWithToken(user, token).then(function() {
-        var messageToSend = "Here's your birdfeed: " + token;
-        messenger.sendDirectMessage(user, messageToSend);
-    }).catch(function(err) {
-        logger.error(err);
-        var messageToSend = "I couldn't get any birdfeed for you. Oops. Squawk.";
-        messenger.sendDirectMessage(user, messageToSend);
+    return new Promise((resolve, reject) => {
+        var token = new UIDGenerator(UIDGenerator.BASE16, 10).generateSync();
+        Db.insertOrUpdateDiscordUserWithToken(user, token).then(function() {
+            return resolve(token);
+        }).catch(function(err) {
+            return reject(err);
+        });
     });
 }
 
