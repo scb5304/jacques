@@ -24,12 +24,20 @@ function connect() {
     });
 }
 
-function onSoundInFileSystemNotInDatabase(soundName) {
-    logger.info("Adding " + soundName + " to the database! It's in the file system but not the database.");
+function onSoundInFileSystemNotInDatabase(soundName, discordGuildId) {
+    var logMessage = "Adding " + soundName + " to the database! It's in the file system but not the database. ";
+    if (discordGuildId) {
+        logMessage += "Only guild " + discordGuildId + " got this sound.";
+    } else {
+        logMessage += "Everyone got this sound.";
+    }
+    logger.info(logMessage);
+
     var newSound = Sound({
         name: soundName,
         add_date: new Date(),
         added_by: "Server",
+        discord_guild: discordGuildId
     });
     newSound.save(function(err) {
         if (err) {
@@ -38,76 +46,98 @@ function onSoundInFileSystemNotInDatabase(soundName) {
     });
 }
 
-function onSoundWithNameInFileSystemAlreadyInDatabase(fileEntry, sound) {
-    var oldSoundPath = path.join(fileEntry.fullPath);
-    var newSoundPath = path.join(ROOT_PATH, sound.name + ".mp3");
+function fileSystemContainsDbSound(soundsFoundInFileSystem, dbSound) {
+    var dbSoundName = dbSound.name;
+    var dbSoundDiscordGuildId = dbSound.discord_guild;
 
-    if (oldSoundPath !== newSoundPath) {
-        logger.info("Expected: " + oldSoundPath + ", found " + newSoundPath);
-        fs.rename(oldSoundPath, newSoundPath, function(err) {
-            if (err) {
-                logger.error(err);
-            } else {
-                logger.info("Wrong location! Moved " + oldSoundPath + " to " + newSoundPath);
-            }
-        });
+    for (var fsSound of soundsFoundInFileSystem) {
+        var fsSoundName = getSoundNameWithoutExtensionFromEntry(fsSound);
+        var fsSoundDiscordGuildId = getSoundDiscordGuildIdFromEntry(fsSound);
+
+        if (dbSoundName === fsSoundName && dbSoundDiscordGuildId === fsSoundDiscordGuildId) {
+            return true;
+        }
     }
+
+    return false;
 }
 
 function performSync(dbSounds) {
-    logger.info("Beginning read directory stream...");
-    var stream = readdirp({ root: ROOT_PATH });
-    var fileSystemSoundNames = [];
+    logger.info("Beginning sync...");
 
-    stream
-        .on("warn", function(err) {
+    var soundsFoundInFileSystem = [];
+
+    readdirp({root: ROOT_PATH})
+        .on("warn", function (err) {
             logger.error("non-fatal error", err);
         })
-        .on("error", function(err) {
+        .on("error", function (err) {
             logger.error("fatal error", err);
         })
-        .on("data", function(entry) {
-            fileSystemSoundNames.push(entry.name);
-            var soundName = path.parse(entry.name).name;
-            var soundsWithName = soundsInDatabaseWithName(dbSounds, soundName);
+        .on("data", function (entry) {
+            soundsFoundInFileSystem.push(entry);
+            var soundName = getSoundNameWithoutExtensionFromEntry(entry);
+            var discordGuildId = getSoundDiscordGuildIdFromEntry(entry);
 
-            if (soundsWithName.length === 0) {
-                onSoundInFileSystemNotInDatabase(soundName);
-            } else if (soundsWithName.length === 1) {
-                var soundWithName = soundsWithName[0];
-                onSoundWithNameInFileSystemAlreadyInDatabase(entry, soundWithName);
-            } else {
-                logger.error("More than one sound named " + soundName + "!");
+            //See if it is in the database already.
+            var dbSound = getSoundWithNameAndGuildIdFromList(dbSounds, soundName, discordGuildId);
+            if (!dbSound) {
+                onSoundInFileSystemNotInDatabase(soundName, discordGuildId);
             }
         })
-        .on("end", function() {
-            //We've added them sounds to the database if they aren't there.
+        .on("end", function () {
             //Now we need to see if there are sounds no longer in the file system but still in the database.
-            //We can't do that mid-stream; the stream is for reading files. This is a situation where the file we care about is NOT in the file system.
-            for (var sound of dbSounds) {
-                var notInFileSystem = fileSystemSoundNames.indexOf(sound.name + ".mp3") === -1;
-                if (notInFileSystem) {
-                    logger.info("Removing " + sound.name + " from the database! It's no longer in the file system.");
+
+            dbSounds.forEach(function(dbSound) {
+                if (!fileSystemContainsDbSound(soundsFoundInFileSystem, dbSound)) {
+                    var logMessage = "Removing " + dbSound.name + " from the database ";
+                    if (dbSound.discord_guild) {
+                        logMessage += "for guild " + dbSound.discord_guild + ".";
+                    } else {
+                        logMessage += "for the core sounds directory.";
+                    }
+                    logger.info(logMessage);
+
                     Sound.remove({
-                        name: sound.name
+                        name: dbSound.name,
+                        discord_guild: dbSound.discord_guild
                     }, function(err) {
                         if (err) {
                             logger.error(err);
                         }
                     });
                 }
-            }
+            });
+            logger.info("Sync completed.");
         });
 }
 
-function soundsInDatabaseWithName(sounds, name) {
-    var matchedSounds = [];
-    for (var sound of sounds) {
-        if (sound.name === name) {
-            matchedSounds.push(sound);
+function getSoundWithNameAndGuildIdFromList(soundList, soundName, discordGuildId) {
+    for (var sound of soundList) {
+        if (sound.name === soundName) {
+            if ((!sound.discord_guild && !discordGuildId) || sound.discord_guild === discordGuildId) {
+                return sound;
+            }
         }
     }
-    return matchedSounds;
+    return null;
 }
+
+function getSoundDiscordGuildIdFromEntry(entry) {
+    //Get the parent directory name to check if this file is for a particular guild.
+    var parentDirName = path.basename(entry.fullParentDir);
+    var discordGuildId;
+
+    //If it's not in the root directory, then its parent identifies the discord guild it belongs to.
+    if (parentDirName !== "sounds") {
+        discordGuildId = parentDirName;
+    }
+    return discordGuildId;
+}
+
+function getSoundNameWithoutExtensionFromEntry(entry) {
+    return entry.name.split(".")[0];
+}
+
 
 connect();

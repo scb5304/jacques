@@ -4,6 +4,7 @@ const path = require("path");
 const moment = require("moment");
 const logger = require("../common/util/logger");
 const Db = require("../common/data/db");
+const mkdirp = require('mkdirp');
 
 const SOUNDS_DIRECTORY = process.env.JACQUES_SOUNDS_DIRECTORY;
 const MP3_META_DATA = "data:audio/mp3;base64,";
@@ -76,7 +77,7 @@ function validateSoundDataInSoundPostRequest(soundName, res) {
         Db.getSoundFromName(soundName)
             .then(function (sound) {
                 if (sound) {
-                    var soundExistsError = "Sound with this name already exists.";
+                    var soundExistsError = "Sound with this name already exists: " + soundName;
                     res.status(400).send({error: soundExistsError});
                     return reject(soundExistsError);
                 } else {
@@ -94,13 +95,12 @@ function processNewSoundPostRequest(user, req, res) {
     var soundName = req.params.sound_name;
     var soundData = req.body.sound;
 
-    saveSoundToDatabase(soundName, user).then(function() {
+    Db.insertSound(soundName, user).then(function() {
         //Create the file name from the sound name parameter and the mp3 extension.
         soundData = soundData.replace(MP3_META_DATA, "");
-        var soundFileName = path.join(SOUNDS_DIRECTORY, soundName + ".mp3");
 
         //Attempt to save the sound to file system.
-        saveSoundToFileSystem(soundFileName, soundData).then(function() {
+        saveSoundToFileSystem(soundName, soundData, user).then(function() {
             res.sendStatus(200);
         }).catch(function(err) {
             logger.error(err);
@@ -122,30 +122,27 @@ function processNewSoundPostRequest(user, req, res) {
     });
 }
 
-function saveSoundToDatabase(soundName, user) {
+function saveSoundToFileSystem(soundName, soundFileData, user) {
     return new Promise((resolve, reject) => {
-        var newSound = Sound({
-            name: soundName,
-            add_date: new Date(),
-            added_by: user.discord_username ? user.discord_username : "Server"
-        });
-        newSound.save(function(err) {
-            if (err) {
-                return reject(err);
-            } else {
-                return resolve();
-            }
-        });
-    });
-}
+        var soundDirectoryToSaveIn;
+        if (user.discord_last_guild_id) {
+            soundDirectoryToSaveIn = path.join(SOUNDS_DIRECTORY, user.discord_last_guild_id);
+        } else {
+            soundDirectoryToSaveIn = path.join(SOUNDS_DIRECTORY);
+        }
 
-function saveSoundToFileSystem(soundFileName, soundFileData) {
-    return new Promise((resolve, reject) => {
-        fs.writeFile(soundFileName, soundFileData, "base64", function(err) {
+        mkdirp(soundDirectoryToSaveIn, function(err) {
             if (err) {
                 return reject(err);
             } else {
-                return resolve();
+                var fileName = path.join(soundDirectoryToSaveIn, soundName + ".mp3");
+                fs.writeFile(fileName, soundFileData, "base64", function(err) {
+                    if (err) {
+                        return reject(err);
+                    } else {
+                        return resolve();
+                    }
+                });
             }
         });
     });

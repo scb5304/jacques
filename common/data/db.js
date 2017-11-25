@@ -13,6 +13,24 @@ function connect() {
     });
 }
 
+function insertSound(soundName, user) {
+    return new Promise((resolve, reject) => {
+        var newSound = Sound({
+            name: soundName,
+            add_date: new Date(),
+            added_by: user.discord_username ? user.discord_username : "Server",
+            discord_guild: user.discord_last_guild_id
+        });
+        newSound.save(function(err) {
+            if (err) {
+                return reject(err);
+            } else {
+                return resolve();
+            }
+        });
+    });
+}
+
 function insertSoundEvent(soundName, performedBy, eventCategory) {
     Sound.findOne({
         name: soundName
@@ -143,6 +161,7 @@ function upsertUserWithDiscordDataAndToken(guildMember, token) {
 }
 
 module.exports.connect = connect;
+module.exports.insertSound = insertSound;
 module.exports.insertSoundEvent = insertSoundEvent;
 module.exports.getSoundFromName = getSoundFromName;
 module.exports.getRandomSound = getRandomSound;

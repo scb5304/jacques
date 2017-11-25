@@ -14,6 +14,7 @@ var soundSchema = new Schema({
 	tags: [String],
 	add_date: Date,
 	added_by: String,
+	discord_guild: String,
 	sound_events: [soundEventSchema]
 });
 soundSchema.plugin(sanitizerPlugin);
