@@ -176,7 +176,7 @@ function sendUploadBirdfeed(message) {
     var messageToSend;
 
     if (userHasUploadPermissions(guildMember)) {
-        createBirdfeedForDiscordUser(guildMember.user).then(function(birdfeed) {
+        createBirdfeedForGuildMember(guildMember).then(function(birdfeed) {
             messageToSend = messageBase + "Here is your birdfeed: " + birdfeed + ". Please copy it, visit http://jacquesbot.io, and include it in your sound upload.";
             messenger.sendDirectMessage(user, messageToSend);
         }).catch(function(err) {
@@ -199,10 +199,10 @@ function userHasUploadPermissions(guildMember) {
     }
 }
 
-function createBirdfeedForDiscordUser(user) {
+function createBirdfeedForGuildMember(guildMember) {
     return new Promise((resolve, reject) => {
         var token = new UIDGenerator(UIDGenerator.BASE16, 10).generateSync();
-        Db.insertOrUpdateDiscordUserWithToken(user, token).then(function() {
+        Db.upsertUserWithDiscordDataAndToken(guildMember, token).then(function() {
             return resolve(token);
         }).catch(function(err) {
             return reject(err);

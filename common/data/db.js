@@ -121,11 +121,12 @@ function getUserFromBirdfeed(birdfeed) {
     });
 }
 
-function insertOrUpdateDiscordUserWithToken(discordUser, token) {
+function upsertUserWithDiscordDataAndToken(guildMember, token) {
     return new Promise((resolve, reject) => {
-        User.findOneAndUpdate({discord_id: discordUser.id}, {
+        User.findOneAndUpdate({discord_id: guildMember.id}, {
             $set: {
-                discord_username: discordUser.username,
+                discord_username: guildMember.user.username,
+                discord_last_guild_id: guildMember.guild.id,
                 birdfeed_token: token,
                 birdfeed_date_time: new Date(),
             }
@@ -133,7 +134,7 @@ function insertOrUpdateDiscordUserWithToken(discordUser, token) {
             upsert: true, returnNewDocument: true
         }, function (err, user) {
             if (err || !user) {
-                return reject("Couldn't update find/update user: " + discordUser.username + ". Error: " + err);
+                return reject("Couldn't update find/update user: " + guildMember.user.username + ". Error: " + err);
             } else {
                 return resolve();
             }
@@ -149,4 +150,4 @@ module.exports.getAllSounds = getAllSounds;
 module.exports.deleteSoundWithName = deleteSoundWithName;
 module.exports.getUserFromDiscordId = getUserFromDiscordId;
 module.exports.getUserFromBirdfeed = getUserFromBirdfeed;
-module.exports.insertOrUpdateDiscordUserWithToken = insertOrUpdateDiscordUserWithToken;
+module.exports.upsertUserWithDiscordDataAndToken = upsertUserWithDiscordDataAndToken;

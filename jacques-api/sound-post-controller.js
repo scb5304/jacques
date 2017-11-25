@@ -20,38 +20,6 @@ function postSound(req, res) {
     }).catch(logger.error);
 }
 
-function processNewSoundPostRequest(user, req, res) {
-    var soundName = req.params.sound_name;
-    var soundData = req.body.sound;
-
-    saveSoundToDatabase(soundName, user).then(function() {
-        //Create the file name from the sound name parameter and the mp3 extension.
-        soundData = soundData.replace(MP3_META_DATA, "");
-        var soundFileName = path.join(SOUNDS_DIRECTORY, soundName + ".mp3");
-
-        //Attempt to save the sound to file system.
-        saveSoundToFileSystem(soundFileName, soundData).then(function() {
-            res.sendStatus(200);
-        }).catch(function(err) {
-            logger.error(err);
-            res.status(500).send({error: "There was an error storing the sound in the file system."});
-
-            //We couldn't save the sound to the file system. But it's already in the database.
-            Db.deleteSoundWithName(soundName)
-                .then(function() {
-                    logger.info("Deleted database sound due to file system error: " + soundName);
-                })
-                .catch(function(err) {
-                    logger.error("Couldn't delete the sound from the database after file system error: " + soundName);
-                    logger.error(err);
-                });
-        });
-    }).catch(function(err) {
-        logger.error(err);
-        res.status(500).send({error: "There was an error storing the sound in the database."});
-    });
-}
-
 function validateSoundPostRequestHasRequiredData(req, res) {
     var soundName = req.params.sound_name;
     var soundData = req.body.sound;
@@ -119,6 +87,38 @@ function validateSoundDataInSoundPostRequest(soundName, res) {
                 res.status(500).send({error: "There was an error processing your sound request."});
                 return reject(err);
             });
+    });
+}
+
+function processNewSoundPostRequest(user, req, res) {
+    var soundName = req.params.sound_name;
+    var soundData = req.body.sound;
+
+    saveSoundToDatabase(soundName, user).then(function() {
+        //Create the file name from the sound name parameter and the mp3 extension.
+        soundData = soundData.replace(MP3_META_DATA, "");
+        var soundFileName = path.join(SOUNDS_DIRECTORY, soundName + ".mp3");
+
+        //Attempt to save the sound to file system.
+        saveSoundToFileSystem(soundFileName, soundData).then(function() {
+            res.sendStatus(200);
+        }).catch(function(err) {
+            logger.error(err);
+            res.status(500).send({error: "There was an error storing the sound in the file system."});
+
+            //We couldn't save the sound to the file system. But it's already in the database.
+            Db.deleteSoundWithName(soundName)
+                .then(function() {
+                    logger.info("Deleted database sound due to file system error: " + soundName);
+                })
+                .catch(function(err) {
+                    logger.error("Couldn't delete the sound from the database after file system error: " + soundName);
+                    logger.error(err);
+                });
+        });
+    }).catch(function(err) {
+        logger.error(err);
+        res.status(500).send({error: "There was an error storing the sound in the database."});
     });
 }
 
