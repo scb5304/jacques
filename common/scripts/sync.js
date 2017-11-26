@@ -25,14 +25,7 @@ function connect() {
 }
 
 function onSoundInFileSystemNotInDatabase(soundName, discordGuildId) {
-    var logMessage = "Adding " + soundName + " to the database! It's in the file system but not the database. ";
-    if (discordGuildId) {
-        logMessage += "Only guild " + discordGuildId + " got this sound.";
-    } else {
-        logMessage += "Everyone got this sound.";
-    }
-    logger.info(logMessage);
-
+    logger.info("Adding " + soundName + ", " + discordGuildId + " to the database! It's in the file system but not the database.");
     var newSound = Sound({
         name: soundName,
         add_date: new Date(),
@@ -90,13 +83,7 @@ function performSync(dbSounds) {
 
             dbSounds.forEach(function(dbSound) {
                 if (!fileSystemContainsDbSound(soundsFoundInFileSystem, dbSound)) {
-                    var logMessage = "Removing " + dbSound.name + " from the database ";
-                    if (dbSound.discord_guild) {
-                        logMessage += "for guild " + dbSound.discord_guild + ".";
-                    } else {
-                        logMessage += "for the core sounds directory.";
-                    }
-                    logger.info(logMessage);
+                    logger.info("Removing " + dbSound.name + " from the database for guild " + dbSound.discord_guild + ".");
 
                     Sound.remove({
                         name: dbSound.name,

@@ -149,12 +149,12 @@ function upsertUserWithDiscordDataAndToken(guildMember, token) {
                 birdfeed_date_time: new Date(),
             }
         }, {
-            upsert: true, returnNewDocument: true
+            upsert: true, new: true
         }, function (err, user) {
             if (err || !user) {
                 return reject("Couldn't update find/update user: " + guildMember.user.username + ". Error: " + err);
             } else {
-                return resolve();
+                return resolve(user);
             }
         })
     });
