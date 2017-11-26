@@ -25,11 +25,14 @@ router.use(function(req, res, next) {
 });
 
 router.route("/sounds")
-    .get(soundController.getSounds);
-
-router.route("/sounds/:sound_name")
-    .get(soundController.getSound)
+    .get(soundController.getSounds)
     .post(soundController.postSound);
+
+router.route("/sounds/:guild")
+    .get(soundController.getSoundsByGuild);
+
+router.route("/sounds/:guild/:name")
+    .get(soundController.getSoundByGuildAndName);
 
 app.use("/api", router);
 app.listen(port);

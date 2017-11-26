@@ -5,6 +5,11 @@ const SoundEvent = require("./../model/sound").SoundEvent;
 const User = require("./../model/user").User;
 const util = require("./../util/utility");
 const logger = require("./../util/logger.js");
+const SOUNDS_PROJECTION = {
+    __v: false,
+    _id: false,
+    "sound_events._id": false
+};
 
 function connect() {
     logger.info("Getting db ready...");
@@ -13,7 +18,7 @@ function connect() {
     });
 }
 
-function insertSound(soundName, user) {
+function insertSoundForGuildByUser(soundName, user) {
     return new Promise((resolve, reject) => {
         var newSound = Sound({
             name: soundName,
@@ -71,9 +76,9 @@ function getSoundFromName(soundName) {
     });
 }
 
-function deleteSoundWithName(soundName) {
+function deleteSoundWithDiscordGuildIdAndName(discordGuildId, soundName) {
     return new Promise((resolve, reject) => {
-        Sound.remove({name: soundName}, function (err) {
+        Sound.remove({name: soundName, discord_guild: discordGuildId}, function (err) {
             if (err) {
                 return reject(err);
             } else {
@@ -85,15 +90,45 @@ function deleteSoundWithName(soundName) {
 
 function getAllSounds() {
     return new Promise((resolve, reject) => {
-        var soundsProjection = {
-            __v: false,
-            _id: false,
-            "sound_events._id": false
-        };
-
-        Sound.find({}, soundsProjection, function (err, sounds) {
+        Sound.find({}, SOUNDS_PROJECTION, function (err, sounds) {
             if (err || !sounds) {
-                return reject("Couldn't query for all sounds. Error: " + err);
+                return reject("Couldn't query for all sounds, error: " + err);
+            } else {
+                return resolve(sounds);
+            }
+        }).sort({name: "asc"});
+    });
+}
+
+function getSoundByDiscordGuildIdAndName(discordGuildId, soundName) {
+    return new Promise((resolve, reject) => {
+        Sound.findOne({discord_guild: discordGuildId, name: soundName}, SOUNDS_PROJECTION, function (err, sound) {
+            if (err) {
+                return reject("Couldn't query for sound with name " + soundName + " and guild " + discordGuildId + ", Error: " + err);
+            } else {
+                return resolve(sound);
+            }
+        }).sort({name: "asc"});
+    });
+}
+
+function getSoundsByDiscordGuildId(discordGuildId) {
+    return new Promise((resolve, reject) => {
+        Sound.find({discord_guild: discordGuildId}, SOUNDS_PROJECTION, function (err, sounds) {
+            if (err || !sounds) {
+                return reject("Couldn't query for all sounds in guild " + discordGuildId + ". Error: " + err);
+            } else {
+                return resolve(sounds);
+            }
+        }).sort({name: "asc"});
+    });
+}
+
+function getSoundsByName(soundName) {
+    return new Promise((resolve, reject) => {
+        Sound.find({name: soundName}, SOUNDS_PROJECTION, function (err, sounds) {
+            if (err || !sounds) {
+                return reject("Couldn't query for all sounds with name " + soundName + ", Error: " + err);
             } else {
                 return resolve(sounds);
             }
@@ -103,7 +138,7 @@ function getAllSounds() {
 
 function getRandomSound() {
     return new Promise((resolve, reject) => {
-        Sound.find({}, function (err, sounds) {
+        Sound.find({}, SOUNDS_PROJECTION, function (err, sounds) {
             var random = util.getRandomInt(0, (sounds.length - 1));
             if (err || !sounds) {
                 return reject("Couldn't get random sound. Error: " + err);
@@ -154,19 +189,23 @@ function upsertUserWithDiscordDataAndToken(guildMember, token) {
             if (err || !user) {
                 return reject("Couldn't update find/update user: " + guildMember.user.username + ". Error: " + err);
             } else {
-                return resolve(user);
+                return resolve();
             }
         })
     });
 }
 
 module.exports.connect = connect;
-module.exports.insertSound = insertSound;
+module.exports.insertSoundForGuildByUser = insertSoundForGuildByUser;
 module.exports.insertSoundEvent = insertSoundEvent;
-module.exports.getSoundFromName = getSoundFromName;
-module.exports.getRandomSound = getRandomSound;
+
 module.exports.getAllSounds = getAllSounds;
-module.exports.deleteSoundWithName = deleteSoundWithName;
+module.exports.getRandomSound = getRandomSound;
+module.exports.getSoundsByDiscordGuildId = getSoundsByDiscordGuildId;
+module.exports.getSoundByDiscordGuildIdAndName = getSoundByDiscordGuildIdAndName;
+module.exports.getSoundsByName = getSoundsByName;
+
+module.exports.deleteSoundWithGuildIdAndName = deleteSoundWithDiscordGuildIdAndName;
 module.exports.getUserFromDiscordId = getUserFromDiscordId;
 module.exports.getUserFromBirdfeed = getUserFromBirdfeed;
 module.exports.upsertUserWithDiscordDataAndToken = upsertUserWithDiscordDataAndToken;

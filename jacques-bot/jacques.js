@@ -50,13 +50,11 @@ function onTextChannelMessage(message) {
         return false;
     }
 
-    var voiceChannel = member.voiceChannel;
-    if (!voiceChannel) {
-        logger.info("Guild member not in a voice channel.");
-        return false;
+    var logMessage = "Valid Jacques message " + message.content + " from " + member.displayName + " on server " + message.guild.name;
+    if (member.voiceChannel) {
+        logMessage += " in voice channel " + member.voiceChannel.name;
     }
-
-    logger.info("Valid Jacques message " + message.content + " from " + member.displayName + " in voice channel " + voiceChannel.name + " on server " + message.guild.name);
+    logger.info(logMessage);
     routeTextChannelMessage(message, cleanedMessageContent);
     return true;
 }
@@ -114,13 +112,16 @@ function routeTextChannelMessage(message, cleanedMessageContent) {
 }
 
 function playRandomSound(message) {
-    if (alreadySpeaking(message)) {
+    if (!message.member.voiceChannel || alreadySpeaking(message)) {
         return;
     }
     soundboard.playRandomSound(message);
 }
 
 function cancelVoiceConnection(message) {
+    if (!message.member.voiceChannel) {
+        return false;
+    }
     var connection = message.member.voiceChannel.connection;
     if (connection) {
         connection.disconnect();
@@ -128,7 +129,7 @@ function cancelVoiceConnection(message) {
 }
 
 function streamAudio(message, commandArgs) {
-    if (alreadySpeaking(message)) {
+    if (!message.member.voiceChannel || alreadySpeaking(message)) {
         return;
     }
     var streamLink = commandArgs.length > 1 ? commandArgs[1] : null;
@@ -136,6 +137,9 @@ function streamAudio(message, commandArgs) {
 }
 
 function volume(message, commandArgs) {
+    if (!message.member.voiceChannel) {
+        return;
+    }
     var currentVoiceConnection = bot.voiceConnections.get(message.member.guild.id);
     var requestedVolume = commandArgs.length > 1 ? commandArgs[1] : null;
     if (requestedVolume) {
@@ -211,7 +215,7 @@ function createBirdfeedForGuildMember(guildMember) {
 }
 
 function playTargetedSound(message, commandArgs) {
-    if (alreadySpeaking(message)) {
+    if (!message.member.voiceChannel || alreadySpeaking(message)) {
         return;
     }
     var soundArg = commandArgs[0];
