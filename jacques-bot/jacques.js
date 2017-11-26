@@ -8,7 +8,6 @@ var streamer = require("./streamer.js");
 var messenger = require("./messenger.js");
 var UIDGenerator = require('uid-generator');
 
-
 var bot;
 var site = "http://jacquesbot.io";
 var prefix = process.env.JACQUES_PREFIX;

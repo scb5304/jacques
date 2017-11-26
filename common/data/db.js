@@ -64,18 +64,6 @@ function insertSoundEvent(soundName, performedBy, eventCategory) {
 
 }
 
-function getSoundFromName(soundName) {
-    return new Promise((resolve, reject) => {
-        Sound.findOne({name: soundName}, function (err, sound) {
-            if (err) {
-                return reject("Couldn't get sound from db: " + soundName + ". Error: " + err);
-            } else {
-                return resolve(sound);
-            }
-        });
-    });
-}
-
 function deleteSoundWithDiscordGuildIdAndName(discordGuildId, soundName) {
     return new Promise((resolve, reject) => {
         Sound.remove({name: soundName, discord_guild: discordGuildId}, function (err) {
@@ -88,9 +76,19 @@ function deleteSoundWithDiscordGuildIdAndName(discordGuildId, soundName) {
     });
 }
 
-function getAllSounds() {
+function getAllSounds(includeSoundEvents) {
+    var projection = {
+        __v: false,
+        _id: false
+    };
+    if (!includeSoundEvents) {
+        projection["sound_events"] = false;
+    } else {
+        projection["sound_events._id"] = false;
+    }
+
     return new Promise((resolve, reject) => {
-        Sound.find({}, SOUNDS_PROJECTION, function (err, sounds) {
+        Sound.find({}, projection, function (err, sounds) {
             if (err || !sounds) {
                 return reject("Couldn't query for all sounds, error: " + err);
             } else {
@@ -136,9 +134,9 @@ function getSoundsByName(soundName) {
     });
 }
 
-function getRandomSound() {
+function getRandomSoundInDiscordGuild(discordGuildId) {
     return new Promise((resolve, reject) => {
-        Sound.find({}, SOUNDS_PROJECTION, function (err, sounds) {
+        Sound.find({discord_guild: discordGuildId}, projection, function (err, sounds) {
             var random = util.getRandomInt(0, (sounds.length - 1));
             if (err || !sounds) {
                 return reject("Couldn't get random sound. Error: " + err);
@@ -200,7 +198,7 @@ module.exports.insertSoundForGuildByUser = insertSoundForGuildByUser;
 module.exports.insertSoundEvent = insertSoundEvent;
 
 module.exports.getAllSounds = getAllSounds;
-module.exports.getRandomSound = getRandomSound;
+module.exports.getRandomSoundInDiscordGuild = getRandomSoundInDiscordGuild;
 module.exports.getSoundsByDiscordGuildId = getSoundsByDiscordGuildId;
 module.exports.getSoundByDiscordGuildIdAndName = getSoundByDiscordGuildIdAndName;
 module.exports.getSoundsByName = getSoundsByName;

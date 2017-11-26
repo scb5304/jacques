@@ -11,7 +11,7 @@ function insertSoundEvent(sound, memberName, eventType) {
 }
 
 function playRandomSound(message) {
-    Db.getRandomSound()
+    Db.getRandomSoundInDiscordGuild(message.member.guild.id)
         .then(function(sound) {
             playSound(sound, message.member.voiceChannel);
             insertSoundEvent(sound, message.member.displayName, "playRandom");
@@ -21,7 +21,7 @@ function playRandomSound(message) {
 
 function playTargetedSound(message, soundName) {
     logger.info("Play targeted sound: sound " + soundName);
-    Db.getSoundFromName(soundName)
+    Db.getSoundByDiscordGuildIdAndName(message.member.guild.id, soundName)
         .then(function(sound) {
             if (sound) {
                 playSound(sound, message.member.voiceChannel);

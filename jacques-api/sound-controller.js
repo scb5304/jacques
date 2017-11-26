@@ -3,7 +3,16 @@ const Db = require("../common/data/db");
 const soundPostController = require("./sound-post-controller");
 
 function getSounds(req, res) {
-    Db.getAllSounds()
+    //By default, include sound events.
+    var includeSoundEvents = true;
+
+    //If they specify they do not want to include sound events, set this flag to false.
+    var includeEventsQuery = req.query["includeSoundEvents"];
+    if (includeEventsQuery && includeEventsQuery === "false") {
+        includeSoundEvents = false;
+    }
+
+    Db.getAllSounds(includeSoundEvents)
         .then(function(sounds) {
             res.json(sounds);
         })

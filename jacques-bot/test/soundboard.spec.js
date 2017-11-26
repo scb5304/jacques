@@ -38,7 +38,7 @@ describe("playRandomSound", function() {
 
         var sound = { name: "1910.mp3", category: "default" };
         //Stub the database to return a random sound name
-        this.sandbox.stub(Db, "getRandomSound").callsFake(function() {
+        this.sandbox.stub(Db, "getRandomSoundInDiscordGuild").callsFake(function() {
             return new Promise(function(resolve) {
                 return resolve(sound);
             });
@@ -61,7 +61,7 @@ describe("playRandomSound", function() {
         mockVoiceChannelJoin(this.message, null);
 
         //Stub the database to return a random sound name
-        this.sandbox.stub(Db, "getRandomSound").callsFake(function() {
+        this.sandbox.stub(Db, "getRandomSoundInDiscordGuild").callsFake(function() {
             return new Promise(function(resolve) {
                 return resolve({ name: "1910.mp3" });
             });
