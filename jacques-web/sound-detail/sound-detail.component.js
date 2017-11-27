@@ -59,8 +59,8 @@ angular
                     var playedByCounts = [];
 
                     SoundDetailChartsHelper.calculateSoundPlayedByLabelsAndCounts(sound, playedByLabels, playedByCounts);
-                    playedByLabels = playedByLabels.slice(0, 10);
-                    playedByCounts = playedByCounts.slice(0, 10);
+                    playedByLabels = playedByLabels.slice(0, 8);
+                    playedByCounts = playedByCounts.slice(0, 8);
 
                     $scope.soundPlayedByBarLabels = playedByLabels;
                     $scope.soundPlayedByBarData = playedByCounts;

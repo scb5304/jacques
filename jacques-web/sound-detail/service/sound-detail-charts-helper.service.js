@@ -47,7 +47,7 @@ angular
                 soundEvents.forEach(function(soundEvent) {
                     var playedByLabel = soundEvent.performed_by;
                     if (labelsArray.indexOf(playedByLabel) === -1) {
-                        labelsArray.push(playedByLabel);
+                        labelsArray.push(playedByLabel.substring(0, 20));
                     }
                 });
 

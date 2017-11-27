@@ -26,10 +26,18 @@ md-toolbar h1 {
     margin: auto;
 }
 
-#toolbarIcon {
+#toolbar-icon {
     max-width: 85%;
     max-height: 85%;
     margin-right: 20px;
+}
+
+#toolbar-title {
+    margin-left: -8px;
+}
+
+#toolbar-tools {
+    padding-right: 8px;
 }
 
 
@@ -127,6 +135,10 @@ sound-list {
     background-color: white;
 }
 
+#sound-most-played-by-card {
+    padding-right: 16px;
+}
+
 #content img {
     display: block;
     height: auto;
@@ -139,6 +151,7 @@ sound-list {
 
 md-icon svg {
     fill: inherit;
+    color: #FFFFFF;
 }
 
 #help-close-icon {
