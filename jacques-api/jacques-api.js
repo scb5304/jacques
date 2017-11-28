@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const db = require("../common/data/db.js");
 const logger = require("../common/util/logger.js");
 const soundController = require("./sound-controller");
+const userController = require("./user-controller");
 
 const app = express();
 const router = express.Router();
@@ -33,6 +34,9 @@ router.route("/sounds/:guild")
 
 router.route("/sounds/:guild/:name")
     .get(soundController.getSoundByGuildAndName);
+
+router.route("/users/:birdfeed")
+    .get(userController.getUser);
 
 app.use("/api", router);
 app.listen(port);

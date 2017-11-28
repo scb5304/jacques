@@ -1,4 +1,3 @@
-const Sound = require("../common/model/sound").Sound;
 const fs = require("fs");
 const path = require("path");
 const moment = require("moment");
@@ -68,7 +67,7 @@ function validateBirdfeedInSoundPostRequest(birdfeed, res) {
         }).catch(function(err) {
             res.status(500).send({error: "I choked on your birdfeed. Sorry, try again soon."});
             return reject(err);
-        })
+        });
     });
 }
 
