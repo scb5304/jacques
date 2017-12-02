@@ -3,12 +3,18 @@ mongoose.Promise = require('bluebird');
 const Sound = require("./../model/sound").Sound;
 const SoundEvent = require("./../model/sound").SoundEvent;
 const User = require("./../model/user").User;
+const Guild = require("./../model/Guild").Guild;
 const util = require("./../util/utility");
 const logger = require("./../util/logger.js");
 const SOUNDS_PROJECTION = {
     __v: false,
     _id: false,
     "sound_events._id": false
+};
+
+const GUILD_PROJECTION = {
+    __v: false,
+    _id: false,
 };
 
 function connect() {
@@ -193,6 +199,63 @@ function upsertUserWithDiscordDataAndToken(guildMember, token) {
     });
 }
 
+function getAllGuilds() {
+    return new Promise((resolve, reject) => {
+        Guild.find({}, GUILD_PROJECTION, function (err, guilds) {
+            if (err) {
+                return reject("Couldn't query for all guilds. Error: " + err);
+            } else {
+                return resolve(guilds);
+            }
+        })
+    });
+}
+
+function getGuildById(discordGuildId) {
+    return new Promise((resolve, reject) => {
+        Guild.findOne({discord_id: discordGuildId}, GUILD_PROJECTION, function (err, guild) {
+            if (err) {
+                return reject("Couldn't query for this guild: " + discordGuildId + ". Error: " + err);
+            } else {
+                return resolve(guild);
+            }
+        })
+    });
+}
+
+function deleteGuildsNotInListOfIds(discordGuildIds) {
+    return new Promise((resolve, reject) => {
+        Guild.remove({
+            "discord_id": {
+                "$nin": discordGuildIds
+            }
+        }, function(err, removalResult) {
+            if (err) {
+                return reject(err);
+            } else {
+                return resolve(removalResult);
+            }
+        })
+    })
+}
+
+function insertGuild(discordGuild) {
+    return new Promise((resolve, reject) => {
+        var newGuild = new Guild({
+            discord_id: discordGuild.id,
+            discord_name: discordGuild.name
+        });
+        newGuild.save(function(err) {
+            if (err) {
+                logger.error(err);
+                return reject(err);
+            } else {
+                return resolve();
+            }
+        });
+    });
+}
+
 module.exports.connect = connect;
 module.exports.insertSoundForGuildByUser = insertSoundForGuildByUser;
 module.exports.insertSoundEvent = insertSoundEvent;
@@ -202,6 +265,11 @@ module.exports.getRandomSoundInDiscordGuild = getRandomSoundInDiscordGuild;
 module.exports.getSoundsByDiscordGuildId = getSoundsByDiscordGuildId;
 module.exports.getSoundByDiscordGuildIdAndName = getSoundByDiscordGuildIdAndName;
 module.exports.getSoundsByName = getSoundsByName;
+
+module.exports.insertGuild = insertGuild;
+module.exports.getGuildById = getGuildById;
+module.exports.getAllGuilds = getAllGuilds;
+module.exports.deleteGuildsNotInListOfIds = deleteGuildsNotInListOfIds;
 
 module.exports.deleteSoundWithGuildIdAndName = deleteSoundWithDiscordGuildIdAndName;
 module.exports.getUserFromDiscordId = getUserFromDiscordId;

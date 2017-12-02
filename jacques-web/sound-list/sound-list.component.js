@@ -50,8 +50,8 @@ angular.module("soundList")
                 //Updates the scope's guild name
                 $scope.refreshGuildName = function refreshGuildName(guilds) {
                     guilds.forEach(function(guild) {
-                        if (guild.id === $scope.guildId) {
-                            $scope.guildName = guild.name;
+                        if (guild.discord_id === $scope.guildId) {
+                            $scope.guildName = guild.discord_name;
                         }
                     });
                 };

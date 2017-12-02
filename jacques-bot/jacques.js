@@ -18,9 +18,12 @@ function initialize() {
     bot.login(process.env.JACQUES_TOKEN);
     bot.on("ready", onReady);
     bot.on("message", onMessage);
+    bot.on("guildCreate", refreshGuilds);
+    bot.on("guildDelete", refreshGuilds);
 }
 
 function onReady() {
+    refreshGuilds();
     logger.info("I'm ready, I'm ready.");
     if (bot.user) {
         bot.user.setGame(site);
@@ -247,6 +250,30 @@ function alreadySpeaking(message) {
     }
 
     return false;
+}
+
+function refreshGuilds() {
+    var discordGuilds = bot.guilds.array();
+    var discordGuildIds = [];
+
+    discordGuilds.forEach(function(discordGuild) {
+        discordGuildIds.push(discordGuild.id);
+
+        Db.getGuildById(discordGuild.id).then(function(jacquesGuild) {
+            if (!jacquesGuild) {
+                Db.insertGuild(discordGuild).then(function() {
+                    logger.info("Jacques has a new guild: " + discordGuild.name);
+                }).catch(logger.error);
+            }
+        }).catch(logger.error);
+    });
+
+    Db.deleteGuildsNotInListOfIds(discordGuildIds).then(function(removalResult) {
+        if (removalResult.result.n) {
+            logger.info("Removed from " + removalResult.result.n + " guilds.");
+        }
+
+    }).catch(logger.error);
 }
 
 module.exports.initialize = initialize;

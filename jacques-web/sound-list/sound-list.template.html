@@ -1,5 +1,5 @@
 <div id="sound-list-floater">
-    <div ng-hide="username === undefined || guildName === undefined" id="sound-list-user-header">
+    <div ng-hide="username === undefined && guildName === undefined" id="sound-list-user-header">
         <span ng-hide="username === undefined" md-truncate id="sound-list-user-name" class="md-body-1" ng-bind="username"></span><br />
         <span ng-hide="getGuildDescriptor() === undefined" md-truncate id="sound-list-user-guild" class="md-body-2" ng-bind="getGuildDescriptor()"></span><br />
     </div>
