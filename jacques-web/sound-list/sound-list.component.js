@@ -1,6 +1,5 @@
 "use strict";
 
-// Register `soundList` component, along with its associated controller and template
 angular.module("soundList")
     .component("soundList", {
         templateUrl: "sound-list/sound-list.template.html",
@@ -8,6 +7,17 @@ angular.module("soundList")
             function SoundListController($scope, sharedProperties) {
                 $scope.sharedProperties = sharedProperties;
                 $scope.soundSearchQuery = "";
+                $scope.username = localStorage.getItem("jacques_discord_username");
+                $scope.guildId = localStorage.getItem("jacques_discord_last_guild_id");
+
+                $scope.$watch("sharedProperties.getUser()", function(newUser) {
+                    if (newUser) {
+                        $scope.username = newUser.discord_username;
+                        $scope.guildId = newUser.discord_last_guild_id;
+                        localStorage.setItem("jacques_discord_username", $scope.username);
+                        localStorage.setItem("jacques_discord_last_guild_id", $scope.guildId);
+                    }
+                });
 
                 $scope.getSounds = function getSounds() {
                     return sharedProperties.getSounds();

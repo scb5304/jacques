@@ -4,14 +4,17 @@
 angular
     .module("jacquesApp", [
         "ngMaterial",
+        "ngMessages",
         "soundDetail",
         "soundList",
-        "chart.js",
+        "birdfeeder",
+        "chart.js"
     ])
     .service("sharedProperties", function() {
         var sounds = [];
         var categories = [];
         var selected;
+        var user;
 
         return {
             getSounds: function() {
@@ -25,6 +28,12 @@ angular
             },
             setSelected: function(newSelected) {
                 selected = newSelected;
+            },
+            getUser: function() {
+                return user;
+            },
+            setUser: function(newUser) {
+                user = newUser;
             }
         };
     });
