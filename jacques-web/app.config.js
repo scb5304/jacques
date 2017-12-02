@@ -13,7 +13,6 @@ angular
             .icon("github", "assets/svg/github-circle.svg", 24)
             .icon("close", "assets/svg/close.svg", 24)
             .icon("birdfeed", "assets/svg/hops.svg", 24)
-            .icon("search", "assets/svg/search.svg", 24)
             .icon("invite", "assets/svg/person_add.svg", 24);
         $locationProvider
             .html5Mode(false)
