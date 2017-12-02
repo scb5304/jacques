@@ -15,6 +15,7 @@ angular
         var categories = [];
         var selected;
         var user;
+        var guilds;
 
         return {
             getSounds: function() {
@@ -34,6 +35,12 @@ angular
             },
             setUser: function(newUser) {
                 user = newUser;
+            },
+            getGuilds: function() {
+                return guilds;
+            },
+            setGuilds: function(newGuilds) {
+                guilds = newGuilds;
             }
         };
     });

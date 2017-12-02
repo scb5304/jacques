@@ -40,6 +40,7 @@ angular.module("birdfeeder")
 
                     self.onFailureGetUserResponse = function (response) {
                         self.makingRequest = false;
+                        sharedProperties.setUser({});
                         var toastMessage = "Oops, that didn't work.";
                         if (response.data) {
                             if (response.data.error) {

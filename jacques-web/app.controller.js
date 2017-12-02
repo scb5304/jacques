@@ -6,6 +6,8 @@ angular
 
         var self = this;
 
+        $rootScope.JACQUES_API_ROOT = "http://localhost:8081/api";
+
         $rootScope.$on("$locationChangeSuccess", function() {
             var sounds = sharedProperties.getSounds();
 
@@ -29,9 +31,7 @@ angular
             }
         });
 
-        $http.get("http://jacquesbot.io/api/sounds").then(function(soundsJSON) {
-            self.fetchCategories();
-
+        $http.get($rootScope.JACQUES_API_ROOT + "/sounds").then(function(soundsJSON) {
             var sounds = soundsJSON.data;
             var soundFromURL;
             sounds.forEach(function(sound) {
@@ -50,12 +50,10 @@ angular
             }
         });
 
-        this.fetchCategories = function() {
-            $http.get("http://jacquesbot.io/api/categories").then(function(categoriesJSON) {
-                var categories = categoriesJSON.data;
-                sharedProperties.setCategories(categories);
-            });
-        };
+        $http.get($rootScope.JACQUES_API_ROOT + "/guilds").then(function(guildsJSON) {
+        	var guilds = guildsJSON.data;
+        	sharedProperties.setGuilds(guilds);
+        });
 
         this.toggleList = function() {
             $mdSidenav("left").toggle();

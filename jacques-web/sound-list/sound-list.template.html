@@ -1,6 +1,9 @@
 <div id="sound-list-floater">
-    <p>{{username}}</p>
-    <p>{{guildId}}</p>
+    <div ng-hide="username === undefined || guildName === undefined" id="sound-list-user-header">
+        <span ng-hide="username === undefined" md-truncate id="sound-list-user-name" class="md-body-1" ng-bind="username"></span><br />
+        <span ng-hide="getGuildDescriptor() === undefined" md-truncate id="sound-list-user-guild" class="md-body-2" ng-bind="getGuildDescriptor()"></span><br />
+    </div>
+    
     <md-input-container id="sound-search-input-container" class="md-block">
         <label>Search</label>
         <input ng-model="soundSearchQuery" />

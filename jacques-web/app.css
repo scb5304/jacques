@@ -93,6 +93,11 @@ sound-list {
     margin-bottom: 0px;
 }
 
+#sound-list-user-header {
+    padding: 4px;
+    margin: 16px;
+}
+
 .border-bottom-list-item {
     border-bottom: 1px solid #EEEEEE;
 }
