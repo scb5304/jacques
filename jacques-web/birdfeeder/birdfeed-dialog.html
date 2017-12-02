@@ -1,0 +1,33 @@
+<md-dialog class="sound-dialog">
+    <form novalidate name="birdfeedForm" ng-submit="$ctrl.submitBirdfeed()">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <span><md-icon class="dialog-icon" md-svg-icon="birdfeed"/></span>
+                <h2>Birdfeeder</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$ctrl.closeDialog()" aria-label="Close birdfeeder">
+                    <md-icon md-svg-icon="close"/>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                Type <i>!birdfeed</i> on the discord server you want to upload a sound to. I'll give you a token you can
+                redeem here, allowing you to upload and edit sounds.
+                <md-input-container class="md-block">
+                    <input md-no-asterisk name="birdfeed" ng-model="$ctrl.birdfeed" required md-maxlength="10" minlength="10">
+                    <div ng-messages="birdfeedForm.birdfeed.$error">
+                        <div ng-message="required">This field is required.</div>
+                        <div ng-message="md-maxlength">That's too long!</div>
+                        <div ng-message="minlength">That's too short!</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions>
+            <md-button ng-click="$ctrl.closeDialog()" class="md-accent">Cancel</md-button>
+            <md-button ng-disabled="$ctrl.makingRequest" type="submit" class="md-accent">Feed</md-button>
+            <span md-autofocus/>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
