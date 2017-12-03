@@ -12,36 +12,43 @@
         </md-toolbar>
         <md-dialog-content>
             <div class="md-dialog-content">
-                <p>Jacques is a Discord soundboard bot that can <a href="https://discordapp.com/oauth2/authorize?client_id=280071400583331840&scope=bot&permissions=3243008">invited to any server</a>. He can then be summoned into a voice channel by typing a recognizable command in a text channel. If the text channel is not named "commands," Jacques will delete the message shortly after to keep the server tidy.</p>
+                <h2 class="md-headline" style="margin-top: 0px">How do I play a sound?</h2>
+                <p>
+                    An exclamation point denotes a "command" which Jacques will attempt to interpret. To play a sound, you type an
+                    exclamation point followed by the name of the sound. If your Discord server has a sound of that name, Jacques
+                    will join the voice channel, play the sound, then leave. If you want Jacques to stop, use <i>!cancel</i> or <i>!stop</i>.
+                </p>
+                <ul>
+                    <li><i>!yeah</i> plays the sound named "yeah" in your Guild.</li>
+                    <li><i>!fif</i> plays the sound named "fif" in your Guild.</li>
+                    <li><i>!cancel</i> forces Jacques to fly away.</li>
+                </ul>
 
-                <h2 class="help-dialog-title md-headline">Playing Sounds</h2>
-                <p>Currently, users cannot add their own sound clips to Jacques. The list of available sounds is available here at <a href="http://jacquesbot.io">jacquesbot.io</a> along with play statistics.</p>
+                <h2 class="md-headline">What about YouTube Videos?</h2>
+                <p>
+                    Similar to sound clips, start with an exclamation point. However, instead of the name of a sound, use the word "stream."
+                    Then, paste your YouTube video's URL. You can include the exact time to start, if desired.
+                </p>
+                <ul>
+                    <li><i>!stream https://www.youtube.com/watch?v=BJ0xBCwkg3E</i> plays the entire Running in the 90's video.</li>
+                    <li><i>!stream https://youtu.be/BJ0xBCwkg3E?t=1m1s</i> plays the same video starting at 1 minute and 1 second.</li>
+                </ul>
 
-                <h4>!</h4>
-                <p>A lone exclamation point in any text channel will trigger Jacques to play a random sound clip.</p>
+                <h2 class="md-headline">He's too loud (or quiet) for this video!</h2>
+                <p>
+                    Use the "volume" command to view Jacques' current volume level, from 0 to 100. You can then tweak the volume level
+                    by including a value after the word "volume." <b>Keep in mind this is only for YouTube videos.</b> Sound clips have their
+                    volume automagically adjusted by Jacques to have roughly the same level.
+                </p>
+                <ul>
+                    <li><i>!volume</i> causes Jacques to say his current volume level.</li>
+                    <li><i>!volume 60</i> sets the volume to 60%.</li>
+                </ul>
 
-                <h4>!soundname</h4>
-                <p>Jacques will play the passed sound provided that it exists.</p>
-
-                <h4>!help </h4>
-                <p>Links to Jacques' site to display list of stored sounds.</p>
-
-                <h4>!helptext</h4>
-                <p>Spits out a raw text dump of all sounds stored in Jacques' database.</p>
-
-                <h2 class="help-dialog-title md-headline">Streaming Youtube Videos</h2>
-                <h4>!stream</h4>
-                <p>Summons Jacques to the user's current voice channel to play the audio of the passed youtube URL. The link can optionally include the time at which the stream should begin.</p>
-                <b>Example:</b> !stream https://www.youtube.com/watch?v=jdB4ER_-mSY
-
-                <h4>!volume</h4>
-                <p>Prints the current stream volume (from 0 to 100). If a volume is passed, then it will be adjusted accordingly. If Jacques is currently streaming audio, the volume will be adjusted real-time. Stream volume does not affect the volume of Jacques' sound clips.</p>
-	        	<p><b>Example:</b> !volume (prints volume)<p>
-	        	<p><b>Example:</b> !volume 50 (sets stream volume to 50%)</p>
-
-                <h2 class="help-dialog-title  md-headline">Leaving a Voice Channel</h2>
-                <h4>!cancel</h4>
-                <p>If Jacques is currently in the same voice channel as you, this will cause him to disconnect immediately.</p>
+                <h2 class="md-headline">How do I submit a sound for my Guild?</h2>
+                <p>
+                    I'm working on it.
+                </p>
             </div>
         </md-dialog-content>
     </form>

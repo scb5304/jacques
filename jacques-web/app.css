@@ -2,16 +2,6 @@
     display: none;
 }
 
-html,
-body {
-    font-family: "Roboto", sans-serif;
-    font-size: 14px;
-    height: 100%;
-    margin: 0px;
-    padding: 0px;
-}
-
-
 /* Toolbar area */
 
 .menu {
@@ -26,10 +16,29 @@ md-toolbar h1 {
     margin: auto;
 }
 
-#toolbar-icon {
-    max-width: 85%;
-    max-height: 85%;
-    margin-right: 20px;
+#sidenav-icon {
+    margin-top: 8px;
+    max-height: 100px;
+    max-width: 100px;
+}
+
+#sidenav-title {
+    margin-top: 0px;
+    margin-bottom: 32px;
+}
+
+#sidenav-header {
+    margin: 0 auto;
+}
+
+#sidenav-scroll-content {
+
+}
+
+.sidenav-item {
+    border-bottom: 1px solid #EEEEEE;
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
 #toolbar-title {
@@ -42,6 +51,10 @@ md-toolbar h1 {
 
 
 /* Sidenav area */
+
+md-sidenav {
+    max-width: 275px;
+}
 
 md-sidenav md-list {
     padding-top: 0px;
@@ -102,14 +115,25 @@ sound-list {
     border-bottom: 1px solid #EEEEEE;
 }
 
+
+
 /* Primary content area */
 
-#content {
+.content {
     padding-left: 40px;
     padding-right: 40px;
     padding-top: 5px;
     overflow-y: scroll
 }
+
+/* Sound Overview */
+#sound-overview-wrapper {
+    max-width: 864px;
+    margin: 16px;
+    box-sizing: border-box;
+}
+
+/* Sound Detail */
 
 #sound-audio {
     width: 100%;
