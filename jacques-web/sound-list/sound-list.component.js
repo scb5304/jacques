@@ -21,8 +21,18 @@ angular.module("soundList")
                     if (newUser) {
                         $scope.username = newUser.discord_username;
                         $scope.guildId = newUser.discord_last_guild_id;
-                        localStorage.setItem("jacques_discord_username", $scope.username);
-                        localStorage.setItem("jacques_discord_last_guild_id", $scope.guildId);
+
+                        if ($scope.username) {
+                            localStorage.setItem("jacques_discord_username", $scope.username);
+                        } else {
+                            localStorage.removeItem("jacques_discord_username");
+                        }
+                        if ($scope.guildId) {
+                            localStorage.setItem("jacques_discord_last_guild_id", $scope.guildId);
+                        } else {
+                            localStorage.removeItem("jacques_discord_last_guild_id");
+                        }
+                        $scope.refreshGuildName(sharedProperties.getGuilds());
                     }
                 });
 
@@ -32,6 +42,10 @@ angular.module("soundList")
                         $scope.refreshGuildName(newGuilds);
                     }
                 });
+
+                $scope.getUsername = function getUsername() {
+                    return $scope.username;
+                };
 
                 //Provide the sounds to the side-nav list.
                 $scope.getSounds = function getSounds() {
@@ -49,6 +63,7 @@ angular.module("soundList")
 
                 //Updates the scope's guild name
                 $scope.refreshGuildName = function refreshGuildName(guilds) {
+                    $scope.guildName = undefined;
                     guilds.forEach(function(guild) {
                         if (guild.discord_id === $scope.guildId) {
                             $scope.guildName = guild.discord_name;

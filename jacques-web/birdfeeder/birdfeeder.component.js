@@ -40,7 +40,7 @@ angular.module("birdfeeder")
 
                     self.onFailureGetUserResponse = function (response) {
                         self.makingRequest = false;
-                        sharedProperties.setUser({});
+                        sharedProperties.setUser({discord_username: undefined, discord_last_guild_id: undefined});
                         var toastMessage = "Oops, that didn't work.";
                         if (response.data) {
                             if (response.data.error) {

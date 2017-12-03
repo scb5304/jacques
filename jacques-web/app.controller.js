@@ -8,17 +8,6 @@ angular
 
         $rootScope.JACQUES_API_ROOT = "http://localhost:8081/api";
 
-        $rootScope.$on("$locationChangeSuccess", function() {
-            var sounds = sharedProperties.getSounds();
-
-            sounds.forEach(function(sound) {
-                if ("/" + sound.cleanedName === $location.path()) {
-                    sharedProperties.setSelected(sound);
-                    $mdSidenav("left").close();
-                }
-            });
-        });
-
         $rootScope.$on("$locationChangeStart", function(event) {
             var sidenav = $mdSidenav("left");
 
