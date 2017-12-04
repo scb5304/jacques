@@ -2,23 +2,16 @@
 
 angular
     .module("jacquesApp")
-    .controller("AppController", function AppController($rootScope, $location, $http, sharedProperties, $mdSidenav, $mdDialog) {
-
-        var self = this;
-
+    .controller("AppController", function AppController($rootScope, $route, $location, $http, sharedProperties, $mdSidenav, $mdDialog) {
         $rootScope.JACQUES_API_ROOT = "http://localhost:8081/api";
 
-        $rootScope.$on("$locationChangeStart", function(event) {
-            var sidenav = $mdSidenav("left");
-
-            if (sidenav.isOpen()) {
-                sidenav.close();
-                event.preventDefault();
-            } else if (angular.element(document.body).hasClass('md-dialog-is-showing')) {
-                event.preventDefault();
-                $mdDialog.cancel();
-            }
+        $rootScope.$on("$routeChangeSuccess", function() {
+            $rootScope.title = $route.current.title;
         });
+
+        this.getTitle = function() {
+            return $rootScope.title;
+        };
 
         $http.get($rootScope.JACQUES_API_ROOT + "/sounds").then(function(soundsJSON) {
             var sounds = soundsJSON.data;

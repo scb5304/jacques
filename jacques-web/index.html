@@ -25,10 +25,10 @@
     </div>
 
     <md-content id="sidenav-scroll-content">
-        <md-button flex layout-fill class="md-button md-ink-ripple sidenav-item">
+        <md-button href="#/" flex layout-fill class="md-button md-ink-ripple sidenav-item">
             HOME
         </md-button>
-        <md-button flex layout-fill class="md-button md-ink-ripple sidenav-item">
+        <md-button href="#/sounds" flex layout-fill class="md-button md-ink-ripple sidenav-item">
             SOUNDS
         </md-button>
         <md-button flex layout-fill class="md-button md-ink-ripple sidenav-item">
@@ -41,16 +41,44 @@
             CONTACT
         </md-button>
     </md-content>
+
+    <span flex></span>
+    <div id="sidenav-signature" class="md-body-1">
+        Developed by Steven Brown. <a target="_blank" href="https://github.com/scb5304/jacques">Source</a>
+    </div>
 </md-sidenav>
 
 <div layout="column" flex>
-    <md-toolbar md-whiteframe="2">
-
+    <md-toolbar class="md-whiteframe-1dp" id="toolbar" layout="row">
+        <div id="toolbar-tools" class="md-toolbar-tools">
+            <md-button class="menu md-icon-button" hide-gt-sm ng-click="app.toggleList()" aria-label="Show Sound List">
+                <md-icon md-svg-icon="menu"></md-icon>
+            </md-button>
+            <h2 id="toolbar-title" ng-bind="app.getTitle()" md-truncate></h2>
+            <span flex></span>
+            <a target="_blank" href="https://discordapp.com/oauth2/authorize?client_id=280071400583331840&scope=bot&permissions=3243008">
+                <md-button class="md-icon-button" aria-label="Invite">
+                    <md-icon md-svg-icon="invite">
+                    </md-icon>
+                </md-button>
+            </a>
+            <a target="_blank" href="https://github.com/scb5304/jacques">
+                <md-button class="md-icon-button" aria-label="Github">
+                    <md-icon md-svg-icon="github">
+                    </md-icon>
+                </md-button>
+            </a>
+        </div>
     </md-toolbar>
+
+    <div id="main-content" ng-view></div>
 </div>
+
+
 
 <script src="../node_modules/moment/moment.js"></script>
 <script src="../node_modules/angular/angular.min.js"></script>
+<script src="../node_modules/angular-route/angular-route.min.js"></script>
 <script src="../node_modules/angular-aria/angular-aria.js"></script>
 <script src="../node_modules/angular-animate/angular-animate.js"></script>
 <script src="../node_modules/angular-material/angular-material.js"></script>
@@ -62,6 +90,8 @@
 <script src="app.controller.js"></script>
 <script src="sound-overview/sound-overview.module.js"></script>
 <script src="sound-overview/sound-overview.component.js"></script>
+<script src="sounds/sounds.module.js"></script>
+<script src="sounds/sounds.component.js"></script>
 <script src="sound-list/sound-list.module.js"></script>
 <script src="sound-list/sound-list.component.js"></script>
 <script src="sound-detail/sound-detail.module.js"></script>

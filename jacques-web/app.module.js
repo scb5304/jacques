@@ -5,6 +5,8 @@ angular
     .module("jacquesApp", [
         "ngMaterial",
         "ngMessages",
+        "ngRoute",
+        "sounds",
         "soundOverview",
         "soundDetail",
         "soundList",
