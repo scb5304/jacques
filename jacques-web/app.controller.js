@@ -2,12 +2,8 @@
 
 angular
     .module("jacquesApp")
-    .controller("AppController", function AppController($rootScope, $route, $location, $http, sharedProperties, $mdSidenav, $mdDialog) {
+    .controller("AppController", function AppController($rootScope, $location, $http, sharedProperties, $mdSidenav, $mdDialog) {
         $rootScope.JACQUES_API_ROOT = "http://localhost:8081/api";
-
-        $rootScope.$on("$routeChangeSuccess", function() {
-            $rootScope.title = $route.current.title;
-        });
 
         this.getTitle = function() {
             return $rootScope.title;

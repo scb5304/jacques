@@ -5,9 +5,11 @@ angular
     .module("jacquesApp", [
         "ngMaterial",
         "ngMessages",
-        "ngRoute",
+        "ngResource",
+        "ui.router",
+        "home",
         "sounds",
-        "soundOverview",
+        "soundsByGuild",
         "soundDetail",
         "soundList",
         "birdfeeder",
@@ -15,7 +17,6 @@ angular
     ])
     .service("sharedProperties", function() {
         var sounds = [];
-        var categories = [];
         var selected;
         var user;
         var guilds;
@@ -46,4 +47,29 @@ angular
                 guilds = newGuilds;
             }
         };
+    })
+    .service("jacquesEndpointInterface", function($resource) {
+        var Guilds = $resource("http://localhost:8081/api/guilds");
+        var Sounds = $resource("http://localhost:8081/api/sounds/:guildId");
+
+        return {
+            getGuilds: function() {
+                return new Promise((resolve, reject) => {
+                    Guilds.query(function(guilds) {
+                        return resolve(guilds);
+                    }, function(err) {
+                        return reject(err);
+                    });
+                });
+            },
+            getSoundsByGuild: function(discordGuildId) {
+                return new Promise((resolve, reject) => {
+                    Sounds.query({guildId: discordGuildId}, function(guilds) {
+                        return resolve(guilds);
+                    }, function(err) {
+                        return reject(err);
+                    });
+                });
+            }
+        }
     });

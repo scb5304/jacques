@@ -25,10 +25,10 @@
     </div>
 
     <md-content id="sidenav-scroll-content">
-        <md-button href="#/" flex layout-fill class="md-button md-ink-ripple sidenav-item">
+        <md-button ui-sref="/" flex layout-fill class="md-button md-ink-ripple sidenav-item">
             HOME
         </md-button>
-        <md-button href="#/sounds" flex layout-fill class="md-button md-ink-ripple sidenav-item">
+        <md-button ui-sref="sounds" flex layout-fill class="md-button md-ink-ripple sidenav-item">
             SOUNDS
         </md-button>
         <md-button flex layout-fill class="md-button md-ink-ripple sidenav-item">
@@ -70,28 +70,30 @@
             </a>
         </div>
     </md-toolbar>
-
-    <div id="main-content" ng-view></div>
+    <md-content id="main-content">
+        <ui-view></ui-view>
+    </md-content>
 </div>
-
-
 
 <script src="../node_modules/moment/moment.js"></script>
 <script src="../node_modules/angular/angular.min.js"></script>
-<script src="../node_modules/angular-route/angular-route.min.js"></script>
+<script src="../node_modules/@uirouter/angularjs/release/angular-ui-router.min.js"></script>
 <script src="../node_modules/angular-aria/angular-aria.js"></script>
 <script src="../node_modules/angular-animate/angular-animate.js"></script>
 <script src="../node_modules/angular-material/angular-material.js"></script>
 <script src="../node_modules/angular-messages/angular-messages.js"></script>
+<script src="../node_modules/angular-resource/angular-resource.min.js"></script>
 <script src="../node_modules/chart.js/dist/Chart.js"></script>
 <script src="../node_modules/angular-chart.js/dist/angular-chart.js"></script>
 <script src="app.module.js"></script>
 <script src="app.config.js"></script>
 <script src="app.controller.js"></script>
-<script src="sound-overview/sound-overview.module.js"></script>
-<script src="sound-overview/sound-overview.component.js"></script>
+<script src="home/home.module.js"></script>
+<script src="home/home.component.js"></script>
 <script src="sounds/sounds.module.js"></script>
 <script src="sounds/sounds.component.js"></script>
+<script src="sounds/sounds-by-guild/sounds-by-guild.module.js"></script>
+<script src="sounds/sounds-by-guild/sounds-by-guild.component.js"></script>
 <script src="sound-list/sound-list.module.js"></script>
 <script src="sound-list/sound-list.component.js"></script>
 <script src="sound-detail/sound-detail.module.js"></script>
