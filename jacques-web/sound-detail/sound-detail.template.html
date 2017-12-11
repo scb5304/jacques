@@ -1,46 +1,55 @@
-<h1 id="sound-title" class="md-display-2">{{getSelectedSoundName()}}</h1>
-<md-divider> </md-divider>
-<audio layout="row" flex id="sound-audio" controls data-ng-src="{{audioUrl}}"></audio>
-<div>
-    <md-grid-list flex md-cols-xs="1" md-cols-sm="1" md-cols-md="1" md-cols-gt-md="2" md-row-height-xs="2:1" md-row-height-sm="2:1" md-row-height-md="2.2:1" md-row-height-gt-md="2.2:1" md-gutter="40">
-        <md-grid-tile md-colspan="1">
-            <div layout-fill layout="column">
-                <h3 class="md-title sound-chart-title">Summary</h3>
+<div layout="column">
+    <h1 id="sound-title" class="md-display-1">{{$ctrl.soundName}}</h1>
+    <md-divider></md-divider>
+    <audio layout="row" flex id="sound-audio" controls data-ng-src="{{audioUrl}}"></audio>
+    <div>
+        <md-grid-list flex md-cols-xs="1" md-cols-sm="1" md-cols-md="1" md-cols-gt-md="2" md-row-height-xs="2:1"
+                      md-row-height-sm="2:1" md-row-height-md="2.2:1" md-row-height-gt-md="2.2:1" md-gutter="40">
+            <md-grid-tile md-colspan="1">
+                <div layout-fill layout="column">
+                    <h3 class="md-title sound-chart-title">Summary</h3>
                     <md-card layout-fill>
                         <div layout="column" layout-fill>
-                          <div flex layout="column">
-                            <md-content flex class="sound-summary-card-content">
-                              <div layout="column">
-                                <md-list>
-                                    <md-list-item class="border-bottom-list-item">Play count: {{summaryPlayCount}}</md-list-item>
-                                    <md-list-item class="border-bottom-list-item">Added: {{summaryAddDate}}</md-list-item>
-                                    <md-list-item class="border-bottom-list-item">Last played on: {{summaryLastPlayed}}</md-list-item>
-                                </md-list>
-                            </div>  
-                        </md-content>
-                    </div>
+                            <div flex layout="column">
+                                <md-content flex class="sound-summary-card-content">
+                                    <div layout="column">
+                                        <md-list>
+                                            <md-list-item class="border-bottom-list-item">Play count:
+                                                {{summaryPlayCount}}
+                                            </md-list-item>
+                                            <md-list-item class="border-bottom-list-item">Added: {{summaryAddDate}}
+                                            </md-list-item>
+                                            <md-list-item class="border-bottom-list-item">Last played on:
+                                                {{summaryLastPlayed}}
+                                            </md-list-item>
+                                        </md-list>
+                                    </div>
+                                </md-content>
+                            </div>
+                        </div>
+                    </md-card>
                 </div>
-            </md-card>
-        </div>
-    </md-grid-tile>
+            </md-grid-tile>
 
-    <md-grid-tile md-colspan="1">
-        <div layout-fill layout="column">
-            <h3 class="md-title sound-chart-title">Recent activity</h3>
-                <md-card layout-fill style="padding: 12px">
-                    <md-card-content flex layout-fill>
-                        <canvas class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-click="onClick"/>
-                    </md-card-content>
-                </md-card>
-            </div>
-        </md-grid-tile>
+            <md-grid-tile md-colspan="1">
+                <div layout-fill layout="column">
+                    <h3 class="md-title sound-chart-title">Recent activity</h3>
+                    <md-card layout-fill style="padding: 12px">
+                        <md-card-content flex layout-fill>
+                            <canvas class="chart chart-line" chart-data="data" chart-labels="labels"
+                                    chart-series="series" chart-click="onClick"/>
+                        </md-card-content>
+                    </md-card>
+                </div>
+            </md-grid-tile>
 
-        <md-grid-tile md-colspan="1">
-            <div layout-fill layout="column">
-                <h3 class="md-title sound-chart-title">How it's played</h3>
+            <md-grid-tile md-colspan="1">
+                <div layout-fill layout="column">
+                    <h3 class="md-title sound-chart-title">How it's played</h3>
                     <md-card layout-fill>
-                        <md-card-content flex layout-fill >
-                            <canvas id="sound-type-nut-chart" class="chart chart-doughnut" chart-data="soundTypeNutData" chart-labels="soundTypeNutLabels"/>
+                        <md-card-content flex layout-fill>
+                            <canvas id="sound-type-nut-chart" class="chart chart-doughnut" chart-data="soundTypeNutData"
+                                    chart-labels="soundTypeNutLabels"/>
                         </md-card-content>
                     </md-card>
                 </div>
@@ -49,12 +58,14 @@
             <md-grid-tile md-colspan="1">
                 <div layout-fill layout="column">
                     <h3 class="md-title sound-chart-title">Most played by</h3>
-                        <md-card id="sound-most-played-by-card" layout-fill>
-                            <md-card-content flex layout-fill >
-                                <canvas id="sound-performed-by-chart" class="chart-horizontal-bar" chart-data="soundPlayedByBarData" chart-labels="soundPlayedByBarLabels"></canvas>
-                            </md-card-content>
-                        </md-card>
-                    </div>
-                </md-grid-tile>
-            </md-grid-list>
-        </div>
+                    <md-card id="sound-most-played-by-card" layout-fill>
+                        <md-card-content flex layout-fill>
+                            <canvas id="sound-performed-by-chart" class="chart-horizontal-bar"
+                                    chart-data="soundPlayedByBarData" chart-labels="soundPlayedByBarLabels"></canvas>
+                        </md-card-content>
+                    </md-card>
+                </div>
+            </md-grid-tile>
+        </md-grid-list>
+    </div>
+</div>

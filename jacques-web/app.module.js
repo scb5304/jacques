@@ -8,7 +8,7 @@ angular
         "ngResource",
         "ui.router",
         "home",
-        "sounds",
+        "guildList",
         "soundsByGuild",
         "soundDetail",
         "soundList",
@@ -70,6 +70,15 @@ angular
                         return reject(err);
                     });
                 });
-            }
+            },
+            // getSoundByName: function(discordGuildId, soundName) {
+            //     return new Promise((resolve, reject) => {
+            //         Sounds.get({guildId: discordGuildId, name: soundName}, function(guilds) {
+            //             return resolve(guilds);
+            //         }, function(err) {
+            //             return reject(err);
+            //         });
+            //     });
+            // }
         }
     });

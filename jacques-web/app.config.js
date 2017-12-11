@@ -21,10 +21,10 @@ angular
             component: 'home'
         };
 
-        var soundsState = {
-            name: 'sounds',
+        var guildsState = {
+            name: 'guildList',
             url: '/sounds',
-            component: 'sounds',
+            component: 'guildList',
             resolve: {
                 guilds: function(jacquesEndpointInterface) {
                     return jacquesEndpointInterface.getGuilds();
@@ -37,6 +37,9 @@ angular
             url: '/sounds/{guildId}',
             component: 'soundsByGuild',
             resolve: {
+                guildId: function($transition$) {
+                    return $transition$.params().guildId;
+                },
                 sounds: function($transition$, jacquesEndpointInterface) {
                     var guildId = $transition$.params().guildId;
                     return jacquesEndpointInterface.getSoundsByGuild(guildId);
@@ -44,7 +47,22 @@ angular
             }
         };
 
+        var soundDetailState = {
+            name: 'soundDetail',
+            url: '/sounds/{guildId}/{soundName}',
+            component: 'soundDetail',
+            resolve: {
+                guildId: function($transition$) {
+                    return $transition$.params().guildId;
+                },
+                soundName: function($transition$) {
+                    return $transition$.params().soundName;
+                }
+            }
+        };
+
         $stateProvider.state(homeState);
-        $stateProvider.state(soundsState);
+        $stateProvider.state(guildsState);
         $stateProvider.state(soundsByGuildState);
+        $stateProvider.state(soundDetailState);
     });

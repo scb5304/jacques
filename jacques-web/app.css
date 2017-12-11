@@ -2,6 +2,15 @@
     display: none;
 }
 
+html,
+body {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
 /* Toolbar area */
 
 .menu {
@@ -58,7 +67,7 @@ md-toolbar h1 {
 /* Sidenav area */
 
 md-sidenav {
-    max-width: 275px;
+    max-width: 325px;
 }
 
 #sounds-guild-select {
@@ -146,17 +155,14 @@ sound-list {
     text-transform: none;
 }
 
-#sound-grid-list-wrapper {
-
-}
-
 /* Primary content area */
 
 #main-content {
-    margin-left: 24px;
-    margin-right: 24px;
-    margin-top: 16px;
-    margin-bottom: 16px;
+    height: 100%;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 5px;
+    overflow-y: scroll;
     overflow-x: hidden;
 }
 
@@ -176,7 +182,7 @@ sound-list {
 }
 
 #sound-title {
-    margin-top: 8px;
+    margin-top: 12px;
     margin-bottom: 0px;
 }
 

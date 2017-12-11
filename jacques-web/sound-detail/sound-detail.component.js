@@ -4,6 +4,7 @@
 angular
     .module("soundDetail")
     .component("soundDetail", {
+        bindings: {guildId: "<", soundName: "<"},
         templateUrl: "sound-detail/sound-detail.template.html",
         controller: ["$location", "$scope", "sharedProperties", "SoundDetailChartsHelper", "$sce",
             function SoundDetailController($location, $scope, sharedProperties, SoundDetailChartsHelper, $sce) {
@@ -15,12 +16,6 @@ angular
                         onSoundSelected(newSound);
                     }
                 });
-
-                $scope.getSelectedSoundName = function() {
-                    if ($scope.sharedProperties && $scope.sharedProperties.getSelected()) {
-                        return $scope.sharedProperties.getSelected().cleanedName;
-                    }
-                };
 
                 function onSoundSelected(sound) {
                     updateAudioFile(sound);
