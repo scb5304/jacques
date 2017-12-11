@@ -33,8 +33,8 @@ angular
         };
 
         var soundsByGuildState = {
-            name: 'sounds.soundsByGuild',
-            url: '/{guildId}',
+            name: 'soundsByGuild',
+            url: '/sounds/{guildId}',
             component: 'soundsByGuild',
             resolve: {
                 sounds: function($transition$, jacquesEndpointInterface) {
