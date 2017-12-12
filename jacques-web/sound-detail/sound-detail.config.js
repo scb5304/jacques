@@ -1,6 +1,6 @@
 angular
     .module("soundDetail")
-    .config(["ChartJsProvider", function(ChartJsProvider) {
+    .config(["ChartJsProvider", "$stateProvider", function(ChartJsProvider, $stateProvider) {
         // Configure all charts
         ChartJsProvider.setOptions({
             chartColors: ["#FF5722", "#A5D6A7"],
@@ -49,4 +49,23 @@ angular
                 }]
             }
         });
+
+        var soundDetailState = {
+            name: 'soundDetail',
+            url: '/sounds/{guildId}/{soundName}',
+            component: 'soundDetail',
+            resolve: {
+                guild: function($transition$, jacquesEndpointInterface) {
+                    var guildId = $transition$.params().guildId;
+                    return jacquesEndpointInterface.getGuild(guildId);
+                },
+                sound: function($transition$, jacquesEndpointInterface) {
+                    var guildId = $transition$.params().guildId;
+                    var soundName = $transition$.params().soundName;
+                    return jacquesEndpointInterface.getSoundByName(guildId, soundName);
+                }
+            }
+        };
+
+        $stateProvider.state(soundDetailState);
     }]);

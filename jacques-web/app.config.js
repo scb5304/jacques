@@ -2,7 +2,7 @@
 
 angular
     .module("jacquesApp")
-    .config(function ($mdIconProvider, $mdThemingProvider, $stateProvider) {
+    .config(function ($mdIconProvider, $mdThemingProvider) {
         $mdThemingProvider.theme("default")
             .primaryPalette("green")
             .accentPalette("deep-orange");
@@ -14,59 +14,4 @@ angular
             .icon("close", "assets/svg/close.svg", 24)
             .icon("birdfeed", "assets/svg/hops.svg", 24)
             .icon("invite", "assets/svg/person_add.svg", 24);
-
-        var homeState = {
-            name: '/',
-            url: '/',
-            component: 'home'
-        };
-
-        var guildsState = {
-            name: 'guildList',
-            url: '/sounds',
-            component: 'guildList',
-            resolve: {
-                guilds: function(jacquesEndpointInterface) {
-                    return jacquesEndpointInterface.getGuilds();
-                }
-            }
-        };
-
-        var soundsByGuildState = {
-            name: 'soundsByGuild',
-            url: '/sounds/{guildId}',
-            component: 'soundsByGuild',
-            resolve: {
-                guild: function($transition$, jacquesEndpointInterface) {
-                    var guildId = $transition$.params().guildId;
-                    return jacquesEndpointInterface.getGuild(guildId);
-                },
-                sounds: function($transition$, jacquesEndpointInterface) {
-                    var guildId = $transition$.params().guildId;
-                    return jacquesEndpointInterface.getSoundsByGuild(guildId);
-                }
-            }
-        };
-
-        var soundDetailState = {
-            name: 'soundDetail',
-            url: '/sounds/{guildId}/{soundName}',
-            component: 'soundDetail',
-            resolve: {
-                guild: function($transition$, jacquesEndpointInterface) {
-                    var guildId = $transition$.params().guildId;
-                    return jacquesEndpointInterface.getGuild(guildId);
-                },
-                sound: function($transition$, jacquesEndpointInterface) {
-                    var guildId = $transition$.params().guildId;
-                    var soundName = $transition$.params().soundName;
-                    return jacquesEndpointInterface.getSoundByName(guildId, soundName);
-                }
-            }
-        };
-
-        $stateProvider.state(homeState);
-        $stateProvider.state(guildsState);
-        $stateProvider.state(soundsByGuildState);
-        $stateProvider.state(soundDetailState);
     });
