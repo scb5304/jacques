@@ -3,5 +3,5 @@
 .coveralls.yml
 coverage/
 node_modules/
-sounds/
+/sounds/
 npm-debug.log
