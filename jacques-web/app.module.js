@@ -49,14 +49,23 @@ angular
         };
     })
     .service("jacquesEndpointInterface", function($resource) {
-        var Guilds = $resource("http://localhost:8081/api/guilds");
-        var Sounds = $resource("http://localhost:8081/api/sounds/:guildId");
+        var Guilds = $resource("http://localhost:8081/api/guilds/:guildId");
+        var Sounds = $resource("http://localhost:8081/api/sounds/:guildId/:soundName");
 
         return {
             getGuilds: function() {
                 return new Promise((resolve, reject) => {
                     Guilds.query(function(guilds) {
                         return resolve(guilds);
+                    }, function(err) {
+                        return reject(err);
+                    });
+                });
+            },
+            getGuild: function(discordGuildId) {
+                return new Promise((resolve, reject) => {
+                    Guilds.get({guildId: discordGuildId}, function(guild) {
+                        return resolve(guild);
                     }, function(err) {
                         return reject(err);
                     });
@@ -71,14 +80,14 @@ angular
                     });
                 });
             },
-            // getSoundByName: function(discordGuildId, soundName) {
-            //     return new Promise((resolve, reject) => {
-            //         Sounds.get({guildId: discordGuildId, name: soundName}, function(guilds) {
-            //             return resolve(guilds);
-            //         }, function(err) {
-            //             return reject(err);
-            //         });
-            //     });
-            // }
+            getSoundByName: function(discordGuildId, soundName) {
+                return new Promise((resolve, reject) => {
+                    Sounds.get({guildId: discordGuildId, soundName: soundName}, function(sound) {
+                        return resolve(sound);
+                    }, function(err) {
+                        return reject(err);
+                    });
+                });
+            }
         }
     });

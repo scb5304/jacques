@@ -42,5 +42,8 @@ router.route("/users/:birdfeed")
 router.route("/guilds")
     .get(guildController.getGuilds);
 
+router.route("/guilds/:guild")
+    .get(guildController.getGuild);
+
 app.use("/api", router);
 app.listen(port);

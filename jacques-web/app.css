@@ -162,6 +162,7 @@ sound-list {
     padding-left: 30px;
     padding-right: 30px;
     padding-top: 5px;
+    padding-bottom: 44px;
     overflow-y: scroll;
     overflow-x: hidden;
 }

@@ -37,8 +37,9 @@ angular
             url: '/sounds/{guildId}',
             component: 'soundsByGuild',
             resolve: {
-                guildId: function($transition$) {
-                    return $transition$.params().guildId;
+                guild: function($transition$, jacquesEndpointInterface) {
+                    var guildId = $transition$.params().guildId;
+                    return jacquesEndpointInterface.getGuild(guildId);
                 },
                 sounds: function($transition$, jacquesEndpointInterface) {
                     var guildId = $transition$.params().guildId;
@@ -52,11 +53,14 @@ angular
             url: '/sounds/{guildId}/{soundName}',
             component: 'soundDetail',
             resolve: {
-                guildId: function($transition$) {
-                    return $transition$.params().guildId;
+                guild: function($transition$, jacquesEndpointInterface) {
+                    var guildId = $transition$.params().guildId;
+                    return jacquesEndpointInterface.getGuild(guildId);
                 },
-                soundName: function($transition$) {
-                    return $transition$.params().soundName;
+                sound: function($transition$, jacquesEndpointInterface) {
+                    var guildId = $transition$.params().guildId;
+                    var soundName = $transition$.params().soundName;
+                    return jacquesEndpointInterface.getSoundByName(guildId, soundName);
                 }
             }
         };
