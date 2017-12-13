@@ -1,18 +1,19 @@
 <div layout="column">
-<md-input-container>
-    <label>Sound</label>
-    <input ng-model="soundSearchQuery"/>
-</md-input-container>
+    <h3 class="md-headline">{{$ctrl.guild.discord_name}}</h3>
+    <md-input-container>
+        <label>Sound</label>
+        <input ng-model="soundSearchQuery"/>
+    </md-input-container>
 
-<md-list style="max-height: 400px; overflow-y: auto;">
-    <md-list-item class="sound-list-item border-bottom-list-item"
-                  ng-repeat="sound in (filteredSounds = ($ctrl.sounds | filter: {name: soundSearchQuery}))">
-        <md-button class="sound-list-item-button"
-                   ui-sref="soundDetail({ guildId: $ctrl.guild.discord_id, soundName: sound.name })"
-                   aria-label="sound.name">
+    <md-list>
+        <md-list-item class="sound-list-item border-bottom-list-item"
+                      ng-repeat="sound in (filteredSounds = ($ctrl.sounds | filter: {name: soundSearchQuery}))">
+            <md-button class="sound-list-item-button"
+                       ui-sref="soundDetail({ guildId: $ctrl.guild.discord_id, soundName: sound.name })"
+                       aria-label="sound.name">
 
-            <span class="sound-list-item-button-text" ng-bind="sound.name"></span>
-        </md-button>
-    </md-list-item>
-</md-list>
+                <span class="sound-list-item-button-text" ng-bind="sound.name"></span>
+            </md-button>
+        </md-list-item>
+    </md-list>
 </div>   

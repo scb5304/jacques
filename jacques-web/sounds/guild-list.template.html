@@ -1,22 +1,18 @@
-<div id="sounds-layout-wrapper">
-    <div layout="row">
-        <div layout="column">
-            <md-input-container>
-                <label>Guild</label>
-                <input ng-model="guildSearchQuery"/>
-            </md-input-container>
-            <md-list style="overflow-y: auto;">
-                <md-list-item class="guild-list-item border-bottom-list-item"
-                              ng-repeat="guild in (filteredGuilds = ($ctrl.guilds | filter: {discord_name: guildSearchQuery}))">
-                    <md-button class="guild-list-item-button"
-                               ui-sref="soundsByGuild({ guildId: guild.discord_id })"
-                               aria-label="guild.discord_name" ng-click="updateSelected(sound)">
-                        <span class="guild-list-item-button-text" ng-bind="guild.discord_name"></span>
-                    </md-button>
-                </md-list-item>
-            </md-list>
-        </div>
-    </div>
+<div layout="column">
+    <h3 class="md-subhead">Please select the Discord server whose sounds you wish to view.</h3>
+    <md-input-container>
+        <label>Guild</label>
+        <input ng-model="guildSearchQuery"/>
+    </md-input-container>
 
-
+    <md-list>
+        <md-list-item class="guild-list-item border-bottom-list-item"
+                      ng-repeat="guild in (filteredGuilds = ($ctrl.guilds | filter: {discord_name: guildSearchQuery}))">
+            <md-button class="guild-list-item-button"
+                       ui-sref="soundsByGuild({ guildId: guild.discord_id })"
+                       aria-label="guild.discord_name" ng-click="updateSelected(sound)">
+                <span class="guild-list-item-button-text" ng-bind="guild.discord_name"></span>
+            </md-button>
+        </md-list-item>
+    </md-list>
 </div>
