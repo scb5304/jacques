@@ -157,6 +157,11 @@ sound-list {
 
 /* Primary content area */
 
+#fab-scroll-to-top {
+    position: fixed;
+    visibility: hidden;
+}
+
 #main-content {
     height: 100%;
     padding-left: 30px;
