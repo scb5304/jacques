@@ -55,6 +55,13 @@ md-toolbar h1 {
     padding-bottom: 4px;
 }
 
+#sidenav-hidden-swipe-to-open-column {
+    position: absolute;
+    width: 100px;
+    height: 100%;
+    z-index:1
+}
+
 #toolbar-title {
     margin-left: 8px;
 }
@@ -166,7 +173,7 @@ sound-list {
     height: 100%;
     padding-left: 30px;
     padding-right: 30px;
-    padding-top: 5px;
+    padding-top: 16px;
     padding-bottom: 44px;
     overflow-y: scroll;
     overflow-x: hidden;

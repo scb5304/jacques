@@ -2,7 +2,7 @@
 
 angular
     .module("jacquesApp")
-    .config(function ($mdIconProvider, $mdThemingProvider) {
+    .config(function ($mdIconProvider, $mdThemingProvider, $urlRouterProvider, $stateProvider) {
         $mdThemingProvider.theme("default")
             .primaryPalette("green")
             .accentPalette("deep-orange");
@@ -15,4 +15,12 @@ angular
             .icon("birdfeed", "assets/svg/hops.svg", 24)
             .icon("chevron-up", "assets/svg/chevron-up.svg", 24)
             .icon("invite", "assets/svg/person_add.svg", 24);
+        $urlRouterProvider.when('', '/');
+
+        var helpState = {
+            name: 'help',
+            url: '/help',
+            templateUrl: '/jacques-web/help.html'
+        };
+        $stateProvider.state(helpState);
     });

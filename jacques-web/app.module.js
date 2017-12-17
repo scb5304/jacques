@@ -14,37 +14,47 @@ angular
         "soundDetail",
         "soundList",
         "birdfeeder",
-        "chart.js"
+        "chart.js",
     ])
-    .service("sharedProperties", function() {
+    .run(function($state, $mdToast) {
+        $state.defaultErrorHandler(function(error) {
+            $mdToast.show(
+                $mdToast.simple()
+                    .textContent("Sorry, there was an error talking to the Jacques API. Try again soon.")
+                    .position("bottom center")
+                    .hideDelay(3150)
+            );
+        });
+    })
+    .service("sharedProperties", function () {
         var sounds = [];
         var selected;
         var user;
         var guilds;
 
         return {
-            getSounds: function() {
+            getSounds: function () {
                 return sounds;
             },
-            setSounds: function(newSounds) {
+            setSounds: function (newSounds) {
                 sounds = newSounds;
             },
-            getSelected: function() {
+            getSelected: function () {
                 return selected;
             },
-            setSelected: function(newSelected) {
+            setSelected: function (newSelected) {
                 selected = newSelected;
             },
-            getUser: function() {
+            getUser: function () {
                 return user;
             },
-            setUser: function(newUser) {
+            setUser: function (newUser) {
                 user = newUser;
             },
-            getGuilds: function() {
+            getGuilds: function () {
                 return guilds;
             },
-            setGuilds: function(newGuilds) {
+            setGuilds: function (newGuilds) {
                 guilds = newGuilds;
             }
         };
@@ -72,43 +82,43 @@ angular
             }
         };
     })
-    .service("jacquesEndpointInterface", function($resource) {
+    .service("jacquesEndpointInterface", function ($resource) {
         var Guilds = $resource("http://localhost:8081/api/guilds/:guildId");
         var Sounds = $resource("http://localhost:8081/api/sounds/:guildId/:soundName");
 
         return {
-            getGuilds: function() {
+            getGuilds: function () {
                 return new Promise((resolve, reject) => {
-                    Guilds.query(function(guilds) {
+                    Guilds.query(function (guilds) {
                         return resolve(guilds);
-                    }, function(err) {
+                    }, function (err) {
                         return reject(err);
                     });
                 });
             },
-            getGuild: function(discordGuildId) {
+            getGuild: function (discordGuildId) {
                 return new Promise((resolve, reject) => {
-                    Guilds.get({guildId: discordGuildId}, function(guild) {
+                    Guilds.get({guildId: discordGuildId}, function (guild) {
                         return resolve(guild);
-                    }, function(err) {
+                    }, function (err) {
                         return reject(err);
                     });
                 });
             },
-            getSoundsByGuild: function(discordGuildId) {
+            getSoundsByGuild: function (discordGuildId) {
                 return new Promise((resolve, reject) => {
-                    Sounds.query({guildId: discordGuildId}, function(guilds) {
+                    Sounds.query({guildId: discordGuildId}, function (guilds) {
                         return resolve(guilds);
-                    }, function(err) {
+                    }, function (err) {
                         return reject(err);
                     });
                 });
             },
-            getSoundByName: function(discordGuildId, soundName) {
+            getSoundByName: function (discordGuildId, soundName) {
                 return new Promise((resolve, reject) => {
-                    Sounds.get({guildId: discordGuildId, soundName: soundName}, function(sound) {
+                    Sounds.get({guildId: discordGuildId, soundName: soundName}, function (sound) {
                         return resolve(sound);
-                    }, function(err) {
+                    }, function (err) {
                         return reject(err);
                     });
                 });

@@ -1,55 +1,39 @@
-<md-dialog class="sound-dialog">
-    <form>
-        <md-toolbar>
-            <div class="md-toolbar-tools">
-            	<span><md-icon class="dialog-icon" md-svg-icon="help"/></span>
-                <h2>Help</h2>
-                <span flex></span>
-		        <md-button class="md-icon-button" ng-click="$ctrl.closeDialog()" aria-label="Close help">
-		          <md-icon id="help-close-icon" md-svg-icon="close"/>
-		        </md-button>
-            </div>
-        </md-toolbar>
-        <md-dialog-content>
-            <div class="md-dialog-content">
-                <h2 class="md-headline" style="margin-top: 0px">How do I play a sound?</h2>
-                <p>
-                    An exclamation point denotes a "command" which Jacques will attempt to interpret. To play a sound, you type an
-                    exclamation point followed by the name of the sound. If your Discord server has a sound of that name, Jacques
-                    will join the voice channel, play the sound, then leave. If you want Jacques to stop, use <i>!cancel</i> or <i>!stop</i>.
-                </p>
-                <ul>
-                    <li><i>!yeah</i> plays the sound named "yeah" in your Guild.</li>
-                    <li><i>!fif</i> plays the sound named "fif" in your Guild.</li>
-                    <li><i>!cancel</i> forces Jacques to fly away.</li>
-                </ul>
+<div class="md-dialog-content">
+    <h2 class="md-headline" style="margin-top: 0px">How do I play a sound?</h2>
+    <p>
+        An exclamation point denotes a "command" which Jacques will attempt to interpret. To play a sound, you type an
+        exclamation point followed by the name of the sound. If your Discord server has a sound of that name, Jacques
+        will join the voice channel, play the sound, then leave. If you want Jacques to stop, use <i>!cancel</i> or <i>!stop</i>.
+    </p>
+    <ul>
+        <li><i>!yeah</i> plays the sound named "yeah" in your Guild.</li>
+        <li><i>!fif</i> plays the sound named "fif" in your Guild.</li>
+        <li><i>!cancel</i> forces Jacques to fly away.</li>
+    </ul>
 
-                <h2 class="md-headline">What about YouTube Videos?</h2>
-                <p>
-                    Similar to sound clips, start with an exclamation point. However, instead of the name of a sound, use the word "stream."
-                    Then, paste your YouTube video's URL. You can include the exact time to start, if desired.
-                </p>
-                <ul>
-                    <li><i>!stream https://www.youtube.com/watch?v=BJ0xBCwkg3E</i> plays the entire Running in the 90's video.</li>
-                    <li><i>!stream https://youtu.be/BJ0xBCwkg3E?t=1m1s</i> plays the same video starting at 1 minute and 1 second.</li>
-                </ul>
+    <h2 class="md-headline">What about YouTube Videos?</h2>
+    <p>
+        Similar to sound clips, start with an exclamation point. However, instead of the name of a sound, use the word "stream."
+        Then, paste your YouTube video's URL. You can include the exact time to start, if desired.
+    </p>
+    <ul>
+        <li><i>!stream https://www.youtube.com/watch?v=BJ0xBCwkg3E</i> plays the entire Running in the 90's video.</li>
+        <li><i>!stream https://youtu.be/BJ0xBCwkg3E?t=1m1s</i> plays the same video starting at 1 minute and 1 second.</li>
+    </ul>
 
-                <h2 class="md-headline">He's too loud (or quiet) for this video!</h2>
-                <p>
-                    Use the "volume" command to view Jacques' current volume level, from 0 to 100. You can then tweak the volume level
-                    by including a value after the word "volume." <b>Keep in mind this is only for YouTube videos.</b> Sound clips have their
-                    volume automagically adjusted by Jacques to have roughly the same level.
-                </p>
-                <ul>
-                    <li><i>!volume</i> causes Jacques to say his current volume level.</li>
-                    <li><i>!volume 60</i> sets the volume to 60%.</li>
-                </ul>
+    <h2 class="md-headline">He's too loud (or quiet) for this video!</h2>
+    <p>
+        Use the "volume" command to view Jacques' current volume level, from 0 to 100. You can then tweak the volume level
+        by including a value after the word "volume." <b>Keep in mind this is only for YouTube videos.</b> Sound clips have their
+        volume automagically adjusted by Jacques to have roughly the same level.
+    </p>
+    <ul>
+        <li><i>!volume</i> causes Jacques to say his current volume level.</li>
+        <li><i>!volume 60</i> sets the volume to 60%.</li>
+    </ul>
 
-                <h2 class="md-headline">How do I submit a sound for my Guild?</h2>
-                <p>
-                    I'm working on it.
-                </p>
-            </div>
-        </md-dialog-content>
-    </form>
-</md-dialog>
+    <h2 class="md-headline">How do I submit a sound for my Guild?</h2>
+    <p>
+        I'm working on it.
+    </p>
+</div>

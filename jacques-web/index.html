@@ -12,7 +12,12 @@
 
 <body ng-cloak layout="row" ng-controller="AppController as app">
 
+<div id="sidenav-hidden-swipe-to-open-column" md-swipe-right="app.onSidenavSwipedRight()" layout="column">
+
+</div>
 <md-sidenav
+        md-swipe-left="app.onSidenavSwipedLeft()"
+        layout="column"
         id="sidenav-left"
         class="md-sidenav-left"
         md-component-id="left"
@@ -20,24 +25,24 @@
         md-whiteframe="1">
 
     <div id="sidenav-header" layout-align="top center">
-        <img layout-align="center" id="sidenav-icon" src="assets/img/jacques_icon_big.png" />
+        <img layout-align="center" id="sidenav-icon" src="assets/img/jacques_icon_big.png"/>
         <h2 id="sidenav-title" layout-align="center" class="md-headline">Jacques</h2>
     </div>
 
     <md-content id="sidenav-scroll-content">
-        <md-button ui-sref="/" flex layout-fill class="md-button md-ink-ripple sidenav-item">
+        <md-button ng-click="app.onSidenavItemClicked()" ui-sref="home" flex layout-fill class="md-button md-ink-ripple sidenav-item">
             HOME
         </md-button>
-        <md-button ui-sref="guildList" flex layout-fill class="md-button md-ink-ripple sidenav-item">
+        <md-button ng-click="app.onSidenavItemClicked()" ui-sref="guildList" flex layout-fill class="md-button md-ink-ripple sidenav-item">
             SOUNDS
         </md-button>
-        <md-button flex layout-fill class="md-button md-ink-ripple sidenav-item">
+        <md-button ng-click="app.onSidenavItemClicked()" flex layout-fill class="md-button md-ink-ripple sidenav-item">
             UPLOAD
         </md-button>
-        <md-button flex layout-fill class="md-button md-ink-ripple sidenav-item">
+        <md-button ng-click="app.onSidenavItemClicked()" ui-sref="help" flex layout-fill class="md-button md-ink-ripple sidenav-item">
             HELP
         </md-button>
-        <md-button flex layout-fill class="md-button md-ink-ripple sidenav-item">
+        <md-button ng-click="app.onSidenavItemClicked()" flex layout-fill class="md-button md-ink-ripple sidenav-item">
             CONTACT
         </md-button>
     </md-content>

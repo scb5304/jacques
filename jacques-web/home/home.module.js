@@ -3,7 +3,7 @@ angular
     .module("home", [])
     .config(["$stateProvider", function ($stateProvider) {
         var homeState = {
-            name: '/',
+            name: 'home',
             url: '/',
             component: 'home'
         };

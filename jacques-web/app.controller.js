@@ -9,47 +9,39 @@ angular
             return $rootScope.title;
         };
 
-        $http.get($rootScope.JACQUES_API_ROOT + "/sounds").then(function(soundsJSON) {
-            var sounds = soundsJSON.data;
-            var soundFromURL;
-            sounds.forEach(function(sound) {
-                sound.cleanedName = sound.name.split(".")[0];
-                if ("/" + sound.cleanedName === $location.path()) {
-                    soundFromURL = sound;
-                }
-            });
+        $rootScope.$on("$locationChangeStart", function(event) {
+            var sidenav = $mdSidenav("left");
 
-            sharedProperties.setSounds(sounds);
-
-            if (soundFromURL) {
-                sharedProperties.setSelected(soundFromURL);
-            } else {
-                sharedProperties.setSelected(sharedProperties.getSounds()[0]);
+            if (sidenav.isOpen()) {
+                sidenav.close();
+            } else if (angular.element(document.body).hasClass('md-dialog-is-showing')) {
+                event.preventDefault();
+                $mdDialog.cancel();
             }
-        });
-
-        $http.get($rootScope.JACQUES_API_ROOT + "/guilds").then(function(guildsJSON) {
-        	var guilds = guildsJSON.data;
-        	sharedProperties.setGuilds(guilds);
         });
 
         this.toggleList = function() {
             $mdSidenav("left").toggle();
         };
 
-        this.showHelp = function() {
-            $mdDialog.show({
-                templateUrl: "help.html",
-                clickOutsideToClose: true,
-                controller: this.HelpDialogController,
-                controllerAs: "$ctrl"
-            });
+        this.onSidenavSwipedLeft = function() {
+            var sidenav = $mdSidenav("left");
+            if (sidenav) {
+                sidenav.close();
+            }
         };
 
-        this.HelpDialogController = function() {
-            var self = this;
-            self.closeDialog = function() {
-                $mdDialog.hide();
-            };
+        this.onSidenavSwipedRight = function() {
+            var sidenav = $mdSidenav("left");
+            if (sidenav) {
+                sidenav.open();
+            }
         };
+
+        this.onSidenavItemClicked = function() {
+            var sidenav = $mdSidenav("left");
+            if (sidenav) {
+                sidenav.close();
+            }
+        }
     });
