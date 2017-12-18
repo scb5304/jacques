@@ -34,14 +34,13 @@ angular.module("birdfeeder")
 
                     self.onSuccessfulGetUserResponse = function (response) {
                         self.makingRequest = false;
-                        sharedProperties.user = response.data;
-                        console.log(response.data);
+                        sharedProperties.setUser(response.data);
                         $mdDialog.hide();
                     };
 
                     self.onFailureGetUserResponse = function (response) {
                         self.makingRequest = false;
-                        sharedProperties.setUser({discord_username: undefined, discord_last_guild_name: undefined});
+                        sharedProperties.setUser({discord_username: undefined, discord_last_guild_id: undefined});
                         var toastMessage = "Oops, that didn't work.";
                         if (response.data) {
                             if (response.data.error) {

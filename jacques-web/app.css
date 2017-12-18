@@ -55,6 +55,10 @@ md-toolbar h1 {
     padding-bottom: 4px;
 }
 
+#sidenav-left {
+
+}
+
 #sidenav-hidden-swipe-to-open-column {
     position: absolute;
     width: 55px;
@@ -131,9 +135,28 @@ sound-list {
     margin-bottom: 0px;
 }
 
-#sound-list-user-header {
-    padding: 4px;
-    margin: 16px;
+#user-card {
+    background-color: #FAFAFA;
+}
+
+#user-card-icon-column {
+    margin-right: 16px;
+}
+
+#user-card-details-column {
+
+}
+
+#user-card-details-username {
+
+}
+
+#user-card-details-guild {
+
+}
+
+#user-card-icon {
+    fill: #FF5722;
 }
 
 .border-bottom-list-item {
