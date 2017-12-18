@@ -1,5 +1,5 @@
 <md-dialog class="sound-dialog">
-    <form novalidate name="birdfeedForm" ng-submit="$ctrl.submitBirdfeed()">
+    <form novalidate name="birdfeedForm" ng-submit="birdfeedForm.$valid && $ctrl.submitBirdfeed()">
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <span><md-icon class="dialog-icon" md-svg-icon="birdfeed"/></span>

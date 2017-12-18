@@ -49,6 +49,7 @@
 
     <span flex></span>
     <div id="sidenav-signature" class="md-body-1">
+        {{app.getGuildName()}}
         Developed by Steven Brown. <a target="_blank" href="https://github.com/scb5304/jacques">Source</a>
     </div>
 </md-sidenav>
@@ -61,6 +62,7 @@
             </md-button>
             <h2 id="toolbar-title" ng-bind="app.getTitle()" md-truncate></h2>
             <span flex></span>
+            <birdfeeder></birdfeeder>
             <a target="_blank" href="https://discordapp.com/oauth2/authorize?client_id=280071400583331840&scope=bot&permissions=3243008">
                 <md-button class="md-icon-button" aria-label="Invite">
                     <md-icon md-svg-icon="invite">
