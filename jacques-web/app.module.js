@@ -12,7 +12,6 @@ angular
         "guildList",
         "soundsByGuild",
         "soundDetail",
-        "soundList",
         "birdfeeder",
         "chart.js",
     ])

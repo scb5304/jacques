@@ -117,18 +117,6 @@ md-sidenav md-list .md-button.selected {
     color: #03a9f4;
 }
 
-sound-list {
-    display: flex;
-    flex-direction: column;
-}
-
-#sound-list-floater {
-    flex: 1;
-    flex-direction: column;
-    padding-bottom: 1vh;
-    border-bottom: 1px solid #CCCCCC;
-}
-
 #sound-search-input-container {
     margin-left: 16px;
     margin-right: 16px;

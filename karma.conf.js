@@ -20,7 +20,7 @@ module.exports = function(config) {
     files: [
         "./node_modules/moment/moment.js",
         "./node_modules/angular/angular.min.js",
-        "./node_modules/angular-ui-router/release/angular-ui-router.js",
+        "./node_modules/@uirouter/angularjs/release/angular-ui-router.min.js",
         "./node_modules/angular-animate/angular-animate.js",
         "./node_modules/angular-material/angular-material.js",
         "./node_modules/angular-messages/angular-messages.js",
@@ -29,7 +29,6 @@ module.exports = function(config) {
         "./node_modules/angular-mocks/angular-mocks.js",
         "jacques-web/app.module.js",
         "jacques-web/app.config.js",
-        "jacques-web/sound-list/sound-list.module.js",
         "jacques-web/sound-detail/sound-detail.module.js",
         "jacques-web/**/*.js",
         "jacques-web/**/*.html"
