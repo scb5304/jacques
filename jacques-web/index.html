@@ -38,7 +38,7 @@
                    class="md-button md-ink-ripple sidenav-item">
             SOUNDS
         </md-button>
-        <md-button ng-click="app.onSidenavItemClicked()" flex layout-fill class="md-button md-ink-ripple sidenav-item">
+        <md-button ng-click="app.onSidenavItemClicked()" ui-sref="upload" flex layout-fill class="md-button md-ink-ripple sidenav-item">
             UPLOAD
         </md-button>
         <md-button ng-click="app.onSidenavItemClicked()" ui-sref="help" flex layout-fill
@@ -108,23 +108,34 @@
 <script src="../node_modules/angular-resource/angular-resource.min.js"></script>
 <script src="../node_modules/chart.js/dist/Chart.js"></script>
 <script src="../node_modules/angular-chart.js/dist/angular-chart.js"></script>
+
 <script src="app.module.js"></script>
 <script src="app.config.js"></script>
 <script src="app.controller.js"></script>
+
 <script src="home/home.module.js"></script>
 <script src="home/home.component.js"></script>
+
 <script src="shared/scroll-to-top/scroll-to-top.module.js"></script>
 <script src="shared/scroll-to-top/scroll-to-top.component.js"></script>
+
 <script src="sounds/guild-list.module.js"></script>
 <script src="sounds/guild-list.component.js"></script>
+
 <script src="sounds/sounds-by-guild/sounds-by-guild.module.js"></script>
 <script src="sounds/sounds-by-guild/sounds-by-guild.component.js"></script>
+
 <script src="sounds/sound-detail/sound-detail.module.js"></script>
 <script src="sounds/sound-detail/sound-detail.config.js"></script>
 <script src="sounds/sound-detail/sound-detail.component.js"></script>
 <script src="sounds/sound-detail/service/sound-detail-charts-helper.service.js"></script>
+
 <script src="birdfeeder/birdfeeder.module.js"></script>
 <script src="birdfeeder/birdfeeder.component.js"></script>
+
+<script src="upload/upload.module.js"></script>
+<script src="upload/upload.component.js"></script>
+
 <script>
     (function (i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r;

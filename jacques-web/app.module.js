@@ -12,12 +12,13 @@ angular
         "guildList",
         "soundsByGuild",
         "soundDetail",
+        "upload",
         "birdfeeder",
         "chart.js",
     ])
     .run(function($state, $mdToast) {
         $state.defaultErrorHandler(function(error) {
-            logger.error(error);
+            console.error(error);
             $mdToast.show(
                 $mdToast.simple()
                     .textContent("Sorry, there was an error talking to the Jacques API. Try again soon.")

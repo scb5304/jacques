@@ -20,7 +20,7 @@ angular
         var helpState = {
             name: 'help',
             url: '/help',
-            templateUrl: '/jacques-web/help.html'
+            templateUrl: '/jacques-web/help/help.html'
         };
         $stateProvider.state(helpState);
     });
