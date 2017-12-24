@@ -14,7 +14,7 @@ function postSound(req, res) {
     }
 
     validateBirdfeedInSoundPostRequest(req.body.birdfeed, res).then(function(user) {
-        validateSoundDataInSoundPostRequest(user.discord_last_guild_id, req.body.sound_name, res).then(function() {
+        validateSoundDataInSoundPostRequest(user.discord_last_guild_id, req.params.soundName, res).then(function() {
             processNewSoundPostRequest(user, req, res);
         }).catch(logger.error);
     }).catch(logger.error);
@@ -29,14 +29,14 @@ function validateSoundPostRequestHasRequiredData(req, res) {
     }
 
     //Must have sound name in request parameter.
-    var soundName = req.body.sound_name;
+    var soundName = req.params.soundName;
     if (!soundName) {
         res.status(400).send({error: "Missing sound name!"});
         return false;
     }
 
     //Remove MP3 meta data, or handle the file not being the appropriate type.
-    var soundData = req.body.sound_data;
+    var soundData = req.body.soundData;
     if (!soundData.includes(MP3_META_DATA)) {
         res.status(400).send({error: "Unsupported file type. Jacques only supports MP3 files."});
         return false;
@@ -92,8 +92,8 @@ function validateSoundDataInSoundPostRequest(guildId, soundName, res) {
 
 function processNewSoundPostRequest(user, req, res) {
     var guildId = user.discord_last_guild_id;
-    var soundName = req.body.sound_name;
-    var soundData = req.body.sound_data;
+    var soundName = req.params.soundName;
+    var soundData = req.body.soundData;
 
     Db.insertSoundForGuildByUser(soundName, user).then(function() {
         //Create the file name from the sound name parameter and the mp3 extension.

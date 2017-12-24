@@ -74,7 +74,6 @@ md-toolbar h1 {
     padding-right: 8px;
 }
 
-
 /* Sidenav area */
 
 md-sidenav {
@@ -145,6 +144,10 @@ md-sidenav md-list .md-button.selected {
 
 #user-card-icon {
     fill: #FF5722;
+}
+
+#sound-upload-birdfeed-icon {
+    fill: gray;
 }
 
 .border-bottom-list-item {

@@ -1,1 +1,25 @@
-Upload placeholder
+<p>
+    Want to upload a sound for your Discord server? Make sure you have fed Jacques! Click the <span><md-icon id="sound-upload-birdfeed-icon" md-svg-icon="birdfeed"></md-icon></span> birdfeed icon on the toolbar. Once you've given him birdfeed, you're good to go.
+</p>
+
+<p>
+    Each of your files' names will become their sound names. For example, if you upload "mySound.mp3", it can then be played with <i>mySound</i>. For additional help, visit the <a ui-sref="help">help page</a>.
+</p>
+<form name="soundUploadForm" layout="column">
+<lf-ng-md-file-input accept="audio/mp3"
+                     name="files"
+                     lf-files="files"
+                     ng-change="onFilesChange()"
+                     lf-on-submit-click="onSubmitClick"
+                     lf-filesize="700KB"
+                     lf-placeholder="Click 'Browse' to select one or mp3 files."
+                     lf-remove-label="R"
+                     submit
+                     progress
+                     preview
+                     drag
+                     multiple></lf-ng-md-file-input>
+    <div ng-messages="soundUploadForm.files.$error" style="color:red;">
+        <div ng-message="filesize">At least one file is too large. Cannot be more than 700KB.</div>
+    </div>
+</form>

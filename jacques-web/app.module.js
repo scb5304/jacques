@@ -7,6 +7,7 @@ angular
         "ngMessages",
         "ngResource",
         "ui.router",
+        "lfNgMdFileInput",
         "home",
         "scrollToTop",
         "guildList",
@@ -119,6 +120,16 @@ angular
                 return new Promise((resolve, reject) => {
                     Sounds.get({guildId: discordGuildId, soundName: soundName}, function (sound) {
                         return resolve(sound);
+                    }, function (err) {
+                        return reject(err);
+                    });
+                });
+            },
+            postSound: function(discordGuildId, soundName, soundData, birdfeed) {
+                return new Promise((resolve, reject) => {
+                    var sound = {soundData, birdfeed};
+                    Sounds.save({guildId: discordGuildId, soundName: soundName}, sound, function () {
+                        return resolve();
                     }, function (err) {
                         return reject(err);
                     });
