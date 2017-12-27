@@ -64,6 +64,9 @@ angular
                     var soundName = $transition$.params().soundName;
                     return jacquesEndpointInterface.getSoundByName(guildId, soundName);
                 }
+            },
+            data: {
+                pageTitle: "Details"
             }
         };
 
