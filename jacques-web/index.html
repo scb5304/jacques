@@ -26,7 +26,7 @@
         md-whiteframe="1">
 
     <div id="sidenav-header" layout-align="top center">
-        <img layout-align="center" id="sidenav-icon" src="assets/img/jacques_icon_big.png" ui-sref="home"/>
+        <img layout-align="center" id="sidenav-icon" src="assets/img/jacques_icon_big.png"/>
         <h2 id="sidenav-title" layout-align="center" class="md-headline">Jacques</h2>
     </div>
 
@@ -39,14 +39,16 @@
                    class="md-button md-ink-ripple sidenav-item">
             SOUNDS
         </md-button>
-        <md-button ng-click="app.onSidenavItemClicked()" ui-sref="upload" flex layout-fill class="md-button md-ink-ripple sidenav-item">
+        <md-button ng-click="app.onSidenavItemClicked()" ui-sref="upload" flex layout-fill
+                   class="md-button md-ink-ripple sidenav-item">
             UPLOAD
         </md-button>
         <md-button ng-click="app.onSidenavItemClicked()" ui-sref="help" flex layout-fill
                    class="md-button md-ink-ripple sidenav-item">
             HELP
         </md-button>
-        <md-button ng-click="app.onSidenavItemClicked()" flex layout-fill class="md-button md-ink-ripple sidenav-item">
+        <md-button ng-click="app.onSidenavItemClicked()" flex layout-fill
+                   class="md-button md-ink-ripple sidenav-item">
             CONTACT
         </md-button>
     </md-content>
@@ -59,8 +61,10 @@
                 <md-icon id="user-card-icon" md-svg-icon="birdfeed"></md-icon>
             </div>
             <div layout="column" id="user-card-details-column">
-                <span ng-hide="!app.user.discord_username" md-truncate id="user-card-details-username" ng-bind="app.user.discord_username" class="md-body-1"></span>
-                <span ng-hide="!app.user.discord_last_guild_name" md-truncate id="user-card-details-guild" ng-bind="app.user.discord_last_guild_name" class="md-body-2"></span>
+                <span ng-hide="!app.user.discord_username" md-truncate id="user-card-details-username"
+                      ng-bind="app.user.discord_username" class="md-body-1"></span>
+                <span ng-hide="!app.user.last_guild_name" md-truncate id="user-card-details-guild"
+                      ng-bind="app.user.last_guild_name" class="md-body-2"></span>
             </div>
         </md-card-content>
     </md-card>
@@ -76,7 +80,7 @@
             <md-button class="menu md-icon-button" hide-gt-md ng-click="app.toggleList()" aria-label="Show Sound List">
                 <md-icon md-svg-icon="menu"></md-icon>
             </md-button>
-            <h2 id="toolbar-title" ng-bind="app.getTitle()" md-truncate></h2>
+            <h2 id="toolbar-title" ng-bind="$state.current.data.pageTitle" md-truncate></h2>
             <span flex></span>
             <birdfeeder></birdfeeder>
             <a target="_blank"
@@ -134,6 +138,9 @@
 
 <script src="birdfeeder/birdfeeder.module.js"></script>
 <script src="birdfeeder/birdfeeder.component.js"></script>
+
+<script src="help/help.module.js"></script>
+<script src="help/help.component.js"></script>
 
 <script src="upload/upload.module.js"></script>
 <script src="upload/upload.component.js"></script>

@@ -10,6 +10,9 @@ angular
                 guilds: function(jacquesEndpointInterface) {
                     return jacquesEndpointInterface.getGuilds();
                 }
+            },
+            data: {
+                pageTitle: "Guilds"
             }
         };
         $stateProvider.state(guildListState);

@@ -5,7 +5,10 @@ angular
         var homeState = {
             name: 'home',
             url: '/',
-            component: 'home'
+            component: 'home',
+            data: {
+                pageTitle: "Home"
+            }
         };
         $stateProvider.state(homeState);
     }]);

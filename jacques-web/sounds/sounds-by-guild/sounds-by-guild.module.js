@@ -15,6 +15,9 @@ angular
                     var guildId = $transition$.params().guildId;
                     return jacquesEndpointInterface.getSoundsByGuild(guildId);
                 }
+            },
+            data: {
+                pageTitle: "Sounds"
             }
         };
         $stateProvider.state(soundsByGuildState);

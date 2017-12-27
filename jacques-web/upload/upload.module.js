@@ -5,7 +5,10 @@ angular
         var uploadState = {
             name: 'upload',
             url: '/upload',
-            component: 'upload'
+            component: 'upload',
+            data: {
+                pageTitle: "Upload"
+            }
         };
         $stateProvider.state(uploadState);
     }]);
