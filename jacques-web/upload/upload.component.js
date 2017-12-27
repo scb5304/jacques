@@ -9,8 +9,16 @@ angular
                 $scope.files = [];
                 $scope.sharedProperties = sharedProperties;
                 $scope.jacquesEndpointInterface = jacquesEndpointInterface;
+                $scope.formValid = false;
+
+                $scope.$watch('soundUploadForm.$valid', function(isValidValue) {
+                    $scope.formValid = isValidValue;
+                });
 
                 $scope.onSubmitClick = function() {
+                    if(!$scope.formValid) {
+                        return;
+                    }
                     console.log("Submit clicked.");
                     console.log($scope.files);
 

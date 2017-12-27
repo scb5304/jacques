@@ -36,11 +36,15 @@ function getSoundsByGuild(req, res) {
 
 function getSoundByGuildAndName(req, res) {
     var guild = req.params.guild;
-    var name = req.params.name;
+    var name = req.params.soundName;
 
     Db.getSoundByDiscordGuildIdAndName(guild, name)
         .then(function(sound) {
-            res.json(sound);
+            if (sound) {
+                res.json(sound);
+            } else {
+                res.status(404).send({error: "Sound not found."});
+            }
         })
         .catch(function(error) {
             logger.error(error);
