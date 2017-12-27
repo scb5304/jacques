@@ -20,7 +20,14 @@ angular
                     $scope.getBase64(firstFile).then(function (base64) {
                         console.log(firstFile);
                         var user = sharedProperties.getUser();
-                        $scope.jacquesEndpointInterface.postSound(user.discord_last_guild_id, fileName, base64, user.birdfeed_token);
+                        $scope.jacquesEndpointInterface.postSound(user.discord_last_guild_id, fileName, base64, user.birdfeed_token)
+                            .then(function() {
+                                $scope.files = [];
+                                console.log("Upload success!");
+                            }).catch(function(err) {
+                                console.log("Upload failure!");
+                                console.error(err);
+                        })
                     })
 
                 };
@@ -33,7 +40,7 @@ angular
                             resolve(reader.result);
                         };
                         reader.onerror = function(err) {
-                            reject(error);
+                            reject(err);
                         };
                     });
                 }

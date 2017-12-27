@@ -13,13 +13,14 @@
                      lf-on-submit-click="onSubmitClick"
                      lf-filesize="700KB"
                      lf-placeholder="Click 'Browse' to select one or mp3 files."
-                     lf-remove-label="R"
+                     lf-maxcount="10"
                      submit
                      progress
                      preview
                      drag
                      multiple></lf-ng-md-file-input>
     <div ng-messages="soundUploadForm.files.$error" style="color:red;">
+        <div ng-message="maxcount">Too many files. Only 10 at a time, please.</div>
         <div ng-message="filesize">At least one file is too large. Cannot be more than 700KB.</div>
     </div>
 </form>
