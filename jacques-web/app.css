@@ -112,6 +112,10 @@ md-sidenav md-list {
     text-transform: none;
 }
 
+#sounds-by-guild-title {
+    margin-bottom: 0;
+}
+
 md-sidenav md-list .md-button.selected {
     color: #03a9f4;
 }
@@ -211,6 +215,15 @@ md-sidenav md-list .md-button.selected {
 #sound-title {
     margin-top: 12px;
     margin-bottom: 0px;
+}
+
+#sound-detail-guild-button {
+    margin-left: -8px;
+    margin-bottom: 0;
+}
+
+#sound-detail-navigate-up-icon {
+    fill: gray;
 }
 
 .sound-chart-title {

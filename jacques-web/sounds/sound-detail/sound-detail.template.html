@@ -1,6 +1,14 @@
 <div layout="column" id="sound-detail-wrapper">
-    <h1 id="sound-title" class="md-display-1">{{$ctrl.sound.name}}</h1>
+    <div layout="row">
+        <h1 id="sound-title" class="md-display-1">{{$ctrl.sound.name}}</h1>
+    </div>
     <md-divider></md-divider>
+    <div layout="row">
+        <md-button ui-sref="soundsByGuild({guildId:$ctrl.guild.discord_id})" md-colors="{color: 'primary-600'}" id="sound-detail-guild-button">
+            <md-icon id="sound-detail-navigate-up-icon" md-svg-icon="arrow-top-left"></md-icon>
+            {{$ctrl.guild.discord_name}}
+        </md-button>
+    </div>
     <audio layout="row" flex id="sound-audio" controls data-ng-src="{{audioUrl}}"></audio>
     <div>
         <md-grid-list flex md-cols-xs="1" md-cols-sm="1" md-cols-md="1" md-cols-gt-md="2" md-row-height-xs="2:1"

@@ -14,6 +14,7 @@ angular
             .icon("close", "assets/svg/close.svg", 24)
             .icon("birdfeed", "assets/svg/hops.svg", 24)
             .icon("chevron-up", "assets/svg/chevron-up.svg", 24)
-            .icon("invite", "assets/svg/person_add.svg", 24);
+            .icon("invite", "assets/svg/person_add.svg", 24)
+            .icon("arrow-top-left", "assets/svg/arrow-top-left.svg", 24);
         $urlRouterProvider.when('', '/');
     });

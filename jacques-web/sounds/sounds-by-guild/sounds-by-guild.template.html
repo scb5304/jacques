@@ -1,5 +1,11 @@
 <div layout="column">
-    <h3 class="md-headline">{{$ctrl.guild.discord_name}}</h3>
+    <h3 id="sounds-by-guild-title" class="md-headline">{{$ctrl.guild.discord_name}}</h3>
+    <div layout="row">
+        <md-button ui-sref="guildList" md-colors="{color: 'primary-600'}" id="sound-detail-guild-button">
+            <md-icon id="sound-detail-navigate-up-icon" md-svg-icon="arrow-top-left"></md-icon>
+            Guilds
+        </md-button>
+    </div>
     <md-input-container>
         <label>Sound</label>
         <input ng-model="soundSearchQuery"/>
