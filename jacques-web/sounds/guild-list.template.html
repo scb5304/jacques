@@ -7,7 +7,7 @@
 
     <md-list>
         <md-list-item class="guild-list-item border-bottom-list-item"
-                      ng-repeat="guild in (filteredGuilds = ($ctrl.guilds | filter: {discord_name: guildSearchQuery}))">
+                      ng-repeat="guild in (filteredGuilds = ($ctrl.guilds | filter: {discord_name: guildSearchQuery}) | orderBy: 'discord_name')">
             <md-button class="guild-list-item-button"
                        ui-sref="soundsByGuild({ guildId: guild.discord_id })"
                        aria-label="guild.discord_name" ng-click="updateSelected(sound)">
