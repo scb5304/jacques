@@ -33,14 +33,19 @@ angular.module("birdfeeder")
                     };
 
                     self.onSuccessfulGetUserResponse = function (response) {
+                        var user = response.data;
+                        localStorage.setItem("jacques_user", JSON.stringify(user));
+                        sharedProperties.setUser(user);
+
                         self.makingRequest = false;
-                        sharedProperties.setUser(response.data);
                         $mdDialog.hide();
                     };
 
                     self.onFailureGetUserResponse = function (response) {
+                        localStorage.removeItem("jacques_user");
+                        sharedProperties.setUser({});
+
                         self.makingRequest = false;
-                        sharedProperties.setUser({discord_username: undefined, discord_last_guild_id: undefined});
                         var toastMessage = "Oops, that didn't work.";
                         if (response.data) {
                             if (response.data.error) {

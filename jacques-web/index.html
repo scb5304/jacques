@@ -53,14 +53,14 @@
 
     <span flex></span>
 
-    <md-card md-whiteframe="2" id="user-card" ng-hide="!app.username && !app.guildName">
+    <md-card md-whiteframe="2" id="user-card" ng-hide="!app.user.discord_username && !app.user.last_guild_name">
         <md-card-content layout="row">
             <div layout="column" id="user-card-icon-column">
                 <md-icon id="user-card-icon" md-svg-icon="birdfeed"></md-icon>
             </div>
             <div layout="column" id="user-card-details-column">
-                <span ng-hide="!app.username" md-truncate id="user-card-details-username" ng-bind="app.username" class="md-body-1"></span>
-                <span ng-hide="!app.guildName" md-truncate id="user-card-details-guild" ng-bind="app.guildName" class="md-body-2"></span>
+                <span ng-hide="!app.user.discord_username" md-truncate id="user-card-details-username" ng-bind="app.user.discord_username" class="md-body-1"></span>
+                <span ng-hide="!app.user.discord_last_guild_name" md-truncate id="user-card-details-guild" ng-bind="app.user.discord_last_guild_name" class="md-body-2"></span>
             </div>
         </md-card-content>
     </md-card>

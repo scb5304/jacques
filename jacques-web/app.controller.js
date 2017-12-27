@@ -9,36 +9,26 @@ angular
         $scope.sharedProperties = sharedProperties;
 
         self.initializeUserValuesFromLocalStorage = function() {
-            self.username = localStorage.getItem("jacques_discord_username");
-            self.guildName = localStorage.getItem("jacques_discord_last_guild_name");
-
-            console.log("Initialized values " + this.username + " and " + this.guildName + " from local storage.");
+            var storedUser = localStorage.getItem("jacques_user");
+            if (storedUser) {
+                self.user = JSON.parse(storedUser);
+                console.log("Pulled this object from local storage.");
+                console.log(self.user);
+            }
         };
 
         self.initializeUserValuesFromLocalStorage();
 
-        self.getTitle = function() {
-            return $rootScope.title;
-        };
-
         //Listen in on changes to our User.
         $scope.$watch("sharedProperties.getUser()", function(newUser) {
             if (newUser) {
-                self.username = newUser.discord_username;
-                self.guildName = newUser.discord_last_guild_name;
-
-                if (self.username) {
-                    localStorage.setItem("jacques_discord_username", self.username);
-                } else {
-                    localStorage.removeItem("jacques_discord_username");
-                }
-                if (self.guildName) {
-                    localStorage.setItem("jacques_discord_last_guild_name", self.guildName);
-                } else {
-                    localStorage.removeItem("jacques_discord_last_guild_name");
-                }
+                self.user = newUser;
             }
         });
+
+        self.getTitle = function() {
+            return $rootScope.title;
+        };
 
         self.toggleList = function() {
             $mdSidenav("left").toggle();
