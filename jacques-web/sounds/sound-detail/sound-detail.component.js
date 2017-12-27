@@ -10,10 +10,15 @@ angular
             function SoundDetailController($location, $scope, sharedProperties, SoundDetailChartsHelper, $sce) {
                 $scope.sharedProperties = sharedProperties;
                 $scope.SoundDetailChartsHelper = SoundDetailChartsHelper;
+                $scope.guild = {};
+                $scope.sound = {};
 
                 this.$onChanges = function(changesObj) {
-                    console.log(changesObj);
+                    if (changesObj.guild) {
+                        $scope.guild = changesObj.guild.currentValue;
+                    }
                     if (changesObj.sound) {
+                        $scope.sound = changesObj.sound.currentValue;
                         onSoundSelected(changesObj.sound.currentValue);
                     }
                 };
@@ -27,7 +32,7 @@ angular
                 }
 
                 function updateAudioFile(sound) {
-                    $scope.audioUrl = $sce.trustAsResourceUrl("http://jacquesbot.io/raw/" + sound.name);
+                    $scope.audioUrl = $sce.trustAsResourceUrl("http://jacquesbot.io/raw/" + $scope.guild.discord_id + sound.name);
                 }
 
                 function updateSummaryCard(sound) {
