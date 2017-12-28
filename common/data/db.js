@@ -152,7 +152,7 @@ function getSoundsByName(soundName) {
 
 function getRandomSoundInDiscordGuild(discordGuildId) {
     return new Promise((resolve, reject) => {
-        Sound.find({discord_guild: discordGuildId}, projection, function (err, sounds) {
+        Sound.find({discord_guild: discordGuildId}, SOUNDS_PROJECTION, function (err, sounds) {
             var random = util.getRandomInt(0, (sounds.length - 1));
             if (err || !sounds) {
                 return reject("Couldn't get random sound. Error: " + err);
