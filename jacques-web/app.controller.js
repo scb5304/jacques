@@ -53,5 +53,13 @@ angular
             if (sidenav) {
                 sidenav.close();
             }
+        };
+
+        self.onSidenavMouseover = function($event) {
+            if ($event.buttons === 1 && $event.movementX < -12) {
+                setTimeout(function() {
+                    self.onSidenavSwipedLeft();
+                }, 100);
+            }
         }
     });

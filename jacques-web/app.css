@@ -61,7 +61,7 @@ md-toolbar h1 {
 
 #sidenav-hidden-swipe-to-open-column {
     position: absolute;
-    width: 55px;
+    width: 25px;
     height: 100%;
     z-index:1
 }
