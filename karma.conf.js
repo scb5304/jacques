@@ -29,7 +29,7 @@ module.exports = function(config) {
         "./node_modules/angular-mocks/angular-mocks.js",
         "jacques-web/app.module.js",
         "jacques-web/app.config.js",
-        "jacques-web/browse/sound-detail/sound-detail.module.js",
+        "jacques-web/browse/sounds-by-guild/sound-detail/sound-detail.module.js",
         "jacques-web/**/*.js",
         "jacques-web/**/*.html"
     ],

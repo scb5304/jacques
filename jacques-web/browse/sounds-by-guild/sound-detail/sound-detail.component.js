@@ -5,7 +5,7 @@ angular
     .module("soundDetail")
     .component("soundDetail", {
         bindings: {guild: "<", sound: "<"},
-        templateUrl: "browse/sound-detail/sound-detail.template.html",
+        templateUrl: "browse/sounds-by-guild/sound-detail/sound-detail.template.html",
         controller: ["$location", "$scope", "sharedProperties", "SoundDetailChartsHelper", "$sce",
             function SoundDetailController($location, $scope, sharedProperties, SoundDetailChartsHelper, $sce) {
                 $scope.sharedProperties = sharedProperties;
