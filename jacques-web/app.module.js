@@ -93,7 +93,8 @@ angular
     })
     .service("jacquesEndpointInterface", function ($resource) {
         var Guilds = $resource("http://localhost:8081/api/guilds/:guildId");
-        var Sounds = $resource("http://localhost:8081/api/sounds/:guildId/:soundName");
+        var SoundsByGuild= $resource("http://localhost:8081/api/sounds/:guildId?includeSoundEvents=:includeEvents");
+        var SoundsByGuildAndName = $resource("http://localhost:8081/api/sounds/:guildId/:soundName");
 
         return {
             getGuilds: function () {
@@ -116,7 +117,7 @@ angular
             },
             getSoundsByGuild: function (discordGuildId) {
                 return new Promise((resolve, reject) => {
-                    Sounds.query({guildId: discordGuildId}, function (guilds) {
+                    SoundsByGuild.query({guildId: discordGuildId, includeEvents: false}, function (guilds) {
                         return resolve(guilds);
                     }, function (err) {
                         return reject(err);
@@ -125,7 +126,7 @@ angular
             },
             getSoundByName: function (discordGuildId, soundName) {
                 return new Promise((resolve, reject) => {
-                    Sounds.get({guildId: discordGuildId, soundName: soundName}, function (sound) {
+                    SoundsByGuildAndName.get({guildId: discordGuildId, soundName: soundName}, function (sound) {
                         return resolve(sound);
                     }, function (err) {
                         return reject(err);
@@ -135,7 +136,7 @@ angular
             postSound: function(discordGuildId, soundName, soundData, birdfeed) {
                 return new Promise((resolve, reject) => {
                     var sound = {soundData, birdfeed};
-                    Sounds.save({guildId: discordGuildId, soundName: soundName}, sound, function () {
+                    SoundsByGuildAndName.save({guildId: discordGuildId, soundName: soundName}, sound, function () {
                         return resolve();
                     }, function (err) {
                         return reject(err);

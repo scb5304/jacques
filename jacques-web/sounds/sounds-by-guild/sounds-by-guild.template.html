@@ -7,18 +7,19 @@
         </md-button>
     </div>
     <md-input-container>
-        <label>Sound</label>
+        <label><md-icon class="icon-gray" md-svg-icon="search"></md-icon> Sound name</label>
         <input ng-model="soundSearchQuery"/>
     </md-input-container>
 
     <md-list>
-        <md-list-item class="sound-list-item border-bottom-list-item"
+        <md-list-item class="sounds-list-item border-bottom-list-item"
                       ng-repeat="sound in (filteredSounds = ($ctrl.sounds | filter: {name: soundSearchQuery}))">
-            <md-button class="sound-list-item-button"
+            <md-button class="sounds-list-item-button"
                        ui-sref="soundDetail({ guildId: $ctrl.guild.discord_id, soundName: sound.name })"
                        aria-label="sound.name">
-
-                <span class="sound-list-item-button-text" ng-bind="sound.name"></span>
+                <span class="sounds-list-item-button-text">
+                        <md-icon md-colors="{fill: 'primary'}" class="guild-list-item-icon" md-svg-icon="sound"></md-icon>{{sound}}
+                    </span>
             </md-button>
         </md-list-item>
     </md-list>

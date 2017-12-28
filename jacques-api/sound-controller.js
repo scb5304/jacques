@@ -23,8 +23,17 @@ function getSounds(req, res) {
 }
 
 function getSoundsByGuild(req, res) {
+    //By default, include sound events.
+    var includeSoundEvents = true;
+
+    //If they specify they do not want to include sound events, set this flag to false.
+    var includeEventsQuery = req.query["includeSoundEvents"];
+    if (includeEventsQuery && includeEventsQuery === "false") {
+        includeSoundEvents = false;
+    }
+
     var guild = req.params.guild;
-    Db.getSoundsByDiscordGuildId(guild)
+    Db.getSoundsByDiscordGuildId(guild, includeSoundEvents)
         .then(function(sounds) {
             res.json(sounds);
         })

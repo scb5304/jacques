@@ -116,9 +116,19 @@ function getSoundByDiscordGuildIdAndName(discordGuildId, soundName) {
     });
 }
 
-function getSoundsByDiscordGuildId(discordGuildId) {
+function getSoundsByDiscordGuildId(discordGuildId, includeSoundEvents) {
+    var projection = {
+        __v: false,
+        _id: false
+    };
+    if (!includeSoundEvents) {
+        projection["sound_events"] = false;
+    } else {
+        projection["sound_events._id"] = false;
+    }
+
     return new Promise((resolve, reject) => {
-        Sound.find({discord_guild: discordGuildId}, SOUNDS_PROJECTION, function (err, sounds) {
+        Sound.find({discord_guild: discordGuildId}, projection, function (err, sounds) {
             if (err || !sounds) {
                 return reject("Couldn't query for all sounds in guild " + discordGuildId + ". Error: " + err);
             } else {

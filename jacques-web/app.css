@@ -90,28 +90,6 @@ md-sidenav md-list {
     flex-direction: column;
 }
 
-.sound-list-item {
-    padding: 0px !important; 
-    margin: 0px; 
-    align-items: stretch;
-}
-
-.sound-list-item-button {
-    padding: 0px; 
-    margin: 0px;
-
-    color: inherit;
-    font-weight: normal;
-    text-align: left;
-    width: 100%;
-}
-
-.sound-list-item-button-text {
-    padding-left: 20px;
-    padding-right: 20px;
-    text-transform: none;
-}
-
 #sounds-by-guild-title {
     margin-bottom: 0;
 }
@@ -150,7 +128,7 @@ md-sidenav md-list .md-button.selected {
     fill: #FF5722;
 }
 
-#sound-upload-birdfeed-icon {
+.icon-gray {
     fill: gray;
 }
 
@@ -158,15 +136,20 @@ md-sidenav md-list .md-button.selected {
     border-bottom: 1px solid #EEEEEE;
 }
 
-.guild-list-item {
-    padding: 0px !important;
-    margin: 0px;
+.guild-list-item-icon {
+    fill: #7289DA;
+    margin-right: 8px;
+}
+
+.sounds-list-item {
+    padding: 0 !important;
+    margin: 0;
     align-items: stretch;
 }
 
-.guild-list-item-button {
-    padding: 0px;
-    margin: 0px;
+.sounds-list-item-button {
+    padding: 8px;
+    margin: 0;
 
     color: inherit;
     font-weight: normal;
@@ -174,9 +157,10 @@ md-sidenav md-list .md-button.selected {
     width: 100%;
 }
 
-.guild-list-item-button-text {
-    padding-left: 20px;
-    padding-right: 20px;
+.sounds-list-item-button-text {
+    vertical-align: middle;
+    padding-left: 12px;
+    padding-right: 12px;
     text-transform: none;
 }
 
@@ -192,7 +176,7 @@ md-sidenav md-list .md-button.selected {
     padding-left: 30px;
     padding-right: 30px;
     padding-top: 16px;
-    padding-bottom: 44px;
+    padding-bottom: 50px;
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -203,6 +187,10 @@ md-sidenav md-list .md-button.selected {
 }
 
 /* Sound Detail */
+
+#sound-detail-wrapper {
+
+}
 
 #sound-audio {
     width: 100%;
