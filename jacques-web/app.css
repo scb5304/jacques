@@ -263,6 +263,10 @@ md-icon svg {
     transform: translate3d(-50%, 0, 0);
 }
 
+.input-container-no-bottom-margin {
+    margin-bottom: -12px;
+}
+
 [ng-click],
 [data-ng-click],
 [x-ng-click],

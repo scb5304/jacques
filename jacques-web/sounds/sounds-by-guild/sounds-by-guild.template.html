@@ -6,7 +6,7 @@
             Guilds
         </md-button>
     </div>
-    <md-input-container>
+    <md-input-container class="input-container-no-bottom-margin">
         <label><md-icon class="icon-gray" md-svg-icon="search"></md-icon> Sound name</label>
         <input ng-model="soundSearchQuery"/>
     </md-input-container>
@@ -17,9 +17,7 @@
             <md-button class="sounds-list-item-button"
                        ui-sref="soundDetail({ guildId: $ctrl.guild.discord_id, soundName: sound.name })"
                        aria-label="sound.name">
-                <span class="sounds-list-item-button-text">
-                        <md-icon md-colors="{fill: 'primary'}" class="guild-list-item-icon" md-svg-icon="sound"></md-icon>{{sound.name}}
-                    </span>
+                <span class="sounds-list-item-button-text">{{sound.name}}</span>
             </md-button>
         </md-list-item>
     </md-list>

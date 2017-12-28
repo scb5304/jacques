@@ -1,6 +1,6 @@
 <div layout="column">
     <h3 class="md-subhead">Please select the Discord server whose sounds you wish to view.</h3>
-    <md-input-container>
+    <md-input-container class="input-container-no-bottom-margin">
         <label><md-icon class="icon-gray" md-svg-icon="search"></md-icon> Guild name</label>
         <input ng-model="guildSearchQuery"/>
     </md-input-container>
@@ -11,8 +11,7 @@
 
             <md-button class="sounds-list-item-button"
                        ui-sref="soundsByGuild({ guildId: guild.discord_id })"
-                       aria-label="guild.discord_name"
-                       ng-click="updateSelected(sound)">
+                       aria-label="guild.discord_name">
                     <span class="sounds-list-item-button-text">
                         <md-icon class="guild-list-item-icon" md-svg-icon="discord"></md-icon>{{guild.discord_name}}
                     </span>
