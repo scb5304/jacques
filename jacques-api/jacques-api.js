@@ -14,7 +14,6 @@ const router = express.Router();
 const port = 8081;
 
 app.use(cors());
-app.use(bodyParser({limit: '700kb'}));
 app.use(bodyParser.urlencoded({
     extended: true,
     limit: '700KB'
