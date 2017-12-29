@@ -16,6 +16,7 @@ angular
             .icon("chevron-up", "assets/svg/chevron-up.svg", 24)
             .icon("invite", "assets/svg/person_add.svg", 24)
             .icon("search", "assets/svg/magnify.svg", 24)
+            .icon("sort", "assets/svg/sort.svg", 24)
             .icon("sound", "assets/svg/music-box.svg", 24)
             .icon("delete", "assets/svg/delete-forever.svg", 24)
             .icon("discord", "assets/svg/discord.svg", 24)

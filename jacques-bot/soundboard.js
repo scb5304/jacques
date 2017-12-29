@@ -2,9 +2,9 @@ var Db = require("./../common/data/db");
 var logger = require("./../common/util/logger.js");
 var fsReader = require("./../common/util/fileSystemReader.js");
 
-function insertSoundEvent(sound, memberName, eventType) {
+function insertSoundEvent(sound, guildId, memberName, eventType) {
     try {
-        Db.insertSoundEvent(sound.name, memberName, eventType);
+        Db.insertSoundEvent(sound.name, guildId, memberName, eventType);
     } catch (err) {
         logger.error(err);
     }
@@ -14,7 +14,7 @@ function playRandomSound(message) {
     Db.getRandomSoundInDiscordGuild(message.member.guild.id)
         .then(function(sound) {
             playSound(sound, message.member.voiceChannel);
-            insertSoundEvent(sound, message.member.displayName, "playRandom");
+            insertSoundEvent(sound, message.member.guild.id, message.member.displayName, "playRandom");
         })
         .catch(logger.error);
 }
@@ -25,7 +25,7 @@ function playTargetedSound(message, soundName) {
         .then(function(sound) {
             if (sound) {
                 playSound(sound, message.member.voiceChannel);
-                insertSoundEvent(sound, message.member.displayName, "playTargeted");
+                insertSoundEvent(sound, message.member.guild.id, message.member.displayName, "playTargeted");
             } else {
                 logger.info("Sound " + soundName + " does not exist.");
             }

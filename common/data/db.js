@@ -42,9 +42,10 @@ function insertSoundForGuildByUser(soundName, user) {
     });
 }
 
-function insertSoundEvent(soundName, performedBy, eventCategory) {
+function insertSoundEvent(soundName, guildId, performedBy, eventCategory) {
     Sound.findOne({
-        name: soundName
+        name: soundName,
+        discord_guild: guildId
     }, function (err, sound) {
         if (err) {
             logger.error(err);
@@ -67,7 +68,6 @@ function insertSoundEvent(soundName, performedBy, eventCategory) {
             }
         });
     });
-
 }
 
 function deleteSoundWithDiscordGuildIdAndName(discordGuildId, soundName) {
@@ -82,19 +82,9 @@ function deleteSoundWithDiscordGuildIdAndName(discordGuildId, soundName) {
     });
 }
 
-function getAllSounds(includeSoundEvents) {
-    var projection = {
-        __v: false,
-        _id: false
-    };
-    if (!includeSoundEvents) {
-        projection["sound_events"] = false;
-    } else {
-        projection["sound_events._id"] = false;
-    }
-
+function getAllSounds() {
     return new Promise((resolve, reject) => {
-        Sound.find({}, projection, function (err, sounds) {
+        Sound.find({}, SOUNDS_PROJECTION, function (err, sounds) {
             if (err || !sounds) {
                 return reject("Couldn't query for all sounds, error: " + err);
             } else {
@@ -128,19 +118,9 @@ function deleteSoundByDiscordGuildIdAndName(discordGuildId, soundName) {
     });
 }
 
-function getSoundsByDiscordGuildId(discordGuildId, includeSoundEvents) {
-    var projection = {
-        __v: false,
-        _id: false
-    };
-    if (!includeSoundEvents) {
-        projection["sound_events"] = false;
-    } else {
-        projection["sound_events._id"] = false;
-    }
-
+function getSoundsByDiscordGuildId(discordGuildId) {
     return new Promise((resolve, reject) => {
-        Sound.find({discord_guild: discordGuildId}, projection, function (err, sounds) {
+        Sound.find({discord_guild: discordGuildId}, SOUNDS_PROJECTION, function (err, sounds) {
             if (err || !sounds) {
                 return reject("Couldn't query for all sounds in guild " + discordGuildId + ". Error: " + err);
             } else {

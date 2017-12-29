@@ -122,7 +122,6 @@ md-sidenav md-list {
     margin-bottom: 0;
 }
 
-
 .border-bottom-list-item {
     border-bottom: 1px solid #EEEEEE;
 }
@@ -143,11 +142,27 @@ md-sidenav md-list {
     width: 100%;
 }
 
-.sounds-list-item-button-text {
+.sounds-list-item-button-text-name {
     vertical-align: middle;
     padding-left: 12px;
     padding-right: 12px;
     text-transform: none;
+}
+
+.sounds-list-item-button-text-plays {
+    vertical-align: middle;
+    padding-left: 12px;
+    padding-right: 12px;
+    text-transform: none;
+    color: gray;
+}
+
+#sound-search-input-container {
+    margin-right: 18px;
+}
+
+#sounds-by-guild-sort-selection {
+    padding-bottom: 16px;
 }
 
 #fab-scroll-to-top {
