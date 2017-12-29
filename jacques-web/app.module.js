@@ -18,15 +18,10 @@ angular
         "birdfeeder",
         "chart.js",
     ])
-    .run(function($state, $mdToast) {
+    .run(function($state, jacquesToaster) {
         $state.defaultErrorHandler(function(error) {
             console.error(error);
-            $mdToast.show(
-                $mdToast.simple()
-                    .textContent("Sorry, there was an error talking to the Jacques API. Try again soon.")
-                    .position("bottom center")
-                    .hideDelay(3150)
-            );
+            jacquesToaster.showApiErrorToast();
         });
     })
     //https://stackoverflow.com/a/26086324/4672234
@@ -91,6 +86,26 @@ angular
             }
         };
     })
+    .service("jacquesToaster", function($mdToast) {
+        return {
+            showApiErrorToast: function () {
+                $mdToast.show(
+                    $mdToast.simple()
+                        .textContent("Sorry, there was an error talking to the Jacques API. Try again soon.")
+                        .position("bottom center")
+                        .hideDelay(3150)
+                );
+            },
+            showToastWithText: function (text) {
+                $mdToast.show(
+                    $mdToast.simple()
+                        .textContent(text)
+                        .position("bottom center")
+                        .hideDelay(3150)
+                );
+            }
+        }
+    })
     .service("jacquesEndpointInterface", function ($resource) {
         var Guilds = $resource("http://localhost:8081/api/guilds/:guildId");
         var SoundsByGuild= $resource("http://localhost:8081/api/sounds/:guildId?includeSoundEvents=:includeEvents");
@@ -128,6 +143,15 @@ angular
                 return new Promise((resolve, reject) => {
                     SoundsByGuildAndName.get({guildId: discordGuildId, soundName: soundName}, function (sound) {
                         return resolve(sound);
+                    }, function (err) {
+                        return reject(err);
+                    });
+                });
+            },
+            deleteSound: function(discordGuildId, soundName) {
+                return new Promise((resolve, reject) => {
+                    SoundsByGuildAndName.delete({guildId: discordGuildId, soundName: soundName}, function () {
+                        return resolve();
                     }, function (err) {
                         return reject(err);
                     });

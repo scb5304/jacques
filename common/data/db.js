@@ -116,6 +116,18 @@ function getSoundByDiscordGuildIdAndName(discordGuildId, soundName) {
     });
 }
 
+function deleteSoundByDiscordGuildIdAndName(discordGuildId, soundName) {
+    return new Promise((resolve, reject) => {
+        Sound.findOneAndRemove({discord_guild: discordGuildId, name: soundName}, function (err, sound) {
+            if (err) {
+                return reject("Couldn't delete sound with name " + soundName + " and guild " + discordGuildId + ", Error: " + err);
+            } else {
+                return resolve(sound);
+            }
+        });
+    });
+}
+
 function getSoundsByDiscordGuildId(discordGuildId, includeSoundEvents) {
     var projection = {
         __v: false,
@@ -274,6 +286,7 @@ module.exports.getAllSounds = getAllSounds;
 module.exports.getRandomSoundInDiscordGuild = getRandomSoundInDiscordGuild;
 module.exports.getSoundsByDiscordGuildId = getSoundsByDiscordGuildId;
 module.exports.getSoundByDiscordGuildIdAndName = getSoundByDiscordGuildIdAndName;
+module.exports.deleteSoundByDiscordGuildIdAndName = deleteSoundByDiscordGuildIdAndName;
 module.exports.getSoundsByName = getSoundsByName;
 
 module.exports.insertGuild = insertGuild;

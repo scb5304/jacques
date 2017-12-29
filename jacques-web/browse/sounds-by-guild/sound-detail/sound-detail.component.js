@@ -6,9 +6,12 @@ angular
     .component("soundDetail", {
         bindings: {guild: "<", sound: "<"},
         templateUrl: "browse/sounds-by-guild/sound-detail/sound-detail.template.html",
-        controller: ["$location", "$scope", "sharedProperties", "SoundDetailChartsHelper", "$sce",
-            function SoundDetailController($location, $scope, sharedProperties, SoundDetailChartsHelper, $sce) {
+        controller: ["$location", "$scope", "sharedProperties", "SoundDetailChartsHelper", "$sce", "jacquesEndpointInterface",
+            "jacquesToaster", "$state", "$mdDialog",
+            function SoundDetailController($location, $scope, sharedProperties, SoundDetailChartsHelper, $sce,
+                                           jacquesEndpointInterface, jacquesToaster, $state, $mdDialog) {
                 $scope.sharedProperties = sharedProperties;
+                $scope.jacquesEndpointInterface = jacquesEndpointInterface;
                 $scope.SoundDetailChartsHelper = SoundDetailChartsHelper;
                 $scope.guild = {};
                 $scope.sound = {};
@@ -21,6 +24,34 @@ angular
                         $scope.sound = changesObj.sound.currentValue;
                         onSoundSelected(changesObj.sound.currentValue);
                     }
+                };
+
+                $scope.onDeleteClicked = function() {
+                    $mdDialog.show({
+                        templateUrl: "browse/sounds-by-guild/sound-detail/sound-detail-delete-dialog.html",
+                        clickOutsideToClose: false,
+                        controller: $scope.soundDeletionDialogController,
+                        controllerAs: "$ctrl"
+                    })
+                };
+
+                $scope.soundDeletionDialogController = function soundDeletionDialogController() {
+                    var self = this;
+
+                    self.closeDialog = function () {
+                        $mdDialog.hide();
+                    };
+
+                    self.onConfirm = function () {
+                        $scope.jacquesEndpointInterface.deleteSound($scope.guild.discord_id, $scope.sound.name).then(function() {
+                            $state.go("soundsByGuild", {
+                                guildId: $scope.guild.discord_id
+                            });
+                        }).catch(function(err) {
+                            jacquesToaster.showApiErrorToast();
+                            console.error(err);
+                        });
+                    };
                 };
 
                 function onSoundSelected(sound) {

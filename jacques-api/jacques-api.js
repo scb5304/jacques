@@ -30,7 +30,8 @@ router.route("/sounds/:guild")
 
 router.route("/sounds/:guild/:soundName")
     .get(soundController.getSoundByGuildAndName)
-    .post(soundController.postSound);
+    .post(soundController.postSound)
+    .delete(soundController.deleteSound);
 
 router.route("/users/:birdfeed")
     .get(userController.getUser);

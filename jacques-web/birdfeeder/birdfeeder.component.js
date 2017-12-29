@@ -15,7 +15,7 @@ angular.module("birdfeeder")
                         clickOutsideToClose: false,
                         controller: $scope.birdfeedDialogController,
                         controllerAs: "$ctrl"
-                    })
+                    });
                 };
 
                 $scope.birdfeedDialogController = function birdfeedDialogController() {

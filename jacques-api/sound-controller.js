@@ -1,6 +1,9 @@
+const fs = require("fs");
+const path = require("path");
 const logger = require("../common/util/logger");
 const Db = require("../common/data/db");
 const soundPostController = require("./sound-post-controller");
+const SOUNDS_DIRECTORY = process.env.JACQUES_SOUNDS_DIRECTORY;
 
 function getSounds(req, res) {
     //By default, include sound events.
@@ -65,8 +68,30 @@ function postSound(req, res) {
     soundPostController.postSound(req, res);
 }
 
+function deleteSound(req, res) {
+    var guild = req.params.guild;
+    var name = req.params.soundName;
+    Db.deleteSoundByDiscordGuildIdAndName(guild, name)
+        .then(function() {
+            var soundPath = path.join(SOUNDS_DIRECTORY, guild, name + ".mp3");
+            fs.unlink(soundPath, function(err) {
+                if (err) {
+                    logger.error(err);
+                    res.status(500).send({error: "Failed to delete file system sound for guild " + guild + " and name " + name + "."});
+                } else {
+                    res.status(200).send();
+                }
+            })
+        })
+        .catch(function(err) {
+            logger.error(err);
+            res.status(500).send({error: "Failed to delete sound for guild " + guild + " and name " + name + " due to a database error."});
+        });
+}
+
 module.exports.getSounds = getSounds;
 module.exports.getSoundsByGuild = getSoundsByGuild;
 
 module.exports.getSoundByGuildAndName = getSoundByGuildAndName;
 module.exports.postSound = postSound;
+module.exports.deleteSound = deleteSound;

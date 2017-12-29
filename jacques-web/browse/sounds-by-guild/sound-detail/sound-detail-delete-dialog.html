@@ -1,0 +1,14 @@
+<md-dialog class="sound-dialog">
+    <form novalidate name="birdfeedForm" ng-submit="birdfeedForm.$valid && $ctrl.submitBirdfeed()">
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                Are you sure you want to delete this sound forever? You might make someone mad.
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions>
+            <md-button ng-click="$ctrl.closeDialog()" class="md-accent">Cancel</md-button>
+            <md-button ng-click="$ctrl.onConfirm()" class="md-accent">Do it</md-button>
+            <span md-autofocus/>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
