@@ -63,7 +63,7 @@ angular
                 }
 
                 function updateAudioFile(sound) {
-                    $scope.audioUrl = $sce.trustAsResourceUrl("http://jacquesbot.io/raw/" + $scope.guild.discord_id + sound.name);
+                    $scope.audioUrl = $sce.trustAsResourceUrl("http://jacquesbot.io/raw/" + $scope.guild.discord_id + "/" + sound.name + ".mp3");
                 }
 
                 function updateSummaryCard(sound) {
