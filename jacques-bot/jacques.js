@@ -100,8 +100,8 @@ function routeTextChannelMessage(message, cleanedMessageContent) {
                 logger.info("Sound dump.");
                 sendSoundDump(message);
                 break;
-            case "upload":
-                sendUploadBirdfeed(message);
+            case "birdfeed":
+                sendBirdfeed(message);
                 break;
             default:
                 logger.info("Default: play targeted sound.");
@@ -165,7 +165,7 @@ function sendSoundDump(message) {
         .catch(logger.error);
 }
 
-function sendUploadBirdfeed(message) {
+function sendBirdfeed(message) {
     var user = message.author;
     var guildMember = message.member;
 
