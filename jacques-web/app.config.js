@@ -2,7 +2,7 @@
 
 angular
     .module("jacquesApp")
-    .config(function ($mdIconProvider, $mdThemingProvider, $urlRouterProvider) {
+    .config(function ($mdIconProvider, $mdThemingProvider, $urlRouterProvider, $urlMatcherFactoryProvider) {
         $mdThemingProvider.theme("default")
             .primaryPalette("green")
             .accentPalette("deep-orange");
@@ -17,7 +17,9 @@ angular
             .icon("invite", "assets/svg/person_add.svg", 24)
             .icon("search", "assets/svg/magnify.svg", 24)
             .icon("sound", "assets/svg/music-box.svg", 24)
+            .icon("delete", "assets/svg/delete-forever.svg", 24)
             .icon("discord", "assets/svg/discord.svg", 24)
             .icon("arrow-top-left", "assets/svg/arrow-top-left.svg", 24);
         $urlRouterProvider.when('', '/');
+        $urlMatcherFactoryProvider.strictMode(false);
     });
