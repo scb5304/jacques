@@ -4,8 +4,8 @@ angular
     .module("upload")
     .component("upload", {
         templateUrl: "upload/upload.template.html",
-        controller: ["$scope", "sharedProperties", "jacquesEndpointInterface",
-            function UploadController($scope, sharedProperties, jacquesEndpointInterface) {
+        controller: ["$scope", "sharedProperties", "jacquesEndpointInterface", "jacquesToaster",
+            function UploadController($scope, sharedProperties, jacquesEndpointInterface, jacquesToaster) {
                 $scope.files = [];
                 $scope.sharedProperties = sharedProperties;
                 $scope.jacquesEndpointInterface = jacquesEndpointInterface;
@@ -31,9 +31,8 @@ angular
                         $scope.jacquesEndpointInterface.postSound(user.discord_last_guild_id, fileName, base64, user.birdfeed_token)
                             .then(function() {
                                 $scope.files = [];
-                                console.log("Upload success!");
+                                jacquesToaster.showToastWithText("Upload success!");
                             }).catch(function(err) {
-                                console.log("Upload failure!");
                                 console.error(err);
                         })
                     })

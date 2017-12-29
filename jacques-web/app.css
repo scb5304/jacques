@@ -214,6 +214,10 @@ md-sidenav md-list .md-button.selected {
     fill: gray;
 }
 
+#sound-detail-delete-button {
+    margin-top: 2px;
+}
+
 .sound-chart-title {
     margin: 0px;
     padding-top: 10px;

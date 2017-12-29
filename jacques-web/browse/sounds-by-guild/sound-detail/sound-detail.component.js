@@ -48,8 +48,12 @@ angular
                                 guildId: $scope.guild.discord_id
                             });
                         }).catch(function(err) {
-                            jacquesToaster.showApiErrorToast();
-                            console.error(err);
+                            if (err.status >= 400 && err.status < 500) {
+                                jacquesToaster.showToastWithText(err.data.error);
+                            } else {
+                                jacquesToaster.showApiErrorToast();
+                                console.error(err);
+                            }
                         });
                     };
                 };
