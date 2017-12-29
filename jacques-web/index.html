@@ -31,7 +31,7 @@
         <h2 id="sidenav-title" layout-align="center" class="md-headline">Jacques</h2>
     </div>
 
-    <md-content id="sidenav-scroll-content">
+    <md-content>
         <md-button ng-click="app.onSidenavItemClicked()" ui-sref="home" flex layout-fill
                    class="md-button md-ink-ripple sidenav-item">
             Home
@@ -61,10 +61,10 @@
             <div layout="column" id="user-card-icon-column">
                 <md-icon id="user-card-icon" md-svg-icon="birdfeed"></md-icon>
             </div>
-            <div layout="column" id="user-card-details-column">
-                <span ng-hide="!app.user.discord_username" md-truncate id="user-card-details-username"
+            <div layout="column">
+                <span ng-hide="!app.user.discord_username" md-truncate
                       ng-bind="app.user.discord_username" class="md-body-1"></span>
-                <span ng-hide="!app.user.last_guild_name" md-truncate id="user-card-details-guild"
+                <span ng-hide="!app.user.last_guild_name" md-truncate
                       ng-bind="app.user.last_guild_name" class="md-body-2"></span>
             </div>
         </md-card-content>

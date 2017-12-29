@@ -1,18 +1,22 @@
-[ng-cloak] {
-    display: none;
-}
-
 html,
 body {
     font-family: "Roboto", sans-serif;
     font-size: 14px;
     height: 100%;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
 }
 
-/* Toolbar area */
+#main-content {
+    height: 100%;
+    padding: 16px 30px 50px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
 
+/*
+ * Toolbar
+ */
 .menu {
     background-color: transparent;
     border: none;
@@ -25,46 +29,6 @@ md-toolbar h1 {
     margin: auto;
 }
 
-#sidenav-icon {
-    margin-top: 8px;
-    max-height: 100px;
-    max-width: 100px;
-}
-
-#sidenav-title {
-    margin-top: 0px;
-    margin-bottom: 32px;
-}
-
-#sidenav-header {
-    margin: 0 auto;
-}
-
-#sidenav-scroll-content {
-
-}
-
-#sidenav-signature {
-    padding: 8px;
-    margin: 0 auto;
-}
-
-.sidenav-item {
-    border-bottom: 1px solid #CCCCCC;
-    padding-top: 4px;
-    padding-bottom: 4px;
-}
-
-#sidenav-left {
-
-}
-
-#sidenav-hidden-swipe-to-open-column {
-    position: absolute;
-    width: 25px;
-    height: 100%;
-    z-index:1
-}
 
 #toolbar-title {
     margin-left: 8px;
@@ -74,34 +38,51 @@ md-toolbar h1 {
     padding-right: 8px;
 }
 
-/* Sidenav area */
+/*
+ * Sidenav
+ */
 
 md-sidenav {
     max-width: 325px;
 }
 
-#sounds-guild-select {
-
-}
-
 md-sidenav md-list {
-    padding-top: 0px;
+    padding-top: 0;
     flex: 1;
     flex-direction: column;
 }
 
-#sounds-by-guild-title {
-    margin-bottom: 0;
+#sidenav-icon {
+    margin-top: 8px;
+    max-height: 100px;
+    max-width: 100px;
 }
 
-md-sidenav md-list .md-button.selected {
-    color: #03a9f4;
+#sidenav-title {
+    margin-top: 0;
+    margin-bottom: 32px;
 }
 
-#sound-search-input-container {
-    margin-left: 16px;
-    margin-right: 16px;
-    margin-bottom: 0px;
+#sidenav-header {
+    margin: 0 auto;
+}
+
+.sidenav-item {
+    border-bottom: 1px solid #CCCCCC;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+#sidenav-signature {
+    padding: 8px;
+    margin: 0 auto;
+}
+
+#sidenav-hidden-swipe-to-open-column {
+    position: absolute;
+    width: 25px;
+    height: 100%;
+    z-index:1
 }
 
 #user-card {
@@ -112,33 +93,38 @@ md-sidenav md-list .md-button.selected {
     margin-right: 16px;
 }
 
-#user-card-details-column {
-
-}
-
-#user-card-details-username {
-
-}
-
-#user-card-details-guild {
-
-}
-
 #user-card-icon {
     fill: #FF5722;
 }
 
-.icon-gray {
-    fill: gray;
+/*
+ * Home
+ */
+
+#home-wrapper {
+    max-width: 864px;
 }
 
-.border-bottom-list-item {
-    border-bottom: 1px solid #EEEEEE;
-}
+/*
+ * Guild list
+ */
 
 .guild-list-item-icon {
     fill: #7289DA;
     margin-right: 8px;
+}
+
+/*
+ * Sounds by guild
+ */
+
+#sounds-by-guild-title {
+    margin-bottom: 0;
+}
+
+
+.border-bottom-list-item {
+    border-bottom: 1px solid #EEEEEE;
 }
 
 .sounds-list-item {
@@ -164,33 +150,12 @@ md-sidenav md-list .md-button.selected {
     text-transform: none;
 }
 
-/* Primary content area */
-
 #fab-scroll-to-top {
     position: fixed;
     visibility: hidden;
 }
 
-#main-content {
-    height: 100%;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-top: 16px;
-    padding-bottom: 50px;
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
-
-/* Sound Overview */
-#home-wrapper {
-    max-width: 864px;
-}
-
 /* Sound Detail */
-
-#sound-detail-wrapper {
-
-}
 
 #sound-audio {
     width: 100%;
@@ -202,7 +167,7 @@ md-sidenav md-list .md-button.selected {
 
 #sound-title {
     margin-top: 12px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 #sound-detail-guild-button {
@@ -219,23 +184,37 @@ md-sidenav md-list .md-button.selected {
 }
 
 .sound-chart-title {
-    margin: 0px;
+    margin: 0;
     padding-top: 10px;
     padding-left: 8px;
     padding-bottom: 2px;
 }
 
-#sound-category-subtitle {
-    margin-top: 8px;
-    margin-bottom: 0px;
-}
-
-#sound-summary-card-content {
-    background-color: white;
-}
-
 #sound-most-played-by-card {
     padding-right: 16px;
+}
+
+/*
+ * Upload
+ */
+
+#sound-upload-form-errors {
+    color: red;
+}
+
+.input-container-no-bottom-margin {
+    margin-bottom: -12px;
+}
+
+/*
+ * Misc
+ */
+
+[ng-click],
+[data-ng-click],
+[x-ng-click],
+[ui-sref]{
+    cursor: pointer;
 }
 
 #content img {
@@ -253,27 +232,6 @@ md-icon svg {
     color: #FFFFFF;
 }
 
-.help-dialog-title {
-    margin-top: 24px;
-    border-bottom: 1px solid #CCCCCC;
-}
-
-#sound-upload-form-errors {
-    color: red;
-}
-
-.md-bottom.md-center {
-    left: 50%;
-    transform: translate3d(-50%, 0, 0);
-}
-
-.input-container-no-bottom-margin {
-    margin-bottom: -12px;
-}
-
-[ng-click],
-[data-ng-click],
-[x-ng-click],
-[ui-sref]{
-    cursor: pointer;
+.icon-gray {
+    fill: gray;
 }
