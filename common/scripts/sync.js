@@ -25,6 +25,9 @@ function connect() {
 }
 
 function onSoundInFileSystemNotInDatabase(soundName, discordGuildId) {
+    if (!discordGuildId) {
+        return;
+    }
     logger.info("Adding " + soundName + ", " + discordGuildId + " to the database! It's in the file system but not the database.");
     var newSound = Sound({
         name: soundName,
