@@ -119,7 +119,13 @@ md-sidenav md-list {
  */
 
 #sounds-by-guild-title {
+    margin-top: 4px;
     margin-bottom: 0;
+}
+
+#sounds-by-guild-quick-summary {
+    margin-top: 4px;
+    margin-bottom: 8px;
 }
 
 .border-bottom-list-item {
@@ -159,6 +165,10 @@ md-sidenav md-list {
 
 #sound-search-input-container {
     margin-right: 18px;
+}
+
+#sound-search-icon {
+    margin-top: -.5px;
 }
 
 #sounds-by-guild-sort-selection {

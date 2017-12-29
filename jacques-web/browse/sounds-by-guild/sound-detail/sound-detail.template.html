@@ -6,7 +6,7 @@
     <div layout="row">
         <md-button ui-sref="soundsByGuild({guildId:$ctrl.guild.discord_id})" md-colors="{color: 'primary-600'}" id="sound-detail-guild-button">
             <md-icon id="sound-detail-navigate-up-icon" md-svg-icon="arrow-top-left"></md-icon>
-            {{$ctrl.guild.discord_name}}
+            {{guild.discord_name}}
         </md-button>
         <md-button id="sound-detail-delete-button" ng-click="onDeleteClicked()" class="md-icon-button md-warn">
             <md-icon md-colors="{fill: 'accent'}" md-svg-icon="delete"></md-icon>

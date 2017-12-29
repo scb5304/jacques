@@ -1,19 +1,24 @@
 <div layout="column">
-    <h3 id="sounds-by-guild-title" class="md-headline">{{$ctrl.guild.discord_name}}</h3>
     <div layout="row">
         <md-button ui-sref="guildList" md-colors="{color: 'primary-600'}" id="sound-detail-guild-button">
             <md-icon id="sound-detail-navigate-up-icon" md-svg-icon="arrow-top-left"></md-icon>
             Guilds
         </md-button>
     </div>
+    <h3 id="sounds-by-guild-title" class="md-headline">{{$ctrl.guild.discord_name}}</h3>
+
+    <div id="sounds-by-guild-quick-summary" layout="row">
+        <span>{{getTotalPlayCount()}} total plays over {{sounds.length}} sounds.</span>
+    </div>
+    <md-divider></md-divider>
 
     <div layout="row">
         <md-input-container id="sound-search-input-container" class="input-container-no-bottom-margin">
-            <md-icon class="icon-gray" md-svg-icon="search"></md-icon> <label>Sound name</label>
+            <md-icon id="sound-search-icon" class="icon-gray" md-svg-icon="search"></md-icon><label>Sound name</label>
             <input ng-model="soundSearchQuery"/>
         </md-input-container>
         <md-input-container class="input-container-no-bottom-margin">
-            <md-icon class="icon-gray" md-svg-icon="sort"></md-icon>
+            <md-icon id="sort-selection-icon" class="icon-gray" md-svg-icon="sort"></md-icon>
             <md-select ng-model="sortSelection">
                 <md-optgroup label="Sort">
                     <md-option value="Ascending">Alphabetically</md-option>
@@ -26,11 +31,12 @@
 
     <md-list>
         <md-list-item class="sounds-list-item border-bottom-list-item"
-                      ng-repeat="sound in (filteredSounds = ($ctrl.sounds | filter: {name: soundSearchQuery}))">
+                      ng-repeat="sound in (filteredSounds = (sounds | filter: {name: soundSearchQuery}))">
             <md-button class="sounds-list-item-button"
                        ui-sref="soundDetail({ guildId: $ctrl.guild.discord_id, soundName: sound.name })"
                        aria-label="sound.name">
                 <div layout="row">
+                    <md-icon md-colors="{fill: 'primary'}" class="guild-list-item-icon" md-svg-icon="sound"></md-icon>
                     <span class="sounds-list-item-button-text-name">{{sound.name}}</span>
                     <span class="sounds-list-item-button-text-plays">({{sound.soundEventCount}} plays)</span>
                     <span flex></span>

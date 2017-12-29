@@ -40,6 +40,14 @@ angular
                         day: "numeric"
                     });
                 };
+
+                $scope.getTotalPlayCount = function() {
+                    var playCount = 0;
+                    $scope.sounds.forEach(function(sound) {
+                        playCount += sound.soundEventCount;
+                    });
+                    return playCount;
+                }
             }
         ]
     });
