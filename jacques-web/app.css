@@ -264,3 +264,8 @@ md-icon svg {
 .icon-gray {
     fill: gray;
 }
+
+.md-bottom.md-center {
+    left: 50%;
+    transform: translate3d(-50%, 0, 0);
+}
