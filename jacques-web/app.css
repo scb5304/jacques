@@ -232,6 +232,18 @@ md-sidenav md-list {
 }
 
 /*
+ * Help
+ */
+
+.help-section-title {
+    margin-bottom: 0;
+}
+
+.help-section-body {
+    margin-bottom: 16px;
+}
+
+/*
  * Misc
  */
 

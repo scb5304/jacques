@@ -1,39 +1,72 @@
-<div class="md-dialog-content">
-    <h2 class="md-headline">How do I play a sound?</h2>
-    <p>
+<div>
+    <!-- Invite -->
+    <h2 class="help-section-title md-headline">How do I invite Jacques to my server?</h2>
+    <div class="help-section-body">
+       Click the <span><md-icon class="icon-gray" md-svg-icon="invite"></md-icon></span> invite button on the toolbar.
+    </div>
+
+    <md-divider></md-divider>
+
+    <!-- Playing sound -->
+    <h2 class="help-section-title md-headline">How do I play a sound?</h2>
+    <div class="help-section-body">
         An exclamation point denotes a "command" which Jacques will attempt to interpret. To play a sound, you type an
         exclamation point followed by the name of the sound. If your Discord server has a sound of that name, Jacques
         will join the voice channel, play the sound, then leave. If you want Jacques to stop, use <i>!cancel</i> or <i>!stop</i>.
-    </p>
+
     <ul>
         <li><i>!yeah</i> plays the sound named "yeah" in your Guild.</li>
         <li><i>!fif</i> plays the sound named "fif" in your Guild.</li>
         <li><i>!cancel</i> forces Jacques to fly away.</li>
     </ul>
+    Unless you enter the command in a channel called <i>commands</i> Jacques will delete it shortly after.
+    </div>
 
-    <h2 class="md-headline">What about YouTube Videos?</h2>
-    <p>
+    <md-divider></md-divider>
+
+    <!-- Submitting sounds -->
+    <h2 class="help-section-title md-headline">How do I submit a sound for my server?</h2>
+    <div class="help-section-body">
+        First, type <i>!birdfeed</i> in any text channel on that server. Jacques should send you a private message containing
+        a token like "a1934u67b9". Now, click the <span><md-icon class="icon-gray" md-svg-icon="birdfeed"></md-icon></span> birdfeed icon
+        on the toolbar to feed Jacques. This is pretty much a poor man's login to make sure you're part of the guild and <b>have
+        at least the 'Attach Files' permission</b>.
+    </div>
+    <div class="help-section-body">
+        Now, you can visit the <a ui-sref="upload">Upload</a> page to submit your sound. Drag and drop the sound into the
+        box or click the 'Browse' button to locate it. Sounds must be MP3 files and under <i>700KB</i>,
+        so make sure it isn't too long.
+    </div>
+
+    <div class="help-section-body">
+        To delete a sound, <a ui-sref="guildList">browse</a> for it, then click the <span><md-icon class="icon-gray" md-svg-icon="delete"></md-icon></span>garbage can icon.
+    </div>
+
+    <md-divider></md-divider>
+
+    <!-- Streaming videos -->
+    <h2 class="help-section-title md-headline">What about YouTube Videos?</h2>
+    <div class="help-section-body">
         Similar to sound clips, start with an exclamation point. However, instead of the name of a sound, use the word "stream."
         Then, paste your YouTube video's URL. You can include the exact time to start, if desired.
-    </p>
+    </div>
     <ul>
         <li><i>!stream https://www.youtube.com/watch?v=BJ0xBCwkg3E</i> plays the entire Running in the 90's video.</li>
         <li><i>!stream https://youtu.be/BJ0xBCwkg3E?t=1m1s</i> plays the same video starting at 1 minute and 1 second.</li>
     </ul>
 
-    <h2 class="md-headline">He's too loud (or quiet) for this video!</h2>
-    <p>
+    <md-divider></md-divider>
+
+    <!-- Changing volume -->
+
+    <h2 class="help-section-title md-headline">He's too loud (or quiet) for this video!</h2>
+    <div class="help-section-body">
         Use the "volume" command to view Jacques' current volume level, from 0 to 100. You can then tweak the volume level
-        by including a value after the word "volume." <b>Keep in mind this is only for YouTube videos.</b> Sound clips have their
-        volume automagically adjusted by Jacques to have roughly the same level.
-    </p>
+        by including a value after the word "volume." <b>Keep in mind this is only for YouTube videos.</b> Sound clips should
+        be submitted at their desired volume level.
+    </div>
     <ul>
         <li><i>!volume</i> causes Jacques to say his current volume level.</li>
         <li><i>!volume 60</i> sets the volume to 60%.</li>
     </ul>
-
-    <h2 class="md-headline">How do I submit a sound for my Guild?</h2>
-    <p>
-        I'm working on it.
-    </p>
 </div>
