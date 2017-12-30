@@ -1,10 +1,9 @@
 <div layout="column">
-    <h3 class="md-subhead">Please select the Discord server whose sounds you wish to view.</h3>
+    <h3 class="md-subhead">Jacques is a member of <b>{{$ctrl.guilds.length}}</b> guilds. Please select the Discord server whose sounds you wish to view.</h3>
     <md-input-container class="input-container-no-bottom-margin">
         <label><md-icon class="icon-gray" md-svg-icon="search"></md-icon> Guild name</label>
         <input ng-model="guildSearchQuery"/>
     </md-input-container>
-
     <md-list>
         <md-list-item class="sounds-list-item border-bottom-list-item"
                       ng-repeat="guild in (filteredGuilds = ($ctrl.guilds | filter: {discord_name: guildSearchQuery}) | orderBy: 'discord_name')">
