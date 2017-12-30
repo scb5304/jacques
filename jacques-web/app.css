@@ -29,7 +29,6 @@ md-toolbar h1 {
     margin: auto;
 }
 
-
 #toolbar-title {
     margin-left: 8px;
 }
@@ -82,7 +81,7 @@ md-sidenav md-list {
     position: absolute;
     width: 25px;
     height: 100%;
-    z-index:1
+    z-index: 1
 }
 
 #user-card {
@@ -103,6 +102,51 @@ md-sidenav md-list {
 
 #home-wrapper {
     max-width: 864px;
+}
+
+#home-mongo-logo {
+    width: 221px;
+    height: 60px;
+}
+
+#home-express-logo {
+    width: 213px;
+    height: 47px;
+}
+
+#home-angular-logo {
+    width: 160px;
+    height: 160px;
+}
+
+#home-node-logo {
+    width: 205px;
+    height: 125px;
+}
+
+#home-chartjs-logo {
+    width: 114px;
+    height: 114px;
+}
+
+#home-discordjs-logo {
+    width: 200px;
+    height: 069px;
+}
+
+#home-material-logo {
+    width: 144px;
+    height: 140px;
+}
+
+#home-mongoose-logo {
+    width: 205px;
+    height: 56px;
+}
+
+#home-karma-logo {
+    width: 143px;
+    height: 143px;
 }
 
 /*
@@ -250,7 +294,7 @@ md-sidenav md-list {
 [ng-click],
 [data-ng-click],
 [x-ng-click],
-[ui-sref]{
+[ui-sref] {
     cursor: pointer;
 }
 

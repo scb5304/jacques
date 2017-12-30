@@ -1,15 +1,42 @@
 <div id="home-wrapper">
     <h2 class="md-headline">What is Jacques?</h2>
-    <p>
-        Jacques is a soundboard bot engineered to play audio in Discord voice channels. He supports user-uploaded
-        sounds
-        as well as YouTube videos. This website serves as a portal to view usage data about the Discord servers Jacques
-        runs on,
-        the sounds that are uploaded, as well as the entry point for user-submitted sounds.
-    </p>
+    <div layout="column">
+        <p>
+            Jacques is a soundboard bot engineered to play audio in <a href="https://discordapp.com/">Discord</a> voice channels. He supports user-uploaded
+            sounds
+            as well as YouTube videos. This website serves as a portal to view usage data about the Discord servers
+            Jacques
+            runs on,
+            the sounds that are uploaded, as well as the entry point for user-submitted sounds.
+        </p>
+
+        <p>
+            You don't need to run anything yourself. Jacques runs on his own server and maintains sounds for each of the
+            discord servers he's on. Visit the <a ui-sref="help">help</a> page if you need assistance getting started.
+        </p>
+
+        <p>
+            Jacques is used as an experiment in <a href="http://mean.io/">MEAN</a> stack development. The discord bot
+            provides the data set and structure
+            for this website. Features, functionality, and availability are subject to drastic, sudden changes.
+        </p>
+    </div>
+
+    <div layout="column">
+        <md-grid-list md-cols-xs="1" md-cols-sm="2" md-cols="3" md-gutter="1em" md-row-height="7:4">
+            <md-grid-tile><a href="https://www.mongodb.com/"><img src="assets/img/mongodb.png"/></a></md-grid-tile>
+            <md-grid-tile><a href="https://expressjs.com/"><img src="assets/img/express.png"/></a></md-grid-tile>
+            <md-grid-tile><a href="https://angularjs.org/"><img src="assets/img/angularjs.png"/></a></md-grid-tile>
+            <md-grid-tile><a href="https://nodejs.org/en/"><img src="assets/img/nodejs.png"/></a></md-grid-tile>
+            <md-grid-tile><a href="http://www.chartjs.org/"><img src="assets/img/chartjs.png"/></a></md-grid-tile>
+            <md-grid-tile><a href="https://discord.js.org/#/"><img src="assets/img/discordjs.png"/></a></md-grid-tile>
+            <md-grid-tile><a href="https://material.angularjs.org/latest/"><img src="assets/img/material.png"/></a></md-grid-tile>
+            <md-grid-tile><a href="http://mongoosejs.com/"><img src="assets/img/mongoose.png"/></a></md-grid-tile>
+            <md-grid-tile><a href="https://karma-runner.github.io/2.0/index.html"><img src="assets/img/karma.png"/></a></md-grid-tile>
+        </md-grid-list>
+    </div>
 
     <p>
-        You don't need to run anything yourself. Jacques runs on his own server and maintains sounds for each of the
-        discord servers he's on. Visit the <a ui-sref="help">help</a> page if you need assistance getting started.
+        ...and others. But the logos are pretty. Look at Jacque's package.json on <a target="_blank" href="https://github.com/scb5304/jacques">Github</a> for a full list of dependencies.
     </p>
 </div>
