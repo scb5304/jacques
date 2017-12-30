@@ -23,7 +23,7 @@ angular
                     console.log($scope.files);
 
                     var firstFile = $scope.files[0].lfFile;
-                    var fileName = firstFile.name.replace(".mp3", "");
+                    var fileName = firstFile.name.replace(".mp3", "").toLowerCase();
 
                     $scope.getBase64(firstFile).then(function (base64) {
                         console.log(firstFile);

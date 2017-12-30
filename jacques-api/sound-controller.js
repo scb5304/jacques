@@ -6,6 +6,19 @@ const mkdirp = require('mkdirp');
 const SOUNDS_DIRECTORY = process.env.JACQUES_SOUNDS_DIRECTORY;
 const MP3_META_DATA = "data:audio/mp3;base64,";
 
+const RESERVED_KEYWORDS = [
+    "cancel",
+    "stop",
+    "stream",
+    "volume",
+    "help",
+    "sounds",
+    "birdfeed",
+    "jacques",
+    "queue",
+    "last"
+];
+
 function getSounds(req, res) {
     //By default, include sound events.
     var includeSoundEvents = true;
@@ -160,6 +173,12 @@ function validateBirdfeedInRequest(birdfeed, res) {
 
 function validateSoundDataInSoundPostRequest(guildId, soundName, res) {
     return new Promise((resolve, reject) => {
+        if (RESERVED_KEYWORDS.indexOf(soundName.toLowerCase()) !== -1) {
+            var err = "Sorry! This sound name is reserved for usage by Jacques.";
+            res.status(400).send({error: err});
+            return reject(err)
+        }
+
         Db.getSoundByDiscordGuildIdAndName(guildId, soundName)
             .then(function (sound) {
                 if (sound) {
