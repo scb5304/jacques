@@ -96,10 +96,6 @@ function routeTextChannelMessage(message, cleanedMessageContent) {
                 logger.info("Help.");
                 help(message);
                 break;
-            case "helptext":
-                logger.info("Sound dump.");
-                sendSoundDump(message);
-                break;
             case "birdfeed":
                 sendBirdfeed(message);
                 break;
@@ -155,14 +151,6 @@ function volume(message, commandArgs) {
 
 function help(message) {
     messenger.sendHelp(message);
-}
-
-function sendSoundDump(message) {
-    Db.getAllSounds()
-        .then(function(sounds) {
-            messenger.sendSounds(message, sounds);
-        })
-        .catch(logger.error);
 }
 
 function sendBirdfeed(message) {

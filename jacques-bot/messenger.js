@@ -8,22 +8,6 @@ function sendHelp(message) {
     message.reply(HELP_STRING);
 }
 
-function sendSounds(message, sounds) {
-    var helpText = "";
-
-    sounds.sort();
-    sounds.forEach(function(sound) {
-        helpText += sound.name.split(".")[0] + ", ";
-    });
-
-    helpText = helpText.substring(0, helpText.length - 2);
-    var helpTextSegments = helpText.match(/.{1,1500}/g);
-
-    helpTextSegments.forEach(function(helpTextSegment) {
-        message.reply(helpTextSegment).catch(logger.error);
-    });
-}
-
 function sendDirectMessage(user, message) {
     if (user !== null) {
         var dmChannel = user.dmChannel;
@@ -48,7 +32,6 @@ function printVolume(message, volume) {
 }
 
 module.exports.sendHelp = sendHelp;
-module.exports.sendSounds = sendSounds;
 module.exports.sendDirectMessage = sendDirectMessage;
 module.exports.deleteMessage = deleteMessage;
 module.exports.printVolume = printVolume;
