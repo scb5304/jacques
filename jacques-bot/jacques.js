@@ -120,6 +120,7 @@ function cancelVoiceConnection(message) {
     if (!message.member.voiceChannel) {
         return false;
     }
+    message.member.voiceChannel.leave();
     var connection = message.member.voiceChannel.connection;
     if (connection) {
         connection.disconnect();

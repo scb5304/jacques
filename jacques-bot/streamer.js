@@ -9,53 +9,71 @@ function streamAudio(voiceChannel, streamLink) {
         return;
     }
 
-    const streamOptions = {
-        seek: calculateStreamSeekSeconds(streamLink),
-        volume: streamVolume,
-        passes: 6
-    };
+    ytdl.getInfo(streamLink, function(err, info) {
+       if (err || !info) {
+           logger.error(err);
+       } else {
+           //Video exists
+           voiceChannel.join()
+               .then(function(connection) {
+                   try {
+                       const streamOptions = {
+                           seek: calculateStreamSeekSeconds(streamLink),
+                           volume: streamVolume,
+                           passes: 6
+                       };
 
-    voiceChannel.join()
-        .then(function(connection) {
-            const stream = ytdl(streamLink, {
-                filter: "audioonly"
-            });
+                       const ytdlStream = ytdl(streamLink, {
+                           filter: "audioonly"
+                       });
 
-            const dispatcher = connection.playStream(stream, streamOptions);
-            dispatcher.once("end", function() {
-                logger.info("Leaving after playing sound.");
-                connection.disconnect();
-            });
-            
-            dispatcher.once("speaking", function() {
-                dispatcher.setVolumeLogarithmic(streamVolume);
-            });
-        })
-        .catch(logger.error);
+                       const dispatcher = connection.playStream(ytdlStream, streamOptions);
+                       dispatcher.once("end", function() {
+                           logger.info("Leaving after playing sound.");
+                           connection.disconnect();
+                       });
+
+                       dispatcher.once("speaking", function() {
+                           dispatcher.setVolumeLogarithmic(streamVolume);
+                       });
+
+                   } catch (e) {
+                       logger.error(e);
+                   }
+               })
+               .catch(logger.error);
+       }
+    });
 }
 
 function calculateStreamSeekSeconds(streamLink) {
     var secondsToSeek = 0;
 
-    var timeArg = streamLink.split("t=")[1]; // 3m4s
+    var timeArg = streamLink.split("t=")[1].split("&")[0]; // 3m4s
     if (!timeArg) {
         return secondsToSeek;
     }
 
-    if (timeArg.includes("m")) {
-        var mins = timeArg.split("m")[0];
-        secondsToSeek += Number(mins) * 60;
-
-        if (timeArg.includes("s")) {
-            var secs = timeArg.split("m")[1].split("s")[0];
-            secondsToSeek += Number(secs);
-        }
-    } else if (timeArg.includes("s")) {
-        var secs = timeArg.split("s")[0];
-        secondsToSeek += Number(secs);
-    } else {
-        secondsToSeek = Number(timeArg);
+    var hourArgMatches = /.+?(?=h)/.exec(timeArg);
+    if (hourArgMatches) {
+        var hourArg = hourArgMatches[0];
+        secondsToSeek += Number(hourArg) * 3600;
+        timeArg = timeArg.split(hourArg + "h")[1];
     }
+
+    var minuteArgMatches = /.+?(?=m)/.exec(timeArg);
+    if (minuteArgMatches) {
+        var minuteArg = minuteArgMatches[0];
+        secondsToSeek += Number(minuteArg) * 60;
+        timeArg = timeArg.split(minuteArg + "m")[1];
+    }
+
+    var secondArgMatches = /.+?(?=s)/.exec(timeArg);
+    if (secondArgMatches) {
+        var secondArg = secondArgMatches[0];
+        secondsToSeek += Number(secondArg);
+    }
+
     if (secondsToSeek) {
         logger.info("URL wants to start at a given time: " + secondsToSeek);
     }
@@ -87,6 +105,5 @@ function getVolume() {
 }
 
 module.exports.streamAudio = streamAudio;
-module.exports.calculateStreamSeekSeconds = calculateStreamSeekSeconds;
 module.exports.changeVolume = changeVolume;
 module.exports.getVolume = getVolume;
