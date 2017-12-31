@@ -106,7 +106,7 @@ angular
             }
         }
     })
-    .service("jacquesEndpointInterface", function ($resource) {
+    .service("jacquesEndpointInterface", function ($resource, $q) {
         var Guilds = $resource("http://localhost:8081/api/guilds/:guildId");
         var SoundsByGuild= $resource("http://localhost:8081/api/sounds/:guildId?includeSoundEvents=:includeEvents");
         var SoundsByGuildAndName = $resource("http://localhost:8081/api/sounds/:guildId/:soundName");
@@ -116,57 +116,57 @@ angular
 
         return {
             getGuilds: function () {
-                return new Promise((resolve, reject) => {
+                return $q(function(resolve, reject) {
                     Guilds.query(function (guilds) {
-                        return resolve(guilds);
+                        resolve(guilds);
                     }, function (err) {
-                        return reject(err);
+                        reject(err);
                     });
                 });
             },
             getGuild: function (discordGuildId) {
-                return new Promise((resolve, reject) => {
+                return $q(function(resolve, reject) {
                     Guilds.get({guildId: discordGuildId}, function (guild) {
-                        return resolve(guild);
+                        resolve(guild);
                     }, function (err) {
-                        return reject(err);
+                        reject(err);
                     });
                 });
             },
             getSoundsByGuild: function (discordGuildId) {
-                return new Promise((resolve, reject) => {
+                return $q(function(resolve, reject) {
                     SoundsByGuild.query({guildId: discordGuildId, includeEvents: false}, function (guilds) {
-                        return resolve(guilds);
+                        resolve(guilds);
                     }, function (err) {
-                        return reject(err);
+                        reject(err);
                     });
                 });
             },
             getSoundByName: function (discordGuildId, soundName) {
-                return new Promise((resolve, reject) => {
+                return $q(function(resolve, reject) {
                     SoundsByGuildAndName.get({guildId: discordGuildId, soundName: soundName}, function (sound) {
-                        return resolve(sound);
+                        resolve(sound);
                     }, function (err) {
-                        return reject(err);
+                        reject(err);
                     });
                 });
             },
             deleteSound: function(discordGuildId, soundName, birdfeed_token) {
-                return new Promise((resolve, reject) => {
+                return $q(function(resolve, reject) {
                     SoundsByGuildAndNameWithBirdfeedParam.delete({guildId: discordGuildId, soundName: soundName, birdfeed: birdfeed_token}, function () {
-                        return resolve();
+                        resolve();
                     }, function (err) {
-                        return reject(err);
+                        reject(err);
                     });
                 });
             },
             postSound: function(discordGuildId, soundName, soundData, birdfeed) {
-                return new Promise((resolve, reject) => {
-                    var sound = {soundData, birdfeed};
+                return $q(function(resolve, reject) {
+                    var sound = {soundData: soundData, birdfeed: birdfeed};
                     SoundsByGuildAndName.save({guildId: discordGuildId, soundName: soundName}, sound, function () {
-                        return resolve();
+                        resolve();
                     }, function (err) {
-                        return reject(err);
+                        reject(err);
                     });
                 });
             }
