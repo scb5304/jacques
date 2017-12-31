@@ -3,11 +3,11 @@
 angular
     .module("home")
     .component("home", {
+        bindings: {statisticsObject: "<"},
         templateUrl: "home/home.template.html",
-        controller: ["$scope", "sharedProperties",
-            function HomeController($scope, sharedProperties) {
-                //console.log("Hello there!");
-                //jacquesEndpointInterface.getGuilds();
+        controller: ["$scope",
+            function HomeController($scope) {
+
             }
         ]
     });

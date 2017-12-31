@@ -3,6 +3,7 @@
 angular
     .module("jacquesApp")
     .service("jacquesEndpointInterface", function ($resource, $q) {
+        var Statistics = $resource("http://localhost:8081/api/statistics");
         var Guilds = $resource("http://localhost:8081/api/guilds/:guildId");
         var SoundsByGuild= $resource("http://localhost:8081/api/sounds/:guildId?includeSoundEvents=:includeEvents");
         var SoundsByGuildAndName = $resource("http://localhost:8081/api/sounds/:guildId/:soundName");
@@ -63,6 +64,15 @@ angular
                         resolve();
                     }, function (err) {
                         reject(err);
+                    });
+                });
+            },
+            getStatistics: function() {
+                return $q(function(resolve, reject) {
+                    Statistics.get({}, function(statisticsObject) {
+                       resolve(statisticsObject);
+                    }, function (err) {
+                       reject(err);
                     });
                 });
             }

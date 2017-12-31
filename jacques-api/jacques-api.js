@@ -7,6 +7,7 @@ const logger = require("../common/util/logger.js");
 const soundController = require("./sound-controller");
 const userController = require("./user-controller");
 const guildController = require("./guild-controller");
+const statisticsController = require("./statistics-controller");
 
 var cors = require("cors");
 const app = express();
@@ -43,6 +44,9 @@ router.route("/guilds")
 
 router.route("/guilds/:guild")
     .get(guildController.getGuild);
+
+router.route("/statistics")
+    .get(statisticsController.getStatistics);
 
 app.use("/api", router);
 app.listen(port);

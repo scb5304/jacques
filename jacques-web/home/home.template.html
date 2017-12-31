@@ -1,13 +1,14 @@
 <div id="home-wrapper">
     <h2 class="md-headline">What is Jacques?</h2>
     <div layout="column">
+
         <p>
-            Jacques is a soundboard bot engineered to play audio in <a href="https://discordapp.com/">Discord</a> voice channels. He supports user-uploaded
-            sounds
-            as well as YouTube videos. This website serves as a portal to view usage data about the Discord servers
-            Jacques
-            runs on,
-            the sounds that are uploaded, as well as the entry point for user-submitted sounds.
+            Jacques is a soundboard bot engineered to play audio in <a href="https://discordapp.com/">Discord</a> voice
+            channels. He supports user-uploaded sounds as well as YouTube videos. This website serves as a portal to
+            view usage data about the Discord servers
+            Jacques runs on, the sounds that are uploaded, as well as the entry point for user-submitted sounds.
+            Currently, he hosts <b>{{$ctrl.statisticsObject.soundsCount}}</b> sounds across <b>{{$ctrl.statisticsObject.guildsCount}}</b>
+            guilds. Sounds have been played a total of <b>{{$ctrl.statisticsObject.soundEventsCount}}</b> times.
         </p>
 
         <p>
@@ -17,23 +18,31 @@
 
         <p>
             Jacques is used as an experiment in <a href="http://mean.io/">MEAN</a> stack development. The discord bot
-            provides the data set and structure
-            for this website. Features, functionality, and availability are subject to drastic, sudden changes. Also, the
-            logos below are pretty. Look at Jacque's package.json on <a target="_blank" href="https://github.com/scb5304/jacques">Github</a> for a full list of dependencies.
+            provides the data set and structure for this website. Features, functionality, and availability are subject
+            to drastic, sudden changes. Also, the logos below are pretty. Look at Jacques' package.json on
+            <a target="_blank" href="https://github.com/scb5304/jacques">Github</a> for a full list of dependencies.
         </p>
     </div>
 
+
     <div layout="column">
         <md-grid-list md-cols-xs="1" md-cols-sm="2" md-cols="3" md-gutter="1em" md-row-height="7:4">
-            <md-grid-tile><a href="https://www.mongodb.com/"><img src="shared/assets/img/mongodb.png"/></a></md-grid-tile>
+            <md-grid-tile><a href="https://www.mongodb.com/"><img src="shared/assets/img/mongodb.png"/></a>
+            </md-grid-tile>
             <md-grid-tile><a href="https://expressjs.com/"><img src="shared/assets/img/express.png"/></a></md-grid-tile>
-            <md-grid-tile><a href="https://angularjs.org/"><img src="shared/assets/img/angularjs.png"/></a></md-grid-tile>
+            <md-grid-tile><a href="https://angularjs.org/"><img src="shared/assets/img/angularjs.png"/></a>
+            </md-grid-tile>
             <md-grid-tile><a href="https://nodejs.org/en/"><img src="shared/assets/img/nodejs.png"/></a></md-grid-tile>
-            <md-grid-tile><a href="http://www.chartjs.org/"><img src="shared/assets/img/chartjs.png"/></a></md-grid-tile>
-            <md-grid-tile><a href="https://discord.js.org/#/"><img src="shared/assets/img/discordjs.png"/></a></md-grid-tile>
-            <md-grid-tile><a href="https://material.angularjs.org/latest/"><img src="shared/assets/img/material.png"/></a></md-grid-tile>
-            <md-grid-tile><a href="http://mongoosejs.com/"><img src="shared/assets/img/mongoose.png"/></a></md-grid-tile>
-            <md-grid-tile><a href="https://karma-runner.github.io/2.0/index.html"><img src="shared/assets/img/karma.png"/></a></md-grid-tile>
+            <md-grid-tile><a href="http://www.chartjs.org/"><img src="shared/assets/img/chartjs.png"/></a>
+            </md-grid-tile>
+            <md-grid-tile><a href="https://discord.js.org/#/"><img src="shared/assets/img/discordjs.png"/></a>
+            </md-grid-tile>
+            <md-grid-tile><a href="https://material.angularjs.org/latest/"><img
+                    src="shared/assets/img/material.png"/></a></md-grid-tile>
+            <md-grid-tile><a href="http://mongoosejs.com/"><img src="shared/assets/img/mongoose.png"/></a>
+            </md-grid-tile>
+            <md-grid-tile><a href="https://karma-runner.github.io/2.0/index.html"><img
+                    src="shared/assets/img/karma.png"/></a></md-grid-tile>
         </md-grid-list>
     </div>
 </div>

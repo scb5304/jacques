@@ -274,6 +274,57 @@ function insertGuild(discordGuild) {
     });
 }
 
+function getGuildsCount() {
+    return new Promise((resolve, reject) => {
+        Guild.count(function (err, count) {
+            if (err) {
+                return reject(err);
+            } else {
+                return resolve(count);
+            }
+        });
+    });
+}
+
+function getSoundsCount() {
+    return new Promise((resolve, reject) => {
+        Sound.count(function (err, count) {
+            if (err) {
+                return reject(err);
+            } else {
+                return resolve(count);
+            }
+        });
+    });
+}
+
+//https://stackoverflow.com/a/35814633/4672234
+//https://stackoverflow.com/a/31656321/4672234
+function getSoundEventsCount() {
+    return new Promise((resolve, reject) => {
+        var pipeline = [{
+            "$project": {
+                "sound_events": {
+                    "$size": "$sound_events"
+                }
+            }
+        }, {
+            "$group": {
+                "_id": null,
+                "count": {"$sum": "$sound_events"}
+            }
+        }];
+        Sound.aggregate(pipeline, function (err, result) {
+            if (err) {
+                return reject(err);
+            } else {
+                logger.info(result);
+                return resolve(result[0].count);
+            }
+        });
+    });
+}
+
 module.exports.connect = connect;
 module.exports.insertSoundForGuildByUser = insertSoundForGuildByUser;
 module.exports.insertSoundEvent = insertSoundEvent;
@@ -295,3 +346,7 @@ module.exports.deleteSoundWithGuildIdAndName = deleteSoundWithDiscordGuildIdAndN
 module.exports.getUserFromDiscordId = getUserFromDiscordId;
 module.exports.getUserFromBirdfeed = getUserFromBirdfeed;
 module.exports.upsertUserWithDiscordDataAndToken = upsertUserWithDiscordDataAndToken;
+
+module.exports.getGuildsCount = getGuildsCount;
+module.exports.getSoundsCount = getSoundsCount;
+module.exports.getSoundEventsCount = getSoundEventsCount;
