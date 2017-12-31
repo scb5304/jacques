@@ -12,6 +12,7 @@ angular
             var storedUser = localStorage.getItem("jacques_user");
             if (storedUser) {
                 self.user = JSON.parse(storedUser);
+                $scope.sharedProperties.setUser(self.user);
                 console.log("Pulled this object from local storage.");
                 console.log(self.user);
             }

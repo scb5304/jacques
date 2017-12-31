@@ -3,6 +3,7 @@ const path = require("path");
 const logger = require("../common/util/logger");
 const Db = require("../common/data/db");
 const mkdirp = require('mkdirp');
+const moment = require("moment");
 const SOUNDS_DIRECTORY = process.env.JACQUES_SOUNDS_DIRECTORY;
 const MP3_META_DATA = "data:audio/mp3;base64,";
 
@@ -85,7 +86,8 @@ function getSoundByGuildAndName(req, res) {
 }
 
 function deleteSound(req, res) {
-    validateBirdfeedInRequest(req.body.birdfeed, res).then(function() {
+    //Birdfeed is a request query for this one because client can't send up a DELETE body.
+    validateBirdfeedInRequest(req.query.birdfeed, res).then(function() {
         var guild = req.params.guild;
         var name = req.params.soundName;
         Db.deleteSoundByDiscordGuildIdAndName(guild, name)
@@ -182,7 +184,7 @@ function validateSoundDataInSoundPostRequest(guildId, soundName, res) {
         Db.getSoundByDiscordGuildIdAndName(guildId, soundName)
             .then(function (sound) {
                 if (sound) {
-                    var soundExistsError = "Sound with this name already exists: " + soundName + " on this guild: " + guildId;
+                    var soundExistsError = "Sound with this name already exists on this guild: " + soundName + ".";
                     res.status(400).send({error: soundExistsError});
                     return reject(soundExistsError);
                 } else {

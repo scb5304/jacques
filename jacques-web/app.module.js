@@ -111,6 +111,9 @@ angular
         var SoundsByGuild= $resource("http://localhost:8081/api/sounds/:guildId?includeSoundEvents=:includeEvents");
         var SoundsByGuildAndName = $resource("http://localhost:8081/api/sounds/:guildId/:soundName");
 
+        //Why can't I include birdfeed in the request body, Angular? DELETE is supposed to support this.
+        var SoundsByGuildAndNameWithBirdfeedParam = $resource("http://localhost:8081/api/sounds/:guildId/:soundName?birdfeed=:birdfeed");
+
         return {
             getGuilds: function () {
                 return new Promise((resolve, reject) => {
@@ -148,9 +151,9 @@ angular
                     });
                 });
             },
-            deleteSound: function(discordGuildId, soundName) {
+            deleteSound: function(discordGuildId, soundName, birdfeed_token) {
                 return new Promise((resolve, reject) => {
-                    SoundsByGuildAndName.delete({guildId: discordGuildId, soundName: soundName}, function () {
+                    SoundsByGuildAndNameWithBirdfeedParam.delete({guildId: discordGuildId, soundName: soundName, birdfeed: birdfeed_token}, function () {
                         return resolve();
                     }, function (err) {
                         return reject(err);

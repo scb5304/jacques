@@ -43,10 +43,16 @@ angular
                     };
 
                     self.onConfirm = function () {
-                        $scope.jacquesEndpointInterface.deleteSound($scope.guild.discord_id, $scope.sound.name).then(function() {
+                        var birdfeed = "";
+                        var user = sharedProperties.getUser();
+                        if (user) {
+                            birdfeed = user.birdfeed_token;
+                        }
+                        $scope.jacquesEndpointInterface.deleteSound($scope.guild.discord_id, $scope.sound.name, birdfeed).then(function() {
                             $state.go("soundsByGuild", {
                                 guildId: $scope.guild.discord_id
                             });
+                            self.closeDialog();
                         }).catch(function(err) {
                             if (err.status >= 400 && err.status < 500) {
                                 jacquesToaster.showToastWithText(err.data.error);
@@ -78,6 +84,7 @@ angular
                     if ($scope.summaryAddDate === "February 26, 2017") {
                         $scope.summaryAddDate = $scope.summaryAddDate + " (Legacy)";
                     }
+                    $scope.summaryAddedBy = sound.added_by;
 
                     var lastPlayedDate = SoundDetailChartsHelper.calculateLastPlayedOnDate(sound);
                     $scope.summaryLastPlayed = lastPlayedDate ? formatMonthDayYear(lastPlayedDate) : "N/A";

@@ -11,6 +11,9 @@ angular
                 $scope.jacquesEndpointInterface = jacquesEndpointInterface;
                 $scope.formValid = false;
 
+                $scope.lastUploadedGuildId = "";
+                $scope.lastUploadedSoundName = "";
+
                 $scope.$watch('soundUploadForm.$valid', function(isValidValue) {
                     $scope.formValid = isValidValue;
                 });
@@ -31,12 +34,18 @@ angular
                         $scope.jacquesEndpointInterface.postSound(user.discord_last_guild_id, fileName, base64, user.birdfeed_token)
                             .then(function() {
                                 $scope.files = [];
-                                jacquesToaster.showToastWithText("Upload success!");
+                                $scope.lastUploadedGuildId = user.discord_last_guild_id;
+                                $scope.lastUploadedSoundName = fileName;
+                                jacquesToaster.showToastWithText("Upload success for sound " + fileName + "!");
                             }).catch(function(err) {
                                 console.error(err);
+                                if (err.data && err.data.error) {
+                                    jacquesToaster.showToastWithText(err.data.error);
+                                } else {
+                                    jacquesToaster.showApiErrorToast();
+                                }
                         })
-                    })
-
+                    });
                 };
 
                 $scope.getBase64 = function(file) {

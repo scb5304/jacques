@@ -172,7 +172,7 @@ function sendBirdfeed(message) {
 
     if (userHasUploadPermissions(guildMember)) {
         createBirdfeedForGuildMember(guildMember).then(function(birdfeed) {
-            messageToSend = messageBase + "Here is your birdfeed: " + birdfeed + ". Please copy it, visit http://jacquesbot.io, and include it in your sound upload.";
+            messageToSend = messageBase + "Here is your birdfeed: " + birdfeed + ". Please copy it, visit http://jacquesbot.io, and use the birdfeeder to authenticate yourself.";
             messenger.sendDirectMessage(user, messageToSend);
         }).catch(function(err) {
             messageToSend = messageBase + "Sorry, but there was an error giving you birdfeed. Which is unfortunate, because I'm starving.";

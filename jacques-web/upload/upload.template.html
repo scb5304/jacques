@@ -24,3 +24,10 @@
         <div ng-message="filesize">Too big! Cannot be more than 700KB.</div>
     </div>
 </form>
+
+<div ng-hide="!lastUploadedGuildId || !lastUploadedSoundName">
+    <p>
+        <md-icon md-colors="{fill: 'primary'}" class="guild-list-item-icon" md-svg-icon="sound"></md-icon>
+        Just uploaded: <a ui-sref="soundDetail( {guildId: lastUploadedGuildId, soundName: lastUploadedSoundName} )">{{lastUploadedSoundName}}</a>.
+    </p>
+</div>
