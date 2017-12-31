@@ -26,29 +26,29 @@
         md-is-locked-open="$mdMedia('gt-md')"
         md-whiteframe="1">
 
-    <div id="sidenav-header" layout-align="top center">
-        <img layout-align="center" id="sidenav-icon" src="assets/img/jacques_icon_big.png"/>
-        <h2 id="sidenav-title" layout-align="center" class="md-headline">Jacques</h2>
+    <div id="sidenav-header">
+        <img ui-sref="home" id="sidenav-icon" src="assets/img/jacques_icon_big.png"/>
+        <h2 id="sidenav-title" class="md-headline">Jacques</h2>
     </div>
 
-    <md-content>
-        <md-button ng-click="app.onSidenavItemClicked()" ui-sref="home" flex layout-fill
+    <div layout="column">
+        <md-button ng-click="app.onSidenavItemClicked()" ui-sref="home"
                    class="md-button md-ink-ripple sidenav-item">
             Home
         </md-button>
-        <md-button ng-click="app.onSidenavItemClicked()" ui-sref="guildList" flex layout-fill
+        <md-button ng-click="app.onSidenavItemClicked()" ui-sref="guildList"
                    class="md-button md-ink-ripple sidenav-item">
             Browse
         </md-button>
-        <md-button ng-click="app.onSidenavItemClicked()" ui-sref="upload" flex layout-fill
+        <md-button ng-click="app.onSidenavItemClicked()" ui-sref="upload"
                    class="md-button md-ink-ripple sidenav-item">
             Upload
         </md-button>
-        <md-button ng-click="app.onSidenavItemClicked()" ui-sref="help" flex layout-fill
+        <md-button ng-click="app.onSidenavItemClicked()" ui-sref="help"
                    class="md-button md-ink-ripple sidenav-item">
             Help
         </md-button>
-    </md-content>
+    </div>
 
     <span flex></span>
 
@@ -65,10 +65,6 @@
             </div>
         </md-card-content>
     </md-card>
-
-    <div id="sidenav-signature" class="md-body-1">
-        Developed by Steve. <a target="_blank" href="https://github.com/scb5304/jacques">Source</a>
-    </div>
 </md-sidenav>
 
 <div layout="column" flex>
