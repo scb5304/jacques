@@ -27,8 +27,8 @@ module.exports = function(config) {
         "./node_modules/chart.js/dist/Chart.js",
         "./node_modules/angular-chart.js/dist/angular-chart.js",
         "./node_modules/angular-mocks/angular-mocks.js",
-        "jacques-web/app.module.js",
-        "jacques-web/app.config.js",
+        "jacques-web/app/app.module.js",
+        "jacques-web/app/app.config.js",
         "jacques-web/browse/sounds-by-guild/sound-detail/sound-detail.module.js",
         "jacques-web/**/*.js",
         "jacques-web/**/*.html"
