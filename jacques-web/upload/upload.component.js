@@ -4,8 +4,8 @@ angular
     .module("upload")
     .component("upload", {
         templateUrl: "upload/upload.template.html",
-        controller: ["$scope", "sharedProperties", "jacquesEndpointInterface", "jacquesToaster",
-            function UploadController($scope, sharedProperties, jacquesEndpointInterface, jacquesToaster) {
+        controller: ["$scope", "sharedProperties", "jacquesEndpointInterface", "jacquesToaster", "$q",
+            function UploadController($scope, sharedProperties, jacquesEndpointInterface, jacquesToaster, $q) {
                 $scope.files = [];
                 $scope.sharedProperties = sharedProperties;
                 $scope.jacquesEndpointInterface = jacquesEndpointInterface;

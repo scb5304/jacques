@@ -7,6 +7,8 @@ angular.module("scrollToTop")
             function ScrollToTopController($scope) {
                 $scope.scrollToTop = function scrollToTop() {
                     var mainContent = document.getElementById("main-content");
+                    document.body.scrollTop = 0;
+                    mainContent.scrollTop = 0;
                     mainContent.scrollTo(0, 0);
                 }
             }
