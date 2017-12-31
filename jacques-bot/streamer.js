@@ -90,7 +90,9 @@ function changeVolume(message, requestedVolume, voiceConnection) {
         actualVolume = 1;
     }
 
-    message.reply("Changing volume to " + requestedVolume + "%");
+    message.reply("Changing volume to " + requestedVolume + "%").then(function(message) {
+       message.delete(3500).catch(logger.error);
+    });
 
     if (voiceConnection) {
         voiceConnection.player.dispatcher.setVolumeLogarithmic(actualVolume);

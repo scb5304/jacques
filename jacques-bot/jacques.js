@@ -244,7 +244,9 @@ function alreadySpeaking(message) {
     var currentVoiceConnection = bot.voiceConnections.get(message.guild.id);
 
     if (currentVoiceConnection) {
-        message.reply("Already speaking in channel " + currentVoiceConnection.channel.name);
+        message.reply("Already speaking in channel " + currentVoiceConnection.channel.name).then(function(message) {
+            message.delete(3500).catch(logger.error);
+        });
         return true;
     }
 

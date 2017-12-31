@@ -28,7 +28,9 @@ function deleteMessage(message) {
 }
 
 function printVolume(message, volume) {
-    message.reply("Volume is currently at " + (volume * 100) + "%");
+    message.reply("Volume is currently at " + (volume * 100) + "%").then(function(message) {
+        message.delete(3500).catch(logger.error);
+    });
 }
 
 module.exports.sendHelp = sendHelp;
