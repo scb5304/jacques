@@ -4,7 +4,8 @@ var Schema = mongoose.Schema;
 
 var guildSchema = new Schema({
     discord_id: String,
-    discord_name: String
+    discord_name: String,
+    volume: Number
 });
 guildSchema.plugin(sanitizerPlugin);
 

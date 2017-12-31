@@ -1,9 +1,7 @@
 var logger = require("./../common/util/logger.js");
 var ytdl = require("ytdl-core");
 
-var streamVolume = 0.40;
-
-function streamAudio(voiceChannel, streamLink) {
+function streamAudio(voiceChannel, volume, streamLink) {
     if (!streamLink) {
         logger.info("Stream requested with no link.");
         return;
@@ -19,7 +17,7 @@ function streamAudio(voiceChannel, streamLink) {
                    try {
                        const streamOptions = {
                            seek: calculateStreamSeekSeconds(streamLink),
-                           volume: streamVolume,
+                           volume: volume,
                            passes: 6
                        };
 
@@ -34,7 +32,7 @@ function streamAudio(voiceChannel, streamLink) {
                        });
 
                        dispatcher.once("speaking", function() {
-                           dispatcher.setVolumeLogarithmic(streamVolume);
+                           dispatcher.setVolumeLogarithmic(volume);
                        });
 
                    } catch (e) {
@@ -48,11 +46,11 @@ function streamAudio(voiceChannel, streamLink) {
 
 function calculateStreamSeekSeconds(streamLink) {
     var secondsToSeek = 0;
-
-    var timeArg = streamLink.split("t=")[1].split("&")[0]; // 3m4s
-    if (!timeArg) {
+    var timeArg = streamLink.split("t=");
+    if (!timeArg || timeArg.length === 1) {
         return secondsToSeek;
     }
+    timeArg = streamLink.split("t=")[1].split("&")[0]; // 3m4s
 
     var hourArgMatches = /.+?(?=h)/.exec(timeArg);
     if (hourArgMatches) {
@@ -92,18 +90,14 @@ function changeVolume(message, requestedVolume, voiceConnection) {
         actualVolume = 1;
     }
 
-    message.reply("Changing volume from " + (streamVolume * 100) + "% to " + requestedVolume + "%");
-    streamVolume = actualVolume;
+    message.reply("Changing volume to " + requestedVolume + "%");
 
     if (voiceConnection) {
-        voiceConnection.player.dispatcher.setVolumeLogarithmic(streamVolume);
+        voiceConnection.player.dispatcher.setVolumeLogarithmic(actualVolume);
     }
-}
 
-function getVolume() {
-    return streamVolume; 
+    return actualVolume;
 }
 
 module.exports.streamAudio = streamAudio;
 module.exports.changeVolume = changeVolume;
-module.exports.getVolume = getVolume;

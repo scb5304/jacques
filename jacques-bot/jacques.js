@@ -132,7 +132,11 @@ function streamAudio(message, commandArgs) {
         return;
     }
     var streamLink = commandArgs.length > 1 ? commandArgs[1] : null;
-    streamer.streamAudio(message.member.voiceChannel, streamLink);
+
+    Db.getGuildById(message.member.guild.id).then(function(guild) {
+       var volume = guild.volume && guild.volume > 0 ? guild.volume : 0.40;
+       streamer.streamAudio(message.member.voiceChannel, volume, streamLink);
+    }).catch(logger.error);
 }
 
 function volume(message, commandArgs) {
@@ -143,10 +147,16 @@ function volume(message, commandArgs) {
     var requestedVolume = commandArgs.length > 1 ? commandArgs[1] : null;
     if (requestedVolume) {
         logger.info("Change the volume.");
-        streamer.changeVolume(message, requestedVolume, currentVoiceConnection);
+        var volumeSet = streamer.changeVolume(message, requestedVolume, currentVoiceConnection);
+        Db.updateVolumeForGuild(volumeSet, message.member.guild.id).then(function() {
+            logger.info("Successfully set volume to " + requestedVolume + " in the database for " + message.member.guild.id);
+        }).catch(logger.error);
     } else {
         logger.info("Print the volume.");
-        messenger.printVolume(message, streamer.getVolume());
+        Db.getGuildById(message.member.guild.id).then(function(guild) {
+            var volume = guild.volume && guild.volume > 0 ? guild.volume : 0.40;
+            messenger.printVolume(message, volume);
+        }).catch(logger.error);
     }
 }
 

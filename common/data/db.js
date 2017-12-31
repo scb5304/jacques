@@ -241,6 +241,22 @@ function deleteGuildsNotInListOfIds(discordGuildIds) {
     })
 }
 
+function updateVolumeForGuild(volume, discordGuildId) {
+    return new Promise((resolve, reject) => {
+        Guild.update({discord_id: discordGuildId}, {
+            $set: {
+                volume: volume
+            }
+        }, function (err) {
+            if (err) {
+                return reject("Couldn't update update volume " + volume + " for guild: " + discordGuildId + ". Error: " + err);
+            } else {
+                return resolve();
+            }
+        })
+    });
+}
+
 function insertGuild(discordGuild) {
     return new Promise((resolve, reject) => {
         var newGuild = new Guild({
@@ -273,6 +289,7 @@ module.exports.insertGuild = insertGuild;
 module.exports.getGuildById = getGuildById;
 module.exports.getAllGuilds = getAllGuilds;
 module.exports.deleteGuildsNotInListOfIds = deleteGuildsNotInListOfIds;
+module.exports.updateVolumeForGuild = updateVolumeForGuild;
 
 module.exports.deleteSoundWithGuildIdAndName = deleteSoundWithDiscordGuildIdAndName;
 module.exports.getUserFromDiscordId = getUserFromDiscordId;
