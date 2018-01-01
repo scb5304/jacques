@@ -13,7 +13,9 @@ var site = "http://jacquesbot.io";
 var prefix = process.env.JACQUES_PREFIX;
 
 function initialize() {
-    Db.connect();
+    Db.connect().then(function() {
+        logger.info("Jacques bot connected to database.");
+    });
     bot = new Discord.Client();
     bot.login(process.env.JACQUES_TOKEN);
     bot.on("ready", onReady);
