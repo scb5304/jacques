@@ -13,8 +13,10 @@ function insertSoundEvent(sound, guildId, memberName, eventType) {
 function playRandomSound(message) {
     Db.getRandomSoundInDiscordGuild(message.member.guild.id)
         .then(function(sound) {
-            playSound(sound, message.member.voiceChannel);
-            insertSoundEvent(sound, message.member.guild.id, message.member.displayName, "playRandom");
+            if (sound) {
+                playSound(sound, message.member.voiceChannel);
+                insertSoundEvent(sound, message.member.guild.id, message.member.displayName, "playRandom");
+            }
         })
         .catch(logger.error);
 }

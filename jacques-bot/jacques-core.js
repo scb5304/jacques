@@ -12,16 +12,8 @@ var bot;
 var site = "http://jacquesbot.io";
 var prefix = process.env.JACQUES_PREFIX;
 
-function initialize() {
-    Db.connect().then(function() {
-        logger.info("Jacques bot connected to database.");
-    });
-    bot = new Discord.Client();
-    bot.login(process.env.JACQUES_TOKEN);
-    bot.on("ready", onReady);
-    bot.on("message", onMessage);
-    bot.on("guildCreate", refreshGuilds);
-    bot.on("guildDelete", refreshGuilds);
+function setClientInstance (clientInstance) {
+    bot = clientInstance;
 }
 
 function onReady() {
@@ -38,6 +30,14 @@ function onMessage(message) {
     } else if (message.channel instanceof Discord.DMChannel) {
         onDirectChannelMessage(message);
     }
+}
+
+function onGuildCreate() {
+    refreshGuilds();
+}
+
+function onGuildDelete() {
+    refreshGuilds();
 }
 
 function onTextChannelMessage(message) {
@@ -279,5 +279,8 @@ function refreshGuilds() {
     }).catch(logger.error);
 }
 
-module.exports.initialize = initialize;
-module.exports.onTextChannelMessage = onTextChannelMessage;
+module.exports.onReady = onReady;
+module.exports.onMessage = onMessage;
+module.exports.onGuildCreate = onGuildCreate;
+module.exports.onGuildDelete = onGuildDelete;
+module.exports.setClientInstance = setClientInstance;

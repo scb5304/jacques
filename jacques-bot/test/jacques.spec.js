@@ -2,7 +2,7 @@ require("dotenv").config({path: require("app-root-path") + "/.env"});
 
 var sinon = require("sinon");
 var chai = require("chai");
-var jacques = require("./../jacques");
+var jacques = require("../jacques-core");
 var soundboard = require("./../soundboard");
 var messenger = require("./../messenger");
 var Db = require("./../../common/data/db.js");
