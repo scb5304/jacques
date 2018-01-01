@@ -23,7 +23,9 @@ app.use(bodyParser.urlencoded({
     limit: '700KB'
 }));
 
-db.connect();
+db.connect().then(function() {
+    logger.info("Jacques API connected to database.");
+});
 
 router.route("/sounds")
     .get(soundController.getSounds);

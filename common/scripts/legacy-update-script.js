@@ -1,6 +1,5 @@
 require("dotenv").config({path: require("app-root-path") + "/.env"});
 const logger = require("./../util/logger.js");
-const mongoose = require("mongoose");
 const Db = require("../data/db");
 const fs = require("fs-extra");
 const Sound = require("./../model/sound").Sound;
@@ -11,7 +10,7 @@ const NEW_SOUNDS_FOLDER_NAME = "soundsCopy";
 const syncUtils = require("./sync-utils");
 var bot;
 
-mongoose.connect("mongodb://localhost/jacques", function () {
+Db.connect().then(function() {
     logger.info("Db connected!");
 
     bot = new Discord.Client();

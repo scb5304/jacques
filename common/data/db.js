@@ -18,10 +18,8 @@ const GUILD_PROJECTION = {
 };
 
 function connect() {
-    logger.info("Getting db ready...");
-    mongoose.connect("mongodb://localhost/jacques", function () {
-        logger.info("Db connected!");
-    });
+    logger.info("Connecting to database...");
+    return mongoose.connect(process.env.JACQUES_MONGO_PATH);
 }
 
 function insertSoundForGuildByUser(soundName, user) {
