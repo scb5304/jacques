@@ -21,17 +21,18 @@ module.exports = function(config) {
         "./node_modules/moment/moment.js",
         "./node_modules/angular/angular.min.js",
         "./node_modules/@uirouter/angularjs/release/angular-ui-router.min.js",
+        "./node_modules/angular-aria/angular-aria.js",
         "./node_modules/angular-animate/angular-animate.js",
         "./node_modules/angular-material/angular-material.js",
         "./node_modules/angular-messages/angular-messages.js",
+        "./node_modules/angular-resource/angular-resource.js",
         "./node_modules/chart.js/dist/Chart.js",
         "./node_modules/angular-chart.js/dist/angular-chart.js",
         "./node_modules/angular-mocks/angular-mocks.js",
-        "jacques-web/app/app.module.js",
-        "jacques-web/app/app.config.js",
-        "jacques-web/browse/sounds-by-guild/sound-detail/sound-detail.module.js",
-        "jacques-web/**/*.js",
-        "jacques-web/**/*.html"
+        {pattern: "jacques-web/**/*.module.js"},
+        {pattern: "jacques-web/**/*.component.js"},
+        {pattern: "jacques-web/**/*.js"},
+        {pattern: "jacques-web/**/*.html"}
     ],
 
 

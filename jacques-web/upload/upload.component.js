@@ -50,7 +50,7 @@ angular
 
                 $scope.getBase64 = function(file) {
                     return $q(function(resolve, reject) {
-                        const reader = new FileReader();
+                        var reader = new FileReader();
                         reader.readAsDataURL(file);
                         reader.onload = function() {
                             resolve(reader.result);
