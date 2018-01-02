@@ -11,6 +11,7 @@ function streamAudio(voiceChannel, volume, streamLink) {
        if (err || !info) {
            logger.error(err);
        } else {
+           logger.info(streamLink);
            //Video exists
            voiceChannel.join()
                .then(function(connection) {
