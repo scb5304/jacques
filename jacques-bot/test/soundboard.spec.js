@@ -92,11 +92,10 @@ describe("playRandomSound", function() {
 });
 
 describe("playTargetedSound", function() {
-    it("should query for a specific sound", function(done) {
+    it("should query for a specific sound", function() {
         //Stub the database to say the sound exists
         var dbStub = this.sandbox.stub(Db, "getSoundByDiscordGuildIdAndName").callsFake(function() {
             return new Promise(function(resolve) {
-                done();
                 return resolve();
             });
         });
