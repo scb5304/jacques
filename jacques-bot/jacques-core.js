@@ -26,10 +26,11 @@ function onReady() {
 
 function onMessage(message) {
     if (message.channel instanceof Discord.TextChannel) {
-        onTextChannelMessage(message);
+        return onTextChannelMessage(message);
     } else if (message.channel instanceof Discord.DMChannel) {
-        onDirectChannelMessage(message);
+        return onDirectChannelMessage(message);
     }
+    return false;
 }
 
 function onGuildCreate() {
@@ -66,7 +67,9 @@ function onTextChannelMessage(message) {
 function onDirectChannelMessage(message) {
     if (message.author.username !== bot.user.username) {
         messenger.sendHelp(message);
+        return true;
     }
+    return false;
 }
 
 function routeTextChannelMessage(message, cleanedMessageContent) {
