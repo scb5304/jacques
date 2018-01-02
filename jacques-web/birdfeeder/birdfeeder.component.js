@@ -27,7 +27,7 @@ angular.module("birdfeeder")
 
                     self.submitBirdfeed = function () {
                         this.makingRequest = true;
-                        $http.get("http://localhost:8081/api/users/" + this.birdfeed).then(
+                        $http.get("http://jacquesbot.io:8081/api/users/" + this.birdfeed).then(
                             self.onSuccessfulGetUserResponse,
                             self.onFailureGetUserResponse);
                     };

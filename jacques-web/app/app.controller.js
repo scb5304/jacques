@@ -3,8 +3,6 @@
 angular
     .module("jacquesApp")
     .controller("AppController", function AppController($scope, $rootScope, $location, $http, sharedProperties, $mdSidenav, $mdDialog) {
-        $rootScope.JACQUES_API_ROOT = "http://localhost:8081/api";
-
         var self = this;
         $scope.sharedProperties = sharedProperties;
 
