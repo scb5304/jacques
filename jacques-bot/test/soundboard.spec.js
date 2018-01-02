@@ -7,8 +7,18 @@ var Db = require("./../../common/data/db.js");
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();
+    //Stub the fileSystemReader to return a sound path
+    this.sandbox.stub(fileSystemReader, "getSoundPathFromSound").callsFake(function() {
+        return "C:/sounds/default/fif.mp3";
+    });
+
+    //Stub the fileSystemReader to say it exists in the file system
+    this.sandbox.stub(fileSystemReader, "soundExistsInFileSystem").callsFake(function() {
+        return true;
+    });
     this.message = {};
     this.message.member = {};
+    this.message.member.guild = {id: "1005"};
     this.message.voiceChannel = {};
 });
 
@@ -25,13 +35,25 @@ function mockVoiceChannelJoin(message, done) {
                 if (done) {
                     done();
                 }
-                return reject("It's only a test.");
+                return reject("It's only a test, don't try to join a voice channel for real.");
             });
         }
     };
 }
 
 describe("playRandomSound", function() {
+
+    it("should query for a random sound in the member's guild", function() {
+        var dbStub = this.sandbox.stub(Db, "getRandomSoundInDiscordGuild").callsFake(function() {
+            return new Promise((resolve) => {
+                return resolve();
+            });
+        });
+
+        soundboard.playRandomSound(this.message);
+        sinon.assert.calledWith(dbStub, "1005");
+    });
+
     it("should query for a random sound name, then join a voice channel", function(done) {
         //if voiceChannel#join is called, then the test is a success.
         mockVoiceChannelJoin(this.message, done);
@@ -42,14 +64,6 @@ describe("playRandomSound", function() {
             return new Promise(function(resolve) {
                 return resolve(sound);
             });
-        });
-        //Stub the fileSystemReader to return a sound path
-        this.sandbox.stub(fileSystemReader, "getSoundPathFromSound").callsFake(function() {
-            return "C:/sounds/default/1910.mp3";
-        });
-        //Stub the fileSystemReader to say it exists in the file system
-        this.sandbox.stub(fileSystemReader, "soundExistsInFileSystem").callsFake(function() {
-            return true;
         });
 
         //Play a random sound, which should query the database then join a voice channel, ending the test.
@@ -67,15 +81,6 @@ describe("playRandomSound", function() {
             });
         });
 
-        //Stub the fileSystemReader to return a sound path
-        this.sandbox.stub(fileSystemReader, "getSoundPathFromSound").callsFake(function() {
-            return "C:/sounds/default/1910.mp3";
-        });
-        //Stub the fileSystemReader to say it exists in the file system
-        this.sandbox.stub(fileSystemReader, "soundExistsInFileSystem").callsFake(function() {
-            return true;
-        });
-
         //Test succeeds if the spy sees the insert method is called
         this.sandbox.stub(Db, "insertSoundEvent").callsFake(function() {
             done();
@@ -87,31 +92,31 @@ describe("playRandomSound", function() {
 });
 
 describe("playTargetedSound", function() {
-    it("should query for a specific sound, then join a voice channel", function(done) {
-        var soundName = "fif.mp3";
-        var sound = { name: soundName, category: "default" };
-
-        //if voiceChannel#join is called, then the test is a success.
-        mockVoiceChannelJoin(this.message, done);
-
+    it("should query for a specific sound", function(done) {
         //Stub the database to say the sound exists
-        this.sandbox.stub(Db, "getSoundFromName").callsFake(function() {
+        var dbStub = this.sandbox.stub(Db, "getSoundByDiscordGuildIdAndName").callsFake(function() {
             return new Promise(function(resolve) {
-                return resolve(sound);
+                done();
+                return resolve();
             });
         });
 
-        //Stub the fileSystemReader to return a sound path
-        this.sandbox.stub(fileSystemReader, "getSoundPathFromSound").callsFake(function() {
-            return "C:/sounds/default/fif.mp3";
+        //Play a targeted sound, which should query the database then join a voice channel, ending the test.
+        soundboard.playTargetedSound(this.message, "mySound");
+        sinon.assert.calledWith(dbStub, "1005", "mySound");
+    });
+
+    it("should join a voice channel to play the sound", function(done) {
+        //Stub the database to say the sound exists
+        this.sandbox.stub(Db, "getSoundByDiscordGuildIdAndName").callsFake(function() {
+            return new Promise(function(resolve) {
+                return resolve({});
+            });
         });
 
-        //Stub the fileSystemReader to say it exists in the file system
-        this.sandbox.stub(fileSystemReader, "soundExistsInFileSystem").callsFake(function() {
-            return true;
-        });
+        mockVoiceChannelJoin(this.message, done);
 
         //Play a targeted sound, which should query the database then join a voice channel, ending the test.
-        soundboard.playTargetedSound(this.message, soundName);
+        soundboard.playTargetedSound(this.message, "mySound");
     });
 });
