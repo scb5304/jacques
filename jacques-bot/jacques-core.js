@@ -14,14 +14,16 @@ var prefix = process.env.JACQUES_PREFIX;
 
 function setClientInstance (clientInstance) {
     bot = clientInstance;
+    refreshGuilds();
+    if (bot.user) {
+        bot.user.setGame(site).then(function(clientUser) {
+            logger.info(clientUser.username + " is playing " + site);
+        });
+    }
 }
 
 function onReady() {
-    refreshGuilds();
     logger.info("I'm ready, I'm ready.");
-    if (bot.user) {
-        bot.user.setGame(site);
-    }
 }
 
 function onMessage(message) {

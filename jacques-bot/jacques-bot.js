@@ -51,9 +51,9 @@ function ensureConnectedToDatabase() {
 }
 
 function initClientEventListeners() {
+    bot.on("ready", jacques.onReady);
     bot.on("disconnect", onDisconnect);
     bot.on("error", logger.error);
-    bot.on("ready", jacques.onReady);
     bot.on("message", jacques.onMessage);
     bot.on("guildCreate", jacques.onGuildCreate);
     bot.on("guildDelete", jacques.onGuildDelete);
