@@ -27,13 +27,18 @@ function streamAudio(voiceChannel, volume, streamLink) {
                        });
 
                        const dispatcher = connection.playStream(ytdlStream, streamOptions);
-                       dispatcher.once("end", function() {
-                           logger.info("Leaving after playing sound.");
+                       dispatcher.once("end", function(reason) {
+                           logger.info("Leaving stream on 'end' event. " + (reason ? reason : ""));
                            connection.disconnect();
                        });
 
                        dispatcher.once("speaking", function() {
                            dispatcher.setVolumeLogarithmic(volume);
+                       });
+
+                       dispatcher.once("error", function(err) {
+                           logger.error("Leaving stream on 'error' event: " + err);
+                           connection.disconnect();
                        });
 
                    } catch (e) {
