@@ -32,7 +32,7 @@
     "chart.js": "2.5.0",
     "cors": "2.8.4",
     "coveralls": "2.13.1",
-    "discord.js": "11.1.0",
+    "discord.js": "11.2.1",
     "dotenv": "4.0.0",
     "express": "4.14.1",
     "fs-extra": "5.0.0",
