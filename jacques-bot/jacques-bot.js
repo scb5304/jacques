@@ -18,6 +18,7 @@ function runJacques() {
         bot.login(process.env.JACQUES_TOKEN).then(function() {
             logger.info("Jacques logged in.");
             jacques.setClientInstance(bot);
+            jacques.onLoggedIn();
             initClientEventListeners();
         });
     }).catch(function(err) {

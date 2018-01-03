@@ -14,11 +14,18 @@ var prefix = process.env.JACQUES_PREFIX;
 
 function setClientInstance (clientInstance) {
     bot = clientInstance;
-    refreshGuilds();
-    if (bot.user) {
-        bot.user.setGame(site).then(function(clientUser) {
-            logger.info(clientUser.username + " is playing " + site);
-        });
+}
+
+function onLoggedIn() {
+    if (!bot) {
+        logger.error("jacques-core did not have its client instance set prior to being logged in.");
+    } else {
+        refreshGuilds();
+        if (bot.user) {
+            bot.user.setGame(site).then(function(clientUser) {
+                logger.info(clientUser.username + " is playing " + site);
+            });
+        }
     }
 }
 
@@ -245,7 +252,7 @@ function parseCommandArgs(messageContent) {
 }
 
 function alreadySpeaking(message) {
-    if (!bot) {
+    if (!bot || !bot.voiceConnections) {
         return;
     }
     var currentVoiceConnection = bot.voiceConnections.get(message.guild.id);
@@ -289,3 +296,4 @@ module.exports.onMessage = onMessage;
 module.exports.onGuildCreate = onGuildCreate;
 module.exports.onGuildDelete = onGuildDelete;
 module.exports.setClientInstance = setClientInstance;
+module.exports.onLoggedIn = onLoggedIn;
