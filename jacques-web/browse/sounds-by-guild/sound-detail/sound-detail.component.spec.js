@@ -121,5 +121,42 @@ describe("Sound Detail", function () {
                 expect($scope.summaryLastPlayed).toEqual($scope.formatMonthDayYear(expectedDate));
             });
         });
+
+        describe("updating activity card", function() {
+            it("uses SoundDetailChartsHelper to get activity data", function() {
+                var expectedMonths = [2, 3, 4, 5, 6, 7];
+                $scope.sound = {name: "mySound"};
+
+                spyOn(SoundDetailChartsHelper, "getSoundActivityMonths").and.callFake(function() {
+                    return expectedMonths;
+                });
+                spyOn(SoundDetailChartsHelper, "calculateSoundActivityLabels");
+                spyOn(SoundDetailChartsHelper, "calculateSoundActivityCounts");
+
+                $scope.updateActivityChart();
+                expect(SoundDetailChartsHelper.calculateSoundActivityLabels).toHaveBeenCalledWith(expectedMonths);
+                expect(SoundDetailChartsHelper.calculateSoundActivityCounts).toHaveBeenCalledWith($scope.sound, expectedMonths);
+            });
+        });
+
+        describe("played by chart", function() {
+            it("uses SoundDetailChartsHelper to get activity data", function() {
+                $scope.sound = {name: "mySound"};
+                spyOn(SoundDetailChartsHelper, "calculateSoundPlayedByLabelsAndCounts");
+
+                $scope.updatePlayedByChart();
+                expect(SoundDetailChartsHelper.calculateSoundPlayedByLabelsAndCounts).toHaveBeenCalledWith($scope.sound, [], []);
+            });
+        });
+
+        describe("play type chart", function() {
+            it("uses SoundDetailChartsHelper to get both play types data", function() {
+                $scope.sound = {name: "mySound"};
+                spyOn(SoundDetailChartsHelper, "calculatePlayTypeCount");
+
+                $scope.updatePlayTypeChart();
+                expect(SoundDetailChartsHelper.calculatePlayTypeCount).toHaveBeenCalledTimes(2);
+            });
+        });
     });
 });
