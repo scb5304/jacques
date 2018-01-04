@@ -30,8 +30,6 @@ describe("soundsByGuild", function() {
 
             it("sorts sounds by sound events count upon the 'Popularity' sort option being selected", function() {
                 $scope.sortSelection = "Popularity";
-
-                spyOn($scope, "onSortOptionSelected");
                 $scope.$digest();
 
                 expect($scope.sounds[0].name === "first");
@@ -54,8 +52,6 @@ describe("soundsByGuild", function() {
                 {name: "alpha"}
             ];
             $scope.sortSelection = "Ascending";
-
-            spyOn($scope, "onSortOptionSelected");
             $scope.$digest();
 
             expect($scope.sounds[0].name === "alpha");
@@ -72,8 +68,6 @@ describe("soundsByGuild", function() {
                 {name: "second", add_date: new Date("2017-07-23T06:03:17.821Z")}
             ];
             $scope.sortSelection = "Date Added";
-
-            spyOn($scope, "onSortOptionSelected");
             $scope.$digest();
 
             expect($scope.sounds[0].name === "first");

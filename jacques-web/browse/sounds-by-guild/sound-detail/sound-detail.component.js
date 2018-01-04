@@ -22,7 +22,7 @@ angular
                     }
                     if (changesObj.sound) {
                         $scope.sound = changesObj.sound.currentValue;
-                        onSoundSelected(changesObj.sound.currentValue);
+                        $scope.onSoundBindingReady();
                     }
                 };
 
@@ -64,59 +64,56 @@ angular
                     };
                 };
 
-                function onSoundSelected(sound) {
-                    updateAudioFile(sound);
-                    updateSummaryCard(sound);
-                    updateActivityChart(sound);
-                    updatePlayedByChart(sound);
-                    updatePlayTypeChart(sound);
-                }
+                $scope.onSoundBindingReady = function() {
+                    $scope.updateAudioFile();
+                    $scope.updateSummaryCard();
+                    $scope.updateActivityChart();
+                    $scope.updatePlayedByChart();
+                    $scope.updatePlayTypeChart();
+                };
 
-                function updateAudioFile(sound) {
-                    $scope.audioUrl = $sce.trustAsResourceUrl("http://jacquesbot.io/raw/" + $scope.guild.discord_id + "/" + sound.name + ".mp3");
-                }
+                $scope.updateAudioFile = function() {
+                    $scope.audioUrl = $sce.trustAsResourceUrl("http://jacquesbot.io/raw/" + $scope.guild.discord_id + "/" + $scope.sound.name + ".mp3");
+                };
 
-                function updateSummaryCard(sound) {
-                    $scope.summaryPlayCount = sound.sound_events.length;
+                $scope.updateSummaryCard = function() {
+                    $scope.summaryPlayCount = $scope.sound.sound_events.length;
 
-                    var addedDate = new Date(sound.add_date);
-                    $scope.summaryAddDate = formatMonthDayYear(addedDate);
-                    if ($scope.summaryAddDate === "February 26, 2017") {
-                        $scope.summaryAddDate = $scope.summaryAddDate + " (Legacy)";
-                    }
-                    $scope.summaryAddedBy = sound.added_by;
+                    var addedDate = new Date($scope.sound.add_date);
+                    $scope.summaryAddDate = $scope.formatMonthDayYear(addedDate);
+                    $scope.summaryAddedBy = $scope.sound.added_by;
 
-                    var lastPlayedDate = SoundDetailChartsHelper.calculateLastPlayedOnDate(sound);
-                    $scope.summaryLastPlayed = lastPlayedDate ? formatMonthDayYear(lastPlayedDate) : "N/A";
-                }
+                    var lastPlayedDate = SoundDetailChartsHelper.calculateLastPlayedOnDate($scope.sound);
+                    $scope.summaryLastPlayed = lastPlayedDate ? $scope.formatMonthDayYear(lastPlayedDate) : "N/A";
+                };
 
-                function updateActivityChart(sound) {
+                $scope.updateActivityChart = function() {
                     var lastSixMonthsInIntegers = SoundDetailChartsHelper.getSoundActivityMonths(6);
                     $scope.labels = SoundDetailChartsHelper.calculateSoundActivityLabels(lastSixMonthsInIntegers);
-                    $scope.data = [SoundDetailChartsHelper.calculateSoundActivityCounts(sound, lastSixMonthsInIntegers)];
-                }
+                    $scope.data = [SoundDetailChartsHelper.calculateSoundActivityCounts($scope.sound, lastSixMonthsInIntegers)];
+                };
 
-                function updatePlayedByChart(sound) {
+                $scope.updatePlayedByChart = function() {
                     var playedByLabels = [];
                     var playedByCounts = [];
 
-                    SoundDetailChartsHelper.calculateSoundPlayedByLabelsAndCounts(sound, playedByLabels, playedByCounts);
+                    SoundDetailChartsHelper.calculateSoundPlayedByLabelsAndCounts($scope.sound, playedByLabels, playedByCounts);
                     playedByLabels = playedByLabels.slice(0, 8);
                     playedByCounts = playedByCounts.slice(0, 8);
 
                     $scope.soundPlayedByBarLabels = playedByLabels;
                     $scope.soundPlayedByBarData = playedByCounts;
-                }
+                };
 
-                function updatePlayTypeChart(sound) {
+                $scope.updatePlayTypeChart = function() {
                     $scope.soundTypeNutLabels = ["Targeted", "Random"];
                     $scope.soundTypeNutData = [
-                        SoundDetailChartsHelper.calculatePlayTypeCount(sound, "playTargeted"),
-                        SoundDetailChartsHelper.calculatePlayTypeCount(sound, "playRandom")
+                        SoundDetailChartsHelper.calculatePlayTypeCount($scope.sound, "playTargeted"),
+                        SoundDetailChartsHelper.calculatePlayTypeCount($scope.sound, "playRandom")
                     ];
-                }
+                };
 
-                function formatMonthDayYear(date) {
+                $scope.formatMonthDayYear = function(date) {
                     return date.toLocaleString("en", {
                         year: "numeric",
                         month: "long",
