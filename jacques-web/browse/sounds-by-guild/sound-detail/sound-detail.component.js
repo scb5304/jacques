@@ -26,44 +26,6 @@ angular
                     }
                 };
 
-                $scope.onDeleteClicked = function() {
-                    $mdDialog.show({
-                        templateUrl: "browse/sounds-by-guild/sound-detail/sound-detail-delete-dialog.html",
-                        clickOutsideToClose: false,
-                        controller: $scope.soundDeletionDialogController,
-                        controllerAs: "$ctrl"
-                    })
-                };
-
-                $scope.soundDeletionDialogController = function soundDeletionDialogController() {
-                    var self = this;
-
-                    self.closeDialog = function () {
-                        $mdDialog.hide();
-                    };
-
-                    self.onConfirm = function () {
-                        var birdfeed = "";
-                        var user = sharedProperties.getUser();
-                        if (user) {
-                            birdfeed = user.birdfeed_token;
-                        }
-                        $scope.jacquesEndpointInterface.deleteSound($scope.guild.discord_id, $scope.sound.name, birdfeed).then(function() {
-                            $state.go("soundsByGuild", {
-                                guildId: $scope.guild.discord_id
-                            });
-                            self.closeDialog();
-                        }).catch(function(err) {
-                            if (err.status >= 400 && err.status < 500) {
-                                jacquesToaster.showToastWithText(err.data.error);
-                            } else {
-                                jacquesToaster.showApiErrorToast();
-                                console.error(err);
-                            }
-                        });
-                    };
-                };
-
                 $scope.onSoundBindingReady = function() {
                     $scope.updateAudioFile();
                     $scope.updateSummaryCard();
@@ -119,6 +81,50 @@ angular
                         month: "long",
                         day: "numeric"
                     });
+                };
+
+                $scope.onDeleteClicked = function() {
+                    $mdDialog.show({
+                        templateUrl: "browse/sounds-by-guild/sound-detail/sound-detail-delete-dialog.html",
+                        clickOutsideToClose: false,
+                        controller: function() {
+                            var self = this;
+                            self.closeDialog = $scope.closeDialog;
+                            self.onConfirmDelete = $scope.onConfirmDelete;
+                        },
+                        controllerAs: "$ctrl"
+                    })
+                };
+
+                $scope.closeDialog = function() {
+                    $mdDialog.hide();
+                };
+
+                $scope.onConfirmDelete = function () {
+                    var birdfeed = "";
+                    var user = sharedProperties.getUser();
+                    if (user) {
+                        birdfeed = user.birdfeed_token;
+                    }
+                    $scope.jacquesEndpointInterface.deleteSound($scope.guild.discord_id, $scope.sound.name, birdfeed)
+                        .then($scope.onSuccessfulDeleteSoundResponse)
+                        .catch($scope.onFailedDeleteSoundResponse);
+                };
+
+                $scope.onSuccessfulDeleteSoundResponse = function() {
+                    $state.go("soundsByGuild", {
+                        guildId: $scope.guild.discord_id
+                    });
+                    $scope.closeDialog();
+                };
+
+                $scope.onFailedDeleteSoundResponse = function(err) {
+                    if (err.status >= 400 && err.status < 500) {
+                        jacquesToaster.showToastWithText(err.data.error);
+                    } else {
+                        jacquesToaster.showApiErrorToast();
+                        console.error(err);
+                    }
                 }
             }
         ]

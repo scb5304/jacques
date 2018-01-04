@@ -10,6 +10,7 @@ describe("Sound Detail", function () {
 
     describe("SoundDetailController", function () {
         var $scope;
+        var q;
         var sce;
         var SoundDetailController;
 
@@ -17,10 +18,12 @@ describe("Sound Detail", function () {
         var jacquesEndpointInterface = {};
         var jacquesToaster = {};
         var SoundDetailChartsHelper = {};
+        var mdDialog = {};
 
-        beforeEach(inject(function($componentController, $rootScope, $sce) {
+        beforeEach(inject(function($componentController, $rootScope, $sce, $q) {
             $scope = $rootScope.$new();
             sce = $sce;
+            q = $q;
             SoundDetailChartsHelper = {
                 getSoundActivityMonths: function() {},
                 calculateSoundActivityLabels: function() {},
@@ -34,7 +37,8 @@ describe("Sound Detail", function () {
                 sharedProperties: sharedProperties,
                 jacquesEndpointInterface: jacquesEndpointInterface,
                 jacquesToaster: jacquesToaster,
-                SoundDetailChartsHelper: SoundDetailChartsHelper
+                SoundDetailChartsHelper: SoundDetailChartsHelper,
+                $mdDialog: mdDialog
             });
         }));
 
@@ -156,6 +160,40 @@ describe("Sound Detail", function () {
 
                 $scope.updatePlayTypeChart();
                 expect(SoundDetailChartsHelper.calculatePlayTypeCount).toHaveBeenCalledTimes(2);
+            });
+        });
+
+        describe("deletion", function() {
+           it("closes dialog when cancel is pressed", function() {
+               mdDialog.hide = function() {};
+               spyOn(mdDialog, "hide");
+
+               $scope.closeDialog();
+               expect(mdDialog.hide).toHaveBeenCalled();
+           });
+
+            it("makes call to delete sound when confirm is pressed", function() {
+                $scope.sound = {name: "mySound"};
+                $scope.guild = {discord_id: "1994"};
+
+                sharedProperties.getUser = function() {
+                    return {
+                        discord_username: "Steubenville",
+                        discord_last_guild_id: "1994",
+                        birdfeed_token: "lolololol"
+                    }
+                };
+
+                jacquesEndpointInterface.deleteSound = function(){
+                    var deferred = q.defer();
+                    deferred.resolve('Remote call result');
+                    return deferred.promise;
+                };
+
+                spyOn(jacquesEndpointInterface, "deleteSound").and.callThrough();
+
+                $scope.onConfirmDelete();
+                expect(jacquesEndpointInterface.deleteSound).toHaveBeenCalledWith("1994", "mySound", "lolololol");
             });
         });
     });
