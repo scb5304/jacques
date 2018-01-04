@@ -8,14 +8,18 @@ angular
         controller: ["$scope",
             function SoundsByGuildController($scope) {
                 $scope.sounds = this.sounds;
-                $scope.sortSelection = "Ascending";
+                $scope.sortSelection = "Alphabetical";
 
                 $scope.$watch("sortSelection", function() {
                     if (!$scope.sounds) {
                         return;
                     }
+                    $scope.onSortOptionSelected();
+                });
+
+                $scope.onSortOptionSelected = function() {
                     switch ($scope.sortSelection) {
-                        case "Ascending":
+                        case "Alphabetical":
                             $scope.sounds.sort(function(a, b) {
                                 return a.name.localeCompare(b.name);
                             });
@@ -31,10 +35,10 @@ angular
                             });
                             break;
                     }
-                });
+                };
 
                 $scope.getFormattedDateFromString = function(dateString) {
-                    return new Date(dateString).toLocaleString("en", {
+                    return new Date(dateString).toLocaleDateString("en", {
                         year: "numeric",
                         month: "short",
                         day: "numeric"
@@ -47,7 +51,7 @@ angular
                         playCount += sound.soundEventCount;
                     });
                     return playCount;
-                }
+                };
             }
         ]
     });
