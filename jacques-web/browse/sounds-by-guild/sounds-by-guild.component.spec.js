@@ -44,14 +44,14 @@ describe("soundsByGuild", function() {
             });
         });
 
-        it("sorts sounds alphabetically upon the 'Ascending' sort option being selected", function() {
+        it("sorts sounds alphabetically upon the 'Alphabetical' sort option being selected", function() {
             $scope.sounds = [
                 {name: "boats"},
                 {name: "damage"},
                 {name: "captain"},
                 {name: "alpha"}
             ];
-            $scope.sortSelection = "Ascending";
+            $scope.sortSelection = "Alphabetical";
             $scope.$digest();
 
             expect($scope.sounds[0].name === "alpha");

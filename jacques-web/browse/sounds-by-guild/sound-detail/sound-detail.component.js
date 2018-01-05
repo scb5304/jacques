@@ -123,7 +123,6 @@ angular
                         jacquesToaster.showToastWithText(err.data.error);
                     } else {
                         jacquesToaster.showApiErrorToast();
-                        console.error(err);
                     }
                 }
             }

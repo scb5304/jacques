@@ -12,18 +12,26 @@ describe("Sound Detail", function () {
         var $scope;
         var q;
         var sce;
+        var state;
         var SoundDetailController;
 
         var sharedProperties = {};
         var jacquesEndpointInterface = {};
-        var jacquesToaster = {};
+        var jacquesToaster = {
+            showToastWithText: function() {},
+            showApiErrorToast: function() {}
+        };
         var SoundDetailChartsHelper = {};
-        var mdDialog = {};
+        var mdDialog = {
+            hide: function () {},
+            show: function () {}
+        };
 
-        beforeEach(inject(function($componentController, $rootScope, $sce, $q) {
+        beforeEach(inject(function($componentController, $rootScope, $sce, $q, $state) {
             $scope = $rootScope.$new();
             sce = $sce;
             q = $q;
+            state = $state;
             SoundDetailChartsHelper = {
                 getSoundActivityMonths: function() {},
                 calculateSoundActivityLabels: function() {},
@@ -164,13 +172,34 @@ describe("Sound Detail", function () {
         });
 
         describe("deletion", function() {
-           it("closes dialog when cancel is pressed", function() {
-               mdDialog.hide = function() {};
-               spyOn(mdDialog, "hide");
+            it("shows deletion warning dialog when delete is pressed", function() {
+                spyOn(mdDialog, "show");
 
-               $scope.closeDialog();
-               expect(mdDialog.hide).toHaveBeenCalled();
-           });
+                $scope.onDeleteClicked();
+                expect(mdDialog.show).toHaveBeenCalled();
+            });
+
+            it("closes dialog when cancel is pressed", function() {
+                spyOn(mdDialog, "hide");
+
+                $scope.closeDialog();
+                expect(mdDialog.hide).toHaveBeenCalled();
+            });
+
+            it("closes dialog when sound is successfully uploaded", function() {
+                spyOn($scope, "closeDialog");
+
+                $scope.onSuccessfulDeleteSoundResponse();
+                expect($scope.closeDialog).toHaveBeenCalled();
+            });
+
+            it("navigates to sounds by guild when sound is successfully uploaded", function() {
+                spyOn(state, "go").and.callThrough();
+                $scope.guild = {discord_id: "1994"};
+
+                $scope.onSuccessfulDeleteSoundResponse();
+                expect(state.go).toHaveBeenCalledWith("soundsByGuild", {guildId: "1994"});
+            });
 
             it("makes call to delete sound when confirm is pressed", function() {
                 $scope.sound = {name: "mySound"};
@@ -194,6 +223,29 @@ describe("Sound Detail", function () {
 
                 $scope.onConfirmDelete();
                 expect(jacquesEndpointInterface.deleteSound).toHaveBeenCalledWith("1994", "mySound", "lolololol");
+            });
+
+            it("shows an error toast with specific text when sound upload fails with a 400-range response", function() {
+                spyOn(jacquesToaster, "showToastWithText");
+                var err = {
+                    status: 404,
+                    data: {
+                        error: "Not found."
+                    }
+                };
+
+                $scope.onFailedDeleteSoundResponse(err);
+                expect(jacquesToaster.showToastWithText).toHaveBeenCalledWith("Not found.")
+            });
+
+            it("shows a generic API error toast other when sound upload fails", function() {
+                spyOn(jacquesToaster, "showApiErrorToast");
+                var err = {
+                    status: 500
+                };
+
+                $scope.onFailedDeleteSoundResponse(err);
+                expect(jacquesToaster.showApiErrorToast).toHaveBeenCalledWith()
             });
         });
     });
