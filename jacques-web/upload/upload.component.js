@@ -22,14 +22,11 @@ angular
                     if(!$scope.formValid) {
                         return;
                     }
-                    console.log("Submit clicked.");
-                    console.log($scope.files);
 
                     var firstFile = $scope.files[0].lfFile;
                     var fileName = firstFile.name.replace(".mp3", "").toLowerCase();
 
                     $scope.getBase64(firstFile).then(function (base64) {
-                        console.log(firstFile);
                         var user = sharedProperties.getUser();
                         $scope.jacquesEndpointInterface.postSound(user.discord_last_guild_id, fileName, base64, user.birdfeed_token)
                             .then(function() {
@@ -38,13 +35,14 @@ angular
                                 $scope.lastUploadedSoundName = fileName;
                                 jacquesToaster.showToastWithText("Upload success for sound " + fileName + "!");
                             }).catch(function(err) {
-                                console.error(err);
                                 if (err.data && err.data.error) {
                                     jacquesToaster.showToastWithText(err.data.error);
                                 } else {
                                     jacquesToaster.showApiErrorToast();
                                 }
                         })
+                    }).catch(function(err) {
+                        jacquesToaster.showToastWithText(err);
                     });
                 };
 
