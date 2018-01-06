@@ -46,12 +46,4 @@ angular
                 sidenav.close();
             }
         };
-
-        $scope.onSidenavMouseover = function($event) {
-            if ($event.buttons === 1 && $event.movementX < -12) {
-                setTimeout(function() {
-                    $scope.onSidenavSwipedLeft();
-                }, 100);
-            }
-        }
     });
