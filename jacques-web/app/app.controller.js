@@ -9,7 +9,7 @@ angular
             var storedUser = localStorage.getItem("jacques_user");
             if (storedUser) {
                 $scope.user = JSON.parse(storedUser);
-                $scope.sharedProperties.setUser(self.user);
+                $scope.sharedProperties.setUser($scope.user);
             }
         };
 

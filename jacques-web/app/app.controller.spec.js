@@ -55,10 +55,13 @@ describe("AppController", function () {
         });
 
         it("updates user reference when shared properties' user is changed", function () {
-            sharedProperties.setUser({discord_name: "Steve"});
+            var testUser = {discord_name: "Steve"};
+            sharedProperties.setUser(testUser);
+
             $scope.$digest();
             $scope.initializeUserValuesFromLocalStorage();
-            expect($scope.user).toEqual({discord_name: "Steve"});
+            expect($scope.user).toEqual(testUser);
+            expect(sharedProperties.getUser()).toEqual(testUser);
         });
     });
 
