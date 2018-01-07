@@ -18,6 +18,11 @@
     "cover": "npm-run-all -p -l coverBot coverApi coverWeb --silent",
     "coveralls": "npm run cover && grunt lcovMerge && cat ./coverage/lcov-all.info | coveralls"
   },
+  "nyc": {
+    "exclude": [
+      "**/*.spec.js"
+    ]
+  },
   "author": "Steven Brown",
   "license": "Apache-2.0",
   "dependencies": {
