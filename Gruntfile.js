@@ -5,9 +5,9 @@ module.exports = function(grunt) {
         lcovMerge: {
             options: {
                 emitters: ["event", "file"],
-                outputFile: "coverage/mergeLcov.info"
+                outputFile: "coverage/lcov-all.info"
             },
-            src: ["coverage/*.info", "coverage/**/*.info"]
+            src: ["coverage/**/*.info"]
         }
     });
 
