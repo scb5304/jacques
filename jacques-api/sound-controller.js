@@ -87,25 +87,30 @@ function getSoundByGuildAndName(req, res) {
 
 function deleteSound(req, res) {
     //Birdfeed is a request query for this one because client can't send up a DELETE body.
-    validateBirdfeedInRequest(req.query.birdfeed, res).then(function() {
+    validateBirdfeedInRequest(req.query.birdfeed, res).then(function(user) {
         var guild = req.params.guild;
         var name = req.params.soundName;
-        Db.deleteSoundByDiscordGuildIdAndName(guild, name)
-            .then(function() {
-                var soundPath = path.join(SOUNDS_DIRECTORY, guild, name + ".mp3");
-                fs.unlink(soundPath, function(err) {
-                    if (err) {
-                        logger.error(err);
-                        res.status(500).send({error: "Failed to delete file system sound for guild " + guild + " and name " + name + "."});
-                    } else {
-                        res.status(200).send();
-                    }
+
+        if (guild !== user.discord_last_guild_id) {
+            res.status(403).send({error: "Sorry, your current birdfeed doesn't work on this guild."});
+        } else {
+            Db.deleteSoundByDiscordGuildIdAndName(guild, name)
+                .then(function() {
+                    var soundPath = path.join(SOUNDS_DIRECTORY, guild, name + ".mp3");
+                    fs.unlink(soundPath, function(err) {
+                        if (err) {
+                            logger.error(err);
+                            res.status(500).send({error: "Failed to delete file system sound for guild " + guild + " and name " + name + "."});
+                        } else {
+                            res.status(200).send();
+                        }
+                    })
                 })
-            })
-            .catch(function(err) {
-                logger.error(err);
-                res.status(500).send({error: "Failed to delete sound for guild " + guild + " and name " + name + " due to a database error."});
-            });
+                .catch(function(err) {
+                    logger.error(err);
+                    res.status(500).send({error: "Failed to delete sound for guild " + guild + " and name " + name + " due to a database error."});
+                });
+        }
     }).catch(logger.error);
 
 }
@@ -116,9 +121,13 @@ function postSound(req, res) {
     }
 
     validateBirdfeedInRequest(req.body.birdfeed, res).then(function(user) {
-        validateSoundDataInSoundPostRequest(user.discord_last_guild_id, req.params.soundName, res).then(function() {
-            processNewSoundPostRequest(user, req, res);
-        }).catch(logger.error);
+        if (req.params.guild !== user.discord_last_guild_id) {
+            res.status(403).send({error: "Sorry, your current birdfeed doesn't work on this guild."});
+        } else {
+            validateSoundDataInSoundPostRequest(user.discord_last_guild_id, req.params.soundName, res).then(function() {
+                processNewSoundPostRequest(user, req, res);
+            }).catch(logger.error);
+        }
     }).catch(logger.error);
 }
 
@@ -127,6 +136,13 @@ function validateSoundPostRequestHasRequiredData(req, res) {
     var birdfeed = req.body.birdfeed;
     if (!birdfeed) {
         res.status(403).send({error: "Missing birdfeed!"});
+        return false;
+    }
+
+    //Must have guild ID in request parameter.
+    var guildId = req.params.guild;
+    if (!guildId) {
+        res.status(400).send({error: "Missing guild id!"});
         return false;
     }
 
