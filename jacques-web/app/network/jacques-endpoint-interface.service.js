@@ -2,15 +2,16 @@
 
 angular
     .module("jacquesApp")
-    .service("jacquesEndpointInterface", function ($resource, $q) {
-        var Statistics = $resource("http://jacquesbot.io/api/statistics");
-        var Guilds = $resource("http://jacquesbot.io/api/guilds/:guildId");
-        var SoundsByGuild= $resource("http://jacquesbot.io/api/sounds/:guildId?includeSoundEvents=:includeEvents");
-        var SoundsByGuildAndName = $resource("http://jacquesbot.io/api/sounds/:guildId/:soundName");
-        var Users = $resource("http://localhost:8081/api/users/:birdfeed");
+    .service("jacquesEndpointInterface", function ($rootScope, $resource, $q) {
+        var JACQUES_API_ROOT = "http://localhost:8081/api/";
 
+        var Statistics = $resource(JACQUES_API_ROOT + "statistics");
+        var Users = $resource(JACQUES_API_ROOT + "users/:birdfeed");
+        var Guilds = $resource(JACQUES_API_ROOT + "guilds/:guildId");
+        var SoundsByGuild = $resource(JACQUES_API_ROOT + "sounds/:guildId?includeSoundEvents=:includeEvents");
+        var SoundsByGuildAndName = $resource(JACQUES_API_ROOT + "sounds/:guildId/:soundName");
         //Why can't I include birdfeed in the request body, Angular? DELETE is supposed to support this.
-        var SoundsByGuildAndNameWithBirdfeedParam = $resource("http://jacquesbot.io/api/sounds/:guildId/:soundName?birdfeed=:birdfeed");
+        var SoundsByGuildAndNameWithBirdfeedParam = $resource(JACQUES_API_ROOT + "sounds/:guildId/:soundName?birdfeed=:birdfeed");
 
         return {
             getGuilds: function () {

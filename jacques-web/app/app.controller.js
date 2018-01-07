@@ -2,7 +2,7 @@
 
 angular
     .module("jacquesApp")
-    .controller("AppController", function AppController($scope, $location, $http, sharedProperties, $mdSidenav) {
+    .controller("AppController", function AppController($rootScope, $scope, $location, $http, sharedProperties, $mdSidenav) {
         $scope.sharedProperties = sharedProperties;
 
         $scope.initializeUserValuesFromLocalStorage = function() {
