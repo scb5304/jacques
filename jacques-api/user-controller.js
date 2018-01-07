@@ -3,7 +3,7 @@ const Db = require("../common/data/db");
 const moment = require("moment");
 
 function getUser(req, res) {
-    var birdfeed = req.params.birdfeed;
+    const birdfeed = req.params.birdfeed;
 
     Db.getUserFromBirdfeed(birdfeed).then(function(user) {
         if (!user) {
@@ -13,8 +13,8 @@ function getUser(req, res) {
             //Get the most current guild name for this guy's discord guild ID before we send it back.
             Db.getGuildById(user.discord_last_guild_id).then(function(guild) {
                 if (guild) {
-                    var userObj = user.toObject();
-                    var guildObj = guild.toObject();
+                    const userObj = user.toObject();
+                    const guildObj = guild.toObject();
                     userObj.discord_last_guild_name = guildObj.discord_name;
                     res.json(userObj);
                 } else {

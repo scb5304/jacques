@@ -1,5 +1,5 @@
-var logger = require("./../common/util/logger.js");
-var ytdl = require("ytdl-core");
+const logger = require("./../common/util/logger.js");
+const ytdl = require("ytdl-core");
 
 function streamAudio(voiceChannel, volume, streamLink) {
     if (!streamLink) {
@@ -51,30 +51,30 @@ function streamAudio(voiceChannel, volume, streamLink) {
 }
 
 function calculateStreamSeekSeconds(streamLink) {
-    var secondsToSeek = 0;
-    var timeArg = streamLink.split("t=");
+    let secondsToSeek = 0;
+    let timeArg = streamLink.split("t=");
     if (!timeArg || timeArg.length === 1) {
         return secondsToSeek;
     }
     timeArg = streamLink.split("t=")[1].split("&")[0]; // 3m4s
 
-    var hourArgMatches = /.+?(?=h)/.exec(timeArg);
+    const hourArgMatches = /.+?(?=h)/.exec(timeArg);
     if (hourArgMatches) {
-        var hourArg = hourArgMatches[0];
+        const hourArg = hourArgMatches[0];
         secondsToSeek += Number(hourArg) * 3600;
         timeArg = timeArg.split(hourArg + "h")[1];
     }
 
-    var minuteArgMatches = /.+?(?=m)/.exec(timeArg);
+    const minuteArgMatches = /.+?(?=m)/.exec(timeArg);
     if (minuteArgMatches) {
-        var minuteArg = minuteArgMatches[0];
+        const minuteArg = minuteArgMatches[0];
         secondsToSeek += Number(minuteArg) * 60;
         timeArg = timeArg.split(minuteArg + "m")[1];
     }
 
-    var secondArgMatches = /.+?(?=s)/.exec(timeArg);
+    const secondArgMatches = /.+?(?=s)/.exec(timeArg);
     if (secondArgMatches) {
-        var secondArg = secondArgMatches[0];
+        const secondArg = secondArgMatches[0];
         secondsToSeek += Number(secondArg);
     }
 
@@ -91,7 +91,7 @@ function changeVolume(message, requestedVolume, voiceConnection) {
         return;
     }
 
-    var actualVolume = requestedVolume / 100;
+    let actualVolume = requestedVolume / 100;
     if (actualVolume > 1) {
         actualVolume = 1;
     }

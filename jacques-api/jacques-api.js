@@ -9,7 +9,7 @@ const userController = require("./user-controller");
 const guildController = require("./guild-controller");
 const statisticsController = require("./statistics-controller");
 
-var cors = require("cors");
+const cors = require("cors");
 const app = express();
 const router = express.Router();
 const port = 8081;

@@ -2,7 +2,7 @@ const logger = require("../common/util/logger");
 const Db = require("../common/data/db");
 
 function getGuild(req, res) {
-    var guild = req.params.guild;
+    const guild = req.params.guild;
     Db.getGuildById(guild).then(function(guild) {
         res.json(guild);
     }).catch(function(err) {

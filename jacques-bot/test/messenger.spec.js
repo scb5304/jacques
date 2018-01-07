@@ -1,8 +1,8 @@
 require("dotenv").config({path: require("app-root-path") + "/.env"});
 
-var sinon = require("sinon");
-var chai = require("chai");
-var messenger = require("./../messenger");
+const sinon = require("sinon");
+const chai = require("chai");
+const messenger = require("./../messenger");
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();
@@ -25,7 +25,7 @@ describe("messenger", function() {
 
     describe("sendHelp", function() {
         it("replies to the message", function() {
-            var messageSpy = this.sandbox.spy(this.message, "reply");
+            const messageSpy = this.sandbox.spy(this.message, "reply");
             messenger.sendHelp(this.message);
             chai.assert.isTrue(messageSpy.calledOnce);
         });
@@ -33,7 +33,7 @@ describe("messenger", function() {
 
     describe("printVolume", function() {
         it("replies to the message", function() {
-            var messageSpy = this.sandbox.spy(this.message, "reply");
+            const messageSpy = this.sandbox.spy(this.message, "reply");
             messenger.sendHelp(this.message);
             chai.assert.isTrue(messageSpy.calledOnce);
         });

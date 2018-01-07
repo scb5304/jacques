@@ -22,10 +22,10 @@ const RESERVED_KEYWORDS = [
 
 function getSounds(req, res) {
     //By default, include sound events.
-    var includeSoundEvents = true;
+    let includeSoundEvents = true;
 
     //If they specify they do not want to include sound events, set this flag to false.
-    var includeEventsQuery = req.query["includeSoundEvents"];
+    const includeEventsQuery = req.query["includeSoundEvents"];
     if (includeEventsQuery && includeEventsQuery === "false") {
         includeSoundEvents = false;
     }
@@ -42,15 +42,15 @@ function getSounds(req, res) {
 
 function getSoundsByGuild(req, res) {
     //By default, include sound events.
-    var includeSoundEvents = true;
+    let includeSoundEvents = true;
 
     //If they specify they do not want to include sound events, set this flag to false.
-    var includeEventsQuery = req.query["includeSoundEvents"];
+    const includeEventsQuery = req.query["includeSoundEvents"];
     if (includeEventsQuery && includeEventsQuery === "false") {
         includeSoundEvents = false;
     }
 
-    var guild = req.params.guild;
+    const guild = req.params.guild;
     Db.getSoundsByDiscordGuildId(guild)
         .then(function(sounds) {
             sounds.forEach(function(sound) {
@@ -68,8 +68,8 @@ function getSoundsByGuild(req, res) {
 }
 
 function getSoundByGuildAndName(req, res) {
-    var guild = req.params.guild;
-    var name = req.params.soundName;
+    const guild = req.params.guild;
+    const name = req.params.soundName;
 
     Db.getSoundByDiscordGuildIdAndName(guild, name)
         .then(function(sound) {
@@ -88,15 +88,15 @@ function getSoundByGuildAndName(req, res) {
 function deleteSound(req, res) {
     //Birdfeed is a request query for this one because client can't send up a DELETE body.
     validateBirdfeedInRequest(req.query.birdfeed, res).then(function(user) {
-        var guild = req.params.guild;
-        var name = req.params.soundName;
+        const guild = req.params.guild;
+        const name = req.params.soundName;
 
         if (guild !== user.discord_last_guild_id) {
             res.status(403).send({error: "Sorry, your current birdfeed doesn't work on this guild."});
         } else {
             Db.deleteSoundByDiscordGuildIdAndName(guild, name)
                 .then(function() {
-                    var soundPath = path.join(SOUNDS_DIRECTORY, guild, name + ".mp3");
+                    const soundPath = path.join(SOUNDS_DIRECTORY, guild, name + ".mp3");
                     fs.unlink(soundPath, function(err) {
                         if (err) {
                             logger.error(err);
@@ -133,28 +133,28 @@ function postSound(req, res) {
 
 function validateSoundPostRequestHasRequiredData(req, res) {
     //Must have birdfeed.
-    var birdfeed = req.body.birdfeed;
+    let birdfeed = req.body.birdfeed;
     if (!birdfeed) {
         res.status(403).send({error: "Missing birdfeed!"});
         return false;
     }
 
     //Must have guild ID in request parameter.
-    var guildId = req.params.guild;
+    let guildId = req.params.guild;
     if (!guildId) {
         res.status(400).send({error: "Missing guild id!"});
         return false;
     }
 
     //Must have sound name in request parameter.
-    var soundName = req.params.soundName;
+    let soundName = req.params.soundName;
     if (!soundName) {
         res.status(400).send({error: "Missing sound name!"});
         return false;
     }
 
     //Remove MP3 meta data, or handle the file not being the appropriate type.
-    var soundData = req.body.soundData;
+    let soundData = req.body.soundData;
     if (!soundData.includes(MP3_META_DATA)) {
         res.status(400).send({error: "Unsupported file type. Jacques only supports MP3 files."});
         return false;
@@ -200,7 +200,7 @@ function validateSoundDataInSoundPostRequest(guildId, soundName, res) {
         Db.getSoundByDiscordGuildIdAndName(guildId, soundName)
             .then(function (sound) {
                 if (sound) {
-                    var soundExistsError = "Sound with this name already exists on this guild: " + soundName + ".";
+                    const soundExistsError = "Sound with this name already exists on this guild: " + soundName + ".";
                     res.status(400).send({error: soundExistsError});
                     return reject(soundExistsError);
                 } else {
@@ -215,9 +215,9 @@ function validateSoundDataInSoundPostRequest(guildId, soundName, res) {
 }
 
 function processNewSoundPostRequest(user, req, res) {
-    var guildId = user.discord_last_guild_id;
-    var soundName = req.params.soundName;
-    var soundData = req.body.soundData;
+    const guildId = user.discord_last_guild_id;
+    const soundName = req.params.soundName;
+    let soundData = req.body.soundData;
 
     Db.insertSoundForGuildByUser(soundName, user).then(function() {
         //Create the file name from the sound name parameter and the mp3 extension.
@@ -248,12 +248,12 @@ function processNewSoundPostRequest(user, req, res) {
 
 function saveSoundToFileSystem(soundName, soundFileData, user) {
     return new Promise((resolve, reject) => {
-        var soundDirectoryToSaveIn = path.join(SOUNDS_DIRECTORY, user.discord_last_guild_id);
+        const soundDirectoryToSaveIn = path.join(SOUNDS_DIRECTORY, user.discord_last_guild_id);
         mkdirp(soundDirectoryToSaveIn, function(err) {
             if (err) {
                 return reject(err);
             } else {
-                var fileName = path.join(soundDirectoryToSaveIn, soundName + ".mp3");
+                const fileName = path.join(soundDirectoryToSaveIn, soundName + ".mp3");
                 fs.writeFile(fileName, soundFileData, "base64", function(err) {
                     if (err) {
                         return reject(err);

@@ -1,10 +1,10 @@
 require("dotenv").config({path: require("app-root-path") + "/.env"});
-var Discord = require("discord.js");
-var Db = require("./../common/data/db");
-var logger = require("./../common/util/logger.js");
-var mongoose = require("mongoose");
-var jacques = require("./jacques-core");
-var bot;
+const Discord = require("discord.js");
+const Db = require("./../common/data/db");
+const logger = require("./../common/util/logger.js");
+const mongoose = require("mongoose");
+const jacques = require("./jacques-core");
+let bot;
 
 logger.info("Running jacques-bot.js...");
 
@@ -34,7 +34,7 @@ function ensureConnectedToDatabase() {
      * 3 = disconnecting
      */
     return new Promise((resolve, reject) => {
-        var readyState = mongoose.connection.readyState;
+        const readyState = mongoose.connection.readyState;
         if (readyState !== 1 && readyState !== 2) {
             Db.connect().then(function(err) {
                 if (err) {

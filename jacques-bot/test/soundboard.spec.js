@@ -1,11 +1,11 @@
 require("dotenv").config({ path: require("app-root-path") + "/.env" });
 
-var sinon = require("sinon");
-var soundboard = require("./../soundboard");
-var fileSystemReader = require("./../../common/util/fileSystemReader.js");
-var Db = require("./../../common/data/db.js");
+const sinon = require("sinon");
+const soundboard = require("./../soundboard");
+const fileSystemReader = require("./../../common/util/fileSystemReader.js");
+const Db = require("./../../common/data/db.js");
 
-var self = this;
+const self = this;
 
 beforeEach(function() {
     self.sandbox = sinon.sandbox.create();
@@ -49,7 +49,7 @@ function mockVoiceChannelJoin(message, done) {
 describe("playRandomSound", function() {
 
     it("should query for a random sound in the member's guild", function() {
-        var dbStub = self.sandbox.stub(Db, "getRandomSoundInDiscordGuild").callsFake(function() {
+        const dbStub = self.sandbox.stub(Db, "getRandomSoundInDiscordGuild").callsFake(function () {
             return new Promise((resolve) => {
                 return resolve();
             });
@@ -64,7 +64,7 @@ describe("playRandomSound", function() {
         mockVoiceChannelJoin(self.message, done);
         stubFileSystemReader();
 
-        var sound = { name: "1910.mp3", category: "default" };
+        const sound = {name: "1910.mp3", category: "default"};
         //Stub the database to return a random sound name
         self.sandbox.stub(Db, "getRandomSoundInDiscordGuild").callsFake(function() {
             return new Promise(function(resolve) {
@@ -101,8 +101,8 @@ describe("playRandomSound", function() {
 describe("playTargetedSound", function() {
     it("should query for a specific sound", function() {
         //Stub the database to say the sound exists
-        var dbStub = self.sandbox.stub(Db, "getSoundByDiscordGuildIdAndName").callsFake(function() {
-            return new Promise(function(resolve) {
+        const dbStub = self.sandbox.stub(Db, "getSoundByDiscordGuildIdAndName").callsFake(function () {
+            return new Promise(function (resolve) {
                 return resolve();
             });
         });

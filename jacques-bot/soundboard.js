@@ -1,6 +1,6 @@
-var Db = require("./../common/data/db");
-var logger = require("./../common/util/logger.js");
-var fsReader = require("./../common/util/fileSystemReader.js");
+const Db = require("./../common/data/db");
+const logger = require("./../common/util/logger.js");
+const fsReader = require("./../common/util/fileSystemReader.js");
 
 function insertSoundEvent(sound, guildId, memberName, eventType) {
     try {
@@ -36,7 +36,7 @@ function playTargetedSound(message, soundName) {
 }
 
 function playSound(sound, voiceChannel) {
-    var soundPath = fsReader.getSoundPathFromSound(sound) + ".mp3";
+    const soundPath = fsReader.getSoundPathFromSound(sound) + ".mp3";
 
     if (!fsReader.soundExistsInFileSystem(soundPath)) {
         logger.error("Couldn't find sound at " + soundPath);

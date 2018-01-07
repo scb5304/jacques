@@ -1,16 +1,16 @@
-var Discord = require("discord.js");
+const Discord = require("discord.js");
 
-var Db = require("./../common/data/db");
-var logger = require("./../common/util/logger.js");
+const Db = require("./../common/data/db");
+const logger = require("./../common/util/logger.js");
 
-var soundboard = require("./soundboard.js");
-var streamer = require("./streamer.js");
-var messenger = require("./messenger.js");
-var UIDGenerator = require("uid-generator");
+const soundboard = require("./soundboard.js");
+const streamer = require("./streamer.js");
+const messenger = require("./messenger.js");
+const UIDGenerator = require("uid-generator");
 
-var bot;
-var site = "http://jacquesbot.io";
-var prefix = process.env.JACQUES_PREFIX;
+let bot;
+const site = "http://jacquesbot.io";
+const prefix = process.env.JACQUES_PREFIX;
 
 function setClientInstance (clientInstance) {
     bot = clientInstance;
@@ -51,20 +51,20 @@ function onGuildDelete() {
 }
 
 function onTextChannelMessage(message) {
-    var cleanedMessageContent = message.content.trim();
+    let cleanedMessageContent = message.content.trim();
     if (!cleanedMessageContent.startsWith(prefix)) {
         return false;
     } else {
         logger.info("Received potentially valid Jacques message: " + message.content);
         cleanedMessageContent = cleanedMessageContent.substring(1);
     }
-    var member = message.member;
+    let member = message.member;
     if (!member) {
         logger.info("Message has no guild member.");
         return false;
     }
 
-    var logMessage = "Valid Jacques message " + message.content + " from " + member.displayName + " on server " + message.guild.name;
+    let logMessage = "Valid Jacques message " + message.content + " from " + member.displayName + " on server " + message.guild.name;
     if (member.voiceChannel) {
         logMessage += " in voice channel " + member.voiceChannel.name;
     }
@@ -82,13 +82,13 @@ function onDirectChannelMessage(message) {
 }
 
 function routeTextChannelMessage(message, cleanedMessageContent) {
-    var commandArgs = parseCommandArgs(cleanedMessageContent);
-    var baseCommandArg = commandArgs[0];
+    const commandArgs = parseCommandArgs(cleanedMessageContent);
+    let baseCommandArg = commandArgs[0];
 
     if (!baseCommandArg) {
         playRandomSound(message);
     } else {
-        var lowerBaseCommandArg = baseCommandArg.toLowerCase();
+        const lowerBaseCommandArg = baseCommandArg.toLowerCase();
         switch (lowerBaseCommandArg) {
             case "cancel":
             case "byejon":
@@ -135,7 +135,7 @@ function cancelVoiceConnection(message) {
         return false;
     }
     message.member.voiceChannel.leave();
-    var connection = message.member.voiceChannel.connection;
+    const connection = message.member.voiceChannel.connection;
     if (connection) {
         connection.disconnect();
     }
@@ -145,11 +145,11 @@ function streamAudio(message, commandArgs) {
     if (!message.member.voiceChannel || alreadySpeaking(message)) {
         return;
     }
-    var streamLink = commandArgs.length > 1 ? commandArgs[1] : null;
+    const streamLink = commandArgs.length > 1 ? commandArgs[1] : null;
 
     Db.getGuildById(message.member.guild.id).then(function(guild) {
-       var volume = guild.volume && guild.volume > 0 ? guild.volume : 0.40;
-       streamer.streamAudio(message.member.voiceChannel, volume, streamLink);
+        const volume = guild.volume && guild.volume > 0 ? guild.volume : 0.40;
+        streamer.streamAudio(message.member.voiceChannel, volume, streamLink);
     }).catch(logger.error);
 }
 
@@ -157,18 +157,18 @@ function volume(message, commandArgs) {
     if (!message.member.voiceChannel) {
         return;
     }
-    var currentVoiceConnection = bot.voiceConnections.get(message.member.guild.id);
-    var requestedVolume = commandArgs.length > 1 ? commandArgs[1] : null;
+    const currentVoiceConnection = bot.voiceConnections.get(message.member.guild.id);
+    const requestedVolume = commandArgs.length > 1 ? commandArgs[1] : null;
     if (requestedVolume) {
         logger.info("Change the volume.");
-        var volumeSet = streamer.changeVolume(message, requestedVolume, currentVoiceConnection);
+        const volumeSet = streamer.changeVolume(message, requestedVolume, currentVoiceConnection);
         Db.updateVolumeForGuild(volumeSet, message.member.guild.id).then(function() {
             logger.info("Successfully set volume to " + requestedVolume + " in the database for " + message.member.guild.id);
         }).catch(logger.error);
     } else {
         logger.info("Print the volume.");
         Db.getGuildById(message.member.guild.id).then(function(guild) {
-            var volume = guild.volume && guild.volume > 0 ? guild.volume : 0.40;
+            const volume = guild.volume && guild.volume > 0 ? guild.volume : 0.40;
             messenger.printVolume(message, volume);
         }).catch(logger.error);
     }
@@ -179,8 +179,8 @@ function help(message) {
 }
 
 function sendBirdfeed(message) {
-    var user = message.author;
-    var guildMember = message.member;
+    let user = message.author;
+    const guildMember = message.member;
 
     if (!user) {
         logger.error("This upload message doesn't have a user.");
@@ -191,8 +191,8 @@ function sendBirdfeed(message) {
         return;
     }
 
-    var messageBase = "Hello. You requested a sound upload on '" + guildMember.guild.name + "'. ";
-    var messageToSend;
+    const messageBase = "Hello. You requested a sound upload on '" + guildMember.guild.name + "'. ";
+    let messageToSend;
 
     if (userHasUploadPermissions(guildMember)) {
         createBirdfeedForGuildMember(guildMember).then(function(birdfeed) {
@@ -220,7 +220,7 @@ function userHasUploadPermissions(guildMember) {
 
 function createBirdfeedForGuildMember(guildMember) {
     return new Promise((resolve, reject) => {
-        var token = new UIDGenerator(UIDGenerator.BASE16, 10).generateSync();
+        const token = new UIDGenerator(UIDGenerator.BASE16, 10).generateSync();
         Db.upsertUserWithDiscordDataAndToken(guildMember, token).then(function() {
             return resolve(token);
         }).catch(function(err) {
@@ -233,7 +233,7 @@ function playTargetedSound(message, commandArgs) {
     if (!message.member.voiceChannel || alreadySpeaking(message)) {
         return;
     }
-    var soundArg = commandArgs[0];
+    const soundArg = commandArgs[0];
     soundboard.playTargetedSound(message, soundArg);
 }
 
@@ -242,7 +242,7 @@ function cleanUp(message) {
 }
 
 function parseCommandArgs(messageContent) {
-    var commandArgs = messageContent.split(" ");
+    const commandArgs = messageContent.split(" ");
     commandArgs.forEach(function(commandArg, i, array) {
         if (commandArg === " " || commandArg === "") {
             array.splice(i, 1);
@@ -255,7 +255,7 @@ function alreadySpeaking(message) {
     if (!bot || !bot.voiceConnections) {
         return;
     }
-    var currentVoiceConnection = bot.voiceConnections.get(message.guild.id);
+    const currentVoiceConnection = bot.voiceConnections.get(message.guild.id);
 
     if (currentVoiceConnection) {
         message.reply("Already speaking in channel " + currentVoiceConnection.channel.name).then(function(message) {
@@ -268,8 +268,8 @@ function alreadySpeaking(message) {
 }
 
 function refreshGuilds() {
-    var discordGuilds = bot.guilds.array();
-    var discordGuildIds = [];
+    const discordGuilds = bot.guilds.array();
+    const discordGuildIds = [];
 
     discordGuilds.forEach(function(discordGuild) {
         discordGuildIds.push(discordGuild.id);

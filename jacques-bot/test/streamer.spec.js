@@ -1,9 +1,9 @@
 require("dotenv").config({path: require("app-root-path") + "/.env"});
 
-var sinon = require("sinon");
-var chai = require("chai");
-var streamer = require("./../streamer");
-var ytdl = require("ytdl-core");
+const sinon = require("sinon");
+const chai = require("chai");
+const streamer = require("./../streamer");
+const ytdl = require("ytdl-core");
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();
@@ -28,11 +28,14 @@ describe("streamer", function() {
 
     describe("streamAudio", function() {
         function assertStreamStartsAt (guildMember, seconds, done) {
-            var mockConnection = {
-                playStream: function(ytdlStream, options) {
+            const mockConnection = {
+                playStream: function (ytdlStream, options) {
                     chai.assert.equal(options.seek, seconds);
                     done();
-                    return {once: function() {}};
+                    return {
+                        once: function () {
+                        }
+                    };
                 }
             };
             guildMember.voiceChannel = {
@@ -45,40 +48,40 @@ describe("streamer", function() {
         }
 
         it("does not join the voice channel when no stream link is passed", function() {
-            var streamLink = null;
+            const streamLink = null;
 
-            var joinVoiceChannelSpy = this.sandbox.spy(this.message.member.voiceChannel, "join");
+            const joinVoiceChannelSpy = this.sandbox.spy(this.message.member.voiceChannel, "join");
             streamer.streamAudio(this.message.member.voiceChannel, 50, streamLink);
 
             chai.assert.isFalse(joinVoiceChannelSpy.called);
         });
 
         it("joins the voice channel when a stream link is passed", function() {
-            var streamLink = "https://www.youtube.com/watch?v=Pp7-iPOZMog";
+            const streamLink = "https://www.youtube.com/watch?v=Pp7-iPOZMog";
             this.sandbox.stub(ytdl, "getInfo").callsFake(function(link, callback) {
                 callback(null, {});
             });
 
-            var joinVoiceChannelSpy = this.sandbox.spy(this.message.member.voiceChannel, "join");
+            const joinVoiceChannelSpy = this.sandbox.spy(this.message.member.voiceChannel, "join");
             streamer.streamAudio(this.message.member.voiceChannel, 50, streamLink);
 
             chai.assert.isTrue(joinVoiceChannelSpy.called);
         });
 
         it("joins at the passed time with seconds argument", function(done) {
-            var streamLink = "https://www.youtube.com/watch?v=Pp7-iPOZMog&t=10s";
+            const streamLink = "https://www.youtube.com/watch?v=Pp7-iPOZMog&t=10s";
             assertStreamStartsAt(this.message.member, 10, done);
             streamer.streamAudio(this.message.member.voiceChannel, 50, streamLink);
         });
 
         it("joins at the passed time with minutes seconds argument", function(done) {
-            var streamLink = "https://youtu.be/Pp7-iPOZMog?t=30m43s";
+            const streamLink = "https://youtu.be/Pp7-iPOZMog?t=30m43s";
             assertStreamStartsAt(this.message.member, 1843, done);
             streamer.streamAudio(this.message.member.voiceChannel, 50, streamLink);
         });
 
         it("joins at the passed time with hours minutes seconds argument", function(done) {
-            var streamLink = "https://youtu.be/hcJsYFdke1o?t=1h11m22s";
+            const streamLink = "https://youtu.be/hcJsYFdke1o?t=1h11m22s";
             assertStreamStartsAt(this.message.member, 4282, done);
             streamer.streamAudio(this.message.member.voiceChannel, 50, streamLink);
         });
