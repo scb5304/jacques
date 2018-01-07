@@ -9,12 +9,10 @@ const userController = require("./user-controller");
 const guildController = require("./guild-controller");
 const statisticsController = require("./statistics-controller");
 
-const cors = require("cors");
 const app = express();
 const router = express.Router();
 const port = 8081;
 
-app.use(cors());
 app.use(bodyParser.json({
     limit: '700KB'
 }));
