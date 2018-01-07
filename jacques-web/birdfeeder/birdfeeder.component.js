@@ -3,9 +3,8 @@
 angular.module("birdfeeder")
     .component("birdfeeder", {
         templateUrl: "birdfeeder/birdfeeder.template.html",
-        controller: ["$scope", "sharedProperties", "$http", "$mdDialog", "$mdToast",
-            function BirdfeedController($scope, sharedProperties, $http, $mdDialog, $mdToast) {
-                $scope.birdfeed = "";
+        controller: ["$scope", "sharedProperties", "jacquesEndpointInterface", "$mdDialog", "$mdToast",
+            function BirdfeedController($scope, sharedProperties, jacquesEndpointInterface, $mdDialog, $mdToast) {
                 $scope.makingRequest = false;
                 $scope.sharedProperties = sharedProperties;
 
@@ -19,48 +18,51 @@ angular.module("birdfeeder")
                 };
 
                 $scope.birdfeedDialogController = function birdfeedDialogController() {
-                    var self = this;
-
-                    self.closeDialog = function () {
-                        $mdDialog.hide();
+                    this.birdfeed = "";
+                    this.closeDialog = $scope.closeDialog;
+                    this.submitBirdfeed = function() {
+                        $scope.submitBirdfeed(this.birdfeed);
                     };
-
-                    self.submitBirdfeed = function () {
-                        this.makingRequest = true;
-                        $http.get("http://jacquesbot.io/api/users/" + this.birdfeed).then(
-                            self.onSuccessfulGetUserResponse,
-                            self.onFailureGetUserResponse);
-                    };
-
-                    self.onSuccessfulGetUserResponse = function (response) {
-                        var user = response.data;
-                        localStorage.setItem("jacques_user", JSON.stringify(user));
-                        sharedProperties.setUser(user);
-
-                        self.makingRequest = false;
-                        $mdDialog.hide();
-                    };
-
-                    self.onFailureGetUserResponse = function (response) {
-                        localStorage.removeItem("jacques_user");
-                        sharedProperties.setUser({});
-
-                        self.makingRequest = false;
-                        var toastMessage = "Oops, that didn't work.";
-                        if (response.data) {
-                            if (response.data.error) {
-                                toastMessage = response.data.error;
-                            }
-                        }
-
-                        $mdToast.show(
-                            $mdToast.simple()
-                                .textContent(toastMessage)
-                                .position("bottom center")
-                                .hideDelay(3150)
-                        );
-                    }
                 };
+
+                $scope.closeDialog = function() {
+                    $mdDialog.hide();
+                };
+
+                $scope.submitBirdfeed = function(birdfeed) {
+                    $scope.makingRequest = true;
+                    jacquesEndpointInterface.getUser(birdfeed)
+                        .then($scope.onSuccessfulGetUserResponse)
+                        .catch($scope.onFailureGetUserResponse);
+                };
+
+                $scope.onSuccessfulGetUserResponse = function (user) {
+                    localStorage.setItem("jacques_user", JSON.stringify(user));
+                    sharedProperties.setUser(user);
+
+                    $scope.makingRequest = false;
+                    $mdDialog.hide();
+                };
+
+                $scope.onFailureGetUserResponse = function (response) {
+                    localStorage.removeItem("jacques_user");
+                    sharedProperties.setUser({});
+
+                    $scope.makingRequest = false;
+                    var toastMessage = "Oops, that didn't work.";
+                    if (response.data) {
+                        if (response.data.error) {
+                            toastMessage = response.data.error;
+                        }
+                    }
+
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .textContent(toastMessage)
+                            .position("bottom center")
+                            .hideDelay(3150)
+                    );
+                }
             }
         ]
     });

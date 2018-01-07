@@ -7,6 +7,7 @@ angular
         var Guilds = $resource("http://jacquesbot.io/api/guilds/:guildId");
         var SoundsByGuild= $resource("http://jacquesbot.io/api/sounds/:guildId?includeSoundEvents=:includeEvents");
         var SoundsByGuildAndName = $resource("http://jacquesbot.io/api/sounds/:guildId/:soundName");
+        var Users = $resource("http://localhost:8081/api/users/:birdfeed");
 
         //Why can't I include birdfeed in the request body, Angular? DELETE is supposed to support this.
         var SoundsByGuildAndNameWithBirdfeedParam = $resource("http://jacquesbot.io/api/sounds/:guildId/:soundName?birdfeed=:birdfeed");
@@ -73,6 +74,16 @@ angular
                        resolve(statisticsObject);
                     }, function (err) {
                        reject(err);
+                    });
+                });
+            },
+            getUser: function(birdfeed) {
+                return $q(function(resolve, reject) {
+                    Users.get({birdfeed: birdfeed}, function(user) {
+                        console.info(user);
+                        resolve(user);
+                    }, function (err) {
+                        reject(err);
                     });
                 });
             }

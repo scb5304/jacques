@@ -18,7 +18,7 @@ describe("scrollToTop", function() {
             });
         }));
 
-        fit("scrolls the page's main content to the very top when the FAB is pressed", function() {
+        it("scrolls the page's main content to the very top when the FAB is pressed", function() {
             var mockMainContent = {
                 scrollTo: function(x, y) {}
             };
