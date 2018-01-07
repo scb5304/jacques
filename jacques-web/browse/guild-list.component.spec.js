@@ -3,7 +3,7 @@
 describe("guildList", function() {
 
     beforeEach(function() {
-        module('ui.router');
+        module("ui.router");
         module("guildList");
     });
 

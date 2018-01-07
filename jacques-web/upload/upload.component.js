@@ -14,7 +14,7 @@ angular
                 $scope.lastUploadedGuildId = "";
                 $scope.lastUploadedSoundName = "";
 
-                $scope.$watch('soundUploadForm.$valid', function(isValidValue) {
+                $scope.$watch("soundUploadForm.$valid", function(isValidValue) {
                     $scope.formValid = isValidValue;
                 });
 

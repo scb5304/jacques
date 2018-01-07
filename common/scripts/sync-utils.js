@@ -1,6 +1,4 @@
 const Db = require("../data/db");
-const mongoose = require("mongoose");
-const fs = require("fs");
 var SOUNDS_DIRECTORY = "./../../sounds/";
 const Sound = require("./../model/sound").Sound;
 const logger = require("./../util/logger.js");

@@ -3,7 +3,7 @@
 describe("soundsByGuild", function() {
 
     beforeEach(function() {
-        module('ui.router');
+        module("ui.router");
         module("soundsByGuild");
     });
 

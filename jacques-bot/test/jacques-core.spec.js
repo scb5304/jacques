@@ -5,7 +5,6 @@ var chai = require("chai");
 var jacques = require("../jacques-core");
 var soundboard = require("./../soundboard");
 var messenger = require("./../messenger");
-var Db = require("./../../common/data/db.js");
 var prefix = process.env.JACQUES_PREFIX;
 
 beforeEach(function() {
@@ -73,7 +72,7 @@ describe("onMessage", function() {
             this.message.member.voiceChannel = null;
             this.message.content = prefix;
 
-            var routed = jacques.onMessage(this.message);
+            jacques.onMessage(this.message);
             sinon.assert.notCalled(soundboardStub);
         });
 

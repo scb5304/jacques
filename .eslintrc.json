@@ -16,6 +16,7 @@
          }
       ]
    },
+   "maxstatements": 10,
    "globals":{
       "angular":true,
       "moment":true,

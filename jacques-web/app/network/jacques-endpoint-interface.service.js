@@ -72,7 +72,6 @@ angular
             getStatistics: function() {
                 return $q(function(resolve, reject) {
                     Statistics.get({}, function(statisticsObject) {
-                        console.info(statisticsObject);
                        resolve(statisticsObject);
                     }, function (err) {
                        reject(err);
@@ -82,7 +81,6 @@ angular
             getUser: function(birdfeed) {
                 return $q(function(resolve, reject) {
                     Users.get({birdfeed: birdfeed}, function(user) {
-                        console.info(user);
                         resolve(user);
                     }, function (err) {
                         reject(err);

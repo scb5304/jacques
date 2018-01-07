@@ -21,6 +21,6 @@ angular
             .icon("delete", "app/assets/svg/delete-forever.svg")
             .icon("discord", "app/assets/svg/discord.svg")
             .icon("arrow-top-left", "app/assets/svg/arrow-top-left.svg");
-        $urlRouterProvider.when('', '/');
+        $urlRouterProvider.when("", "/");
         $urlMatcherFactoryProvider.strictMode(false);
     });

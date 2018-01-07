@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-mongoose.Promise = require('bluebird');
+mongoose.Promise = require("bluebird");
 const Sound = require("./../model/sound").Sound;
 const SoundEvent = require("./../model/sound").SoundEvent;
 const User = require("./../model/user").User;
@@ -60,7 +60,7 @@ function insertSoundEvent(soundName, guildId, performedBy, eventCategory) {
             performed_by: performedBy
         });
         sound.sound_events.push(soundEvent);
-        sound.save(function (err, doc, numRowsAffected) {
+        sound.save(function (err) {
             if (err) {
                 logger.error(err);
             }
@@ -150,7 +150,7 @@ function getRandomSoundInDiscordGuild(discordGuildId) {
                 var randomSound = sounds[random];
                 return resolve(randomSound);
             }
-        })
+        });
     });
 }
 
@@ -162,7 +162,7 @@ function getUserFromDiscordId(discordId) {
             } else {
                 return user;
             }
-        })
+        });
     });
 }
 
@@ -174,7 +174,7 @@ function getUserFromBirdfeed(birdfeed) {
             } else {
                 return resolve(user);
             }
-        })
+        });
     });
 }
 
@@ -195,7 +195,7 @@ function upsertUserWithDiscordDataAndToken(guildMember, token) {
             } else {
                 return resolve();
             }
-        })
+        });
     });
 }
 
@@ -207,7 +207,7 @@ function getAllGuilds() {
             } else {
                 return resolve(guilds);
             }
-        })
+        });
     });
 }
 
@@ -219,7 +219,7 @@ function getGuildById(discordGuildId) {
             } else {
                 return resolve(guild);
             }
-        })
+        });
     });
 }
 
@@ -235,8 +235,8 @@ function deleteGuildsNotInListOfIds(discordGuildIds) {
             } else {
                 return resolve(removalResult);
             }
-        })
-    })
+        });
+    });
 }
 
 function updateVolumeForGuild(volume, discordGuildId) {
@@ -251,7 +251,7 @@ function updateVolumeForGuild(volume, discordGuildId) {
             } else {
                 return resolve();
             }
-        })
+        });
     });
 }
 

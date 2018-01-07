@@ -2,10 +2,10 @@
 
 angular
     .module("jacquesApp")
-    .directive('scroll', function ($window) {
+    .directive("scroll", function () {
         return {
-            link: function (scope, elem, attrs) {
-                elem.on('scroll', function (e) {
+            link: function (scope, elem) {
+                elem.on("scroll", function () {
                     var fab = document.getElementById("fab-scroll-to-top");
                     if (!fab) {
                         return;

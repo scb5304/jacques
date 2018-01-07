@@ -6,7 +6,7 @@ var logger = require("./../common/util/logger.js");
 var soundboard = require("./soundboard.js");
 var streamer = require("./streamer.js");
 var messenger = require("./messenger.js");
-var UIDGenerator = require('uid-generator');
+var UIDGenerator = require("uid-generator");
 
 var bot;
 var site = "http://jacquesbot.io";

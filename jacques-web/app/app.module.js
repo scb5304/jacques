@@ -19,13 +19,12 @@ angular
         "birdfeeder",
     ])
     .run(function($state, jacquesToaster) {
-        $state.defaultErrorHandler(function(error) {
-            console.error(error);
+        $state.defaultErrorHandler(function() {
             jacquesToaster.showApiErrorToast();
         });
     })
     //https://stackoverflow.com/a/26086324/4672234
-    .run(['$rootScope', '$state', '$stateParams',
+    .run(["$rootScope", "$state", "$stateParams",
         function ($rootScope, $state, $stateParams) {
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;

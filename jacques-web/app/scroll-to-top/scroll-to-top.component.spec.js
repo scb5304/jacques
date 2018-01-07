@@ -3,7 +3,7 @@
 describe("scrollToTop", function() {
 
     beforeEach(function() {
-        module('ui.router');
+        module("ui.router");
         module("scrollToTop");
     });
 

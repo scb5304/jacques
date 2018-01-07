@@ -7,7 +7,6 @@ describe("AppController", function () {
     });
 
     var $scope;
-    var AppController;
     var sharedProperties;
     var sideNavToggleMock = jasmine.createSpy("toggle");
     var sideNavOpenMock = jasmine.createSpy("open");
@@ -15,8 +14,8 @@ describe("AppController", function () {
 
     //http://answersicouldntfindanywhereelse.blogspot.com/2016/05/testing-mdsidenav.html
     beforeEach(module(function ($provide) {
-        $provide.factory('$mdSidenav', function () {
-            return function (sideNavId) {
+        $provide.factory("$mdSidenav", function () {
+            return function () {
                 return {
                     toggle: sideNavToggleMock,
                     close: sideNavCloseMock,
@@ -29,7 +28,7 @@ describe("AppController", function () {
     beforeEach(inject(function($controller, $rootScope, _sharedProperties_) {
         $scope = $rootScope.$new();
         sharedProperties = _sharedProperties_;
-        AppController = $controller("AppController", {
+        $controller("AppController", {
             $scope: $scope,
             sharedProperties: sharedProperties
         });

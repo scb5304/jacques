@@ -215,7 +215,7 @@ describe("Sound Detail", function () {
 
                 jacquesEndpointInterface.deleteSound = function(){
                     var deferred = $q.defer();
-                    deferred.resolve('Remote call result');
+                    deferred.resolve("Remote call result");
                     return deferred.promise;
                 };
 
