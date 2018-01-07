@@ -7,33 +7,47 @@ function getUser(req, res) {
 
     Db.getUserFromBirdfeed(birdfeed).then(function(user) {
         if (!user) {
-            res.status(404).send({error: "There's no user with this birdfeed."});
-            logger.warning("Couldn't find user with birdfeed: " + birdfeed);
+            onUserIsNotInDatabase(res, birdfeed);
         } else if (moment(user.birdfeed_date_time).isAfter(moment().subtract(2, "hours"))) {
-            //Get the most current guild name for this guy's discord guild ID before we send it back.
-            Db.getGuildById(user.discord_last_guild_id).then(function(guild) {
-                if (guild) {
-                    const userObj = user.toObject();
-                    const guildObj = guild.toObject();
-                    userObj.discord_last_guild_name = guildObj.discord_name;
-                    res.json(userObj);
-                } else {
-                    onGetUserFailure(res, "Guild doesn't exist: " + user.discord_last_guild_id);
-                }
-            }).catch(function(err) {
-                onGetUserFailure(res, err);
-            });
+            onUserIsInDatabaseWithValidBirdfeed(res, user);
         } else {
-            res.status(403).send({error: "Sorry, this birdfeed is stale. Please request some new birdfeed."});
-            logger.error("Token expired: " + birdfeed + " for user " + user.discord_username);
+            onUserIsInDatabaseWithInvalidBirdfeed(res, user);
         }
     }).catch(function(err) {
         onGetUserFailure(res, err);
     });
 }
 
+function onUserIsNotInDatabase(res, birdfeed) {
+    res.status(404).send({error: "There's no user with this birdfeed."});
+    logger.warn("Couldn't find user with birdfeed: " + birdfeed);
+}
+
+function onUserIsInDatabaseWithValidBirdfeed(res, user) {
+    //Get the most current guild name for this guy's discord guild ID before we send it back.
+    Db.getGuildById(user.discord_last_guild_id).then(function(guild) {
+        if (guild) {
+            const userObj = user.toObject();
+            const guildObj = guild.toObject();
+            userObj.discord_last_guild_name = guildObj.discord_name;
+            res.json(userObj);
+        } else {
+            onGetUserFailure(res, "Guild doesn't exist: " + user.discord_last_guild_id);
+        }
+    }).catch(function(err) {
+        onGetUserFailure(res, err);
+    });
+}
+
+function onUserIsInDatabaseWithInvalidBirdfeed(res, user) {
+    res.status(403).send({error: "Sorry, this birdfeed is stale. Please request some new birdfeed."});
+    logger.error("Token expired: " + user.birdfeed_token + " for user " + user.discord_username);
+}
+
 function onGetUserFailure(res, err) {
-    res.status(500).send({error: "I choked on your birdfeed. Sorry, try again soon. " + err});
+    if (!res.headerSent) {
+        res.status(500).send({error: "I choked on your birdfeed. Sorry, try again soon. " + err});
+    }
 }
 
 module.exports.getUser = getUser;

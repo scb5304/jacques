@@ -2,8 +2,8 @@ require("dotenv").config({path: require("app-root-path") + "/.env"});
 
 const Db = require("../../common/data/db");
 const sinon = require("sinon");
-const chai = require("chai");
 const guildController = require("../guild-controller");
+const jacquesTestUtils = require("./controller-test-utils");
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();
@@ -14,15 +14,76 @@ afterEach(function() {
 });
 
 describe("guild-controller", function() {
-    it("does the thing", function() {
-        chai.assert.isNotNull(guildController);
+    beforeEach(function() {
+        this.res = {
+            json: function() {},
+            status: function() {}
+        };
+    });
 
-        this.sandbox.stub(Db, "getGuildById").callsFake(function() {
-            return new Promise((resolve) => {
-                return resolve();
+    describe("getGuild", function() {
+        it("returns 404 when guild doesn't exist.", function(done) {
+            this.sandbox.stub(Db, "getGuildById").callsFake(function() {
+                return Promise.resolve();
             });
+
+            this.sandbox.stub(this.res, "status").callsFake(function(status) {
+                return jacquesTestUtils.expectResponseStatus(404, status, done);
+            });
+            guildController.getGuild({params: {guild: "1001"}}, this.res);
         });
 
-        guildController.getGuild({params: {}}, {json: function() {}})
-    })
+        it("returns 500 when database error getting guild.", function(done) {
+            this.sandbox.stub(Db, "getGuildById").callsFake(function() {
+                return Promise.reject("Mock database error.");
+            });
+
+            this.sandbox.stub(this.res, "status").callsFake(function(status) {
+                return jacquesTestUtils.expectResponseStatus(500, status, done);
+            });
+            guildController.getGuild({params: {guild: "1001"}}, this.res);
+        });
+
+        it("returns json representation of guild when exists", function(done) {
+            var expectedGuild = {discord_id: "1001"};
+            this.sandbox.stub(Db, "getGuildById").callsFake(function() {
+                return new Promise((resolve) => {
+                    return resolve(expectedGuild);
+                });
+            });
+
+            this.sandbox.stub(this.res, "json").callsFake(function(actualGuild) {
+                jacquesTestUtils.expectResponseJson(expectedGuild, actualGuild, done);
+            });
+            guildController.getGuild({params: expectedGuild.discord_id}, this.res);
+        });
+    });
+
+    describe("getGuilds", function() {
+        it("returns 500 when database error getting guilds.", function (done) {
+            this.sandbox.stub(Db, "getAllGuilds").callsFake(function () {
+                return Promise.reject("Mock database error.");
+            });
+
+            this.sandbox.stub(this.res, "status").callsFake(function (status) {
+                return jacquesTestUtils.expectResponseStatus(500, status, done);
+            });
+            guildController.getGuilds({}, this.res);
+        });
+
+
+        it("returns json representation of guilds when exist", function(done) {
+            var expectedGuilds = [{discord_id: "1001"}];
+            this.sandbox.stub(Db, "getAllGuilds").callsFake(function() {
+                return Promise.resolve(expectedGuilds);
+            });
+
+            this.sandbox.stub(this.res, "json").callsFake(function(actualGuilds) {
+                jacquesTestUtils.expectResponseJson(expectedGuilds, actualGuilds, done);
+            });
+            guildController.getGuilds({}, this.res);
+        });
+    });
 });
+
+

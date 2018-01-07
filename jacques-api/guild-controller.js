@@ -4,7 +4,11 @@ const Db = require("../common/data/db");
 function getGuild(req, res) {
     const guild = req.params.guild;
     Db.getGuildById(guild).then(function(guild) {
-        res.json(guild);
+        if (!guild) {
+            res.status(404).send({error: "No guild found with id " + guild + "."});
+        } else {
+            res.json(guild);
+        }
     }).catch(function(err) {
         logger.error(err);
         res.status(500).send();
