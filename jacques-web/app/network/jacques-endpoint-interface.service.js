@@ -71,6 +71,7 @@ angular
             getStatistics: function() {
                 return $q(function(resolve, reject) {
                     Statistics.get({}, function(statisticsObject) {
+                        console.info(statisticsObject);
                        resolve(statisticsObject);
                     }, function (err) {
                        reject(err);
