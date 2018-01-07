@@ -10,9 +10,9 @@ describe("Sound Detail", function () {
 
     describe("SoundDetailController", function () {
         var $scope;
-        var q;
-        var sce;
-        var state;
+        var $q;
+        var $sce;
+        var $state;
         var SoundDetailController;
 
         var sharedProperties = {};
@@ -27,11 +27,11 @@ describe("Sound Detail", function () {
             show: function () {}
         };
 
-        beforeEach(inject(function($componentController, $rootScope, $sce, $q, $state) {
+        beforeEach(inject(function($componentController, $rootScope, _$sce_, _$q_, _$state_) {
             $scope = $rootScope.$new();
-            sce = $sce;
-            q = $q;
-            state = $state;
+            $sce = _$sce_;
+            $q = _$q_;
+            $state = _$state_;
             SoundDetailChartsHelper = {
                 getSoundActivityMonths: function() {},
                 calculateSoundActivityLabels: function() {},
@@ -105,7 +105,7 @@ describe("Sound Detail", function () {
                 $scope.sound = {name: "mySound"};
                 $scope.guild = {discord_id: "1005"};
                 $scope.updateAudioFile();
-                expect(sce.valueOf($scope.audioUrl)).toEqual("http://jacquesbot.io/raw/1005/mySound.mp3");
+                expect($sce.valueOf($scope.audioUrl)).toEqual("http://jacquesbot.io/raw/1005/mySound.mp3");
             });
         });
 
@@ -194,11 +194,11 @@ describe("Sound Detail", function () {
             });
 
             it("navigates to sounds by guild when sound is successfully uploaded", function() {
-                spyOn(state, "go").and.callThrough();
+                spyOn($state, "go").and.callThrough();
                 $scope.guild = {discord_id: "1994"};
 
                 $scope.onSuccessfulDeleteSoundResponse();
-                expect(state.go).toHaveBeenCalledWith("soundsByGuild", {guildId: "1994"});
+                expect($state.go).toHaveBeenCalledWith("soundsByGuild", {guildId: "1994"});
             });
 
             it("makes call to delete sound when confirm is pressed", function() {
@@ -214,7 +214,7 @@ describe("Sound Detail", function () {
                 };
 
                 jacquesEndpointInterface.deleteSound = function(){
-                    var deferred = q.defer();
+                    var deferred = $q.defer();
                     deferred.resolve('Remote call result');
                     return deferred.promise;
                 };

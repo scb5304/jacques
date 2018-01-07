@@ -9,7 +9,7 @@ describe("upload", function() {
 
     describe("UploadController", function() {
         var $scope;
-        var q;
+        var $q;
         var UploadController;
 
         var sharedProperties = {
@@ -26,9 +26,9 @@ describe("upload", function() {
         };
         var jacquesEndpointInterface = {};
 
-        beforeEach(inject(function($componentController, $rootScope, $q) {
+        beforeEach(inject(function($componentController, $rootScope, _$q_) {
             $scope = $rootScope.$new();
-            q = $q;
+            $q = _$q_;
             UploadController = $componentController("upload", {
                 $scope: $scope, sharedProperties: sharedProperties,
                 jacquesToaster: jacquesToaster,
@@ -94,7 +94,7 @@ describe("upload", function() {
 
         function mockGetBase64Success() {
             spyOn($scope, "getBase64").and.callFake(function() {
-                var deferred = q.defer();
+                var deferred = $q.defer();
                 deferred.resolve("myBase64");
                 return deferred.promise;
             });
@@ -102,7 +102,7 @@ describe("upload", function() {
 
         function mockPostSoundSuccess() {
             $scope.jacquesEndpointInterface.postSound = function() {
-                var deferred = q.defer();
+                var deferred = $q.defer();
                 deferred.resolve();
                 return deferred.promise;
             };
@@ -110,7 +110,7 @@ describe("upload", function() {
 
         function mockPostSoundFailure(err) {
             $scope.jacquesEndpointInterface.postSound = function() {
-                var deferred = q.defer();
+                var deferred = $q.defer();
                 deferred.reject(err);
                 return deferred.promise;
             };
