@@ -3,7 +3,7 @@
 angular
     .module("jacquesApp")
     .service("jacquesEndpointInterface", function ($rootScope, $resource, $q) {
-        var JACQUES_API_ROOT = "http://localhost:8081/api/";
+        var JACQUES_API_ROOT = "http://jacquesbot.io/api/";
 
         var Statistics = $resource(JACQUES_API_ROOT + "statistics");
         var Users = $resource(JACQUES_API_ROOT + "users/:birdfeed");

@@ -29,6 +29,7 @@ module.exports = function(config) {
         "./node_modules/angular-resource/angular-resource.js",
         "./node_modules/chart.js/dist/Chart.js",
         "./node_modules/angular-chart.js/dist/angular-chart.js",
+        "./node_modules/lf-ng-md-file-input/dist/lf-ng-md-file-input.js",
         {pattern: "jacques-web/**/*.module.js"},
         {pattern: "jacques-web/**/*.component.js"},
         {pattern: "jacques-web/**/*.js"},
