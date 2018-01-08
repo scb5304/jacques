@@ -145,7 +145,7 @@ function onStreamAudioMessageReceived(message, commandArgs) {
     }
     const streamLink = commandArgs.length > 1 ? commandArgs[1] : null;
 
-    guildManager.getGuildVolume(message.member.guild.id).then(function(volume) {
+    guildManager.getGuildVolume(message.guild.id).then(function(volume) {
         streamer.streamAudio(message.member.voiceChannel, volume, streamLink);
     }).catch(logger.error);
 }
@@ -155,17 +155,17 @@ function onVolumeMessageReceived(message, commandArgs) {
         return;
     }
 
-    const currentVoiceConnection = bot.voiceConnections.get(message.member.guild.id);
+    const currentVoiceConnection = bot.voiceConnections.get(message.guild.id);
     const requestedVolume = commandArgs.length > 1 ? commandArgs[1] : null;
 
     if (requestedVolume) {
         logger.info("Change the volume.");
         const volumeSet = streamer.changeVolume(message, requestedVolume, currentVoiceConnection);
         messenger.replyToMessage(message, "Changing volume to " + requestedVolume + "%");
-        guildManager.updateGuildVolume(message.member.guild.id, volumeSet);
+        guildManager.updateGuildVolume(message.guild.id, volumeSet);
     } else {
         logger.info("Print the volume.");
-        guildManager.getGuildVolume(message.member.guild.id).then(function(volume) {
+        guildManager.getGuildVolume(message.guild.id).then(function(volume) {
             messenger.printVolume(message, volume);
         }).catch(logger.error);
     }
@@ -183,8 +183,9 @@ function onBirdfeedMessageReceived(message) {
         logger.error("This upload message doesn't have a user.");
         return;
     }
-    if (!guildMember.guild) {
-        logger.error("This upload message doesn't have a guild member with a guild.");
+
+    if (!guildMember) {
+        logger.error("This upload message doesn't have a guild member.");
         return;
     }
 
@@ -230,14 +231,12 @@ function parseCommandArgs(messageContent) {
 
 function alreadySpeaking(message) {
     if (!bot || !bot.voiceConnections) {
-        return;
+        return false;
     }
-    const currentVoiceConnection = bot.voiceConnections.get(message.guild.id);
 
+    const currentVoiceConnection = bot.voiceConnections.get(message.guild.id);
     if (currentVoiceConnection) {
-        message.reply("Already speaking in channel " + currentVoiceConnection.channel.name).then(function(message) {
-            message.delete(3500).catch(logger.error);
-        });
+        messenger.replyToMessage(message, "Already speaking in channel " + currentVoiceConnection.channel.name);
         return true;
     }
 
