@@ -1,10 +1,12 @@
 require("dotenv").config({path: require("app-root-path") + "/.env"});
 
-const Db = require("../../common/data/db");
 const sinon = require("sinon");
 const userController = require("../user-controller");
 const jacquesTestUtils = require("./controller-test-utils");
 const moment = require("moment");
+
+const usersRepository = require("../../common/data/users-repository");
+const guildsRepository = require("../../common/data/guilds-repository");
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();
@@ -26,7 +28,7 @@ describe("user-controller", function() {
     describe("getUser", function() {
         describe("user is not in database", function() {
             beforeEach(function() {
-                this.sandbox.stub(Db, "getUserFromBirdfeed").callsFake(function() {
+                this.sandbox.stub(usersRepository, "getUserFromBirdfeed").callsFake(function() {
                     return Promise.resolve(undefined);
                 });
             });
@@ -56,13 +58,13 @@ describe("user-controller", function() {
             };
 
             beforeEach(function() {
-                this.sandbox.stub(Db, "getUserFromBirdfeed").callsFake(function() {
+                this.sandbox.stub(usersRepository, "getUserFromBirdfeed").callsFake(function() {
                     return Promise.resolve(expectedUser);
                 });
             });
 
             it("returns user if the guild also exists", function(done) {
-                this.sandbox.stub(Db, "getGuildById").callsFake(function() {
+                this.sandbox.stub(guildsRepository, "getGuildById").callsFake(function() {
                     return Promise.resolve(expectedGuild);
                 });
                 this.sandbox.stub(this.res, "json").callsFake(function(actualUser) {
@@ -73,7 +75,7 @@ describe("user-controller", function() {
             });
 
             it("returns 500 error if the guild doesn't exist", function(done) {
-                this.sandbox.stub(Db, "getGuildById").callsFake(function() {
+                this.sandbox.stub(guildsRepository, "getGuildById").callsFake(function() {
                     return Promise.resolve(undefined);
                 });
                 this.sandbox.stub(this.res, "status").callsFake(function(status) {
@@ -84,7 +86,7 @@ describe("user-controller", function() {
             });
 
             it("returns 500 error if there was a problem getting the guild for this user", function(done) {
-                this.sandbox.stub(Db, "getGuildById").callsFake(function() {
+                this.sandbox.stub(guildsRepository, "getGuildById").callsFake(function() {
                     return Promise.reject("Database is spaghetti.");
                 });
                 this.sandbox.stub(this.res, "status").callsFake(function(status) {

@@ -1,6 +1,6 @@
 require("dotenv").config({path: require("app-root-path") + "/.env"});
 
-const Db = require("../../common/data/db");
+const guildsRepository = require("../../common/data/guilds-repository");
 const sinon = require("sinon");
 const guildController = require("../guild-controller");
 const jacquesTestUtils = require("./controller-test-utils");
@@ -23,7 +23,7 @@ describe("guild-controller", function() {
 
     describe("getGuild", function() {
         it("returns 404 when guild doesn't exist.", function(done) {
-            this.sandbox.stub(Db, "getGuildById").callsFake(function() {
+            this.sandbox.stub(guildsRepository, "getGuildById").callsFake(function() {
                 return Promise.resolve();
             });
 
@@ -34,7 +34,7 @@ describe("guild-controller", function() {
         });
 
         it("returns 500 when database error getting guild.", function(done) {
-            this.sandbox.stub(Db, "getGuildById").callsFake(function() {
+            this.sandbox.stub(guildsRepository, "getGuildById").callsFake(function() {
                 return Promise.reject("Mock database error.");
             });
 
@@ -46,7 +46,7 @@ describe("guild-controller", function() {
 
         it("returns json representation of guild when exists", function(done) {
             var expectedGuild = {discord_id: "1001"};
-            this.sandbox.stub(Db, "getGuildById").callsFake(function() {
+            this.sandbox.stub(guildsRepository, "getGuildById").callsFake(function() {
                 return new Promise((resolve) => {
                     return resolve(expectedGuild);
                 });
@@ -61,7 +61,7 @@ describe("guild-controller", function() {
 
     describe("getGuilds", function() {
         it("returns 500 when database error getting guilds.", function (done) {
-            this.sandbox.stub(Db, "getAllGuilds").callsFake(function () {
+            this.sandbox.stub(guildsRepository, "getAllGuilds").callsFake(function () {
                 return Promise.reject("Mock database error.");
             });
 
@@ -74,7 +74,7 @@ describe("guild-controller", function() {
 
         it("returns json representation of guilds when exist", function(done) {
             var expectedGuilds = [{discord_id: "1001"}];
-            this.sandbox.stub(Db, "getAllGuilds").callsFake(function() {
+            this.sandbox.stub(guildsRepository, "getAllGuilds").callsFake(function() {
                 return Promise.resolve(expectedGuilds);
             });
 

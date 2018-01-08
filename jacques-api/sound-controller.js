@@ -1,9 +1,11 @@
 const fs = require("fs");
 const path = require("path");
 const logger = require("../common/util/logger");
-const Db = require("../common/data/db");
-const mkdirp = require("mkdirp");
+const soundsRepository = require("../common/data/sounds-repository");
+const usersRepository = require("../common/data/users-repository");
 const moment = require("moment");
+const mkdirp = require("mkdirp");
+
 const SOUNDS_DIRECTORY = process.env.JACQUES_SOUNDS_DIRECTORY;
 const MP3_META_DATA = "data:audio/mp3;base64,";
 
@@ -30,7 +32,7 @@ function getSounds(req, res) {
         includeSoundEvents = false;
     }
 
-    Db.getAllSounds()
+    soundsRepository.getAllSounds()
         .then(function(sounds) {
             res.json(sounds);
         })
@@ -51,7 +53,7 @@ function getSoundsByGuild(req, res) {
     }
 
     const guild = req.params.guild;
-    Db.getSoundsByDiscordGuildId(guild)
+    soundsRepository.getSoundsByDiscordGuildId(guild)
         .then(function(sounds) {
             sounds.forEach(function(sound) {
                 sound._doc["soundEventCount"] = sound.sound_events.length;
@@ -71,7 +73,7 @@ function getSoundByGuildAndName(req, res) {
     const guild = req.params.guild;
     const name = req.params.soundName;
 
-    Db.getSoundByDiscordGuildIdAndName(guild, name)
+    soundsRepository.getSoundByDiscordGuildIdAndName(guild, name)
         .then(function(sound) {
             if (sound) {
                 res.json(sound);
@@ -94,7 +96,7 @@ function deleteSound(req, res) {
         if (guild !== user.discord_last_guild_id) {
             res.status(403).send({error: "Sorry, your current birdfeed doesn't work on this guild."});
         } else {
-            Db.deleteSoundByDiscordGuildIdAndName(guild, name)
+            soundsRepository.deleteSoundByDiscordGuildIdAndName(guild, name)
                 .then(function() {
                     const soundPath = path.join(SOUNDS_DIRECTORY, guild, name + ".mp3");
                     fs.unlink(soundPath, function(err) {
@@ -171,7 +173,7 @@ function validateSoundPostRequestHasRequiredData(req, res) {
 
 function validateBirdfeedInRequest(birdfeed, res) {
     return new Promise((resolve, reject) => {
-        Db.getUserFromBirdfeed(birdfeed).then(function(user) {
+        usersRepository.getUserFromBirdfeed(birdfeed).then(function(user) {
             if (!user) {
                 res.status(400).send({error: "I don't recognize this birdfeed. If I did give it out, I don't want it anymore."});
                 return reject("Couldn't find user with birdfeed: " + birdfeed);
@@ -197,7 +199,7 @@ function validateSoundDataInSoundPostRequest(guildId, soundName, res) {
             return reject(err)
         }
 
-        Db.getSoundByDiscordGuildIdAndName(guildId, soundName)
+        soundsRepository.getSoundByDiscordGuildIdAndName(guildId, soundName)
             .then(function (sound) {
                 if (sound) {
                     const soundExistsError = "Sound with this name already exists on this guild: " + soundName + ".";
@@ -219,7 +221,7 @@ function processNewSoundPostRequest(user, req, res) {
     const soundName = req.params.soundName;
     let soundData = req.body.soundData;
 
-    Db.insertSoundForGuildByUser(soundName, user).then(function() {
+    soundsRepository.insertSoundForGuildByUser(soundName, user).then(function() {
         //Create the file name from the sound name parameter and the mp3 extension.
         soundData = soundData.replace(MP3_META_DATA, "");
 
@@ -231,7 +233,7 @@ function processNewSoundPostRequest(user, req, res) {
             res.status(500).send({error: "There was an error storing the sound in the file system."});
 
             //We couldn't save the sound to the file system. But it's already in the database.
-            Db.deleteSoundWithGuildIdAndName(guildId, soundName)
+            soundsRepository.deleteSoundWithGuildIdAndName(guildId, soundName)
                 .then(function() {
                     logger.info("Deleted database sound due to file system error: " + soundName);
                 })

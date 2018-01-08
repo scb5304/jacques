@@ -1,11 +1,12 @@
 const logger = require("../common/util/logger");
-const Db = require("../common/data/db");
+const usersRepository = require("../common/data/users-repository");
+const guildsRepository = require("../common/data/guilds-repository");
 const moment = require("moment");
 
 function getUser(req, res) {
     const birdfeed = req.params.birdfeed;
 
-    Db.getUserFromBirdfeed(birdfeed).then(function(user) {
+    usersRepository.getUserFromBirdfeed(birdfeed).then(function(user) {
         if (!user) {
             onUserIsNotInDatabase(res, birdfeed);
         } else if (moment(user.birdfeed_date_time).isAfter(moment().subtract(2, "hours"))) {
@@ -25,7 +26,7 @@ function onUserIsNotInDatabase(res, birdfeed) {
 
 function onUserIsInDatabaseWithValidBirdfeed(res, user) {
     //Get the most current guild name for this guy's discord guild ID before we send it back.
-    Db.getGuildById(user.discord_last_guild_id).then(function(guild) {
+    guildsRepository.getGuildById(user.discord_last_guild_id).then(function(guild) {
         if (guild) {
             const userObj = user.toObject();
             const guildObj = guild.toObject();

@@ -2,8 +2,8 @@ require("dotenv").config({ path: require("app-root-path") + "/.env" });
 
 const sinon = require("sinon");
 const soundboard = require("./../soundboard");
-const fileSystemReader = require("./../../common/util/fileSystemReader.js");
-const Db = require("./../../common/data/db.js");
+const fileSystemReader = require("./../../common/util/fileSystemReader");
+const soundsRepository = require("./../../common/data/sounds-repository");
 
 const self = this;
 
@@ -49,7 +49,7 @@ function mockVoiceChannelJoin(message, done) {
 describe("playRandomSound", function() {
 
     it("should query for a random sound in the member's guild", function() {
-        const dbStub = self.sandbox.stub(Db, "getRandomSoundInDiscordGuild").callsFake(function () {
+        const dbStub = self.sandbox.stub(soundsRepository, "getRandomSoundInDiscordGuild").callsFake(function () {
             return new Promise((resolve) => {
                 return resolve();
             });
@@ -66,7 +66,7 @@ describe("playRandomSound", function() {
 
         const sound = {name: "1910.mp3", category: "default"};
         //Stub the database to return a random sound name
-        self.sandbox.stub(Db, "getRandomSoundInDiscordGuild").callsFake(function() {
+        self.sandbox.stub(soundsRepository, "getRandomSoundInDiscordGuild").callsFake(function() {
             return new Promise(function(resolve) {
                 return resolve(sound);
             });
@@ -82,14 +82,14 @@ describe("playRandomSound", function() {
         stubFileSystemReader();
 
         //Stub the database to return a random sound name
-        self.sandbox.stub(Db, "getRandomSoundInDiscordGuild").callsFake(function() {
+        self.sandbox.stub(soundsRepository, "getRandomSoundInDiscordGuild").callsFake(function() {
             return new Promise(function(resolve) {
                 return resolve({ name: "1910.mp3" });
             });
         });
 
         //Test succeeds if the spy sees the insert method is called
-        self.sandbox.stub(Db, "insertSoundEvent").callsFake(function() {
+        self.sandbox.stub(soundsRepository, "insertSoundEvent").callsFake(function() {
             done();
         });
 
@@ -101,7 +101,7 @@ describe("playRandomSound", function() {
 describe("playTargetedSound", function() {
     it("should query for a specific sound", function() {
         //Stub the database to say the sound exists
-        const dbStub = self.sandbox.stub(Db, "getSoundByDiscordGuildIdAndName").callsFake(function () {
+        const dbStub = self.sandbox.stub(soundsRepository, "getSoundByDiscordGuildIdAndName").callsFake(function () {
             return new Promise(function (resolve) {
                 return resolve();
             });
@@ -114,7 +114,7 @@ describe("playTargetedSound", function() {
 
     it("should join a voice channel to play the sound", function(done) {
         //Stub the database to say the sound exists
-        self.sandbox.stub(Db, "getSoundByDiscordGuildIdAndName").callsFake(function() {
+        self.sandbox.stub(soundsRepository, "getSoundByDiscordGuildIdAndName").callsFake(function() {
             return new Promise(function(resolve) {
                 return resolve({});
             });

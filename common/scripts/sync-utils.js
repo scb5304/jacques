@@ -1,16 +1,14 @@
-const Db = require("../data/db");
 var SOUNDS_DIRECTORY = "./../../sounds/";
 const Sound = require("./../model/sound").Sound;
 const logger = require("./../util/logger.js");
-
+const soundsRepository = require("../../common/data/sounds-repository");
 const readdirp = require("readdirp");
 const path = require("path");
-
 const ROOT_PATH = path.resolve(path.join(SOUNDS_DIRECTORY));
 
 function beginSync() {
     return new Promise((resolve, reject) => {
-        Db.getAllSounds().then(function(dbSounds) {
+        soundsRepository.getAllSounds().then(function(dbSounds) {
             performSync(dbSounds).then(function() {
                 return resolve();
             }).catch(function(err) {
@@ -20,7 +18,6 @@ function beginSync() {
             return reject(err);
         })
     });
-
 }
 
 function onSoundInFileSystemNotInDatabase(soundName, discordGuildId) {

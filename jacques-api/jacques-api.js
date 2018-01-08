@@ -2,7 +2,7 @@ require("dotenv").config({path: "./../.env"});
 
 const express = require("express");
 const bodyParser = require("body-parser");
-const db = require("../common/data/db.js");
+const Db = require("../common/data/db.js");
 const logger = require("../common/util/logger.js");
 const soundController = require("./sound-controller");
 const userController = require("./user-controller");
@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({
     limit: '700KB'
 }));
 
-db.connect().then(function() {
+Db.connect().then(function() {
     logger.info("Jacques API connected to database.");
 });
 

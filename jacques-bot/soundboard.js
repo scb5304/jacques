@@ -1,17 +1,17 @@
-const Db = require("./../common/data/db");
+const soundsRepository = require("./../common/data/sounds-repository");
 const logger = require("./../common/util/logger.js");
 const fsReader = require("./../common/util/fileSystemReader.js");
 
 function insertSoundEvent(sound, guildId, memberName, eventType) {
     try {
-        Db.insertSoundEvent(sound.name, guildId, memberName, eventType);
+        soundsRepository.insertSoundEvent(sound.name, guildId, memberName, eventType);
     } catch (err) {
         logger.error(err);
     }
 }
 
 function playRandomSound(message) {
-    Db.getRandomSoundInDiscordGuild(message.member.guild.id)
+    soundsRepository.getRandomSoundInDiscordGuild(message.member.guild.id)
         .then(function(sound) {
             if (sound) {
                 playSound(sound, message.member.voiceChannel);
@@ -23,7 +23,7 @@ function playRandomSound(message) {
 
 function playTargetedSound(message, soundName) {
     logger.info("Play targeted sound: sound " + soundName);
-    Db.getSoundByDiscordGuildIdAndName(message.member.guild.id, soundName)
+    soundsRepository.getSoundByDiscordGuildIdAndName(message.member.guild.id, soundName)
         .then(function(sound) {
             if (sound) {
                 playSound(sound, message.member.voiceChannel);

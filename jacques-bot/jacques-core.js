@@ -1,8 +1,7 @@
 const Discord = require("discord.js");
-
-const Db = require("./../common/data/db");
 const logger = require("./../common/util/logger.js");
-
+const usersRepository = require("../common/data/users-repository");
+const guildsRepository = require("../common/data/guilds-repository");
 const soundboard = require("./soundboard.js");
 const streamer = require("./streamer.js");
 const messenger = require("./messenger.js");
@@ -147,7 +146,7 @@ function streamAudio(message, commandArgs) {
     }
     const streamLink = commandArgs.length > 1 ? commandArgs[1] : null;
 
-    Db.getGuildById(message.member.guild.id).then(function(guild) {
+    guildsRepository.getGuildById(message.member.guild.id).then(function(guild) {
         const volume = guild.volume && guild.volume > 0 ? guild.volume : 0.40;
         streamer.streamAudio(message.member.voiceChannel, volume, streamLink);
     }).catch(logger.error);
@@ -162,12 +161,12 @@ function volume(message, commandArgs) {
     if (requestedVolume) {
         logger.info("Change the volume.");
         const volumeSet = streamer.changeVolume(message, requestedVolume, currentVoiceConnection);
-        Db.updateVolumeForGuild(volumeSet, message.member.guild.id).then(function() {
+        guildsRepository.updateVolumeForGuild(volumeSet, message.member.guild.id).then(function() {
             logger.info("Successfully set volume to " + requestedVolume + " in the database for " + message.member.guild.id);
         }).catch(logger.error);
     } else {
         logger.info("Print the volume.");
-        Db.getGuildById(message.member.guild.id).then(function(guild) {
+        guildsRepository.getGuildById(message.member.guild.id).then(function(guild) {
             const volume = guild.volume && guild.volume > 0 ? guild.volume : 0.40;
             messenger.printVolume(message, volume);
         }).catch(logger.error);
@@ -221,7 +220,7 @@ function userHasUploadPermissions(guildMember) {
 function createBirdfeedForGuildMember(guildMember) {
     return new Promise((resolve, reject) => {
         const token = new UIDGenerator(UIDGenerator.BASE16, 10).generateSync();
-        Db.upsertUserWithDiscordDataAndToken(guildMember, token).then(function() {
+        usersRepository.upsertUserWithDiscordDataAndToken(guildMember, token).then(function() {
             return resolve(token);
         }).catch(function(err) {
             return reject(err);
@@ -274,16 +273,16 @@ function refreshGuilds() {
     discordGuilds.forEach(function(discordGuild) {
         discordGuildIds.push(discordGuild.id);
 
-        Db.getGuildById(discordGuild.id).then(function(jacquesGuild) {
+        guildsRepository.getGuildById(discordGuild.id).then(function(jacquesGuild) {
             if (!jacquesGuild) {
-                Db.insertGuild(discordGuild).then(function() {
+                guildsRepository.insertGuild(discordGuild).then(function() {
                     logger.info("Jacques has a new guild: " + discordGuild.name);
                 }).catch(logger.error);
             }
         }).catch(logger.error);
     });
 
-    Db.deleteGuildsNotInListOfIds(discordGuildIds).then(function(removalResult) {
+    guildsRepository.deleteGuildsNotInListOfIds(discordGuildIds).then(function(removalResult) {
         if (removalResult.result.n) {
             logger.info("Removed from " + removalResult.result.n + " guilds.");
         }

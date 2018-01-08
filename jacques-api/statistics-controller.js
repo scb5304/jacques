@@ -1,11 +1,12 @@
 const logger = require("../common/util/logger");
-const Db = require("../common/data/db");
+const soundsRepository = require("../common/data/sounds-repository");
+const guildsRepository = require("../common/data/guilds-repository");
 
 function getStatistics(req, res) {
     const promises = [];
-    promises.push(Db.getGuildsCount());
-    promises.push(Db.getSoundsCount());
-    promises.push(Db.getSoundEventsCount());
+    promises.push(guildsRepository.getGuildsCount());
+    promises.push(soundsRepository.getSoundsCount());
+    promises.push(soundsRepository.getSoundEventsCount());
 
     Promise.all(promises)
         .then(function(counts) {

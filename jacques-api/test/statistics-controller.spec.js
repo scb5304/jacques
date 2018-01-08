@@ -1,6 +1,7 @@
 require("dotenv").config({path: require("app-root-path") + "/.env"});
 
-const Db = require("../../common/data/db");
+const soundsRepository = require("../../common/data/sounds-repository");
+const guildsRepository = require("../../common/data/guilds-repository");
 const sinon = require("sinon");
 const statisticsController = require("../statistics-controller");
 const jacquesTestUtils = require("./controller-test-utils");
@@ -29,13 +30,13 @@ describe("statistics-controller", function() {
     describe("getStatistics", function() {
         describe("when successful", function() {
             beforeEach(function() {
-                this.sandbox.stub(Db, "getGuildsCount").callsFake(function() {
+                this.sandbox.stub(guildsRepository, "getGuildsCount").callsFake(function() {
                     return Promise.resolve(GUILDS_COUNT);
                 });
-                this.sandbox.stub(Db, "getSoundsCount").callsFake(function() {
+                this.sandbox.stub(soundsRepository, "getSoundsCount").callsFake(function() {
                     return Promise.resolve(SOUNDS_COUNT);
                 });
-                this.sandbox.stub(Db, "getSoundEventsCount").callsFake(function() {
+                this.sandbox.stub(soundsRepository, "getSoundEventsCount").callsFake(function() {
                     return Promise.resolve(SOUND_EVENTS_COUNT);
                 });
             });
@@ -55,13 +56,13 @@ describe("statistics-controller", function() {
 
         describe("when failure", function() {
             beforeEach(function() {
-                this.sandbox.stub(Db, "getGuildsCount").callsFake(function() {
+                this.sandbox.stub(guildsRepository, "getGuildsCount").callsFake(function() {
                     return Promise.resolve(GUILDS_COUNT);
                 });
-                this.sandbox.stub(Db, "getSoundsCount").callsFake(function() {
+                this.sandbox.stub(soundsRepository, "getSoundsCount").callsFake(function() {
                     return Promise.resolve(SOUNDS_COUNT);
                 });
-                this.sandbox.stub(Db, "getSoundEventsCount").callsFake(function() {
+                this.sandbox.stub(soundsRepository, "getSoundEventsCount").callsFake(function() {
                     return Promise.reject(STATISTICS_DATABASE_ERROR);
                 });
             });

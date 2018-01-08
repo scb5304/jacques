@@ -1,9 +1,9 @@
 const logger = require("../common/util/logger");
-const Db = require("../common/data/db");
+const guildsRepository = require("../common/data/guilds-repository");
 
 function getGuild(req, res) {
     const guild = req.params.guild;
-    Db.getGuildById(guild).then(function(guild) {
+    guildsRepository.getGuildById(guild).then(function(guild) {
         if (!guild) {
             res.status(404).send({error: "No guild found with id " + guild + "."});
         } else {
@@ -16,7 +16,7 @@ function getGuild(req, res) {
 }
 
 function getGuilds(req, res) {
-    Db.getAllGuilds().then(function(guilds) {
+    guildsRepository.getAllGuilds().then(function(guilds) {
         res.json(guilds);
     }).catch(function (err) {
         logger.error(err);
