@@ -14,8 +14,7 @@
         "classes": false,
         "variables": true
       }
-    ],
-    "maxstatements": 10
+    ]
   },
   "globals": {
     "angular": true,
