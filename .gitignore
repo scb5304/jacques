@@ -1,7 +1,8 @@
 .idea
 .env
 .coveralls.yml
-coverage/
-node_modules/
-/sounds/
 npm-debug.log
+coverage/
+sounds/
+.nyc_output/
+node_modules/
