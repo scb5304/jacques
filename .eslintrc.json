@@ -1,27 +1,27 @@
 {
-   "env":{
-      "browser":true,
-      "node":true,
-      "mocha":true,
-      "jasmine":true,
-      "phantomjs":true
-   },
-   "rules":{
-      "no-use-before-define":[
-         "error",
-         {
-            "functions":false,
-            "classes":false,
-            "variables":true
-         }
-      ]
-   },
-   "maxstatements": 10,
-   "globals":{
-      "angular":true,
-      "moment":true,
-      "Promise":true,
-      "inject":true
-   },
-   "extends":"eslint:recommended"
+  "env": {
+    "browser": true,
+    "node": true,
+    "mocha": true,
+    "jasmine": true,
+    "phantomjs": true
+  },
+  "rules": {
+    "no-use-before-define": [
+      "error",
+      {
+        "functions": false,
+        "classes": false,
+        "variables": true
+      }
+    ],
+    "maxstatements": 10
+  },
+  "globals": {
+    "angular": true,
+    "moment": true,
+    "Promise": true,
+    "inject": true
+  },
+  "extends": "eslint:recommended"
 }
