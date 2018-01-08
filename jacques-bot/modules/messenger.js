@@ -1,8 +1,8 @@
-const logger = require("./../common/util/logger.js");
+const logger = require("../../common/util/logger.js");
 
 const HELP_STRING = "Jacques is a soundboard bot. To play a sound, type ! followed by the name of the sound. If you don't supply a sound name, it will play a random one. You can also " +
     "stream the audio of a youtube video with !stream.\n\n" +
-    "Visit Jacques online at http://jacquesbot.io for a list of sounds and additional help.";
+    "Visit Jacques online at http://jacquesbot.io for a list of sounds, sound upload, and additional help.";
 
 function sendHelp(message) {
     message.reply(HELP_STRING);
@@ -21,6 +21,12 @@ function sendDirectMessage(user, message) {
     }
 }
 
+function replyToMessage(message, reply) {
+    message.reply(reply).then(function(createdMessage) {
+        createdMessage.delete(3500).catch(logger.error);
+    });
+}
+
 function deleteMessage(message) {
     if (message.channel.name !== "commands") {
         message.delete(2000).catch(logger.error);
@@ -35,5 +41,6 @@ function printVolume(message, volume) {
 
 module.exports.sendHelp = sendHelp;
 module.exports.sendDirectMessage = sendDirectMessage;
+module.exports.replyToMessage = replyToMessage;
 module.exports.deleteMessage = deleteMessage;
 module.exports.printVolume = printVolume;

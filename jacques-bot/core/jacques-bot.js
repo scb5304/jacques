@@ -1,7 +1,7 @@
 require("dotenv").config({path: require("app-root-path") + "/.env"});
 const Discord = require("discord.js");
-const Db = require("./../common/data/db");
-const logger = require("./../common/util/logger.js");
+const Db = require("../../common/data/db");
+const logger = require("../../common/util/logger.js");
 const mongoose = require("mongoose");
 const jacques = require("./jacques-core");
 let bot;

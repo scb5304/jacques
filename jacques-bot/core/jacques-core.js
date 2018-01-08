@@ -1,11 +1,10 @@
 const Discord = require("discord.js");
-const logger = require("./../common/util/logger.js");
-const usersRepository = require("../common/data/users-repository");
-const guildsRepository = require("../common/data/guilds-repository");
-const soundboard = require("./soundboard.js");
-const streamer = require("./streamer.js");
-const messenger = require("./messenger.js");
-const UIDGenerator = require("uid-generator");
+const logger = require("../../common/util/logger");
+const soundboard = require("../modules/soundboard");
+const streamer = require("../modules/streamer");
+const messenger = require("../modules/messenger");
+const guildManager = require("../modules/guild-manager");
+const birdfeedManager = require("../modules/birdfeed-manager");
 
 let bot;
 const site = "http://jacquesbot.io";
@@ -19,7 +18,7 @@ function onLoggedIn() {
     if (!bot) {
         logger.error("jacques-core did not have its client instance set prior to being logged in.");
     } else {
-        refreshGuilds();
+        guildManager.refreshGuilds(bot.guilds.array());
         if (bot.user) {
             bot.user.setGame(site).then(function(clientUser) {
                 logger.info(clientUser.username + " is playing " + site);
@@ -42,11 +41,11 @@ function onMessage(message) {
 }
 
 function onGuildCreate() {
-    refreshGuilds();
+    guildManager.refreshGuilds(bot.guilds.array());
 }
 
 function onGuildDelete() {
-    refreshGuilds();
+    guildManager.refreshGuilds(bot.guilds.array());
 }
 
 function onTextChannelMessage(message) {
@@ -98,19 +97,19 @@ function routeTextChannelMessage(message, cleanedMessageContent) {
                 break;
             case "stream":
                 logger.info("Stream audio.");
-                streamAudio(message, commandArgs);
+                onStreamAudioMessageReceived(message, commandArgs);
                 break;
             case "volume":
                 logger.info("Volume.");
-                volume(message, commandArgs);
+                onVolumeMessageReceived(message, commandArgs);
                 break;
             case "help":
             case "sounds":
                 logger.info("Help.");
-                help(message);
+                onHelpMessageReceived(message);
                 break;
             case "birdfeed":
-                sendBirdfeed(message);
+                onBirdfeedMessageReceived(message);
                 break;
             default:
                 logger.info("Default: play targeted sound.");
@@ -140,44 +139,43 @@ function cancelVoiceConnection(message) {
     }
 }
 
-function streamAudio(message, commandArgs) {
+function onStreamAudioMessageReceived(message, commandArgs) {
     if (!message.member.voiceChannel || alreadySpeaking(message)) {
         return;
     }
     const streamLink = commandArgs.length > 1 ? commandArgs[1] : null;
 
-    guildsRepository.getGuildById(message.member.guild.id).then(function(guild) {
-        const volume = guild.volume && guild.volume > 0 ? guild.volume : 0.40;
+    guildManager.getGuildVolume(message.member.guild.id).then(function(volume) {
         streamer.streamAudio(message.member.voiceChannel, volume, streamLink);
     }).catch(logger.error);
 }
 
-function volume(message, commandArgs) {
+function onVolumeMessageReceived(message, commandArgs) {
     if (!message.member.voiceChannel) {
         return;
     }
+
     const currentVoiceConnection = bot.voiceConnections.get(message.member.guild.id);
     const requestedVolume = commandArgs.length > 1 ? commandArgs[1] : null;
+
     if (requestedVolume) {
         logger.info("Change the volume.");
         const volumeSet = streamer.changeVolume(message, requestedVolume, currentVoiceConnection);
-        guildsRepository.updateVolumeForGuild(volumeSet, message.member.guild.id).then(function() {
-            logger.info("Successfully set volume to " + requestedVolume + " in the database for " + message.member.guild.id);
-        }).catch(logger.error);
+        messenger.replyToMessage(message, "Changing volume to " + requestedVolume + "%");
+        guildManager.updateGuildVolume(message.member.guild.id, volumeSet);
     } else {
         logger.info("Print the volume.");
-        guildsRepository.getGuildById(message.member.guild.id).then(function(guild) {
-            const volume = guild.volume && guild.volume > 0 ? guild.volume : 0.40;
+        guildManager.getGuildVolume(message.member.guild.id).then(function(volume) {
             messenger.printVolume(message, volume);
         }).catch(logger.error);
     }
 }
 
-function help(message) {
+function onHelpMessageReceived(message) {
     messenger.sendHelp(message);
 }
 
-function sendBirdfeed(message) {
+function onBirdfeedMessageReceived(message) {
     let user = message.author;
     const guildMember = message.member;
 
@@ -193,8 +191,8 @@ function sendBirdfeed(message) {
     const messageBase = "Hello. You requested a sound upload on '" + guildMember.guild.name + "'. ";
     let messageToSend;
 
-    if (userHasUploadPermissions(guildMember)) {
-        createBirdfeedForGuildMember(guildMember).then(function(birdfeed) {
+    if (birdfeedManager.userHasUploadPermissions(guildMember)) {
+        birdfeedManager.createBirdfeedForGuildMember(guildMember).then(function(birdfeed) {
             messageToSend = messageBase + "Here is your birdfeed: " + birdfeed + ". Please copy it, visit http://jacquesbot.io, and use the birdfeeder to authenticate yourself.";
             messenger.sendDirectMessage(user, messageToSend);
         }).catch(function(err) {
@@ -206,26 +204,6 @@ function sendBirdfeed(message) {
         messageToSend = messageBase + "Sorry, but you need the 'Attach Files' permission to upload sounds for this server.";
         messenger.sendDirectMessage(user, messageToSend);
     }
-}
-
-function userHasUploadPermissions(guildMember) {
-    try {
-        return guildMember.hasPermission("ATTACH_FILES");
-    } catch(err) {
-        logger.error(err);
-        return false;
-    }
-}
-
-function createBirdfeedForGuildMember(guildMember) {
-    return new Promise((resolve, reject) => {
-        const token = new UIDGenerator(UIDGenerator.BASE16, 10).generateSync();
-        usersRepository.upsertUserWithDiscordDataAndToken(guildMember, token).then(function() {
-            return resolve(token);
-        }).catch(function(err) {
-            return reject(err);
-        });
-    });
 }
 
 function playTargetedSound(message, commandArgs) {
@@ -264,30 +242,6 @@ function alreadySpeaking(message) {
     }
 
     return false;
-}
-
-function refreshGuilds() {
-    const discordGuilds = bot.guilds.array();
-    const discordGuildIds = [];
-
-    discordGuilds.forEach(function(discordGuild) {
-        discordGuildIds.push(discordGuild.id);
-
-        guildsRepository.getGuildById(discordGuild.id).then(function(jacquesGuild) {
-            if (!jacquesGuild) {
-                guildsRepository.insertGuild(discordGuild).then(function() {
-                    logger.info("Jacques has a new guild: " + discordGuild.name);
-                }).catch(logger.error);
-            }
-        }).catch(logger.error);
-    });
-
-    guildsRepository.deleteGuildsNotInListOfIds(discordGuildIds).then(function(removalResult) {
-        if (removalResult.result.n) {
-            logger.info("Removed from " + removalResult.result.n + " guilds.");
-        }
-
-    }).catch(logger.error);
 }
 
 module.exports.onReady = onReady;

@@ -1,7 +1,7 @@
 require("dotenv").config({ path: require("app-root-path") + "/.env" });
 
 const sinon = require("sinon");
-const soundboard = require("./../soundboard");
+const soundboard = require("../modules/soundboard");
 const fileSystemReader = require("./../../common/util/fileSystemReader");
 const soundsRepository = require("./../../common/data/sounds-repository");
 

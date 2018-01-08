@@ -1,4 +1,4 @@
-const logger = require("./../common/util/logger.js");
+const logger = require("../../common/util/logger.js");
 const ytdl = require("ytdl-core");
 
 function streamAudio(voiceChannel, volume, streamLink) {
@@ -95,10 +95,6 @@ function changeVolume(message, requestedVolume, voiceConnection) {
     if (actualVolume > 1) {
         actualVolume = 1;
     }
-
-    message.reply("Changing volume to " + requestedVolume + "%").then(function(message) {
-       message.delete(3500).catch(logger.error);
-    });
 
     if (voiceConnection) {
         voiceConnection.player.dispatcher.setVolumeLogarithmic(actualVolume);

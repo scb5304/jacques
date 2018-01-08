@@ -2,7 +2,7 @@ require("dotenv").config({path: require("app-root-path") + "/.env"});
 
 const sinon = require("sinon");
 const chai = require("chai");
-const messenger = require("./../messenger");
+const messenger = require("../modules/messenger");
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();
