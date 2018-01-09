@@ -34,6 +34,11 @@ function getSounds(req, res) {
 
     soundsRepository.getAllSounds()
         .then(function(sounds) {
+            if (!includeSoundEvents) {
+                sounds.forEach(function(sound) {
+                    delete sound._doc.sound_events;
+                });
+            }
             res.json(sounds);
         })
         .catch(function(error) {
