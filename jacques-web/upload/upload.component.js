@@ -4,11 +4,11 @@ angular
     .module("upload")
     .component("upload", {
         templateUrl: "upload/upload.template.html",
-        controller: ["$scope", "sharedProperties", "jacquesEndpointInterface", "jacquesToaster", "$q",
-            function UploadController($scope, sharedProperties, jacquesEndpointInterface, jacquesToaster, $q) {
+        controller: ["$scope", "sharedProperties", "SoundsService", "jacquesToaster", "$q",
+            function UploadController($scope, sharedProperties, SoundsService, jacquesToaster, $q) {
                 $scope.files = [];
                 $scope.sharedProperties = sharedProperties;
-                $scope.jacquesEndpointInterface = jacquesEndpointInterface;
+                $scope.SoundsService = SoundsService;
                 $scope.formValid = false;
 
                 $scope.lastUploadedGuildId = "";
@@ -28,7 +28,7 @@ angular
 
                     $scope.getBase64(firstFile).then(function (base64) {
                         var user = sharedProperties.getUser();
-                        $scope.jacquesEndpointInterface.postSound(user.discord_last_guild_id, fileName, base64, user.birdfeed_token)
+                        $scope.SoundsService.postSound(user.discord_last_guild_id, fileName, base64, user.birdfeed_token)
                             .then(function() {
                                 $scope.files = [];
                                 $scope.lastUploadedGuildId = user.discord_last_guild_id;

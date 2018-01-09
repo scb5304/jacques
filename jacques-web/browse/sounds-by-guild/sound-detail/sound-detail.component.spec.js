@@ -15,8 +15,10 @@ describe("Sound Detail", function () {
         var $state;
         var SoundDetailController;
 
-        var sharedProperties = {};
-        var jacquesEndpointInterface = {};
+        var sharedProperties = {
+            setUser: function() {}
+        };
+        var SoundsService = {};
         var jacquesToaster = {
             showToastWithText: function() {},
             showApiErrorToast: function() {}
@@ -43,7 +45,7 @@ describe("Sound Detail", function () {
             SoundDetailController = $componentController("soundDetail", {
                 $scope: $scope,
                 sharedProperties: sharedProperties,
-                jacquesEndpointInterface: jacquesEndpointInterface,
+                SoundsService: SoundsService,
                 jacquesToaster: jacquesToaster,
                 SoundDetailChartsHelper: SoundDetailChartsHelper,
                 $mdDialog: mdDialog
@@ -213,16 +215,16 @@ describe("Sound Detail", function () {
                     }
                 };
 
-                jacquesEndpointInterface.deleteSound = function(){
+                SoundsService.deleteSound = function(){
                     var deferred = $q.defer();
                     deferred.resolve("Remote call result");
                     return deferred.promise;
                 };
 
-                spyOn(jacquesEndpointInterface, "deleteSound").and.callThrough();
+                spyOn(SoundsService, "deleteSound").and.callThrough();
 
                 $scope.onConfirmDelete();
-                expect(jacquesEndpointInterface.deleteSound).toHaveBeenCalledWith("1994", "mySound", "lolololol");
+                expect(SoundsService.deleteSound).toHaveBeenCalledWith("1994", "mySound", "lolololol");
             });
 
             it("shows an error toast with specific text when sound upload fails with a 400-range response", function() {

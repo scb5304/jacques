@@ -55,14 +55,14 @@ angular
             url: '/sounds/{guildId}/{soundName}',
             component: 'soundDetail',
             resolve: {
-                guild: function($transition$, jacquesEndpointInterface) {
+                guild: function($transition$, GuildsService) {
                     var guildId = $transition$.params().guildId;
-                    return jacquesEndpointInterface.getGuild(guildId);
+                    return GuildsService.getGuild(guildId);
                 },
-                sound: function($transition$, jacquesEndpointInterface) {
+                sound: function($transition$, SoundsService) {
                     var guildId = $transition$.params().guildId;
                     var soundName = $transition$.params().soundName;
-                    return jacquesEndpointInterface.getSoundByName(guildId, soundName);
+                    return SoundsService.getSoundByName(guildId, soundName);
                 }
             },
             data: {

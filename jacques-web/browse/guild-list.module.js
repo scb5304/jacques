@@ -7,8 +7,8 @@ angular
             url: '/sounds',
             component: 'guildList',
             resolve: {
-                guilds: function(jacquesEndpointInterface) {
-                    return jacquesEndpointInterface.getGuilds();
+                guilds: function(GuildsService) {
+                    return GuildsService.getGuilds();
                 }
             },
             data: {

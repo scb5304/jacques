@@ -1,37 +1,14 @@
 "use strict";
 
 angular
-    .module("jacquesApp")
-    .service("jacquesEndpointInterface", function ($rootScope, $resource, $q) {
-        $rootScope.JACQUES_API_ROOT = "http://jacquesbot.io/api/";
-
-        var Statistics = $resource($rootScope.JACQUES_API_ROOT + "statistics");
-        var Users = $resource($rootScope.JACQUES_API_ROOT + "users/:birdfeed");
-        var Guilds = $resource($rootScope.JACQUES_API_ROOT + "guilds/:guildId");
+    .module("network")
+    .service("SoundsService", function ($rootScope, $resource, $q) {
         var SoundsByGuild = $resource($rootScope.JACQUES_API_ROOT + "sounds/:guildId?includeSoundEvents=:includeEvents");
         var SoundsByGuildAndName = $resource($rootScope.JACQUES_API_ROOT + "sounds/:guildId/:soundName");
         //Why can't I include birdfeed in the request body, Angular? DELETE is supposed to support this.
         var SoundsByGuildAndNameWithBirdfeedParam = $resource($rootScope.JACQUES_API_ROOT + "sounds/:guildId/:soundName?birdfeed=:birdfeed");
 
         return {
-            getGuilds: function () {
-                return $q(function(resolve, reject) {
-                    Guilds.query(function (guilds) {
-                        resolve(guilds);
-                    }, function (err) {
-                        reject(err);
-                    });
-                });
-            },
-            getGuild: function (discordGuildId) {
-                return $q(function(resolve, reject) {
-                    Guilds.get({guildId: discordGuildId}, function (guild) {
-                        resolve(guild);
-                    }, function (err) {
-                        reject(err);
-                    });
-                });
-            },
             getSoundsByGuild: function (discordGuildId) {
                 return $q(function(resolve, reject) {
                     SoundsByGuild.query({guildId: discordGuildId, includeEvents: false}, function (guilds) {
@@ -64,24 +41,6 @@ angular
                     var sound = {soundData: soundData, birdfeed: birdfeed};
                     SoundsByGuildAndName.save({guildId: discordGuildId, soundName: soundName}, sound, function () {
                         resolve();
-                    }, function (err) {
-                        reject(err);
-                    });
-                });
-            },
-            getStatistics: function() {
-                return $q(function(resolve, reject) {
-                    Statistics.get({}, function(statisticsObject) {
-                       resolve(statisticsObject);
-                    }, function (err) {
-                       reject(err);
-                    });
-                });
-            },
-            getUser: function(birdfeed) {
-                return $q(function(resolve, reject) {
-                    Users.get({birdfeed: birdfeed}, function(user) {
-                        resolve(user);
                     }, function (err) {
                         reject(err);
                     });

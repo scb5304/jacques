@@ -7,8 +7,8 @@ angular
             url: '/',
             component: 'home',
             resolve: {
-                statisticsObject: function(jacquesEndpointInterface) {
-                    return jacquesEndpointInterface.getStatistics();
+                statisticsObject: function(StatisticsService) {
+                    return StatisticsService.getStatistics();
                 }
             },
             data: {

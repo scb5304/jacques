@@ -3,6 +3,7 @@
 angular
     .module("jacquesApp")
     .controller("AppController", function AppController($rootScope, $scope, $location, $http, sharedProperties, $mdSidenav) {
+        $rootScope.JACQUES_API_ROOT = "http://jacquesbot.io/api/";
         $scope.sharedProperties = sharedProperties;
 
         $scope.initializeUserValuesFromLocalStorage = function() {

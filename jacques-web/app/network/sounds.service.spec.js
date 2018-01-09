@@ -1,8 +1,8 @@
 "use strict";
 
-describe("jacquesEndpointInterface", function() {
+describe("SoundsService", function() {
 
-    var jacquesEndpointInterface;
+    var SoundsService;
     var $rootScope;
     var $httpBackend;
 
@@ -15,9 +15,9 @@ describe("jacquesEndpointInterface", function() {
         $urlRouterProvider.deferIntercept();
     }));
 
-    beforeEach(inject(function(_$rootScope_, _jacquesEndpointInterface_, _$httpBackend_) {
+    beforeEach(inject(function(_$rootScope_, _SoundsService_, _$httpBackend_) {
         $rootScope = _$rootScope_;
-        jacquesEndpointInterface = _jacquesEndpointInterface_;
+        SoundsService = _SoundsService_;
         $httpBackend = _$httpBackend_;
     }));
 
@@ -47,7 +47,7 @@ describe("jacquesEndpointInterface", function() {
 
                 $httpBackend.expectGET($rootScope.JACQUES_API_ROOT + buildDelimited(expectedEndpoint, expectedGuildId, expectedSoundName))
                     .respond(expectedReturnedSound);
-                jacquesEndpointInterface.getSoundByName("420", "mySound69").then(function(sound) {
+                SoundsService.getSoundByName("420", "mySound69").then(function(sound) {
                     expect(expectedReturnedSound).toEqual(sound.toJSON());
                 });
             });
@@ -55,7 +55,7 @@ describe("jacquesEndpointInterface", function() {
             it("returns an error when failed network request", function() {
                 $httpBackend.expectGET($rootScope.JACQUES_API_ROOT + buildDelimited(expectedEndpoint, expectedGuildId, expectedSoundName))
                     .respond(500, "Internal Server Error");
-                jacquesEndpointInterface.getSoundByName("420", "mySound69").then(function() {
+                SoundsService.getSoundByName("420", "mySound69").then(function() {
                     throw "Server error should not have resulted in a resolved promise.";
                 }).catch(function(err) {
                     expect(err).toBeDefined();
@@ -71,7 +71,7 @@ describe("jacquesEndpointInterface", function() {
 
                 var uri = $rootScope.JACQUES_API_ROOT + buildDelimited(expectedEndpoint, expectedGuildId) + "?includeSoundEvents=false";
                 $httpBackend.expectGET(uri).respond(expectedReturnedSounds);
-                jacquesEndpointInterface.getSoundsByGuild("420").then(function(sound) {
+                SoundsService.getSoundsByGuild("420").then(function(sound) {
                     expect(expectedReturnedSounds.length).toEqual(3);
                 });
             });
@@ -82,7 +82,7 @@ describe("jacquesEndpointInterface", function() {
 
                 $httpBackend.expectGET($rootScope.JACQUES_API_ROOT + buildDelimited(expectedEndpoint, expectedGuildId, expectedSoundName))
                     .respond(500, "Internal Server Error");
-                jacquesEndpointInterface.getSoundByName("420", "mySound69").then(function() {
+                SoundsService.getSoundByName("420", "mySound69").then(function() {
                     throw "Server error should not have resulted in a resolved promise.";
                 }).catch(function(err) {
                     expect(err).toBeDefined();

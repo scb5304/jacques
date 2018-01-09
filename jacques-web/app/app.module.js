@@ -17,6 +17,7 @@ angular
         "upload",
         "help",
         "birdfeeder",
+        "network"
     ])
     .run(function($state, jacquesToaster) {
         $state.defaultErrorHandler(function() {

@@ -24,7 +24,7 @@ describe("upload", function() {
             showToastWithText: function() {},
             showApiErrorToast: function() {}
         };
-        var jacquesEndpointInterface = {};
+        var SoundsService = {};
 
         beforeEach(inject(function($componentController, $rootScope, _$q_) {
             $scope = $rootScope.$new();
@@ -32,19 +32,19 @@ describe("upload", function() {
             UploadController = $componentController("upload", {
                 $scope: $scope, sharedProperties: sharedProperties,
                 jacquesToaster: jacquesToaster,
-                jacquesEndpointInterface: jacquesEndpointInterface
+                SoundsService: SoundsService
             });
         }));
 
         it("does not post a sound if the form is currently invalid", function() {
-            $scope.jacquesEndpointInterface.postSound = function() {};
+            $scope.SoundsService.postSound = function() {};
             $scope.formValid = false;
 
             mockGetBase64Success();
-            spyOn(jacquesEndpointInterface, "postSound");
+            spyOn(SoundsService, "postSound");
 
             $scope.onSubmitClick();
-            expect(jacquesEndpointInterface.postSound).not.toHaveBeenCalled();
+            expect(SoundsService.postSound).not.toHaveBeenCalled();
         });
 
         it("posts a sound after getting the base64 string for the first file", function() {
@@ -52,12 +52,12 @@ describe("upload", function() {
 
             mockGetBase64Success();
             mockPostSoundSuccess();
-            spyOn(jacquesEndpointInterface, "postSound").and.callThrough();
+            spyOn(SoundsService, "postSound").and.callThrough();
 
             $scope.formValid = true;
             $scope.onSubmitClick();
             $scope.$digest();
-            expect(jacquesEndpointInterface.postSound).toHaveBeenCalledWith("123456", "mysound", "myBase64", "abcdefg");
+            expect(SoundsService.postSound).toHaveBeenCalledWith("123456", "mysound", "myBase64", "abcdefg");
         });
 
         it("shows the exact error in a toast when network call fails with an error message", function() {
@@ -69,7 +69,7 @@ describe("upload", function() {
                     error: "It failed in every way possible."
                 }
             });
-            spyOn(jacquesEndpointInterface, "postSound").and.callThrough();
+            spyOn(SoundsService, "postSound").and.callThrough();
             spyOn(jacquesToaster, "showToastWithText");
 
             $scope.formValid = true;
@@ -81,7 +81,7 @@ describe("upload", function() {
         it("shows a generic error in a toast when network call fails", function() {
             $scope.files = [{lfFile: {name: "mySound.mp3"}}];
 
-            spyOn(jacquesEndpointInterface, "postSound").and.callThrough();
+            spyOn(SoundsService, "postSound").and.callThrough();
             spyOn(jacquesToaster, "showApiErrorToast");
             mockGetBase64Success();
             mockPostSoundFailure({});
@@ -101,7 +101,7 @@ describe("upload", function() {
         }
 
         function mockPostSoundSuccess() {
-            $scope.jacquesEndpointInterface.postSound = function() {
+            $scope.SoundsService.postSound = function() {
                 var deferred = $q.defer();
                 deferred.resolve();
                 return deferred.promise;
@@ -109,7 +109,7 @@ describe("upload", function() {
         }
 
         function mockPostSoundFailure(err) {
-            $scope.jacquesEndpointInterface.postSound = function() {
+            $scope.SoundsService.postSound = function() {
                 var deferred = $q.defer();
                 deferred.reject(err);
                 return deferred.promise;

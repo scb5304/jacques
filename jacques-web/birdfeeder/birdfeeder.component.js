@@ -3,8 +3,8 @@
 angular.module("birdfeeder")
     .component("birdfeeder", {
         templateUrl: "birdfeeder/birdfeeder.template.html",
-        controller: ["$scope", "sharedProperties", "jacquesEndpointInterface", "jacquesToaster", "$mdDialog",
-            function BirdfeedController($scope, sharedProperties, jacquesEndpointInterface, jacquesToaster, $mdDialog) {
+        controller: ["$scope", "sharedProperties", "UsersService", "jacquesToaster", "$mdDialog",
+            function BirdfeedController($scope, sharedProperties, UsersService, jacquesToaster, $mdDialog) {
                 $scope.makingRequest = false;
                 $scope.sharedProperties = sharedProperties;
 
@@ -31,7 +31,7 @@ angular.module("birdfeeder")
 
                 $scope.submitBirdfeed = function(birdfeed) {
                     $scope.makingRequest = true;
-                    jacquesEndpointInterface.getUser(birdfeed)
+                    UsersService.getUser(birdfeed)
                         .then($scope.onSuccessfulGetUserResponse)
                         .catch($scope.onFailureGetUserResponse);
                 };

@@ -13,7 +13,7 @@ describe("birdfeeder", function() {
         var sharedProperties = {
             setUser: function() {}
         };
-        var jacquesEndpointInterface = {
+        var UsersService = {
             getUser: function() {}
         };
         var jacquesToaster = {
@@ -32,7 +32,7 @@ describe("birdfeeder", function() {
             BirdfeedController = $componentController("birdfeeder", {
                 $scope: $scope,
                 sharedProperties: sharedProperties,
-                jacquesEndpointInterface: jacquesEndpointInterface,
+                UsersService: UsersService,
                 jacquesToaster: jacquesToaster,
                 $mdDialog: mdDialog
             });
@@ -59,7 +59,7 @@ describe("birdfeeder", function() {
 
             describe("successful", function() {
                 beforeEach(function() {
-                    jacquesEndpointInterface.getUser = function() {
+                    UsersService.getUser = function() {
                         var deferred = $q.defer();
                         deferred.resolve(testUser);
                         return deferred.promise;
@@ -67,13 +67,13 @@ describe("birdfeeder", function() {
                 });
 
                 it("uses jacques endpoint interface to fetch the user with this birdfeed", function() {
-                    spyOn(jacquesEndpointInterface, "getUser").and.callThrough();
+                    spyOn(UsersService, "getUser").and.callThrough();
                     $scope.submitBirdfeed(testBirdfeed);
-                    expect(jacquesEndpointInterface.getUser).toHaveBeenCalledWith(testBirdfeed);
+                    expect(UsersService.getUser).toHaveBeenCalledWith(testBirdfeed);
                 });
 
                 it("stores the returned user in local storage", function() {
-                    spyOn(jacquesEndpointInterface, "getUser").and.callThrough();
+                    spyOn(UsersService, "getUser").and.callThrough();
                     spyOn(localStorage, "setItem");
 
                     $scope.submitBirdfeed(testBirdfeed);
@@ -82,7 +82,7 @@ describe("birdfeeder", function() {
                 });
 
                 it("stores the returned user in shared properties", function() {
-                    spyOn(jacquesEndpointInterface, "getUser").and.callThrough();
+                    spyOn(UsersService, "getUser").and.callThrough();
                     spyOn(sharedProperties, "setUser");
 
                     $scope.submitBirdfeed(testBirdfeed);
@@ -93,7 +93,7 @@ describe("birdfeeder", function() {
 
             describe("failed", function() {
                 beforeEach(function() {
-                    jacquesEndpointInterface.getUser = function() {
+                    UsersService.getUser = function() {
                         var deferred = $q.defer();
                         deferred.reject({});
                         return deferred.promise;
@@ -101,7 +101,7 @@ describe("birdfeeder", function() {
                 });
 
                 it("removes the current user in local storage", function() {
-                    spyOn(jacquesEndpointInterface, "getUser").and.callThrough();
+                    spyOn(UsersService, "getUser").and.callThrough();
                     spyOn(localStorage, "removeItem");
 
                     $scope.submitBirdfeed(testBirdfeed);
@@ -110,7 +110,7 @@ describe("birdfeeder", function() {
                 });
 
                 it("removes the current user in shared properties", function() {
-                    spyOn(jacquesEndpointInterface, "getUser").and.callThrough();
+                    spyOn(UsersService, "getUser").and.callThrough();
                     spyOn(sharedProperties, "setUser");
 
                     $scope.submitBirdfeed(testBirdfeed);
@@ -119,7 +119,7 @@ describe("birdfeeder", function() {
                 });
 
                 it("displays toast with specific error when exists", function() {
-                    jacquesEndpointInterface.getUser = function() {
+                    UsersService.getUser = function() {
                         var deferred = $q.defer();
                         deferred.reject({
                             data: {
@@ -128,7 +128,7 @@ describe("birdfeeder", function() {
                         });
                         return deferred.promise;
                     };
-                    spyOn(jacquesEndpointInterface, "getUser").and.callThrough();
+                    spyOn(UsersService, "getUser").and.callThrough();
                     spyOn(jacquesToaster, "showToastWithText");
 
                     $scope.submitBirdfeed(testBirdfeed);
@@ -137,7 +137,7 @@ describe("birdfeeder", function() {
                 });
 
                 it("displays toast with generic error when a specific one doesnt exist", function() {
-                    spyOn(jacquesEndpointInterface, "getUser").and.callThrough();
+                    spyOn(UsersService, "getUser").and.callThrough();
                     spyOn(jacquesToaster, "showApiErrorToast");
 
                     $scope.submitBirdfeed(testBirdfeed);

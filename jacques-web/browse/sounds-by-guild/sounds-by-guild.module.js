@@ -7,13 +7,13 @@ angular
             url: '/sounds/{guildId}',
             component: 'soundsByGuild',
             resolve: {
-                guild: function ($transition$, jacquesEndpointInterface) {
+                guild: function ($transition$, GuildsService) {
                     var guildId = $transition$.params().guildId;
-                    return jacquesEndpointInterface.getGuild(guildId);
+                    return GuildsService.getGuild(guildId);
                 },
-                sounds: function ($transition$, jacquesEndpointInterface) {
+                sounds: function ($transition$, SoundsService) {
                     var guildId = $transition$.params().guildId;
-                    return jacquesEndpointInterface.getSoundsByGuild(guildId);
+                    return SoundsService.getSoundsByGuild(guildId);
                 }
             },
             data: {
