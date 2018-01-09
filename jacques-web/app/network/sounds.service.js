@@ -27,9 +27,9 @@ angular
                     });
                 });
             },
-            deleteSound: function(discordGuildId, soundName, birdfeed_token) {
+            deleteSound: function(discordGuildId, soundName, birdfeed) {
                 return $q(function(resolve, reject) {
-                    SoundsByGuildAndNameWithBirdfeedParam.delete({guildId: discordGuildId, soundName: soundName, birdfeed: birdfeed_token}, function () {
+                    SoundsByGuildAndNameWithBirdfeedParam.delete({guildId: discordGuildId, soundName: soundName, birdfeed: birdfeed}, function () {
                         resolve();
                     }, function (err) {
                         reject(err);
