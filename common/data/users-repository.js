@@ -7,7 +7,7 @@ function getUserFromDiscordId(discordId) {
             if (err || !user) {
                 return reject("Couldn't query for this user: " + discordId + ". Error: " + err);
             } else {
-                return user;
+                return resolve(user);
             }
         });
     });
