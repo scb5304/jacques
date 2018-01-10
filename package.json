@@ -17,8 +17,8 @@
     "testCommon": "mocha ./common/**/*.spec.js",
     "coverCommon": "nyc --reporter=lcovonly --report-dir=./coverage/common npm run testCommon",
 
-    "test": "npm-run-all -p -l testBot testApi testWeb --silent",
-    "cover": "npm-run-all -p -l coverBot coverApi coverWeb --silent",
+    "test": "npm-run-all -p -l testBot testApi testWeb testCommon --silent",
+    "cover": "npm-run-all -p -l coverBot coverApi coverWeb coverCommon --silent",
     "coveralls": "npm run cover && grunt lcovMerge && cat ./coverage/lcov-all.info | coveralls"
   },
   "nyc": {
