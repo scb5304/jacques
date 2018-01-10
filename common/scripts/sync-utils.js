@@ -11,9 +11,7 @@ function beginSync() {
         soundsRepository.getAllSounds().then(function(dbSounds) {
             performSync(dbSounds).then(function() {
                 return resolve();
-            }).catch(function(err) {
-                return reject(err);
-            })
+            });
         }).catch(function(err) {
             return reject(err);
         })
@@ -57,9 +55,11 @@ function fileSystemContainsDbSound(soundsFoundInFileSystem, dbSound) {
 function performSync(dbSounds) {
     return new Promise((resolve, reject) => {
         logger.info("Beginning sync...");
+        if (!dbSounds) {
+            return reject("No dbSounds to sync!");
+        }
 
-        var soundsFoundInFileSystem = [];
-
+        let soundsFoundInFileSystem = [];
         readdirp({root: ROOT_PATH})
             .on("warn", function (err) {
                 logger.error("non-fatal error", err);
@@ -70,11 +70,11 @@ function performSync(dbSounds) {
             })
             .on("data", function (entry) {
                 soundsFoundInFileSystem.push(entry);
-                var soundName = getSoundNameWithoutExtensionFromEntry(entry);
-                var discordGuildId = getSoundDiscordGuildIdFromEntry(entry);
+                let soundName = getSoundNameWithoutExtensionFromEntry(entry);
+                let discordGuildId = getSoundDiscordGuildIdFromEntry(entry);
 
                 //See if it is in the database already.
-                var dbSound = getSoundWithNameAndGuildIdFromList(dbSounds, soundName, discordGuildId);
+                let dbSound = getSoundWithNameAndGuildIdFromList(dbSounds, soundName, discordGuildId);
                 if (!dbSound) {
                     onSoundInFileSystemNotInDatabase(soundName, discordGuildId);
                 }

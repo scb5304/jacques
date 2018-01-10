@@ -70,7 +70,7 @@ function deleteSoundWithDiscordGuildIdAndName(discordGuildId, soundName) {
 function getAllSounds() {
     return new Promise((resolve, reject) => {
         Sound.find({}, SOUNDS_PROJECTION, function (err, sounds) {
-            if (err || !sounds) {
+            if (err) {
                 return reject("Couldn't query for all sounds, error: " + err);
             } else {
                 return resolve(sounds);
@@ -106,20 +106,8 @@ function deleteSoundByDiscordGuildIdAndName(discordGuildId, soundName) {
 function getSoundsByDiscordGuildId(discordGuildId) {
     return new Promise((resolve, reject) => {
         Sound.find({discord_guild: discordGuildId}, SOUNDS_PROJECTION, function (err, sounds) {
-            if (err || !sounds) {
+            if (err) {
                 return reject("Couldn't query for all sounds in guild " + discordGuildId + ". Error: " + err);
-            } else {
-                return resolve(sounds);
-            }
-        }).sort({name: "asc"});
-    });
-}
-
-function getSoundsByName(soundName) {
-    return new Promise((resolve, reject) => {
-        Sound.find({name: soundName}, SOUNDS_PROJECTION, function (err, sounds) {
-            if (err || !sounds) {
-                return reject("Couldn't query for all sounds with name " + soundName + ", Error: " + err);
             } else {
                 return resolve(sounds);
             }
@@ -131,10 +119,10 @@ function getRandomSoundInDiscordGuild(discordGuildId) {
     return new Promise((resolve, reject) => {
         Sound.find({discord_guild: discordGuildId}, SOUNDS_PROJECTION, function (err, sounds) {
             var random = util.getRandomInt(0, (sounds.length - 1));
-            if (err || !sounds) {
+            if (err) {
                 return reject("Couldn't get random sound. Error: " + err);
             } else {
-                var randomSound = sounds[random];
+                var randomSound = sounds ? sounds[random] : undefined;
                 return resolve(randomSound);
             }
         });
@@ -182,7 +170,6 @@ function getSoundEventsCount() {
 
 
 module.exports.getAllSounds = getAllSounds;
-module.exports.getSoundsByName = getSoundsByName;
 module.exports.getSoundsByDiscordGuildId = getSoundsByDiscordGuildId;
 module.exports.getSoundByDiscordGuildIdAndName = getSoundByDiscordGuildIdAndName;
 module.exports.getRandomSoundInDiscordGuild = getRandomSoundInDiscordGuild;
