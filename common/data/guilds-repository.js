@@ -1,5 +1,4 @@
 const Guild = require("./../model/guild").Guild;
-const logger = require("./../util/logger");
 
 const GUILD_PROJECTION = {
     __v: false,
@@ -70,7 +69,6 @@ function insertGuild(discordGuild) {
         });
         newGuild.save(function(err) {
             if (err) {
-                logger.error(err);
                 return reject(err);
             } else {
                 return resolve();

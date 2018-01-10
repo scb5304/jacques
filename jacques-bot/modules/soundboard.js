@@ -16,6 +16,8 @@ function playRandomSound(message) {
             if (sound) {
                 playSound(sound, message.member.voiceChannel);
                 insertSoundEvent(sound, message.member.guild.id, message.member.displayName, "playRandom");
+            } else {
+                logger.error("Couldn't get a random sound, there are likely no sounds in the database for this guild.");
             }
         })
         .catch(logger.error);

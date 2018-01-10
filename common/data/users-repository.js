@@ -4,7 +4,7 @@ const logger = require("./../util/logger");
 function getUserFromDiscordId(discordId) {
     return new Promise((resolve, reject) => {
         User.findOne({discord_id: discordId}, function (err, user) {
-            if (err || !user) {
+            if (err) {
                 return reject("Couldn't query for this user: " + discordId + ". Error: " + err);
             } else {
                 return resolve(user);
@@ -38,6 +38,7 @@ function upsertUserWithDiscordDataAndToken(guildMember, token) {
             upsert: true, new: true
         }, function (err, user) {
             if (err || !user) {
+                //Even though there was no db error, return an error if there was no user inserted/updated user.
                 return reject("Couldn't update find/update user: " + guildMember.user.username + ". Error: " + err);
             } else {
                 return resolve();
