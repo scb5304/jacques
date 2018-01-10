@@ -1,10 +1,10 @@
 const Discord = require("discord.js");
 const logger = require("../../common/util/logger");
-const soundboard = require("../modules/soundboard");
-const streamer = require("../modules/streamer");
-const messenger = require("../modules/messenger");
-const guildManager = require("../modules/guild-manager");
-const birdfeedManager = require("../modules/birdfeed-manager");
+const soundboard = require("../audio/soundboard");
+const streamer = require("../audio/streamer");
+const messenger = require("../messaging/messenger");
+const guildManager = require("../guilds/guild-leader");
+const birdfeedManager = require("../birdfeed/bird-keeper");
 
 let bot;
 const site = "http://jacquesbot.io";

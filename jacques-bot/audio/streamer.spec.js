@@ -2,7 +2,7 @@ require("dotenv").config({path: require("app-root-path") + "/.env"});
 
 const sinon = require("sinon");
 const chai = require("chai");
-const streamer = require("../modules/streamer");
+const streamer = require("./streamer");
 const ytdl = require("ytdl-core");
 
 beforeEach(function() {

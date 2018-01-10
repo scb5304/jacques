@@ -2,12 +2,12 @@ require("dotenv").config({path: require("app-root-path") + "/.env"});
 const Discord = require("discord.js");
 const sinon = require("sinon");
 const chai = require("chai");
-const jacques = require("../core/jacques-core");
-const soundboard = require("../modules/soundboard");
-const streamer = require("../modules/streamer");
-const messenger = require("../modules/messenger");
-const guildManager = require("../modules/guild-manager");
-const birdfeedManager = require("../modules/birdfeed-manager");
+const jacques = require("./jacques-core");
+const soundboard = require("../audio/soundboard");
+const streamer = require("../audio/streamer");
+const messenger = require("../messaging/messenger");
+const guildManager = require("../guilds/guild-leader");
+const birdfeedManager = require("../birdfeed/bird-keeper");
 
 const prefix = process.env.JACQUES_PREFIX;
 

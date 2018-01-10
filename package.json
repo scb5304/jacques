@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node jacques-bot/jacques-bot.js",
 
-    "testBot": "mocha ./jacques-bot/test/*.spec.js",
+    "testBot": "mocha ./jacques-bot/**/*.spec.js",
     "coverBot": "nyc --reporter=lcovonly --report-dir=./coverage/bot npm run testBot",
 
     "testApi": "mocha ./jacques-api/test/*.spec.js",
