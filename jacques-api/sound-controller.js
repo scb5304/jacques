@@ -164,7 +164,7 @@ function validateSoundPostRequestHasRequiredData(req, res) {
 
     //Remove MP3 meta data, or handle the file not being the appropriate type.
     let soundData = req.body.soundData;
-    if (!soundData.includes(MP3_META_DATA)) {
+    if (!soundData || !soundData.includes(MP3_META_DATA)) {
         res.status(400).send({error: "Unsupported file type. Jacques only supports MP3 files."});
         return false;
     }

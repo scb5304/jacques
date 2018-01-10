@@ -11,17 +11,16 @@ const SOUNDS_PROJECTION = {
 
 function insertSoundForGuildByUser(soundName, user) {
     return new Promise((resolve, reject) => {
-        var newSound = Sound({
+        Sound.create({
             name: soundName,
             add_date: new Date(),
             added_by: user.discord_username ? user.discord_username : "Server",
             discord_guild: user.discord_last_guild_id
-        });
-        newSound.save(function(err) {
+        }, function(err, sound) {
             if (err) {
                 return reject(err);
             } else {
-                return resolve();
+                return resolve(sound);
             }
         });
     });
