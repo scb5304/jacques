@@ -1,4 +1,4 @@
-const Guild = require("./../model/guild").Guild;
+const Guild = require("../../model/guild").Guild;
 
 const GUILD_PROJECTION = {
     __v: false,

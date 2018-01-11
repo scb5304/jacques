@@ -5,8 +5,8 @@ const userController = require("../user-controller");
 const jacquesTestUtils = require("./controller-test-utils");
 const moment = require("moment");
 
-const usersRepository = require("../../jacques-common/data/users-repository");
-const guildsRepository = require("../../jacques-common/data/guilds-repository");
+const usersRepository = require("../../jacques-common/data/users/users-repository");
+const guildsRepository = require("../../jacques-common/data/guilds/guilds-repository");
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();

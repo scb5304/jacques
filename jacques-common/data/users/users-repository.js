@@ -1,5 +1,5 @@
-const User = require("./../model/user").User;
-const logger = require("./../util/logger");
+const User = require("../../model/user").User;
+const logger = require("../../util/logger");
 
 function getUserFromDiscordId(discordId) {
     return new Promise((resolve, reject) => {

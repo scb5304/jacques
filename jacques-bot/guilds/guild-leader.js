@@ -1,4 +1,4 @@
-const guildsRepository = require("../../jacques-common/data/guilds-repository");
+const guildsRepository = require("../../jacques-common/data/guilds/guilds-repository");
 const logger = require("../../jacques-common/util/logger");
 
 function updateGuildVolume(guildId, volume) {

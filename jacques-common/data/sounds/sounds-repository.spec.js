@@ -1,9 +1,9 @@
 require("dotenv").config({path: require("app-root-path") + "/.env"});
 const sinon = require("sinon");
 const chai = require("chai");
-const Sound = require("./../model/sound").Sound;
+const Sound = require("../../model/sound").Sound;
 const soundsRepository = require("./sounds-repository");
-const logger = require("..//util/logger");
+const logger = require("../../util/logger");
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();

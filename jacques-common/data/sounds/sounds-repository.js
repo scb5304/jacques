@@ -1,7 +1,7 @@
-const Sound = require("./../model/sound").Sound;
-const SoundEvent = require("./../model/sound").SoundEvent;
-const logger = require("./../util/logger");
-const util = require("./../util/utility");
+const Sound = require("../../model/sound").Sound;
+const SoundEvent = require("../../model/sound").SoundEvent;
+const logger = require("../../util/logger");
+const util = require("../../util/utility");
 
 const SOUNDS_PROJECTION = {
     __v: false,

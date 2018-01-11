@@ -1,4 +1,4 @@
-const usersRepository = require("../../jacques-common/data/users-repository");
+const usersRepository = require("../../jacques-common/data/users/users-repository");
 const UIDGenerator = require("uid-generator");
 const logger = require("../../jacques-common/util/logger.js");
 

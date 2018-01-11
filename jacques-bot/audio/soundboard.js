@@ -1,6 +1,6 @@
-const soundsRepository = require("../../jacques-common/data/sounds-repository");
+const soundsRepository = require("../../jacques-common/data/sounds/sounds-repository");
 const logger = require("../../jacques-common/util/logger.js");
-const fsReader = require("../../jacques-common/util/fileSystemReader.js");
+const fsReader = require("../../jacques-common/util/file-system-reader.js");
 
 function insertSoundEvent(sound, guildId, memberName, eventType) {
     try {
