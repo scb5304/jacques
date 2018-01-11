@@ -3,11 +3,7 @@ const logger = require("../../jacques-common/util/logger.js");
 const fsReader = require("../../jacques-common/util/file-system-reader.js");
 
 function insertSoundEvent(sound, guildId, memberName, eventType) {
-    try {
-        soundsRepository.insertSoundEvent(sound.name, guildId, memberName, eventType);
-    } catch (err) {
-        logger.error(err);
-    }
+    soundsRepository.insertSoundEvent(sound.name, guildId, memberName, eventType).catch(logger.error);
 }
 
 function playRandomSound(message) {

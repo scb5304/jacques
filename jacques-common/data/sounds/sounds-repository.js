@@ -27,40 +27,27 @@ function insertSoundForGuildByUser(soundName, user) {
 }
 
 function insertSoundEvent(soundName, guildId, performedBy, eventCategory) {
-    Sound.findOne({
-        name: soundName,
-        discord_guild: guildId
-    }, function (err, sound) {
-        if (err) {
-            logger.error(err);
-            return;
-        }
-
-        if (sound === null) {
-            logger.info("Sound was null for " + soundName + ", " + performedBy + ", " + eventCategory);
-            return;
-        }
-        var soundEvent = SoundEvent({
-            category: eventCategory,
-            date: new Date(),
-            performed_by: performedBy
-        });
-        sound.sound_events.push(soundEvent);
-        sound.save(function (err) {
-            if (err) {
-                logger.error(err);
-            }
-        });
-    });
-}
-
-function deleteSoundWithDiscordGuildIdAndName(discordGuildId, soundName) {
     return new Promise((resolve, reject) => {
-        Sound.remove({name: soundName, discord_guild: discordGuildId}, function (err) {
-            if (err) {
-                return reject(err);
+        Sound.findOne({
+            name: soundName,
+            discord_guild: guildId
+        }, function (err, sound) {
+            if (err || !sound) {
+                return reject(err ? err : "Sound was null when trying to add a sound event.");
             } else {
-                return resolve();
+                let soundEvent = SoundEvent({
+                    category: eventCategory,
+                    date: new Date(),
+                    performed_by: performedBy
+                });
+                sound.sound_events.push(soundEvent);
+                sound.save(function (err, sound) {
+                    if (err) {
+                        return reject(err);
+                    } else {
+                        return resolve(sound);
+                    }
+                });
             }
         });
     });
@@ -117,10 +104,10 @@ function getSoundsByDiscordGuildId(discordGuildId) {
 function getRandomSoundInDiscordGuild(discordGuildId) {
     return new Promise((resolve, reject) => {
         Sound.find({discord_guild: discordGuildId}, SOUNDS_PROJECTION, function (err, sounds) {
-            var random = util.getRandomInt(0, (sounds.length - 1));
             if (err) {
                 return reject("Couldn't get random sound. Error: " + err);
             } else {
+                var random = util.getRandomInt(0, (sounds.length - 1));
                 var randomSound = sounds ? sounds[random] : undefined;
                 return resolve(randomSound);
             }
@@ -160,7 +147,6 @@ function getSoundEventsCount() {
             if (err) {
                 return reject(err);
             } else {
-                logger.info(result);
                 return resolve(result[0].count);
             }
         });
@@ -180,4 +166,3 @@ module.exports.insertSoundForGuildByUser = insertSoundForGuildByUser;
 module.exports.insertSoundEvent = insertSoundEvent;
 
 module.exports.deleteSoundByDiscordGuildIdAndName = deleteSoundByDiscordGuildIdAndName;
-module.exports.deleteSoundWithGuildIdAndName = deleteSoundWithDiscordGuildIdAndName;
