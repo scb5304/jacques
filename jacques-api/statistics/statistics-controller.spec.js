@@ -3,8 +3,8 @@ require("dotenv").config({path: require("app-root-path") + "/.env"});
 const soundsRepository = require("../../jacques-common/data/sounds/sounds-repository");
 const guildsRepository = require("../../jacques-common/data/guilds/guilds-repository");
 const sinon = require("sinon");
-const statisticsController = require("../statistics-controller");
-const jacquesTestUtils = require("./controller-test-utils");
+const statisticsController = require("./statistics-controller");
+const jacquesTestUtils = require("../../jacques-common/util/test-utils");
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();

@@ -1,5 +1,5 @@
 const chai = require("chai");
-const logger = require("../../jacques-common/util/logger");
+const logger = require("./logger");
 
 function expectResponseStatus(expected, actual, done) {
     logger.info("Expecting status of " + expected + ", got " + actual);

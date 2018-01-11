@@ -2,8 +2,8 @@ require("dotenv").config({path: require("app-root-path") + "/.env"});
 
 const guildsRepository = require("../../jacques-common/data/guilds/guilds-repository");
 const sinon = require("sinon");
-const guildController = require("../guild-controller");
-const jacquesTestUtils = require("./controller-test-utils");
+const guildController = require("./guilds-controller");
+const jacquesTestUtils = require("../../jacques-common/util/test-utils");
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();

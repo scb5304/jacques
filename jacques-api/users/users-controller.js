@@ -1,6 +1,6 @@
-const logger = require("../jacques-common/util/logger");
-const usersRepository = require("../jacques-common/data/users/users-repository");
-const guildsRepository = require("../jacques-common/data/guilds/guilds-repository");
+const logger = require("../../jacques-common/util/logger");
+const usersRepository = require("../../jacques-common/data/users/users-repository");
+const guildsRepository = require("../../jacques-common/data/guilds/guilds-repository");
 const moment = require("moment");
 
 function getUser(req, res) {

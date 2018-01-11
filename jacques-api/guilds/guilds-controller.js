@@ -1,5 +1,5 @@
-const logger = require("../jacques-common/util/logger");
-const guildsRepository = require("../jacques-common/data/guilds/guilds-repository");
+const logger = require("../../jacques-common/util/logger");
+const guildsRepository = require("../../jacques-common/data/guilds/guilds-repository");
 
 function getGuild(req, res) {
     const guild = req.params.guild;

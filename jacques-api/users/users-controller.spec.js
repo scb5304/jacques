@@ -1,8 +1,8 @@
 require("dotenv").config({path: require("app-root-path") + "/.env"});
 
 const sinon = require("sinon");
-const userController = require("../user-controller");
-const jacquesTestUtils = require("./controller-test-utils");
+const userController = require("./users-controller");
+const jacquesTestUtils = require("../../jacques-common/util/test-utils");
 const moment = require("moment");
 
 const usersRepository = require("../../jacques-common/data/users/users-repository");

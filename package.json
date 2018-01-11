@@ -8,7 +8,7 @@
     "testBot": "mocha ./jacques-bot/**/*.spec.js",
     "coverBot": "nyc --reporter=lcovonly --report-dir=./coverage/bot npm run testBot",
 
-    "testApi": "mocha ./jacques-api/test/*.spec.js",
+    "testApi": "mocha ./jacques-api/**/*.spec.js",
     "coverApi": "nyc --reporter=lcovonly --report-dir=./coverage/api npm run testApi",
 
     "testWeb": "karma start",
