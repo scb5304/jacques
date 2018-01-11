@@ -14,7 +14,7 @@
     "testWeb": "karma start",
     "coverWeb": "npm run testWeb",
 
-    "testCommon": "mocha ./common/**/*.spec.js",
+    "testCommon": "mocha ./jacques-common/**/*.spec.js",
     "coverCommon": "nyc --reporter=lcovonly --report-dir=./coverage/common npm run testCommon",
 
     "test": "npm-run-all -p -l testBot testApi testWeb testCommon --silent",

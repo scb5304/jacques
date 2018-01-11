@@ -1,6 +1,6 @@
 require("dotenv").config({path: require("app-root-path") + "/.env"});
 
-const guildsRepository = require("../../common/data/guilds-repository");
+const guildsRepository = require("../../jacques-common/data/guilds-repository");
 const sinon = require("sinon");
 const guildController = require("../guild-controller");
 const jacquesTestUtils = require("./controller-test-utils");

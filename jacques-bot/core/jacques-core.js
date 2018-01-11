@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const logger = require("../../common/util/logger");
+const logger = require("../../jacques-common/util/logger");
 const soundboard = require("../audio/soundboard");
 const streamer = require("../audio/streamer");
 const messenger = require("../messaging/messenger");

@@ -3,7 +3,7 @@ const sinon = require("sinon");
 const chai = require("chai");
 const Sound = require("./../model/sound").Sound;
 const soundsRepository = require("./sounds-repository");
-const logger = require("../../common/util/logger");
+const logger = require("..//util/logger");
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();

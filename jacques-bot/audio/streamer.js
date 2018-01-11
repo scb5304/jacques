@@ -1,4 +1,4 @@
-const logger = require("../../common/util/logger.js");
+const logger = require("../../jacques-common/util/logger.js");
 const ytdl = require("ytdl-core");
 
 function streamAudio(voiceChannel, volume, streamLink) {

@@ -1,6 +1,6 @@
-const usersRepository = require("../../common/data/users-repository");
+const usersRepository = require("../../jacques-common/data/users-repository");
 const UIDGenerator = require("uid-generator");
-const logger = require("../../common/util/logger.js");
+const logger = require("../../jacques-common/util/logger.js");
 
 function userHasUploadPermissions(guildMember) {
     try {

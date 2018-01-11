@@ -1,6 +1,6 @@
 require("dotenv").config({path: require("app-root-path") + "/.env"});
 const sinon = require("sinon");
-const Db = require("../../common/data/db");
+const Db = require("../../jacques-common/data/db");
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();

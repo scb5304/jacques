@@ -1,8 +1,8 @@
 const fs = require("fs");
 const path = require("path");
-const logger = require("../common/util/logger");
-const soundsRepository = require("../common/data/sounds-repository");
-const usersRepository = require("../common/data/users-repository");
+const logger = require("../jacques-common/util/logger");
+const soundsRepository = require("../jacques-common/data/sounds-repository");
+const usersRepository = require("../jacques-common/data/users-repository");
 const moment = require("moment");
 const mkdirp = require("mkdirp");
 

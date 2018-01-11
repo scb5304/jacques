@@ -1,6 +1,6 @@
-const logger = require("../common/util/logger");
-const soundsRepository = require("../common/data/sounds-repository");
-const guildsRepository = require("../common/data/guilds-repository");
+const logger = require("../jacques-common/util/logger");
+const soundsRepository = require("../jacques-common/data/sounds-repository");
+const guildsRepository = require("../jacques-common/data/guilds-repository");
 
 function getStatistics(req, res) {
     const promises = [];
