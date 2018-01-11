@@ -2,12 +2,12 @@ require("dotenv").config({path: "./../.env"});
 
 const express = require("express");
 const bodyParser = require("body-parser");
-const Db = require("../common/data/db.js");
-const logger = require("../common/util/logger.js");
-const soundController = require("./sound-controller");
-const userController = require("./user-controller");
-const guildController = require("./guild-controller");
-const statisticsController = require("./statistics-controller");
+const Db = require("../jacques-common/data/db.js");
+const logger = require("../jacques-common/util/logger.js");
+const soundController = require("./sounds/sounds-controller");
+const userController = require("./users/users-controller");
+const guildController = require("./guilds/guilds-controller");
+const statisticsController = require("./statistics/statistics-controller");
 
 const app = express();
 const router = express.Router();
