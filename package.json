@@ -5,17 +5,17 @@
   "scripts": {
     "start": "node jacques-bot/jacques-bot.js",
 
-    "testBot": "mocha jacques-bot/**/*.spec.js",
-    "coverBot": "nyc --reporter=lcovonly --report-dir=coverage/bot npm run testBot",
+    "testBot": "mocha './jacques-bot/**/*.spec.js'",
+    "coverBot": "nyc --reporter=lcovonly --report-dir=./coverage/bot npm run testBot",
 
-    "testApi": "mocha jacques-api/**/*.spec.js",
-    "coverApi": "nyc --reporter=lcovonly --report-dir=coverage/api npm run testApi",
+    "testApi": "mocha './jacques-api/**/*.spec.js'",
+    "coverApi": "nyc --reporter=lcovonly --report-dir=./coverage/api npm run testApi",
 
     "testWeb": "karma start",
     "coverWeb": "npm run testWeb",
 
-    "testCommon": "mocha jacques-common/**/*.spec.js",
-    "coverCommon": "nyc --reporter=lcovonly --report-dir=coverage/common npm run testCommon",
+    "testCommon": "mocha './jacques-common/**/*.spec.js'",
+    "coverCommon": "nyc --reporter=lcovonly --report-dir=./coverage/common npm run testCommon",
 
     "test": "npm-run-all -p -l testBot testApi testWeb testCommon --silent",
     "cover": "npm-run-all -p -l coverBot coverApi coverWeb coverCommon --silent",
