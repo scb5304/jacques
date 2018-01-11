@@ -3,6 +3,6 @@
 .coveralls.yml
 npm-debug.log
 coverage/
-sounds/
+/sounds/
 .nyc_output/
 node_modules/
