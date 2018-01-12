@@ -35,7 +35,7 @@ describe("user-controller", function() {
 
             it("returns with a status of 404", function(done) {
                 this.sandbox.stub(this.res, "status").callsFake(function(status) {
-                    return jacquesTestUtils.expectResponseStatus(404, status, done)
+                    return jacquesTestUtils.expectApiResponseStatus(404, status, done)
                 });
                 userController.getUser({params: {birdfeed: "testBirdfeed"}}, this.res);
             });
@@ -68,7 +68,7 @@ describe("user-controller", function() {
                     return Promise.resolve(expectedGuild);
                 });
                 this.sandbox.stub(this.res, "json").callsFake(function(actualUser) {
-                    jacquesTestUtils.expectResponseJson(expectedUser, actualUser, done)
+                    jacquesTestUtils.expectApiResponseJson(expectedUser, actualUser, done)
                 });
 
                 userController.getUser({params: {birdfeed: "testBirdfeed"}}, this.res);
@@ -79,7 +79,7 @@ describe("user-controller", function() {
                     return Promise.resolve(undefined);
                 });
                 this.sandbox.stub(this.res, "status").callsFake(function(status) {
-                    return jacquesTestUtils.expectResponseStatus(500, status, done)
+                    return jacquesTestUtils.expectApiResponseStatus(500, status, done)
                 });
 
                 userController.getUser({params: {birdfeed: "testBirdfeed"}}, this.res);
@@ -90,7 +90,7 @@ describe("user-controller", function() {
                     return Promise.reject("Database is spaghetti.");
                 });
                 this.sandbox.stub(this.res, "status").callsFake(function(status) {
-                    return jacquesTestUtils.expectResponseStatus(500, status, done)
+                    return jacquesTestUtils.expectApiResponseStatus(500, status, done)
                 });
 
                 userController.getUser({params: {birdfeed: "testBirdfeed"}}, this.res);

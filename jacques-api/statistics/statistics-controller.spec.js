@@ -48,7 +48,7 @@ describe("statistics-controller", function() {
                     soundEventsCount: SOUND_EVENTS_COUNT,
                 };
                 this.sandbox.stub(this.res, "json").callsFake(function(actualStatistics) {
-                    jacquesTestUtils.expectResponseJson(expectedStatistics, actualStatistics, done);
+                    jacquesTestUtils.expectApiResponseJson(expectedStatistics, actualStatistics, done);
                 });
                 statisticsController.getStatistics({}, this.res);
             });
@@ -69,7 +69,7 @@ describe("statistics-controller", function() {
 
             it("returns 500 when at least one error retrieving statistics", function(done) {
                 this.sandbox.stub(this.res, "status").callsFake(function(status) {
-                    return jacquesTestUtils.expectResponseStatus(500, status, done);
+                    return jacquesTestUtils.expectApiResponseStatus(500, status, done);
                 });
                 statisticsController.getStatistics({}, this.res);
             });

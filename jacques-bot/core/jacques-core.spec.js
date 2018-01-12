@@ -8,38 +8,15 @@ const streamer = require("../audio/streamer");
 const messenger = require("../messaging/messenger");
 const guildManager = require("../guilds/guild-leader");
 const birdfeedManager = require("../birdfeed/bird-keeper");
-
+const testUtils = require("../../jacques-common/util/test-utils");
 const prefix = process.env.JACQUES_PREFIX;
 
 beforeEach(function() {
-    const testGuild = {id: "420", name: "The Jelly Spotters"};
     this.sandbox = sinon.sandbox.create();
-    this.message = {
-        channel: Object.create(Discord.TextChannel.prototype),
-        author: {},
-        guild: testGuild,
-        member: {
-            displayName: "Steubenville",
-            voiceChannel: {
-                name: "Weenie Hut General",
-                leave: function() {},
-                connection: {
-                    disconnect: function() {}
-                }
-            },
-            guild: testGuild
-        },
-    };
+    this.message = testUtils.createTestDiscordTextChannelMessage();
+    this.message.channel = Object.create(Discord.TextChannel.prototype);
     this.message.channel.name = "commands";
-    this.bot = {
-        guilds: new Discord.Collection(),
-        user: {
-            username: "Jacques",
-            setGame: function () {
-                return Promise.resolve(this);
-            }
-        }
-    };
+    this.bot = testUtils.createTestBot();
     jacques.setClientInstance(this.bot);
 });
 
@@ -49,6 +26,10 @@ afterEach(function() {
 });
 
 describe("logging in", function() {
+    beforeEach(function() {
+        this.bot.guilds = new Discord.Collection();
+    });
+
     it("refreshes guilds when the discord client instance was properly set", function() {
         var guildManagerStub = this.sandbox.stub(guildManager, "refreshGuilds");
         jacques.onLoggedIn();
@@ -65,6 +46,10 @@ describe("logging in", function() {
 });
 
 describe("guild events", function() {
+    beforeEach(function() {
+        this.bot.guilds = new Discord.Collection();
+    });
+
     it("refreshes guilds when one is created", function() {
         var guildManagerStub = this.sandbox.stub(guildManager, "refreshGuilds");
         jacques.onGuildCreate();
@@ -80,23 +65,19 @@ describe("guild events", function() {
 
 describe("onMessage", function() {
     describe("direct messages", function() {
+        beforeEach(function() {
+            this.message.channel = Object.create(Discord.DMChannel.prototype);
+        });
+
         it("routes a direct channel message to send help message", function() {
             const messengerStub = this.sandbox.stub(messenger, "sendHelp");
-
-            this.message.author.username = "Steve";
-            this.message.content = "Hey what's up?";
-            this.message.channel = new Discord.DMChannel(undefined, undefined);
-
             const routed = jacques.onMessage(this.message);
             chai.assert.isTrue(routed); //Was successfully routed
             sinon.assert.calledWith(messengerStub, this.message); //Called the messenger to send help
         });
 
         it ("ignores direct channel messages from Jacques himself", function() {
-            this.message.content = "Hey what's up?";
-            this.message.channel = new Discord.DMChannel(undefined, undefined);
             this.message.author.username = "Jacques";
-
             const routed = jacques.onMessage(this.message);
             chai.assert.isFalse(routed); //Was not successfully routed
         });
@@ -104,7 +85,6 @@ describe("onMessage", function() {
 
     describe("not valid jacques text channel messages", function() {
         it("does not route a message if does not start with prefix", function() {
-            this.message.content = "Hey what's up?";
             const routed = jacques.onMessage(this.message);
             chai.assert.isFalse(routed); //Was not successfully routed
         });
@@ -120,69 +100,71 @@ describe("onMessage", function() {
     describe("playing random sounds", function() {
         beforeEach(function() {
             this.sandbox.stub(messenger);
+            this.soundboardStub = this.sandbox.stub(soundboard, "playRandomSound");
         });
 
         it("does not route prefix to play random sound if user not in a voice channel", function() {
-            const soundboardStub = this.sandbox.stub(soundboard, "playRandomSound");
             this.message.member.voiceChannel = null;
             this.message.content = prefix;
 
             jacques.onMessage(this.message);
-            sinon.assert.notCalled(soundboardStub);
+            sinon.assert.notCalled(this.soundboardStub);
         });
 
         it("routes prefix to play a random sound", function() {
-            const soundboardStub = this.sandbox.stub(soundboard, "playRandomSound");
             this.message.content = prefix;
 
             jacques.onMessage(this.message);
-            sinon.assert.calledWith(soundboardStub, this.message);
+            sinon.assert.calledWith(this.soundboardStub, this.message);
         });
 
         it("routes prefix with whitespaces to play a random sound", function() {
-            const soundboardStub = this.sandbox.stub(soundboard, "playRandomSound");
             this.message.content = " " + prefix + "  ";
 
             jacques.onMessage(this.message);
-            sinon.assert.calledWith(soundboardStub, this.message);
+            sinon.assert.calledWith(this.soundboardStub, this.message);
         });
     });
 
     describe("playing targeted sounds", function() {
+        beforeEach(function() {
+            this.soundboardStub = this.sandbox.stub(soundboard, "playTargetedSound");
+        });
+
         it("routes prefix mySound to play targeted sound mySound", function() {
-            const soundboardStub = this.sandbox.stub(soundboard, "playTargetedSound");
             const soundName = "mySound";
             this.message.content = prefix + soundName;
 
             jacques.onMessage(this.message);
-            sinon.assert.calledWith(soundboardStub, this.message, soundName);
+            sinon.assert.calledWith(this.soundboardStub, this.message, soundName);
         });
 
         it("routes prefix mySound with whitespaces to play targeted sound mySound", function() {
-            const soundboardStub = this.sandbox.stub(soundboard, "playTargetedSound");
             const soundName = "mySound";
             this.message.content = "   " + prefix + soundName + " ";
 
             jacques.onMessage(this.message);
-            sinon.assert.calledWith(soundboardStub, this.message, soundName);
+            sinon.assert.calledWith(this.soundboardStub, this.message, soundName);
         });
     });
 
     describe("sending help messages", function() {
+        beforeEach(function() {
+            this.messengerStub = this.sandbox.stub(messenger, "sendHelp");
+        });
+
         it("routes prefix help to send a help message", function() {
-            const messengerStub = this.sandbox.stub(messenger, "sendHelp");
             this.message.content = prefix + "help";
 
             jacques.onMessage(this.message);
-            sinon.assert.calledWith(messengerStub, this.message);
+            sinon.assert.calledWith(this.messengerStub, this.message);
         });
 
         it("routes prefix sounds to send a help message", function() {
-            const messengerStub = this.sandbox.stub(messenger, "sendHelp");
             this.message.content = prefix + "sounds";
 
             jacques.onMessage(this.message);
-            sinon.assert.calledWith(messengerStub, this.message);
+            sinon.assert.calledWith(this.messengerStub, this.message);
         });
     });
 
@@ -200,15 +182,9 @@ describe("onMessage", function() {
 
         it("doesn't stream a video if jacques is already speaking, and instead sends a reply", function() {
             this.message.content = prefix + "stream";
-            this.bot.voiceConnections = {
-                get: function () {
-                    return {
-                        channel: {
-                            name: "testChannelName"
-                        }
-                    }
-                }
-            };
+            this.sandbox.stub(this.bot.voiceConnections, "get").callsFake(function() {
+                return testUtils.createTestDiscordVoiceConnection();
+            });
 
             const sendReplyStub = this.sandbox.stub(messenger, "replyToMessage");
             const streamAudioSpy = this.sandbox.spy(streamer, "streamAudio");
@@ -220,29 +196,25 @@ describe("onMessage", function() {
     });
 
     describe("canceling jacques", function() {
+        beforeEach(function() {
+            // noinspection JSAnnotator
+            this.message.member.voiceChannel.connection = testUtils.createTestDiscordVoiceConnection();
+            this.disconnectSpy = this.sandbox.spy(this.message.member.voiceChannel.connection, "disconnect");
+        });
+
         it("routes prefix cancel to cancel current voice connection", function() {
             this.message.content = prefix + "cancel";
-            const disconnectSpy = this.sandbox.spy(this.message.member.voiceChannel.connection, "disconnect");
-
             jacques.onMessage(this.message);
-            chai.assert.isTrue(disconnectSpy.called);
+            chai.assert.isTrue(this.disconnectSpy.called);
         });
         it("routes prefix byejacques to cancel current voice connection", function() {
             this.message.content = prefix + "byejacques";
-            const disconnectSpy = this.sandbox.spy(this.message.member.voiceChannel.connection, "disconnect");
-
             jacques.onMessage(this.message);
-            chai.assert.isTrue(disconnectSpy.called);
+            chai.assert.isTrue(this.disconnectSpy.called);
         });
     });
 
     describe("volume control", function() {
-        beforeEach(function() {
-            this.bot.voiceConnections = {
-                get: function() {}
-            };
-        });
-
         it("doesn't change the volume if the user isn't in a voice channel", function() {
             this.message.member.voiceChannel = undefined;
             this.message.content = prefix + "volume 70";
