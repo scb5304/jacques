@@ -1,9 +1,8 @@
 require("dotenv").config({path: require("app-root-path") + "/.env"});
-
-const guildsRepository = require("../../jacques-common/data/guilds/guilds-repository");
 const sinon = require("sinon");
+const testUtils = require("../../jacques-common/util/test-utils");
+const guildsRepository = require("../../jacques-common/data/guilds/guilds-repository");
 const guildController = require("./guilds-controller");
-const jacquesTestUtils = require("../../jacques-common/util/test-utils");
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();
@@ -19,6 +18,7 @@ describe("guild-controller", function() {
             json: function() {},
             status: function() {}
         };
+        this.testJacquesGuild = testUtils.createTestJacquesGuild();
     });
 
     describe("getGuild", function() {
@@ -26,11 +26,10 @@ describe("guild-controller", function() {
             this.sandbox.stub(guildsRepository, "getGuildById").callsFake(function() {
                 return Promise.resolve();
             });
-
             this.sandbox.stub(this.res, "status").callsFake(function(status) {
-                return jacquesTestUtils.expectApiResponseStatus(404, status, done);
+                return testUtils.expectApiResponseStatus(404, status, done);
             });
-            guildController.getGuild({params: {guild: "1001"}}, this.res);
+            guildController.getGuild({params: {guild: this.testJacquesGuild.discord_id}}, this.res);
         });
 
         it("returns 500 when database error getting guild.", function(done) {
@@ -39,23 +38,21 @@ describe("guild-controller", function() {
             });
 
             this.sandbox.stub(this.res, "status").callsFake(function(status) {
-                return jacquesTestUtils.expectApiResponseStatus(500, status, done);
+                return testUtils.expectApiResponseStatus(500, status, done);
             });
-            guildController.getGuild({params: {guild: "1001"}}, this.res);
+            guildController.getGuild({params: {guild: this.testJacquesGuild.discord_id}}, this.res);
         });
 
         it("returns json representation of guild when exists", function(done) {
-            var expectedGuild = {discord_id: "1001"};
+            var self = this;
             this.sandbox.stub(guildsRepository, "getGuildById").callsFake(function() {
-                return new Promise((resolve) => {
-                    return resolve(expectedGuild);
-                });
+                return Promise.resolve(self.testJacquesGuild);
             });
 
             this.sandbox.stub(this.res, "json").callsFake(function(actualGuild) {
-                jacquesTestUtils.expectApiResponseJson(expectedGuild, actualGuild, done);
+                testUtils.expectApiResponseJson(self.testJacquesGuild, actualGuild, done);
             });
-            guildController.getGuild({params: expectedGuild.discord_id}, this.res);
+            guildController.getGuild({params: this.testJacquesGuild.discord_id}, this.res);
         });
     });
 
@@ -66,20 +63,20 @@ describe("guild-controller", function() {
             });
 
             this.sandbox.stub(this.res, "status").callsFake(function (status) {
-                return jacquesTestUtils.expectApiResponseStatus(500, status, done);
+                return testUtils.expectApiResponseStatus(500, status, done);
             });
             guildController.getGuilds({}, this.res);
         });
 
 
         it("returns json representation of guilds when exist", function(done) {
-            var expectedGuilds = [{discord_id: "1001"}];
+            var expectedGuilds = [this.testJacquesGuild];
             this.sandbox.stub(guildsRepository, "getAllGuilds").callsFake(function() {
                 return Promise.resolve(expectedGuilds);
             });
 
             this.sandbox.stub(this.res, "json").callsFake(function(actualGuilds) {
-                jacquesTestUtils.expectApiResponseJson(expectedGuilds, actualGuilds, done);
+                testUtils.expectApiResponseJson(expectedGuilds, actualGuilds, done);
             });
             guildController.getGuilds({}, this.res);
         });

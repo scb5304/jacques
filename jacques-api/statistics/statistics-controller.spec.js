@@ -1,10 +1,9 @@
 require("dotenv").config({path: require("app-root-path") + "/.env"});
-
+const sinon = require("sinon");
+const testUtils = require("../../jacques-common/util/test-utils");
 const soundsRepository = require("../../jacques-common/data/sounds/sounds-repository");
 const guildsRepository = require("../../jacques-common/data/guilds/guilds-repository");
-const sinon = require("sinon");
 const statisticsController = require("./statistics-controller");
-const jacquesTestUtils = require("../../jacques-common/util/test-utils");
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();
@@ -48,7 +47,7 @@ describe("statistics-controller", function() {
                     soundEventsCount: SOUND_EVENTS_COUNT,
                 };
                 this.sandbox.stub(this.res, "json").callsFake(function(actualStatistics) {
-                    jacquesTestUtils.expectApiResponseJson(expectedStatistics, actualStatistics, done);
+                    testUtils.expectApiResponseJson(expectedStatistics, actualStatistics, done);
                 });
                 statisticsController.getStatistics({}, this.res);
             });
@@ -69,7 +68,7 @@ describe("statistics-controller", function() {
 
             it("returns 500 when at least one error retrieving statistics", function(done) {
                 this.sandbox.stub(this.res, "status").callsFake(function(status) {
-                    return jacquesTestUtils.expectApiResponseStatus(500, status, done);
+                    return testUtils.expectApiResponseStatus(500, status, done);
                 });
                 statisticsController.getStatistics({}, this.res);
             });

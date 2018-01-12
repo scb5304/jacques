@@ -5,6 +5,7 @@ const Sound = require("../../model/sound").Sound;
 const soundsRepository = require("./sounds-repository");
 const logger = require("../../util/logger");
 const utility = require("../../util/utility");
+const testUtils = require("../../util/test-utils");
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();
@@ -15,46 +16,36 @@ afterEach(function() {
 });
 
 describe("sounds repository", function() {
-    const testDiscordId = "91638832488";
-    const testSoundName = "wah";
-    const testDate = new Date("2018-01-09");
-    const testBirdfeed = "a8sHd7r6wB";
-    const testPerformedBy = "Adam Egret";
-    const testSoundEventCategory = "Targeted";
-    const testUser = {
-        discord_id: testDiscordId,
-        discord_username: "Steubenville",
-        discord_last_guild_id: "10239409324934443241",
-        birdfeed_token: testBirdfeed,
-        birdfeed_date_time: testDate
-    };
-    const testReturnedSound = {
-        name: "steuben",
-        sound_events: [],
-        save: function() {}
-    };
+    var self = this;
+
+    beforeEach(function() {
+        self.testSound = testUtils.createTestSound();
+        self.testSoundEvent = testUtils.createTestSoundEvent();
+        self.testJacquesUser = testUtils.createTestJacquesUser();
+        self.testGuildId = testUtils.createTestJacquesGuild().discord_id;
+    });
+
     const noError = undefined;
     const testError = "Oops! It's all broken.";
 
     describe("insert sound created by user", function() {
         it("inserts with passed sound name and user data", function(done) {
-            this.sandbox.stub(Sound, "create").callsFake(function(doc, callback) {
-                assert.equal(doc.name, testSoundName);
+            this.sandbox.stub(Sound, "create").callsFake(function(doc) {
+                assert.equal(doc.name, self.testSound.name);
                 assert.isTrue(doc.add_date instanceof Date);
-                assert.equal(doc.added_by, testUser.discord_username);
-                assert.equal(doc.discord_guild, testUser.discord_last_guild_id);
+                assert.equal(doc.added_by, self.testJacquesUser.discord_username);
+                assert.equal(doc.discord_guild, self.testJacquesUser.discord_last_guild_id);
                 done();
             });
-            soundsRepository.insertSoundForGuildByUser(testSoundName, testUser);
+            soundsRepository.insertSoundForGuildByUser(self.testSound.name, self.testJacquesUser);
         });
 
         it("returns the inserted sound when the insertion is successful", function(done) {
-            const testSound = {name: "steve"};
             this.sandbox.stub(Sound, "create").callsFake(function(doc, callback) {
-                callback(noError, testSound);
+                callback(noError, self.testSound);
             });
-            soundsRepository.insertSoundForGuildByUser(testSoundName, testUser).then(function(sound) {
-                assert.deepEqual(testSound, sound);
+            soundsRepository.insertSoundForGuildByUser(self.testSound.name, self.testJacquesUser).then(function(sound) {
+                assert.deepEqual(self.testSound, sound);
                 done();
             }).catch(logger.error);
         });
@@ -64,7 +55,7 @@ describe("sounds repository", function() {
                 callback(testError);
             });
 
-            soundsRepository.insertSoundForGuildByUser(testSoundName, testUser).then(function(sound) {
+            soundsRepository.insertSoundForGuildByUser(self.testSound.name, self.testJacquesUser).then(function() {
                 throw "Resolve should not have been called when a database error occurs";
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));
@@ -75,13 +66,13 @@ describe("sounds repository", function() {
 
     describe("insert sound event", function() {
         it("queries for the sound with the passed sound name", function(done) {
-            this.sandbox.stub(Sound, "findOne").callsFake(function(doc) {
-                assert.equal(testReturnedSound.name, doc.name);
-                assert.equal(testReturnedSound.discord_guild, doc.testDiscordId);
+            this.sandbox.stub(Sound, "findOne").callsFake(function(doc, callback) {
+                assert.equal(self.testSound.name, doc.name);
+                assert.equal(self.testSound.discord_guild, doc.discord_guild);
                 done();
             });
 
-            soundsRepository.insertSoundEvent(testReturnedSound.name, testDiscordId);
+            soundsRepository.insertSoundEvent(self.testSound.name, self.testSound.discord_guild);
         });
 
         it("rejects when a database error occurs", function(done) {
@@ -89,7 +80,7 @@ describe("sounds repository", function() {
                 callback(testError);
             });
 
-            soundsRepository.insertSoundEvent(testReturnedSound.name, testDiscordId).then(function() {
+            soundsRepository.insertSoundEvent(self.testSound.name, self.testJacquesUser.discord_last_guild_id).then(function() {
                 throw "Resolve should not have been called when a database error occurs";
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));
@@ -102,7 +93,7 @@ describe("sounds repository", function() {
                 callback(testError, undefined);
             });
 
-            soundsRepository.insertSoundEvent(testReturnedSound.name, testDiscordId).then(function() {
+            soundsRepository.insertSoundEvent(self.testSound.name, self.testJacquesUser.discord_last_guild_id).then(function() {
                 throw "Resolve should not have been called when a database error occurs";
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));
@@ -112,31 +103,33 @@ describe("sounds repository", function() {
 
         it("pushes a sound event into the queried sound's events and saves", function(done) {
             this.sandbox.stub(Sound, "findOne").callsFake(function(doc, callback) {
-                callback(undefined, testReturnedSound);
+                callback(undefined, self.testSound);
             });
 
-            this.sandbox.stub(testReturnedSound, "save").callsFake(function(callback) {
-                callback(undefined, testReturnedSound);
+            this.sandbox.stub(self.testSound, "save").callsFake(function(callback) {
+                callback(undefined, self.testSound);
             });
 
-            soundsRepository.insertSoundEvent(testReturnedSound.name, testDiscordId, testPerformedBy, testSoundEventCategory).then(function(sound) {
-                const soundEvent = sound.sound_events[0];
-                assert.equal(soundEvent.category, testSoundEventCategory);
-                assert.equal(soundEvent.performed_by, testPerformedBy);
-                assert.isTrue(soundEvent.date instanceof Date);
-                done();
-            }).catch(logger.error);
+            self.testSound.sound_events.push = function() {};
+            soundsRepository.insertSoundEvent(self.testSound.name, self.testSound.discord_guild, self.testSoundEvent.performed_by, self.testSoundEvent.category)
+                .then(function (sound) {
+                    const soundEvent = sound.sound_events[0];
+                    console.info(soundEvent);
+                    assert.equal(soundEvent.category, self.testSoundEvent.category);
+                    assert.equal(soundEvent.performed_by, self.testSoundEvent.performed_by);
+                    done();
+                }).catch(logger.error);
         });
     });
 
     describe("delete sound", function() {
         it("removes sound with the appropriate discord guild ID and sound name", function(done) {
             this.sandbox.stub(Sound, "findOneAndRemove").callsFake(function(doc, callback) {
-                assert.equal(doc.name, testSoundName);
-                assert.equal(doc.discord_guild, testUser.discord_last_guild_id);
-                callback(undefined, testReturnedSound);
+                assert.equal(doc.name, self.testSound.name);
+                assert.equal(doc.discord_guild, self.testSound.discord_guild);
+                callback(undefined, self.testSound);
             });
-            soundsRepository.deleteSoundByDiscordGuildIdAndName(testUser.discord_last_guild_id, testSoundName).then(function() {
+            soundsRepository.deleteSoundByDiscordGuildIdAndName(self.testSound.discord_guild, self.testSound.name).then(function() {
                 done();
             }).catch(logger.error);
         });
@@ -145,7 +138,7 @@ describe("sounds repository", function() {
             this.sandbox.stub(Sound, "findOneAndRemove").callsFake(function(doc, callback) {
                 callback(testError);
             });
-            soundsRepository.deleteSoundByDiscordGuildIdAndName(testUser.discord_last_guild_id, testSoundName).then(function() {
+            soundsRepository.deleteSoundByDiscordGuildIdAndName(self.testJacquesUser.discord_last_guild_id, self.testSound.discord_guild).then(function() {
                 throw "Resolve should not have been called when a database error occurs";
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));
@@ -157,11 +150,11 @@ describe("sounds repository", function() {
     describe("get sounds by guild", function() {
         it("returns sounds with the appropriate discord guild ID", function(done) {
             this.sandbox.stub(Sound, "find").callsFake(function(doc, projection, callback) {
-                assert.equal(doc.discord_guild, testUser.discord_last_guild_id);
-                callback(undefined, [testReturnedSound]);
+                assert.equal(doc.discord_guild, self.testJacquesUser.discord_last_guild_id);
+                callback(undefined, [self.testSound]);
             });
-            soundsRepository.getSoundsByDiscordGuildId(testUser.discord_last_guild_id).then(function(sounds) {
-                assert.deepEqual(sounds[0], testReturnedSound);
+            soundsRepository.getSoundsByDiscordGuildId(self.testJacquesUser.discord_last_guild_id).then(function(sounds) {
+                assert.deepEqual(sounds[0], self.testSound);
                 done();
             }).catch(logger.error);
         });
@@ -170,7 +163,7 @@ describe("sounds repository", function() {
             this.sandbox.stub(Sound, "find").callsFake(function(doc, projection, callback) {
                 callback(testError);
             });
-            soundsRepository.getSoundsByDiscordGuildId(testUser.discord_last_guild_id).then(function() {
+            soundsRepository.getSoundsByDiscordGuildId(self.testJacquesUser.discord_last_guild_id).then(function() {
                 throw "Resolve should not have been called when a database error occurs";
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));
@@ -181,7 +174,7 @@ describe("sounds repository", function() {
 
     describe("get random sound in discord guild", function() {
         const secondSound = {name :"secondSoundChosenRandomly"};
-        const multipleSounds = [testReturnedSound, secondSound];
+        const multipleSounds = [self.testSound, secondSound];
 
         it("returns sounds with the appropriate discord guild ID", function(done) {
             this.sandbox.stub(utility, "getRandomInt").callsFake(function() {
@@ -189,11 +182,11 @@ describe("sounds repository", function() {
             });
 
             this.sandbox.stub(Sound, "find").callsFake(function(doc, projection, callback) {
-                assert.equal(doc.discord_guild, testUser.discord_last_guild_id);
+                assert.equal(doc.discord_guild, self.testSound.discord_guild);
                 callback(undefined, multipleSounds);
             });
 
-            soundsRepository.getRandomSoundInDiscordGuild(testUser.discord_last_guild_id).then(function(sound) {
+            soundsRepository.getRandomSoundInDiscordGuild(self.testSound.discord_guild).then(function(sound) {
                 assert.deepEqual(sound, secondSound);
                 done();
             }).catch(logger.error);
@@ -203,7 +196,7 @@ describe("sounds repository", function() {
             this.sandbox.stub(Sound, "find").callsFake(function(doc, projection, callback) {
                 callback(testError);
             });
-            soundsRepository.getRandomSoundInDiscordGuild(testUser.discord_last_guild_id).then(function() {
+            soundsRepository.getRandomSoundInDiscordGuild(self.testSound.discord_guild).then(function() {
                 throw "Resolve should not have been called when a database error occurs";
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));

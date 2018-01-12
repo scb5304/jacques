@@ -43,9 +43,19 @@ const testDiscordGuild = {
 };
 
 const testDiscordGuildMember = {
+    id: testDiscordUser.id,
     displayName: testDiscordUser.name,
     voiceChannel: testDiscordVoiceChannel,
-    guild: testDiscordGuild
+    guild: testDiscordGuild,
+    user: testDiscordUser
+};
+
+const testJacquesGuild = {
+    discord_id: "113425666951190094",
+    discord_name: "The Jelly Spotters",
+    toObject: function() {
+        return this;
+    }
 };
 
 const testDiscordTextChannel = {
@@ -63,7 +73,7 @@ const testDiscordTextChannelMessage = {
     }
 };
 
-const testBot = {
+const testDiscordClient = {
     guilds: [testDiscordGuild],
     user: {
         username: "Jacques",
@@ -74,30 +84,35 @@ const testBot = {
     voiceConnections: {get: function() {}}
 };
 
-const testSound = {
-    "name": "bowser",
-    "add_date": "2017-02-26T23:08:12.629Z",
-    "added_by": "Captain Dogbeard",
-    "discord_guild": testDiscordGuild.id,
-    "sound_events": [{
-        "performed_by": "Eldre Hund",
-        "date": "2017-02-27T03:14:30.142Z",
-        "category": "playRandom"
-    }, {
-        "performed_by": "Eldre Hund",
-        "date": "2017-03-17T02:45:14.174Z",
-        "category": "playRandom"
-    }, {
-        "performed_by": "Eldre Hund",
-        "date": "2017-03-19T22:04:36.036Z",
-        "category": "playRandom"
-    }, {
-        "performed_by": "Valle",
-        "date": "2017-05-04T13:42:43.097Z",
-        "category": "playTargeted"
-    }],
-    "tags": []
+const testSoundEvent = {
+    name: "steuben",
+    sound_events: [],
+    performed_by: "Adam Egret",
+    category: "playTargeted",
+    date: new Date(),
+    save: function() {}
 };
+
+const testSound = {
+    name: "bowser",
+    add_date: "2017-02-26T23:08:12.629Z",
+    added_by: "Captain Dogbeard",
+    discord_guild: testDiscordGuild.id,
+    sound_events: [testSoundEvent],
+    save: function() {},
+    tags: []
+};
+
+const testJacquesUser = {
+    discord_last_guild_id: testJacquesGuild.discord_id,
+    discord_username: "Steuben",
+    birdfeed_date_time: new Date(),
+    toObject: function() {
+        return this;
+    }
+};
+
+const testBirdfeed = "A38df89lds";
 
 //====================================================================================================================//
 
@@ -116,12 +131,32 @@ module.exports.createTestDiscordTextChannelMessage = function() {
     return utility.cloneObject(testDiscordTextChannelMessage);
 };
 
-module.exports.createTestBot = function() {
-    return utility.cloneObject(testBot);
+module.exports.createTestDiscordClient = function() {
+    return utility.cloneObject(testDiscordClient);
+};
+
+module.exports.createTestDiscordGuildMember = function() {
+    return utility.cloneObject(testDiscordGuildMember);
 };
 
 module.exports.createTestSound = function() {
     return utility.cloneObject(testSound);
+};
+
+module.exports.createTestSoundEvent = function() {
+    return utility.cloneObject(testSoundEvent);
+};
+
+module.exports.createTestJacquesGuild = function() {
+    return utility.cloneObject(testJacquesGuild);
+};
+
+module.exports.createTestJacquesUser = function() {
+    return utility.cloneObject(testJacquesUser);
+};
+
+module.exports.createTestBirdfeed = function() {
+    return utility.cloneObject(testBirdfeed);
 };
 
 module.exports.expectApiResponseStatus = function(expected, actual, done) {

@@ -2,8 +2,7 @@ require("dotenv").config({path: require("app-root-path") + "/.env"});
 
 const sinon = require("sinon");
 const userController = require("./users-controller");
-const jacquesTestUtils = require("../../jacques-common/util/test-utils");
-const moment = require("moment");
+const testUtils = require("../../jacques-common/util/test-utils");
 
 const usersRepository = require("../../jacques-common/data/users/users-repository");
 const guildsRepository = require("../../jacques-common/data/guilds/guilds-repository");
@@ -17,12 +16,13 @@ afterEach(function() {
 });
 
 describe("user-controller", function() {
-
     beforeEach(function() {
         this.res = {
             json: function() {},
             status: function() {}
         };
+        this.testJacquesUser = testUtils.createTestJacquesUser();
+        this.testJacquesGuild = testUtils.createTestJacquesGuild();
     });
 
     describe("getUser", function() {
@@ -35,40 +35,27 @@ describe("user-controller", function() {
 
             it("returns with a status of 404", function(done) {
                 this.sandbox.stub(this.res, "status").callsFake(function(status) {
-                    return jacquesTestUtils.expectApiResponseStatus(404, status, done)
+                    return testUtils.expectApiResponseStatus(404, status, done)
                 });
                 userController.getUser({params: {birdfeed: "testBirdfeed"}}, this.res);
             });
         });
 
         describe("user is in database", function() {
-            const expectedUser = {
-                discord_last_guild_id: "1000",
-                discord_last_guild_name: "Jelly Spotters",
-                birdfeed_date_time: moment().add(24, "hours"),
-                toObject: function() {
-                    return this;
-                }
-            };
-
-            const expectedGuild = {
-                toObject: function() {
-                    return this;
-                }
-            };
-
             beforeEach(function() {
+                var self = this;
                 this.sandbox.stub(usersRepository, "getUserFromBirdfeed").callsFake(function() {
-                    return Promise.resolve(expectedUser);
+                    return Promise.resolve(self.testJacquesUser);
                 });
             });
 
             it("returns user if the guild also exists", function(done) {
+                var self = this;
                 this.sandbox.stub(guildsRepository, "getGuildById").callsFake(function() {
-                    return Promise.resolve(expectedGuild);
+                    return Promise.resolve(self.testJacquesGuild);
                 });
                 this.sandbox.stub(this.res, "json").callsFake(function(actualUser) {
-                    jacquesTestUtils.expectApiResponseJson(expectedUser, actualUser, done)
+                    testUtils.expectApiResponseJson(self.testJacquesUser, actualUser, done)
                 });
 
                 userController.getUser({params: {birdfeed: "testBirdfeed"}}, this.res);
@@ -79,7 +66,7 @@ describe("user-controller", function() {
                     return Promise.resolve(undefined);
                 });
                 this.sandbox.stub(this.res, "status").callsFake(function(status) {
-                    return jacquesTestUtils.expectApiResponseStatus(500, status, done)
+                    return testUtils.expectApiResponseStatus(500, status, done)
                 });
 
                 userController.getUser({params: {birdfeed: "testBirdfeed"}}, this.res);
@@ -90,7 +77,7 @@ describe("user-controller", function() {
                     return Promise.reject("Database is spaghetti.");
                 });
                 this.sandbox.stub(this.res, "status").callsFake(function(status) {
-                    return jacquesTestUtils.expectApiResponseStatus(500, status, done)
+                    return testUtils.expectApiResponseStatus(500, status, done)
                 });
 
                 userController.getUser({params: {birdfeed: "testBirdfeed"}}, this.res);

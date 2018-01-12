@@ -4,6 +4,7 @@ const assert = require("chai").assert;
 const User = require("../../model/user").User;
 const usersRepository = require("./users-repository");
 const logger = require("../../util/logger");
+const testUtils = require("../../util/test-utils");
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();
@@ -14,35 +15,36 @@ afterEach(function() {
 });
 
 describe("users repository", function() {
-    const testDiscordId = "91638832488";
-    const testBirdfeed = "a8sHd7r6wB";
-    const testDate = new Date("2018-01-09");
-    const testUser = {
-        discord_id: testDiscordId,
-        discord_username: "Steubenville",
-        discord_last_guild_id: "10239409324934443241",
-        birdfeed_token: testBirdfeed,
-        birdfeed_date_time: testDate
-    };
+    var self = this;
+
+    beforeEach(function() {
+        self.testSound = testUtils.createTestSound();
+        self.testSoundEvent = testUtils.createTestSoundEvent();
+        self.testJacquesUser = testUtils.createTestJacquesUser();
+        self.testGuildId = testUtils.createTestJacquesGuild().discord_id;
+        self.testBirdfeed = testUtils.createTestBirdfeed();
+        self.testGuildMember = testUtils.createTestDiscordGuildMember();
+    });
+
     const noError = undefined;
     const expectedError = "The database is constructed out of Jell-O!";
 
     describe("get user from discord ID", function() {
         it("queries with the passed ID", function(done) {
             this.sandbox.stub(User, "findOne").callsFake(function(query) {
-                assert.equal(query.discord_id, testDiscordId);
+                assert.equal(query.discord_id, self.testJacquesUser.discord_id);
                 done();
             });
-            usersRepository.getUserFromDiscordId(testDiscordId);
+            usersRepository.getUserFromDiscordId(self.testJacquesUser.discord_id);
         });
 
         it("resolves a user when no database error occurs", function(done) {
             this.sandbox.stub(User, "findOne").callsFake(function(query, callback) {
-                callback(noError, testUser);
+                callback(noError, self.testJacquesUser);
             });
 
-            usersRepository.getUserFromDiscordId(testDiscordId).then(function(user) {
-                assert.deepEqual(testUser, user);
+            usersRepository.getUserFromDiscordId(self.testJacquesUser.discord_id).then(function(user) {
+                assert.deepEqual(self.testJacquesUser, user);
                 done();
             }).catch(function(err) {
                 logger.error(err);
@@ -54,7 +56,7 @@ describe("users repository", function() {
                 callback(expectedError);
             });
 
-            usersRepository.getUserFromDiscordId(testDiscordId).then(function() {
+            usersRepository.getUserFromDiscordId(self.testJacquesUser.discord_id).then(function() {
                 throw "Resolve should not have been called when a database error occurs";
             }).catch(function(err) {
                 assert.isTrue(err.includes(expectedError));
@@ -66,19 +68,19 @@ describe("users repository", function() {
     describe("get user from birdfeed", function() {
         it("queries with the passed birdfeed", function(done) {
             this.sandbox.stub(User, "findOne").callsFake(function(query) {
-                assert.equal(query.birdfeed_token, testBirdfeed);
+                assert.equal(query.birdfeed_token, self.testBirdfeed);
                 done();
             });
-            usersRepository.getUserFromBirdfeed(testBirdfeed);
+            usersRepository.getUserFromBirdfeed(self.testBirdfeed);
         });
 
         it("resolves a user when no database error occurs", function(done) {
             this.sandbox.stub(User, "findOne").callsFake(function(query, callback) {
-                callback(noError, testUser);
+                callback(noError, self.testJacquesUser);
             });
 
-            usersRepository.getUserFromBirdfeed(testBirdfeed).then(function(user) {
-                assert.deepEqual(testUser, user);
+            usersRepository.getUserFromBirdfeed(self.testBirdfeed).then(function(user) {
+                assert.deepEqual(self.testJacquesUser, user);
                 done();
             }).catch(function(err) {
                 logger.error(err);
@@ -90,7 +92,7 @@ describe("users repository", function() {
                 callback(expectedError);
             });
 
-            usersRepository.getUserFromBirdfeed(testBirdfeed).then(function() {
+            usersRepository.getUserFromBirdfeed(self.testBirdfeed).then(function() {
                 throw "Resolve should not have been called when a database error occurs";
             }).catch(function(err) {
                 assert.isTrue(err.includes(expectedError));
@@ -100,37 +102,31 @@ describe("users repository", function() {
     });
 
     describe("upsert user with latest discord data and birdfeed token", function() {
-        const testGuildMember = {
-            id: testDiscordId,
-            guild: {id: "12049102340"},
-            user: {username: "Steuben"}
-        };
-
         it("queries with the passed guild member's discord id", function(done) {
             this.sandbox.stub(User, "findOneAndUpdate").callsFake(function(query) {
-                assert.equal(query.discord_id, testGuildMember.id);
+                assert.equal(query.discord_id, self.testGuildMember.id);
                 done();
             });
-            usersRepository.upsertUserWithDiscordDataAndToken(testGuildMember, testBirdfeed);
+            usersRepository.upsertUserWithDiscordDataAndToken(self.testGuildMember, self.testBirdfeed);
         });
 
         it("uses the passed guild member to appropriately set the mongoose document", function(done) {
             this.sandbox.stub(User, "findOneAndUpdate").callsFake(function(query, doc) {
                 const set = doc.$set;
-                assert.equal(set.discord_username, testGuildMember.user.username);
-                assert.equal(set.discord_last_guild_id, testGuildMember.guild.id);
-                assert.equal(set.birdfeed_token, testBirdfeed);
+                assert.equal(set.discord_username, self.testGuildMember.user.username);
+                assert.equal(set.discord_last_guild_id, self.testGuildMember.guild.id);
+                assert.equal(set.birdfeed_token, self.testBirdfeed);
                 assert.isTrue(set.birdfeed_date_time instanceof Date);
                 done();
             });
-            usersRepository.upsertUserWithDiscordDataAndToken(testGuildMember, testBirdfeed);
+            usersRepository.upsertUserWithDiscordDataAndToken(self.testGuildMember, self.testBirdfeed);
         });
 
         it("resolves when no database error occurs", function(done) {
             this.sandbox.stub(User, "findOneAndUpdate").callsFake(function(query, doc, options, callback) {
-                callback(noError, testUser);
+                callback(noError, self.testJacquesUser);
             });
-            usersRepository.upsertUserWithDiscordDataAndToken(testGuildMember, testBirdfeed).then(function() {
+            usersRepository.upsertUserWithDiscordDataAndToken(self.testGuildMember, self.testBirdfeed).then(function() {
                 done();
             }).catch(function(err) {
                 logger.error(err);
@@ -141,7 +137,7 @@ describe("users repository", function() {
             this.sandbox.stub(User, "findOneAndUpdate").callsFake(function(query, doc, options, callback) {
                 callback(expectedError);
             });
-            usersRepository.upsertUserWithDiscordDataAndToken(testGuildMember, testBirdfeed).then(function() {
+            usersRepository.upsertUserWithDiscordDataAndToken(self.testGuildMember, self.testBirdfeed).then(function() {
                 throw "Resolve should not have been called when a database error occurs";
             }).catch(function(err) {
                 assert.isTrue(err.includes(expectedError));
@@ -153,7 +149,7 @@ describe("users repository", function() {
             this.sandbox.stub(User, "findOneAndUpdate").callsFake(function(query, doc, options, callback) {
                 callback(undefined, noError);
             });
-            usersRepository.upsertUserWithDiscordDataAndToken(testGuildMember, testBirdfeed).then(function() {
+            usersRepository.upsertUserWithDiscordDataAndToken(self.testGuildMember, self.testBirdfeed).then(function() {
                 throw "Resolve should not have been called when a upsert didnt return a user";
             }).catch(function(err) {
                 assert.isFalse(err.includes(expectedError));

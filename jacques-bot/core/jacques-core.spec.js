@@ -17,7 +17,7 @@ beforeEach(function() {
     this.message = testUtils.createTestDiscordTextChannelMessage();
     this.message.channel = Object.create(Discord.TextChannel.prototype);
     this.message.channel.name = "commands";
-    this.bot = testUtils.createTestBot();
+    this.bot = testUtils.createTestDiscordClient();
     jacques.setClientInstance(this.bot);
 });
 
