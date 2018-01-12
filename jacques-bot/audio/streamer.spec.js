@@ -4,6 +4,7 @@ const sinon = require("sinon");
 const chai = require("chai");
 const streamer = require("./streamer");
 const ytdl = require("ytdl-core");
+const testUtils = require("../../jacques-common/util/test-utils");
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();
@@ -15,19 +16,14 @@ afterEach(function() {
 
 describe("streamer", function() {
     beforeEach(function() {
-        this.message = {};
-        this.message.member = {};
-        this.message.member.voiceChannel = {
-            join: function() {
-                return new Promise(function(resolve, reject) {
-                    return reject("It's only a test.");
-                });
-            }
-        };
+        this.sandbox.stub(ytdl, "getInfo").callsFake(function(stream, callback) {
+            callback(undefined, {});
+        });
+        this.message = testUtils.createTestDiscordTextChannelMessage();
     });
 
     describe("streamAudio", function() {
-        function assertStreamStartsAt (guildMember, seconds, done) {
+        function assertStreamStartsAt(guildMember, seconds, done) {
             const mockConnection = {
                 playStream: function (ytdlStream, options) {
                     chai.assert.equal(options.seek, seconds);
@@ -49,19 +45,13 @@ describe("streamer", function() {
 
         it("does not join the voice channel when no stream link is passed", function() {
             const streamLink = null;
-
             const joinVoiceChannelSpy = this.sandbox.spy(this.message.member.voiceChannel, "join");
             streamer.streamAudio(this.message.member.voiceChannel, 50, streamLink);
-
             chai.assert.isFalse(joinVoiceChannelSpy.called);
         });
 
         it("joins the voice channel when a stream link is passed", function() {
             const streamLink = "https://www.youtube.com/watch?v=Pp7-iPOZMog";
-            this.sandbox.stub(ytdl, "getInfo").callsFake(function(link, callback) {
-                callback(null, {});
-            });
-
             const joinVoiceChannelSpy = this.sandbox.spy(this.message.member.voiceChannel, "join");
             streamer.streamAudio(this.message.member.voiceChannel, 50, streamLink);
 
@@ -85,6 +75,5 @@ describe("streamer", function() {
             assertStreamStartsAt(this.message.member, 4282, done);
             streamer.streamAudio(this.message.member.voiceChannel, 50, streamLink);
         });
-
     });
 });

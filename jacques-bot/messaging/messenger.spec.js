@@ -3,6 +3,7 @@ require("dotenv").config({path: require("app-root-path") + "/.env"});
 const sinon = require("sinon");
 const chai = require("chai");
 const messenger = require("./messenger");
+const testUtils = require("../../jacques-common/util/test-utils");
 
 beforeEach(function() {
     this.sandbox = sinon.sandbox.create();
@@ -14,13 +15,7 @@ afterEach(function() {
 
 describe("messenger", function() {
     beforeEach(function() {
-        this.message = {
-            reply: function() {
-                return new Promise(function(resolve) {
-                    return resolve();
-                });
-            }
-        };
+        this.message = testUtils.createTestDiscordTextChannelMessage();
     });
 
     describe("sendHelp", function() {

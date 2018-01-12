@@ -4,7 +4,14 @@ const utility = require("../../jacques-common/util/utility");
 
 const testDiscordVoiceChannel = {
     name: "Weenie Hut General",
-    leave: function() {}
+    leave: function() {},
+    join: function() {
+        return Promise.resolve(testDiscordVoiceConnection);
+    }
+};
+
+const testStreamDispatcher = {
+    once: function () {}
 };
 
 const testDiscordVoiceConnection = {
@@ -16,7 +23,13 @@ const testDiscordVoiceConnection = {
             }
         }
     },
-    channel: testDiscordVoiceChannel
+    channel: testDiscordVoiceChannel,
+    playFile: function() {
+        return testStreamDispatcher;
+    },
+    playStream: function() {
+        return testStreamDispatcher;
+    }
 };
 
 const testDiscordUser = {
@@ -44,7 +57,10 @@ const testDiscordTextChannelMessage = {
     author: testDiscordUser,
     guild: testDiscordGuild,
     member: testDiscordGuildMember,
-    content: "Hello, world!"
+    content: "Hello, world!",
+    reply: function() {
+        return Promise.resolve();
+    }
 };
 
 const testBot = {
@@ -56,6 +72,31 @@ const testBot = {
         }
     },
     voiceConnections: {get: function() {}}
+};
+
+const testSound = {
+    "name": "bowser",
+    "add_date": "2017-02-26T23:08:12.629Z",
+    "added_by": "Captain Dogbeard",
+    "discord_guild": testDiscordGuild.id,
+    "sound_events": [{
+        "performed_by": "Eldre Hund",
+        "date": "2017-02-27T03:14:30.142Z",
+        "category": "playRandom"
+    }, {
+        "performed_by": "Eldre Hund",
+        "date": "2017-03-17T02:45:14.174Z",
+        "category": "playRandom"
+    }, {
+        "performed_by": "Eldre Hund",
+        "date": "2017-03-19T22:04:36.036Z",
+        "category": "playRandom"
+    }, {
+        "performed_by": "Valle",
+        "date": "2017-05-04T13:42:43.097Z",
+        "category": "playTargeted"
+    }],
+    "tags": []
 };
 
 //====================================================================================================================//
@@ -77,6 +118,10 @@ module.exports.createTestDiscordTextChannelMessage = function() {
 
 module.exports.createTestBot = function() {
     return utility.cloneObject(testBot);
+};
+
+module.exports.createTestSound = function() {
+    return utility.cloneObject(testSound);
 };
 
 module.exports.expectApiResponseStatus = function(expected, actual, done) {

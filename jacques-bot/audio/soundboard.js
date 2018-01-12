@@ -20,7 +20,7 @@ function playRandomSound(message) {
 }
 
 function playTargetedSound(message, soundName) {
-    logger.info("Play targeted sound: sound " + soundName);
+    logger.info("Play targeted sound: " + soundName);
     soundsRepository.getSoundByDiscordGuildIdAndName(message.member.guild.id, soundName)
         .then(function(sound) {
             if (sound) {
