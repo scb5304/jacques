@@ -1,9 +1,8 @@
 require("dotenv").config({path: require("app-root-path") + "/.env"});
-
 const sinon = require("sinon");
-const chai = require("chai");
-const streamer = require("./streamer");
+const assert = require("chai").assert;
 const ytdl = require("ytdl-core");
+const streamer = require("./streamer");
 const testUtils = require("../../jacques-common/util/test-utils");
 
 beforeEach(function() {
@@ -26,7 +25,7 @@ describe("streamer", function() {
         function assertStreamStartsAt(guildMember, seconds, done) {
             const mockConnection = {
                 playStream: function (ytdlStream, options) {
-                    chai.assert.equal(options.seek, seconds);
+                    assert.equal(options.seek, seconds);
                     done();
                     return {
                         once: function () {
@@ -47,7 +46,7 @@ describe("streamer", function() {
             const streamLink = null;
             const joinVoiceChannelSpy = this.sandbox.spy(this.message.member.voiceChannel, "join");
             streamer.streamAudio(this.message.member.voiceChannel, 50, streamLink);
-            chai.assert.isFalse(joinVoiceChannelSpy.called);
+            assert.isFalse(joinVoiceChannelSpy.called);
         });
 
         it("joins the voice channel when a stream link is passed", function() {
@@ -55,7 +54,7 @@ describe("streamer", function() {
             const joinVoiceChannelSpy = this.sandbox.spy(this.message.member.voiceChannel, "join");
             streamer.streamAudio(this.message.member.voiceChannel, 50, streamLink);
 
-            chai.assert.isTrue(joinVoiceChannelSpy.called);
+            assert.isTrue(joinVoiceChannelSpy.called);
         });
 
         it("joins at the passed time with seconds argument", function(done) {

@@ -1,7 +1,6 @@
 require("dotenv").config({path: require("app-root-path") + "/.env"});
-
 const sinon = require("sinon");
-const chai = require("chai");
+const assert = require("chai").assert;
 const messenger = require("./messenger");
 const testUtils = require("../../jacques-common/util/test-utils");
 
@@ -22,7 +21,7 @@ describe("messenger", function() {
         it("replies to the message", function() {
             const messageSpy = this.sandbox.spy(this.message, "reply");
             messenger.sendHelp(this.message);
-            chai.assert.isTrue(messageSpy.calledOnce);
+            assert.isTrue(messageSpy.calledOnce);
         });
     });
 
@@ -30,7 +29,7 @@ describe("messenger", function() {
         it("replies to the message", function() {
             const messageSpy = this.sandbox.spy(this.message, "reply");
             messenger.sendHelp(this.message);
-            chai.assert.isTrue(messageSpy.calledOnce);
+            assert.isTrue(messageSpy.calledOnce);
         });
     });
 });

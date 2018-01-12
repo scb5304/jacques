@@ -1,14 +1,15 @@
 require("dotenv").config({path: require("app-root-path") + "/.env"});
 const Discord = require("discord.js");
 const sinon = require("sinon");
-const chai = require("chai");
+const assert = require("chai").assert;
+
+const testUtils = require("../../jacques-common/util/test-utils");
 const jacques = require("./jacques-core");
 const soundboard = require("../audio/soundboard");
 const streamer = require("../audio/streamer");
 const messenger = require("../messaging/messenger");
 const guildManager = require("../guilds/guild-leader");
 const birdfeedManager = require("../birdfeed/bird-keeper");
-const testUtils = require("../../jacques-common/util/test-utils");
 const prefix = process.env.JACQUES_PREFIX;
 
 beforeEach(function() {
@@ -72,28 +73,28 @@ describe("onMessage", function() {
         it("routes a direct channel message to send help message", function() {
             const messengerStub = this.sandbox.stub(messenger, "sendHelp");
             const routed = jacques.onMessage(this.message);
-            chai.assert.isTrue(routed); //Was successfully routed
+            assert.isTrue(routed); //Was successfully routed
             sinon.assert.calledWith(messengerStub, this.message); //Called the messenger to send help
         });
 
         it ("ignores direct channel messages from Jacques himself", function() {
             this.message.author.username = "Jacques";
             const routed = jacques.onMessage(this.message);
-            chai.assert.isFalse(routed); //Was not successfully routed
+            assert.isFalse(routed); //Was not successfully routed
         });
     });
 
     describe("not valid jacques text channel messages", function() {
         it("does not route a message if does not start with prefix", function() {
             const routed = jacques.onMessage(this.message);
-            chai.assert.isFalse(routed); //Was not successfully routed
+            assert.isFalse(routed); //Was not successfully routed
         });
 
         it("does not route a message if it does not have a guild member", function() {
             this.message.member = null;
             this.message.content = prefix + "questionforye";
             const routed = jacques.onMessage(this.message);
-            chai.assert.isFalse(routed); //Was not successfully routed
+            assert.isFalse(routed); //Was not successfully routed
         });
     });
 
@@ -205,12 +206,12 @@ describe("onMessage", function() {
         it("routes prefix cancel to cancel current voice connection", function() {
             this.message.content = prefix + "cancel";
             jacques.onMessage(this.message);
-            chai.assert.isTrue(this.disconnectSpy.called);
+            assert.isTrue(this.disconnectSpy.called);
         });
         it("routes prefix byejacques to cancel current voice connection", function() {
             this.message.content = prefix + "byejacques";
             jacques.onMessage(this.message);
-            chai.assert.isTrue(this.disconnectSpy.called);
+            assert.isTrue(this.disconnectSpy.called);
         });
     });
 
@@ -282,7 +283,7 @@ describe("onMessage", function() {
                 return true;
             });
             this.sandbox.stub(messenger, "sendDirectMessage").callsFake(function(user, message) {
-                chai.assert.isTrue(message.indexOf("1234567890") !== -1);
+                assert.isTrue(message.indexOf("1234567890") !== -1);
                 done();
             });
 
@@ -300,7 +301,7 @@ describe("onMessage", function() {
             });
 
             this.sandbox.stub(messenger, "sendDirectMessage").callsFake(function(user, message) {
-                chai.assert.isTrue(message.indexOf("1234567890") === -1);
+                assert.isTrue(message.indexOf("1234567890") === -1);
                 done();
             });
 

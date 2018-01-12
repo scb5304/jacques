@@ -1,16 +1,13 @@
 require("dotenv").config({ path: require("app-root-path") + "/.env" });
-
-const chai = require("chai");
+const assert = require("chai").assert;
 const sinon = require("sinon");
 const soundboard = require("./soundboard");
 const fileSystemReader = require("../../jacques-common/util/file-system-reader");
 const soundsRepository = require("../../jacques-common/data/sounds/sounds-repository");
 const testUtils = require("../../jacques-common/util/test-utils");
 
-beforeEach(function() {
+before(function() {
     this.sandbox = sinon.sandbox.create();
-    this.message = testUtils.createTestDiscordTextChannelMessage();
-    this.sound = testUtils.createTestSound();
     this.sandbox.stub(fileSystemReader, "getSoundPathFromSound").callsFake(function() {
         return "";
     });
@@ -18,6 +15,11 @@ beforeEach(function() {
     this.sandbox.stub(fileSystemReader, "soundExistsInFileSystem").callsFake(function() {
         return true;
     });
+});
+
+beforeEach(function() {
+    this.message = testUtils.createTestDiscordTextChannelMessage();
+    this.sound = testUtils.createTestSound();
 });
 
 afterEach(function() {
@@ -28,7 +30,7 @@ describe("playRandomSound", function() {
     it("queries for a random sound in the member's guild", function(done) {
         let self = this;
         this.sandbox.stub(soundsRepository, "getRandomSoundInDiscordGuild").callsFake(function (guildId) {
-            chai.assert.equal(guildId, self.sound.discord_guild);
+            assert.equal(guildId, self.sound.discord_guild);
             done();
         });
 

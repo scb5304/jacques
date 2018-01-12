@@ -1,6 +1,6 @@
 require("dotenv").config({path: require("app-root-path") + "/.env"});
 const sinon = require("sinon");
-const chai = require("chai");
+const assert = require("chai").assert;
 const Sound = require("../../model/sound").Sound;
 const soundsRepository = require("./sounds-repository");
 const logger = require("../../util/logger");
@@ -39,10 +39,10 @@ describe("sounds repository", function() {
     describe("insert sound created by user", function() {
         it("inserts with passed sound name and user data", function(done) {
             this.sandbox.stub(Sound, "create").callsFake(function(doc, callback) {
-                chai.assert.equal(doc.name, testSoundName);
-                chai.assert.isTrue(doc.add_date instanceof Date);
-                chai.assert.equal(doc.added_by, testUser.discord_username);
-                chai.assert.equal(doc.discord_guild, testUser.discord_last_guild_id);
+                assert.equal(doc.name, testSoundName);
+                assert.isTrue(doc.add_date instanceof Date);
+                assert.equal(doc.added_by, testUser.discord_username);
+                assert.equal(doc.discord_guild, testUser.discord_last_guild_id);
                 done();
             });
             soundsRepository.insertSoundForGuildByUser(testSoundName, testUser);
@@ -54,7 +54,7 @@ describe("sounds repository", function() {
                 callback(noError, testSound);
             });
             soundsRepository.insertSoundForGuildByUser(testSoundName, testUser).then(function(sound) {
-                chai.assert.deepEqual(testSound, sound);
+                assert.deepEqual(testSound, sound);
                 done();
             }).catch(logger.error);
         });
@@ -67,7 +67,7 @@ describe("sounds repository", function() {
             soundsRepository.insertSoundForGuildByUser(testSoundName, testUser).then(function(sound) {
                 throw "Resolve should not have been called when a database error occurs";
             }).catch(function(err) {
-                chai.assert.isTrue(err.includes(testError));
+                assert.isTrue(err.includes(testError));
                 done();
             });
         });
@@ -76,8 +76,8 @@ describe("sounds repository", function() {
     describe("insert sound event", function() {
         it("queries for the sound with the passed sound name", function(done) {
             this.sandbox.stub(Sound, "findOne").callsFake(function(doc) {
-                chai.assert.equal(testReturnedSound.name, doc.name);
-                chai.assert.equal(testReturnedSound.discord_guild, doc.testDiscordId);
+                assert.equal(testReturnedSound.name, doc.name);
+                assert.equal(testReturnedSound.discord_guild, doc.testDiscordId);
                 done();
             });
 
@@ -92,7 +92,7 @@ describe("sounds repository", function() {
             soundsRepository.insertSoundEvent(testReturnedSound.name, testDiscordId).then(function() {
                 throw "Resolve should not have been called when a database error occurs";
             }).catch(function(err) {
-                chai.assert.isTrue(err.includes(testError));
+                assert.isTrue(err.includes(testError));
                 done();
             });
         });
@@ -105,7 +105,7 @@ describe("sounds repository", function() {
             soundsRepository.insertSoundEvent(testReturnedSound.name, testDiscordId).then(function() {
                 throw "Resolve should not have been called when a database error occurs";
             }).catch(function(err) {
-                chai.assert.isTrue(err.includes(testError));
+                assert.isTrue(err.includes(testError));
                 done();
             });
         });
@@ -121,9 +121,9 @@ describe("sounds repository", function() {
 
             soundsRepository.insertSoundEvent(testReturnedSound.name, testDiscordId, testPerformedBy, testSoundEventCategory).then(function(sound) {
                 const soundEvent = sound.sound_events[0];
-                chai.assert.equal(soundEvent.category, testSoundEventCategory);
-                chai.assert.equal(soundEvent.performed_by, testPerformedBy);
-                chai.assert.isTrue(soundEvent.date instanceof Date);
+                assert.equal(soundEvent.category, testSoundEventCategory);
+                assert.equal(soundEvent.performed_by, testPerformedBy);
+                assert.isTrue(soundEvent.date instanceof Date);
                 done();
             }).catch(logger.error);
         });
@@ -132,8 +132,8 @@ describe("sounds repository", function() {
     describe("delete sound", function() {
         it("removes sound with the appropriate discord guild ID and sound name", function(done) {
             this.sandbox.stub(Sound, "findOneAndRemove").callsFake(function(doc, callback) {
-                chai.assert.equal(doc.name, testSoundName);
-                chai.assert.equal(doc.discord_guild, testUser.discord_last_guild_id);
+                assert.equal(doc.name, testSoundName);
+                assert.equal(doc.discord_guild, testUser.discord_last_guild_id);
                 callback(undefined, testReturnedSound);
             });
             soundsRepository.deleteSoundByDiscordGuildIdAndName(testUser.discord_last_guild_id, testSoundName).then(function() {
@@ -148,7 +148,7 @@ describe("sounds repository", function() {
             soundsRepository.deleteSoundByDiscordGuildIdAndName(testUser.discord_last_guild_id, testSoundName).then(function() {
                 throw "Resolve should not have been called when a database error occurs";
             }).catch(function(err) {
-                chai.assert.isTrue(err.includes(testError));
+                assert.isTrue(err.includes(testError));
                 done();
             });
         });
@@ -157,11 +157,11 @@ describe("sounds repository", function() {
     describe("get sounds by guild", function() {
         it("returns sounds with the appropriate discord guild ID", function(done) {
             this.sandbox.stub(Sound, "find").callsFake(function(doc, projection, callback) {
-                chai.assert.equal(doc.discord_guild, testUser.discord_last_guild_id);
+                assert.equal(doc.discord_guild, testUser.discord_last_guild_id);
                 callback(undefined, [testReturnedSound]);
             });
             soundsRepository.getSoundsByDiscordGuildId(testUser.discord_last_guild_id).then(function(sounds) {
-                chai.assert.deepEqual(sounds[0], testReturnedSound);
+                assert.deepEqual(sounds[0], testReturnedSound);
                 done();
             }).catch(logger.error);
         });
@@ -173,7 +173,7 @@ describe("sounds repository", function() {
             soundsRepository.getSoundsByDiscordGuildId(testUser.discord_last_guild_id).then(function() {
                 throw "Resolve should not have been called when a database error occurs";
             }).catch(function(err) {
-                chai.assert.isTrue(err.includes(testError));
+                assert.isTrue(err.includes(testError));
                 done();
             });
         });
@@ -189,12 +189,12 @@ describe("sounds repository", function() {
             });
 
             this.sandbox.stub(Sound, "find").callsFake(function(doc, projection, callback) {
-                chai.assert.equal(doc.discord_guild, testUser.discord_last_guild_id);
+                assert.equal(doc.discord_guild, testUser.discord_last_guild_id);
                 callback(undefined, multipleSounds);
             });
 
             soundsRepository.getRandomSoundInDiscordGuild(testUser.discord_last_guild_id).then(function(sound) {
-                chai.assert.deepEqual(sound, secondSound);
+                assert.deepEqual(sound, secondSound);
                 done();
             }).catch(logger.error);
         });
@@ -206,7 +206,7 @@ describe("sounds repository", function() {
             soundsRepository.getRandomSoundInDiscordGuild(testUser.discord_last_guild_id).then(function() {
                 throw "Resolve should not have been called when a database error occurs";
             }).catch(function(err) {
-                chai.assert.isTrue(err.includes(testError));
+                assert.isTrue(err.includes(testError));
                 done();
             });
         });
@@ -218,7 +218,7 @@ describe("sounds repository", function() {
                 callback(noError, 100);
             });
             soundsRepository.getSoundsCount().then(function(count) {
-                chai.assert.equal(100, count);
+                assert.equal(100, count);
                 done();
             }).catch(logger.error);
         });
@@ -230,7 +230,7 @@ describe("sounds repository", function() {
             soundsRepository.getSoundsCount().then(function() {
                 throw "Resolve should not have been called when a database error occurs";
             }).catch(function(err) {
-                chai.assert.isTrue(err.includes(testError));
+                assert.isTrue(err.includes(testError));
                 done();
             });
         })
@@ -242,7 +242,7 @@ describe("sounds repository", function() {
                 callback(noError, [{count: 1000}]);
             });
             soundsRepository.getSoundEventsCount().then(function(count) {
-                chai.assert.equal(1000, count);
+                assert.equal(1000, count);
                 done();
             }).catch(logger.error);
         });
@@ -254,7 +254,7 @@ describe("sounds repository", function() {
             soundsRepository.getSoundEventsCount().then(function() {
                 throw "Resolve should not have been called when a database error occurs";
             }).catch(function(err) {
-                chai.assert.isTrue(err.includes(testError));
+                assert.isTrue(err.includes(testError));
                 done();
             });
         })
