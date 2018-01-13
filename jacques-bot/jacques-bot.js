@@ -1,4 +1,4 @@
-require("dotenv").config({path: require("app-root-path") + "/.env"});
+require("dotenv").config({path: require("app-root-path") + "/.config/.env"});
 const Discord = require("discord.js");
 const Db = require("../jacques-common/data/db");
 const logger = require("../jacques-common/util/logger.js");

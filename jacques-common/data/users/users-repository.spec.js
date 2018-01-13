@@ -1,4 +1,4 @@
-require("dotenv").config({path: require("app-root-path") + "/.env"});
+require("dotenv").config({path: require("app-root-path") + "/.config/.env"});
 const sinon = require("sinon");
 const assert = require("chai").assert;
 const User = require("../../model/user").User;

@@ -1,4 +1,4 @@
-require("dotenv").config({path: require("app-root-path") + "/.env"});
+require("dotenv").config({path: require("app-root-path") + "/.config/.env"});
 var syncUtils = require("./sync-utils");
 const logger = require("./../util/logger.js");
 const Db = require("../data/db");

@@ -1,6 +1,5 @@
 .idea
-.env
-.coveralls.yml
+.config/.env
 npm-debug.log
 coverage/
 /sounds/
