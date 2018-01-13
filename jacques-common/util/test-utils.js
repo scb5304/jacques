@@ -53,6 +53,7 @@ const testDiscordGuildMember = {
 const testJacquesGuild = {
     discord_id: "113425666951190094",
     discord_name: "The Jelly Spotters",
+    volume: 0.65,
     toObject: function() {
         return this;
     }
@@ -139,6 +140,10 @@ module.exports.createTestDiscordGuildMember = function() {
     return utility.cloneObject(testDiscordGuildMember);
 };
 
+module.exports.createTestDiscordGuild = function() {
+    return utility.cloneObject(testDiscordGuild);
+};
+
 module.exports.createTestSound = function() {
     return utility.cloneObject(testSound);
 };
@@ -156,7 +161,7 @@ module.exports.createTestJacquesUser = function() {
 };
 
 module.exports.createTestBirdfeed = function() {
-    return utility.cloneObject(testBirdfeed);
+    return JSON.parse(JSON.stringify(testBirdfeed));
 };
 
 module.exports.expectApiResponseStatus = function(expected, actual, done) {

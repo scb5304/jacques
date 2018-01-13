@@ -17,74 +17,69 @@ before(function() {
     });
 });
 
-beforeEach(function() {
-    this.message = testUtils.createTestDiscordTextChannelMessage();
-    this.sound = testUtils.createTestSound();
-});
-
 afterEach(function() {
     this.sandbox.restore();
 });
 
-describe("playRandomSound", function() {
-    it("queries for a random sound in the member's guild", function(done) {
-        let self = this;
-        this.sandbox.stub(soundsRepository, "getRandomSoundInDiscordGuild").callsFake(function (guildId) {
-            assert.equal(guildId, self.sound.discord_guild);
-            done();
-        });
-
-        soundboard.playRandomSound(this.message);
+describe("soundboard", function() {
+    let self;
+    beforeEach(function() {
+        this.message = testUtils.createTestDiscordTextChannelMessage();
+        this.sound = testUtils.createTestSound();
+        self = this;
     });
 
-    it("should query for a random sound name, then join a voice channel", function(done) {
-        let self = this;
-        this.sandbox.stub(self.message.member.voiceChannel, "join").callsFake(function() {
-            done();
-            return Promise.resolve(testUtils.createTestDiscordVoiceConnection());
+    describe("playRandomSound", function() {
+        it("queries for a random sound in the member's guild", function(done) {
+            this.sandbox.stub(soundsRepository, "getRandomSoundInDiscordGuild").callsFake(function (guildId) {
+                assert.equal(guildId, self.sound.discord_guild);
+                done();
+            });
+            soundboard.playRandomSound(this.message);
         });
-        this.sandbox.stub(soundsRepository, "getRandomSoundInDiscordGuild").callsFake(function() {
-            return Promise.resolve(self.sound);
+
+        it("should query for a random sound name, then join a voice channel", function(done) {
+            this.sandbox.stub(self.message.member.voiceChannel, "join").callsFake(function() {
+                done();
+                return Promise.resolve(testUtils.createTestDiscordVoiceConnection());
+            });
+            this.sandbox.stub(soundsRepository, "getRandomSoundInDiscordGuild").callsFake(function() {
+                return Promise.resolve(self.sound);
+            });
+            soundboard.playRandomSound(this.message);
         });
-        soundboard.playRandomSound(this.message);
+
+        it("should insert a sound event", function(done) {
+            this.sandbox.stub(soundsRepository, "getRandomSoundInDiscordGuild").callsFake(function() {
+                return Promise.resolve(self.message);
+            });
+            this.sandbox.stub(soundsRepository, "insertSoundEvent").callsFake(function() {
+                done();
+                return Promise.resolve();
+            });
+            soundboard.playRandomSound(this.message);
+        });
     });
 
-    it("should insert a sound event", function(done) {
-        let self = this;
-        this.sandbox.stub(soundsRepository, "getRandomSoundInDiscordGuild").callsFake(function() {
-            return Promise.resolve(self.message);
+    describe("playTargetedSound", function() {
+        it("should query for a specific sound", function() {
+            const dbStub = this.sandbox.stub(soundsRepository, "getSoundByDiscordGuildIdAndName").callsFake(function () {
+                return Promise.resolve(self.sound);
+            });
+
+            soundboard.playTargetedSound(this.message, this.sound.name);
+            sinon.assert.calledWith(dbStub, this.sound.discord_guild, this.sound.name);
         });
 
-        this.sandbox.stub(soundsRepository, "insertSoundEvent").callsFake(function() {
-            done();
-            return Promise.resolve();
+        it("should join a voice channel to play the sound", function(done) {
+            this.sandbox.stub(self.message.member.voiceChannel, "join").callsFake(function() {
+                done();
+                return Promise.resolve(testUtils.createTestDiscordVoiceConnection());
+            });
+            this.sandbox.stub(soundsRepository, "getSoundByDiscordGuildIdAndName").callsFake(function() {
+                return Promise.resolve(self.sound);
+            });
+            soundboard.playTargetedSound(this.message, "mySound");
         });
-
-        soundboard.playRandomSound(this.message);
-    });
-});
-
-describe("playTargetedSound", function() {
-    it("should query for a specific sound", function() {
-        let self = this;
-        const dbStub = this.sandbox.stub(soundsRepository, "getSoundByDiscordGuildIdAndName").callsFake(function () {
-            return Promise.resolve(self.sound);
-        });
-
-        soundboard.playTargetedSound(this.message, this.sound.name);
-        sinon.assert.calledWith(dbStub, this.sound.discord_guild, this.sound.name);
-    });
-
-    it("should join a voice channel to play the sound", function(done) {
-        let self = this;
-        this.sandbox.stub(self.message.member.voiceChannel, "join").callsFake(function() {
-            done();
-            return Promise.resolve(testUtils.createTestDiscordVoiceConnection());
-        });
-        this.sandbox.stub(soundsRepository, "getSoundByDiscordGuildIdAndName").callsFake(function() {
-            return Promise.resolve(self.sound);
-        });
-        //Play a targeted sound, which should query the database then join a voice channel, ending the test.
-        soundboard.playTargetedSound(this.message, "mySound");
     });
 });

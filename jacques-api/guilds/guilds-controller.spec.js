@@ -13,12 +13,14 @@ afterEach(function() {
 });
 
 describe("guild-controller", function() {
+    let self;
     beforeEach(function() {
         this.res = {
             json: function() {},
             status: function() {}
         };
         this.testJacquesGuild = testUtils.createTestJacquesGuild();
+        self = this;
     });
 
     describe("getGuild", function() {
@@ -44,7 +46,6 @@ describe("guild-controller", function() {
         });
 
         it("returns json representation of guild when exists", function(done) {
-            var self = this;
             this.sandbox.stub(guildsRepository, "getGuildById").callsFake(function() {
                 return Promise.resolve(self.testJacquesGuild);
             });

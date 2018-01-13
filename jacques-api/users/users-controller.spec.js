@@ -16,6 +16,7 @@ afterEach(function() {
 });
 
 describe("user-controller", function() {
+    let self;
     beforeEach(function() {
         this.res = {
             json: function() {},
@@ -23,6 +24,7 @@ describe("user-controller", function() {
         };
         this.testJacquesUser = testUtils.createTestJacquesUser();
         this.testJacquesGuild = testUtils.createTestJacquesGuild();
+        self = this;
     });
 
     describe("getUser", function() {
@@ -43,14 +45,12 @@ describe("user-controller", function() {
 
         describe("user is in database", function() {
             beforeEach(function() {
-                var self = this;
                 this.sandbox.stub(usersRepository, "getUserFromBirdfeed").callsFake(function() {
                     return Promise.resolve(self.testJacquesUser);
                 });
             });
 
             it("returns user if the guild also exists", function(done) {
-                var self = this;
                 this.sandbox.stub(guildsRepository, "getGuildById").callsFake(function() {
                     return Promise.resolve(self.testJacquesGuild);
                 });
