@@ -1,6 +1,6 @@
 const soundsRepository = require("../../jacques-common/data/sounds/sounds-repository");
 const logger = require("../../jacques-common/util/logger.js");
-const fsReader = require("../../jacques-common/util/file-system-reader.js");
+const fileSystemManager = require("../../jacques-common/util/file-system-manager.js");
 
 function insertSoundEvent(sound, guildId, memberName, eventType) {
     soundsRepository.insertSoundEvent(sound.name, guildId, memberName, eventType).catch(logger.error);
@@ -34,22 +34,21 @@ function playTargetedSound(message, soundName) {
 }
 
 function playSound(sound, voiceChannel) {
-    const soundPath = fsReader.getSoundPathFromSound(sound) + ".mp3";
-
-    if (!fsReader.soundExistsInFileSystem(soundPath)) {
+    const soundPath = fileSystemManager.getSoundPathFromSound(sound) + ".mp3";
+    fileSystemManager.soundExistsInFileSystem(soundPath).then(function() {
+        voiceChannel.join()
+            .then(function(connection) {
+                const dispatcher = connection.playFile(soundPath);
+                dispatcher.once("end", function() {
+                    logger.info("Leaving after playing sound.");
+                    connection.disconnect();
+                });
+            })
+            .catch(logger.error);
+    }).catch(function(err) {
         logger.error("Couldn't find sound at " + soundPath);
-        return;
-    }
-
-    voiceChannel.join()
-        .then(function(connection) {
-            const dispatcher = connection.playFile(soundPath);
-            dispatcher.once("end", function() {
-                logger.info("Leaving after playing sound.");
-                connection.disconnect();
-            });
-        })
-        .catch(logger.error);
+        logger.error(err);
+    });
 }
 
 module.exports.playTargetedSound = playTargetedSound;

@@ -14,11 +14,11 @@ const router = express.Router();
 const port = 8081;
 
 app.use(bodyParser.json({
-    limit: '700KB'
+    limit: "700KB"
 }));
 app.use(bodyParser.urlencoded({
     extended: true,
-    limit: '700KB'
+    limit: "700KB"
 }));
 
 Db.connect().then(function() {

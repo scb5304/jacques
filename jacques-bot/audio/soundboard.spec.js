@@ -2,7 +2,7 @@ require("dotenv").config({ path: require("app-root-path") + "/.config/.env" });
 const assert = require("chai").assert;
 const sinon = require("sinon");
 const soundboard = require("./soundboard");
-const fileSystemReader = require("../../jacques-common/util/file-system-reader");
+const fileSystemReader = require("../../jacques-common/util/file-system-manager");
 const soundsRepository = require("../../jacques-common/data/sounds/sounds-repository");
 const testUtils = require("../../jacques-common/util/test-utils");
 
@@ -13,7 +13,7 @@ before(function() {
     });
     //Stub the fileSystemReader to say it exists in the file system
     this.sandbox.stub(fileSystemReader, "soundExistsInFileSystem").callsFake(function() {
-        return true;
+        return Promise.resolve();
     });
 });
 

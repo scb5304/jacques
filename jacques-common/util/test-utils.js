@@ -1,5 +1,4 @@
-const chai = require("chai");
-const logger = require("./logger");
+const assert = require("chai").assert;
 const utility = require("../../jacques-common/util/utility");
 
 const testDiscordVoiceChannel = {
@@ -165,17 +164,17 @@ module.exports.createTestBirdfeed = function() {
 };
 
 module.exports.expectApiResponseStatus = function(expected, actual, done) {
-    logger.info("Expecting status of " + expected + ", got " + actual);
-    chai.assert.equal(expected, actual);
+    assert.equal(expected, actual, "Expected status of " + expected + ", got " + actual);
     return {
         send: function () {
-            done();
+            if (done) {
+                done();
+            }
         }
     }
 };
 
 module.exports.expectApiResponseJson = function(expected, actual, done) {
-    logger.info("Expecting json of " + JSON.stringify(expected) + ", got " + JSON.stringify(actual));
-    chai.assert.deepEqual(expected, actual);
+    assert.deepEqual(expected, actual, "Expected json of " + JSON.stringify(expected) + ", got " + JSON.stringify(actual));
     done();
 };

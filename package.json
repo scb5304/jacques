@@ -11,6 +11,7 @@
     "testApi": "mocha './jacques-api/**/*.spec.js'",
     "coverApi": "nyc --reporter=lcovonly --report-dir=./coverage/api npm run testApi",
 
+    "liveServerWeb": "live-server --open=jacques-web --watch=jacques-web/**",
     "testWeb": "karma start",
     "coverWeb": "npm run testWeb",
 
