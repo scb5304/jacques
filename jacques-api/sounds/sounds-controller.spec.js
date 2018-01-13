@@ -314,6 +314,19 @@ describe("sounds-controller", function() {
                 soundsController.postSound(this.req, this.res);
             });
 
+            it("responds with a 400 when a sound with this name already exists", function(done) {
+                this.sandbox.stub(birdfeedValidator, "validateBirdfeedInRequest").callsFake(function() {
+                    return Promise.resolve(self.testJacquesUser);
+                });
+                this.sandbox.stub(soundsRepository, "getSoundByDiscordGuildIdAndName").callsFake(function() {
+                    return Promise.resolve(self.testSounds[0]);
+                });
+                this.sandbox.stub(this.res, "status").callsFake(function(status) {
+                    return testUtils.expectApiResponseStatus(400, status, done);
+                });
+                soundsController.postSound(this.req, this.res);
+            });
+
             it("sends a 400 if the sound name is reserved", function(done) {
                 this.sandbox.stub(birdfeedValidator, "validateBirdfeedInRequest").callsFake(function() {
                     return Promise.resolve(self.testJacquesUser);
