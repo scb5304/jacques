@@ -55,7 +55,7 @@ describe("user-controller", function() {
                     return Promise.resolve(self.testJacquesGuild);
                 });
                 this.sandbox.stub(this.res, "json").callsFake(function(actualUser) {
-                    testUtils.expectApiResponseJson(self.testJacquesUser, actualUser, done)
+                    testUtils.expectApiResponseJson(self.testJacquesUser, actualUser, done);
                 });
 
                 userController.getUser({params: {birdfeed: "testBirdfeed"}}, this.res);

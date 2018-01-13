@@ -212,7 +212,7 @@ describe("Sound Detail", function () {
                         discord_username: "Steubenville",
                         discord_last_guild_id: "1994",
                         birdfeed_token: "lolololol"
-                    }
+                    };
                 };
 
                 SoundsService.deleteSound = function(){
@@ -237,7 +237,7 @@ describe("Sound Detail", function () {
                 };
 
                 $scope.onFailedDeleteSoundResponse(err);
-                expect(jacquesToaster.showToastWithText).toHaveBeenCalledWith("Not found.")
+                expect(jacquesToaster.showToastWithText).toHaveBeenCalledWith("Not found.");
             });
 
             it("shows a generic API error toast other when sound upload fails", function() {
@@ -247,7 +247,7 @@ describe("Sound Detail", function () {
                 };
 
                 $scope.onFailedDeleteSoundResponse(err);
-                expect(jacquesToaster.showApiErrorToast).toHaveBeenCalledWith()
+                expect(jacquesToaster.showApiErrorToast).toHaveBeenCalled();
             });
         });
     });

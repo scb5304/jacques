@@ -60,7 +60,7 @@ angular.module("birdfeeder")
                     } else {
                         jacquesToaster.showApiErrorToast();
                     }
-                }
+                };
             }
         ]
     });

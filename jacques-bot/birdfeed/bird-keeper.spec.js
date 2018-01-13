@@ -64,7 +64,7 @@ describe("bird-keeper", function() {
                 throw "Resolve should not have been called when a database error occurs";
             }).catch(function() {
                 done();
-            })
+            });
         });
     });
 });

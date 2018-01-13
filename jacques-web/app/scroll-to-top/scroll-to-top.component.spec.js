@@ -20,7 +20,7 @@ describe("scrollToTop", function() {
 
         it("scrolls the page's main content to the very top when the FAB is pressed", function() {
             var mockMainContent = {
-                scrollTo: function(x, y) {}
+                scrollTo: function() {}
             };
 
             spyOn(document, "getElementById").and.callFake(function() {

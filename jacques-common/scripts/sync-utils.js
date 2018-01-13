@@ -14,7 +14,7 @@ function beginSync() {
             });
         }).catch(function(err) {
             return reject(err);
-        })
+        });
     });
 }
 

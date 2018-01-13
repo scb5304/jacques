@@ -28,7 +28,7 @@ describe("guild-leader", function() {
                 assert.equal(self.testJacquesGuild.discord_id, guildId);
                 done();
             });
-            guildLeader.updateGuildVolume(this.testJacquesGuild.discord_id, 0.50)
+            guildLeader.updateGuildVolume(this.testJacquesGuild.discord_id, 0.50);
         });
     });
 

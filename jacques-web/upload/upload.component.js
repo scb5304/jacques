@@ -40,7 +40,7 @@ angular
                                 } else {
                                     jacquesToaster.showApiErrorToast();
                                 }
-                        })
+                        });
                     }).catch(function(err) {
                         jacquesToaster.showToastWithText(err);
                     });

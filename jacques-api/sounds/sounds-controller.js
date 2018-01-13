@@ -185,7 +185,7 @@ function validateSoundDataInSoundPostRequest(guildId, soundName, res) {
         if (RESERVED_KEYWORDS.indexOf(soundName.toLowerCase()) !== -1) {
             var err = "Sorry! This sound name is reserved for usage by Jacques.";
             res.status(400).send({error: err});
-            return reject(err)
+            return reject(err);
         }
 
         soundsRepository.getSoundByDiscordGuildIdAndName(guildId, soundName)

@@ -20,7 +20,7 @@ const testDiscordVoiceConnection = {
             channel: {
                 name: "testChannelName"
             }
-        }
+        };
     },
     channel: testDiscordVoiceChannel,
     playFile: function() {

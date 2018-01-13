@@ -121,7 +121,7 @@ describe("SoundsService", function() {
 
             setTimeout(10, function() {
                 expect(resolveCallback).toHaveBeenCalled();
-            })
+            });
         });
 
         it("rejects when there's a server error during upload", function() {

@@ -226,7 +226,7 @@ describe("sounds repository", function() {
                 assert.isTrue(err.includes(testError));
                 done();
             });
-        })
+        });
     });
 
     describe("get sound events count", function() {

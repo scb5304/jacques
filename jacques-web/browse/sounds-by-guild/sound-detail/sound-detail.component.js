@@ -93,7 +93,7 @@ angular
                             self.onConfirmDelete = $scope.onConfirmDelete;
                         },
                         controllerAs: "$ctrl"
-                    })
+                    });
                 };
 
                 $scope.closeDialog = function() {
@@ -125,7 +125,7 @@ angular
                     } else {
                         jacquesToaster.showApiErrorToast();
                     }
-                }
+                };
             }
         ]
     });

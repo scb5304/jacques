@@ -51,9 +51,9 @@ angular
         });
 
         var soundDetailState = {
-            name: 'soundDetail',
-            url: '/sounds/{guildId}/{soundName}',
-            component: 'soundDetail',
+            name: "soundDetail",
+            url: "/sounds/{guildId}/{soundName}",
+            component: "soundDetail",
             resolve: {
                 guild: function($transition$, GuildsService) {
                     var guildId = $transition$.params().guildId;

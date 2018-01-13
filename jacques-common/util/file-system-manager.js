@@ -18,7 +18,7 @@ function soundExistsInFileSystem(soundPath) {
             } else {
                 return resolve();
             }
-        })
+        });
     });
 }
 
