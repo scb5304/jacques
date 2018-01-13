@@ -35,9 +35,13 @@ function getSounds(req, res) {
     soundsRepository.getAllSounds()
         .then(function(sounds) {
             if (sounds && !includeSoundEvents) {
+                var cleansedSounds = [];
                 sounds.forEach(function(sound) {
-                    delete sound._doc.sound_events;
+                    sound = sound.toObject();
+                    delete sound.sound_events;
+                    cleansedSounds.push(sound);
                 });
+                sounds = cleansedSounds;
             }
             res.json(sounds);
         })
@@ -60,15 +64,19 @@ function getSoundsByGuild(req, res) {
     const guild = req.params.guild;
     soundsRepository.getSoundsByDiscordGuildId(guild)
         .then(function(sounds) {
+            var cleansedSounds = [];
             if (sounds) {
                 sounds.forEach(function(sound) {
-                    sound._doc["soundEventCount"] = sound.sound_events.length;
+                    //Always have the metadata for number of events. Exclude events if not desired.
+                    sound = sound.toObject();
+                    sound.soundEventCount = sound.sound_events.length;
                     if (!includeSoundEvents) {
-                        delete sound._doc.sound_events;
+                        delete sound.sound_events;
                     }
+                    cleansedSounds.push(sound);
                 });
             }
-            res.json(sounds);
+            res.json(cleansedSounds);
         })
         .catch(function(error) {
             logger.error(error);
@@ -121,7 +129,6 @@ function deleteSound(req, res) {
                 });
         }
     }).catch(logger.error);
-
 }
 
 function postSound(req, res) {
