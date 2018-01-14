@@ -63,11 +63,10 @@ function updateVolumeForGuild(volume, discordGuildId) {
 
 function insertGuild(discordGuild) {
     return new Promise((resolve, reject) => {
-        var newGuild = new Guild({
+        Guild.create({
             discord_id: discordGuild.id,
             discord_name: discordGuild.name
-        });
-        newGuild.save(function(err) {
+        }, function(err) {
             if (err) {
                 return reject(err);
             } else {
