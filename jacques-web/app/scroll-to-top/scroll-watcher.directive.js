@@ -10,8 +10,8 @@ angular
                     if (!fab) {
                         return;
                     }
-                    var mainContent = document.getElementById("main-content");
 
+                    var mainContent = document.getElementById("main-content");
                     if (!mainContent) {
                         return;
                     }
