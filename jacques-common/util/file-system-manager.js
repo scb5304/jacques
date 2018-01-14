@@ -4,7 +4,7 @@ const mkdirp = require("mkdirp");
 const SOUNDS_DIRECTORY = process.env.JACQUES_SOUNDS_DIRECTORY;
 
 function getSoundPathFromSound(sound) {
-	var soundsDirectoryCleansed = path.join(SOUNDS_DIRECTORY, sound.discord_guild);
+	var soundsDirectoryCleansed = path.join(SOUNDS_DIRECTORY, sound.discord_guild + ".mp3");
     var rootPath = path.resolve(soundsDirectoryCleansed);
 
 	return path.join(rootPath, sound.name);
@@ -24,7 +24,7 @@ function soundExistsInFileSystem(soundPath) {
 
 function deleteSoundFromFileSystem(guildId, soundName) {
     return new Promise((resolve, reject) => {
-        const soundPath = path.join(SOUNDS_DIRECTORY, guildId, soundName + ".mp3");
+        const soundPath = getSoundPathFromSound({discord_guild: guildId, name: soundName});
         fs.unlink(soundPath, function(err) {
             if (err) {
                 return reject(err);
@@ -38,11 +38,11 @@ function deleteSoundFromFileSystem(guildId, soundName) {
 function writeSoundToFileSystem(guildId, soundName, fileData) {
     return new Promise((resolve, reject) => {
         const soundsDirectoryToSaveIn = path.join(SOUNDS_DIRECTORY, guildId);
-        mkdirp(soundsDirectoryToSaveIn, function(err) {
+        mkdirp.mkdirp(soundsDirectoryToSaveIn, function(err) {
             if (err) {
                 return reject(err);
             } else {
-                const fileName = path.join(soundsDirectoryToSaveIn, soundName + ".mp3");
+                const fileName = getSoundPathFromSound({discord_guild: guildId, name: soundName});
                 fs.writeFile(fileName, fileData, "base64", function(err) {
                     if (err) {
                         return reject(err);

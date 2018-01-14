@@ -34,7 +34,7 @@ function playTargetedSound(message, soundName) {
 }
 
 function playSound(sound, voiceChannel) {
-    const soundPath = fileSystemManager.getSoundPathFromSound(sound) + ".mp3";
+    const soundPath = fileSystemManager.getSoundPathFromSound(sound);
     fileSystemManager.soundExistsInFileSystem(soundPath).then(function() {
         voiceChannel.join()
             .then(function(connection) {
