@@ -114,11 +114,78 @@ describe("sounds repository", function() {
             soundsRepository.insertSoundEvent(self.testSound.name, self.testSound.discord_guild, self.testSoundEvent.performed_by, self.testSoundEvent.category)
                 .then(function (sound) {
                     const soundEvent = sound.sound_events[0];
-                    console.info(soundEvent);
                     assert.equal(soundEvent.category, self.testSoundEvent.category);
                     assert.equal(soundEvent.performed_by, self.testSoundEvent.performed_by);
                     done();
                 }).catch(logger.error);
+        });
+    });
+
+    describe("getting all sounds", function() {
+        it("gets sounds with an empty query", function(done) {
+            this.sandbox.stub(Sound, "find").callsFake(function(doc, projection, callback) {
+                assert.deepEqual(doc, {});
+                done();
+                callback(undefined, [self.testSound]);
+            });
+            soundsRepository.getAllSounds();
+        });
+
+        it("resolves a list of sounds when there's no database error", function(done) {
+            this.sandbox.stub(Sound, "find").callsFake(function(doc, projection, callback) {
+                callback(undefined, [self.testSound]);
+            });
+            soundsRepository.getAllSounds().then(function(sounds) {
+                assert.isDefined(sounds);
+                done();
+            }).catch(logger.error);
+        });
+
+        it("resolves a list of sounds when there's no database error", function(done) {
+            this.sandbox.stub(Sound, "find").callsFake(function(doc, projection, callback) {
+                callback(testError);
+            });
+            soundsRepository.getAllSounds().then(function(sounds) {
+                throw "Resolve should not have been called when a database error occurs";
+            }).catch(function(err) {
+                assert.isTrue(err.includes(testError));
+                done();
+            });
+        });
+    });
+
+    describe.only("getting a sound by guild ID and sound name", function() {
+        it("queries for a sound with the passed guild ID and sound name", function(done) {
+            this.sandbox.stub(Sound, "findOne").callsFake(function(doc, projection, callback) {
+                assert.equal(doc.discord_guild, self.testSound.discord_guild);
+                assert.equal(doc.name, self.testSound.name);
+                done();
+                callback(undefined, self.testSound);
+            });
+            soundsRepository.getSoundByDiscordGuildIdAndName(self.testSound.discord_guild, self.testSound.name);
+        });
+
+        it("resolves a sound when there's no database error", function(done) {
+            this.sandbox.stub(Sound, "findOne").callsFake(function(doc, projection, callback) {
+                callback(undefined, [self.testSound]);
+            });
+            soundsRepository.getSoundByDiscordGuildIdAndName(self.testSound.discord_guild, self.testSound.name)
+                .then(function (sound) {
+                    assert.isDefined(sound);
+                    done();
+                }).catch(logger.error);
+        });
+
+        it("rejects with an error when there's no database error", function(done) {
+            this.sandbox.stub(Sound, "findOne").callsFake(function(doc, projection, callback) {
+                callback(testError);
+            });
+            soundsRepository.getSoundByDiscordGuildIdAndName(self.testSound.discord_guild, self.testSound.name).then(function () {
+                throw "Resolve should not have been called when a database error occurs";
+            }).catch(function(err) {
+                assert.isTrue(err.includes(testError));
+                done();
+            });
         });
     });
 
