@@ -57,7 +57,7 @@ describe("users repository", function() {
             });
 
             usersRepository.getUserFromDiscordId(self.testJacquesUser.discord_id).then(function() {
-                throw "Resolve should not have been called when a database error occurs";
+                testUtils.throwUnexpectedResolveWhen("a database error occurs");
             }).catch(function(err) {
                 assert.isTrue(err.includes(expectedError));
                 done();
@@ -93,7 +93,7 @@ describe("users repository", function() {
             });
 
             usersRepository.getUserFromBirdfeed(self.testBirdfeed).then(function() {
-                throw "Resolve should not have been called when a database error occurs";
+                testUtils.throwUnexpectedResolveWhen("a database error occurs");
             }).catch(function(err) {
                 assert.isTrue(err.includes(expectedError));
                 done();
@@ -138,7 +138,7 @@ describe("users repository", function() {
                 callback(expectedError);
             });
             usersRepository.upsertUserWithDiscordDataAndToken(self.testGuildMember, self.testBirdfeed).then(function() {
-                throw "Resolve should not have been called when a database error occurs";
+                testUtils.throwUnexpectedResolveWhen("a database error occurs");
             }).catch(function(err) {
                 assert.isTrue(err.includes(expectedError));
                 done();
@@ -150,7 +150,7 @@ describe("users repository", function() {
                 callback(undefined, noError);
             });
             usersRepository.upsertUserWithDiscordDataAndToken(self.testGuildMember, self.testBirdfeed).then(function() {
-                throw "Resolve should not have been called when a upsert didnt return a user";
+                testUtils.throwUnexpectedResolveWhen("a database error occurs");
             }).catch(function(err) {
                 assert.isFalse(err.includes(expectedError));
                 done();

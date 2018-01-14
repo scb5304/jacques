@@ -196,3 +196,7 @@ module.exports.expectApiResponseJson = function(expected, actual, done) {
     assert.deepEqual(expected, actual, "Expected json of " + JSON.stringify(expected) + ", got " + JSON.stringify(actual));
     done();
 };
+
+module.exports.throwUnexpectedResolveWhen = function(reason) {
+    throw "Did not expect 'resolve' block to be invoked when " + reason + ".";
+};

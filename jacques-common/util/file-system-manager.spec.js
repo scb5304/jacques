@@ -36,7 +36,7 @@ describe("file-system-manager", function() {
                 callback(testError);
             });
             fileSystemManager.soundExistsInFileSystem().then(function() {
-                throw "Resolve should not have been called when the file doesn't exist";
+                testUtils.throwUnexpectedResolveWhen("the file doesn't exist");
             }).catch(function(err) {
                 logger.error(err);
                 done();
@@ -59,7 +59,7 @@ describe("file-system-manager", function() {
                 callback(testError);
             });
             fileSystemManager.deleteSoundFromFileSystem(this.testSound.discord_guild, this.testSound.name).then(function() {
-                throw "Resolve should not have been called when the deletion fails";
+                testUtils.throwUnexpectedResolveWhen("the deletion fails");
             }).catch(function(err) {
                 logger.error(err);
                 done();
@@ -82,7 +82,7 @@ describe("file-system-manager", function() {
                 callback(testError);
             });
             fileSystemManager.writeSoundToFileSystem("", "", "").then(function() {
-                throw "Resolve should not have been called when the write fails";
+                testUtils.throwUnexpectedResolveWhen("the write fails");
             }).catch(function(err) {
                 logger.error(err);
                 done();
@@ -109,7 +109,7 @@ describe("file-system-manager", function() {
                 callback(testError);
             });
             fileSystemManager.writeSoundToFileSystem("", "", "").then(function() {
-                throw "Resolve should not have been called when the write fails";
+                testUtils.throwUnexpectedResolveWhen("the write fails");
             }).catch(function(err) {
                 logger.error(err);
                 done();

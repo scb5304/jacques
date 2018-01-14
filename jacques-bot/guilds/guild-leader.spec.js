@@ -62,7 +62,7 @@ describe("guild-leader", function() {
                 return Promise.resolve(undefined);
             });
             guildLeader.getGuildVolume(this.testJacquesGuild.discord_id).then(function() {
-                throw "Resolve should not have been called when the guild is undefined";
+                testUtils.throwUnexpectedResolveWhen("the guild is undefined");
             }).catch(function() {
                 done();
             });
@@ -75,7 +75,7 @@ describe("guild-leader", function() {
                 return Promise.reject(testError);
             });
             guildLeader.getGuildVolume(this.testJacquesGuild.discord_id).then(function() {
-                throw "Resolve should not have been called when a database error occurs";
+                testUtils.throwUnexpectedResolveWhen("a database error occurs");
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));
                 done();

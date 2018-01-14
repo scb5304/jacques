@@ -61,7 +61,7 @@ describe("bird-keeper", function() {
                 return Promise.reject();
             });
             birdkeeper.createBirdfeedForGuildMember(this.guildMember).then(function(tokenGenerated) {
-                throw "Resolve should not have been called when a database error occurs";
+                testUtils.throwUnexpectedResolveWhen("a database error occurs");
             }).catch(function() {
                 done();
             });

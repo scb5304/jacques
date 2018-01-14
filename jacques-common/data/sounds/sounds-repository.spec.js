@@ -56,7 +56,7 @@ describe("sounds repository", function() {
             });
 
             soundsRepository.insertSoundForGuildByUser(self.testSound.name, self.testJacquesUser).then(function() {
-                throw "Resolve should not have been called when a database error occurs";
+                testUtils.throwUnexpectedResolveWhen("a database error occurs");
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));
                 done();
@@ -81,7 +81,7 @@ describe("sounds repository", function() {
             });
 
             soundsRepository.insertSoundEvent(self.testSound.name, self.testJacquesUser.discord_last_guild_id).then(function() {
-                throw "Resolve should not have been called when a database error occurs";
+                testUtils.throwUnexpectedResolveWhen("a database error occurs");
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));
                 done();
@@ -94,7 +94,7 @@ describe("sounds repository", function() {
             });
 
             soundsRepository.insertSoundEvent(self.testSound.name, self.testJacquesUser.discord_last_guild_id).then(function() {
-                throw "Resolve should not have been called when a database error occurs";
+                testUtils.throwUnexpectedResolveWhen("a database error occurs");
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));
                 done();
@@ -146,7 +146,7 @@ describe("sounds repository", function() {
                 callback(testError);
             });
             soundsRepository.getAllSounds().then(function(sounds) {
-                throw "Resolve should not have been called when a database error occurs";
+                testUtils.throwUnexpectedResolveWhen("a database error occurs");
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));
                 done();
@@ -181,7 +181,7 @@ describe("sounds repository", function() {
                 callback(testError);
             });
             soundsRepository.getSoundByDiscordGuildIdAndName(self.testSound.discord_guild, self.testSound.name).then(function () {
-                throw "Resolve should not have been called when a database error occurs";
+                testUtils.throwUnexpectedResolveWhen("a database error occurs");
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));
                 done();
@@ -206,7 +206,7 @@ describe("sounds repository", function() {
                 callback(testError);
             });
             soundsRepository.deleteSoundByDiscordGuildIdAndName(self.testJacquesUser.discord_last_guild_id, self.testSound.discord_guild).then(function() {
-                throw "Resolve should not have been called when a database error occurs";
+                testUtils.throwUnexpectedResolveWhen("a database error occurs");
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));
                 done();
@@ -231,7 +231,7 @@ describe("sounds repository", function() {
                 callback(testError);
             });
             soundsRepository.getSoundsByDiscordGuildId(self.testJacquesUser.discord_last_guild_id).then(function() {
-                throw "Resolve should not have been called when a database error occurs";
+                testUtils.throwUnexpectedResolveWhen("a database error occurs");
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));
                 done();
@@ -264,7 +264,7 @@ describe("sounds repository", function() {
                 callback(testError);
             });
             soundsRepository.getRandomSoundInDiscordGuild(self.testSound.discord_guild).then(function() {
-                throw "Resolve should not have been called when a database error occurs";
+                testUtils.throwUnexpectedResolveWhen("a database error occurs");
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));
                 done();
@@ -288,7 +288,7 @@ describe("sounds repository", function() {
                 callback(testError);
             });
             soundsRepository.getSoundsCount().then(function() {
-                throw "Resolve should not have been called when a database error occurs";
+                testUtils.throwUnexpectedResolveWhen("a database error occurs");
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));
                 done();
@@ -312,7 +312,7 @@ describe("sounds repository", function() {
                 callback(testError);
             });
             soundsRepository.getSoundEventsCount().then(function() {
-                throw "Resolve should not have been called when a database error occurs";
+                testUtils.throwUnexpectedResolveWhen("a database error occurs");
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));
                 done();

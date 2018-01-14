@@ -37,7 +37,7 @@ describe("birdfeed-validator", function() {
         });
 
         birdfeedValidator.validateBirdfeedInRequest(this.testBirdfeed, this.res).then(function() {
-            throw "Resolve should not have been called when no user existed";
+            testUtils.throwUnexpectedResolveWhen("no user existed");
         }).catch(logger.error);
     });
 

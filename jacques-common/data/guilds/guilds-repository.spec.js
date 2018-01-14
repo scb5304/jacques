@@ -39,7 +39,7 @@ describe("guilds repository", function() {
                 callback(testError);
             });
             guildsRepository.getAllGuilds().then(function() {
-                throw "Resolve should not have been called when a database error occurs";
+                testUtils.throwUnexpectedResolveWhen("a database error occurs");
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));
                 done();
@@ -73,7 +73,7 @@ describe("guilds repository", function() {
             });
 
             guildsRepository.getGuildById(self.testGuilds[0].discord_id).then(function(guild) {
-                throw "Resolve should not have been called when a database error occurs";
+                testUtils.throwUnexpectedResolveWhen("a database error occurs");
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));
                 done();
@@ -107,7 +107,7 @@ describe("guilds repository", function() {
                 callback(testError);
             });
             guildsRepository.deleteGuildsNotInListOfIds([]).then(function() {
-                throw "Resolve should not have been called when a database error occurs";
+                testUtils.throwUnexpectedResolveWhen("a database error occurs");
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));
                 done();
@@ -139,7 +139,7 @@ describe("guilds repository", function() {
                 callback(testError);
             });
             guildsRepository.updateVolumeForGuild(0.50, self.testGuilds[0].discord_id).then(function() {
-                throw "Resolve should not have been called when a database error occurs";
+                testUtils.throwUnexpectedResolveWhen("a database error occurs");
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));
                 done();
@@ -173,7 +173,7 @@ describe("guilds repository", function() {
                 callback(testError);
             });
             guildsRepository.insertGuild({}).then(function() {
-                throw "Resolve should not have been called when a database error occurs";
+                testUtils.throwUnexpectedResolveWhen("a database error occurs");
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));
                 done();
@@ -197,7 +197,7 @@ describe("guilds repository", function() {
                 callback(testError);
             });
             guildsRepository.getGuildsCount().then(function() {
-                throw "Resolve should not have been called when a database error occurs";
+                testUtils.throwUnexpectedResolveWhen("a database error occurs");
             }).catch(function(err) {
                 assert.isTrue(err.includes(testError));
                 done();
