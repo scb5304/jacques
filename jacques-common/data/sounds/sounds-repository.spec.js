@@ -154,7 +154,7 @@ describe("sounds repository", function() {
         });
     });
 
-    describe.only("getting a sound by guild ID and sound name", function() {
+    describe("getting a sound by guild ID and sound name", function() {
         it("queries for a sound with the passed guild ID and sound name", function(done) {
             this.sandbox.stub(Sound, "findOne").callsFake(function(doc, projection, callback) {
                 assert.equal(doc.discord_guild, self.testSound.discord_guild);
