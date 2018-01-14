@@ -22,7 +22,7 @@ angular
                 }]
             }
         });
-        //Configre doughnut charts
+        //Configure doughnut charts
         ChartJsProvider.setOptions("doughnut", {
             responsive: true,
             legend: {
