@@ -42,7 +42,7 @@ describe("JacquesToaster", function() {
             expect(mockSimple.textContent).toHaveBeenCalled();
 
             var toastText = mockSimple.textContent.calls.mostRecent().args[0];
-            expect(toastText.toUpperCase().includes("Jacques API".toUpperCase())).toBeTruthy();
+            expect(toastText.toUpperCase().indexOf("Jacques API".toUpperCase()) !== -1).toBeTruthy();
         });
     });
 
