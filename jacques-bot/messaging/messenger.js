@@ -9,7 +9,7 @@ function sendHelp(message) {
 }
 
 function sendDirectMessage(user, message) {
-    if (user !== null) {
+    if (user) {
         const dmChannel = user.dmChannel;
         if (dmChannel) {
             dmChannel.send(message);
@@ -18,6 +18,8 @@ function sendDirectMessage(user, message) {
                 dmChannel.send(message);
             }).catch(logger.error);
         }
+    } else {
+        logger.error("User doesn't exist to send a DM!");
     }
 }
 
@@ -28,7 +30,7 @@ function replyToMessage(message, reply) {
 }
 
 function deleteMessage(message) {
-    if (message.channel.name !== "commands") {
+    if (!message.channel.name.toUpperCase().includes("commands".toUpperCase())) {
         message.delete(2000).catch(logger.error);
     }
 }

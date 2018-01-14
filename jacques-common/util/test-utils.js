@@ -33,7 +33,10 @@ const testDiscordVoiceConnection = {
 
 const testDiscordUser = {
     id: "180814637975994368",
-    username: "JonTronBot"
+    username: "JonTronBot",
+    createDM: function() {
+        return Promise.resolve(testDiscordDMChannel);
+    }
 };
 
 const testDiscordGuild = {
@@ -62,6 +65,12 @@ const testDiscordTextChannel = {
     name: "commands"
 };
 
+const testDiscordDMChannel = {
+    send: function() {
+        return Promise.resolve();
+    }
+};
+
 const testDiscordTextChannelMessage = {
     channel: testDiscordTextChannel,
     author: testDiscordUser,
@@ -69,6 +78,10 @@ const testDiscordTextChannelMessage = {
     member: testDiscordGuildMember,
     content: "Hello, world!",
     reply: function() {
+        //Actually returns a CREATED message, but this should suffice.
+        return Promise.resolve(testDiscordTextChannelMessage);
+    },
+    delete: function() {
         return Promise.resolve();
     }
 };
@@ -116,9 +129,6 @@ const testBirdfeed = "A38df89lds";
 
 //====================================================================================================================//
 
-/**
- * Creates a new VoiceChannel with no VoiceConnection.
- */
 module.exports.createTestDiscordVoiceChannel = function() {
     return utility.cloneObject(testDiscordVoiceChannel);
 };
@@ -131,12 +141,20 @@ module.exports.createTestDiscordTextChannelMessage = function() {
     return utility.cloneObject(testDiscordTextChannelMessage);
 };
 
+module.exports.createTestDiscordDMChannel = function() {
+    return utility.cloneObject(testDiscordDMChannel);
+};
+
 module.exports.createTestDiscordClient = function() {
     return utility.cloneObject(testDiscordClient);
 };
 
 module.exports.createTestDiscordGuildMember = function() {
     return utility.cloneObject(testDiscordGuildMember);
+};
+
+module.exports.createTestDiscordUser = function() {
+    return utility.cloneObject(testDiscordUser);
 };
 
 module.exports.createTestDiscordGuild = function() {
