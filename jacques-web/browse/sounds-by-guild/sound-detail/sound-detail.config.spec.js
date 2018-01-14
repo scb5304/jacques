@@ -1,4 +1,4 @@
-describe("example", function () {
+describe("sound detail config", function () {
     var $stateProvider;
     var soundDetailState;
     var testGuildId = "113425666951190094";
