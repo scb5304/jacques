@@ -19,9 +19,9 @@ angular
         "birdfeeder",
         "network"
     ])
-    .run(function($state, jacquesToaster) {
+    .run(function($state, JacquesToaster) {
         $state.defaultErrorHandler(function() {
-            jacquesToaster.showApiErrorToast();
+            JacquesToaster.showApiErrorToast();
         });
     })
     //https://stackoverflow.com/a/26086324/4672234

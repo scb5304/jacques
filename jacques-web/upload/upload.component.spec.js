@@ -20,7 +20,7 @@ describe("upload", function() {
                 };
             }
         };
-        var jacquesToaster = {
+        var JacquesToaster = {
             showToastWithText: function() {},
             showApiErrorToast: function() {}
         };
@@ -31,7 +31,7 @@ describe("upload", function() {
             $q = _$q_;
             UploadController = $componentController("upload", {
                 $scope: $scope, sharedProperties: sharedProperties,
-                jacquesToaster: jacquesToaster,
+                JacquesToaster: JacquesToaster,
                 SoundsService: SoundsService
             });
         }));
@@ -70,26 +70,26 @@ describe("upload", function() {
                 }
             });
             spyOn(SoundsService, "postSound").and.callThrough();
-            spyOn(jacquesToaster, "showToastWithText");
+            spyOn(JacquesToaster, "showToastWithText");
 
             $scope.formValid = true;
             $scope.onSubmitClick();
             $scope.$digest();
-            expect(jacquesToaster.showToastWithText).toHaveBeenCalledWith("It failed in every way possible.");
+            expect(JacquesToaster.showToastWithText).toHaveBeenCalledWith("It failed in every way possible.");
         });
 
         it("shows a generic error in a toast when network call fails", function() {
             $scope.files = [{lfFile: {name: "mySound.mp3"}}];
 
             spyOn(SoundsService, "postSound").and.callThrough();
-            spyOn(jacquesToaster, "showApiErrorToast");
+            spyOn(JacquesToaster, "showApiErrorToast");
             mockGetBase64Success();
             mockPostSoundFailure({});
 
             $scope.formValid = true;
             $scope.onSubmitClick();
             $scope.$digest();
-            expect(jacquesToaster.showApiErrorToast).toHaveBeenCalled();
+            expect(JacquesToaster.showApiErrorToast).toHaveBeenCalled();
         });
 
         function mockGetBase64Success() {

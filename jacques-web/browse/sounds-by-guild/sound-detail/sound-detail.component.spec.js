@@ -19,7 +19,7 @@ describe("Sound Detail", function () {
             setUser: function() {}
         };
         var SoundsService = {};
-        var jacquesToaster = {
+        var JacquesToaster = {
             showToastWithText: function() {},
             showApiErrorToast: function() {}
         };
@@ -46,7 +46,7 @@ describe("Sound Detail", function () {
                 $scope: $scope,
                 sharedProperties: sharedProperties,
                 SoundsService: SoundsService,
-                jacquesToaster: jacquesToaster,
+                JacquesToaster: JacquesToaster,
                 SoundDetailChartsHelper: SoundDetailChartsHelper,
                 $mdDialog: mdDialog
             });
@@ -228,7 +228,7 @@ describe("Sound Detail", function () {
             });
 
             it("shows an error toast with specific text when sound upload fails with a 400-range response", function() {
-                spyOn(jacquesToaster, "showToastWithText");
+                spyOn(JacquesToaster, "showToastWithText");
                 var err = {
                     status: 404,
                     data: {
@@ -237,17 +237,17 @@ describe("Sound Detail", function () {
                 };
 
                 $scope.onFailedDeleteSoundResponse(err);
-                expect(jacquesToaster.showToastWithText).toHaveBeenCalledWith("Not found.");
+                expect(JacquesToaster.showToastWithText).toHaveBeenCalledWith("Not found.");
             });
 
             it("shows a generic API error toast other when sound upload fails", function() {
-                spyOn(jacquesToaster, "showApiErrorToast");
+                spyOn(JacquesToaster, "showApiErrorToast");
                 var err = {
                     status: 500
                 };
 
                 $scope.onFailedDeleteSoundResponse(err);
-                expect(jacquesToaster.showApiErrorToast).toHaveBeenCalled();
+                expect(JacquesToaster.showApiErrorToast).toHaveBeenCalled();
             });
         });
     });

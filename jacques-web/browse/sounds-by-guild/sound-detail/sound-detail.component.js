@@ -7,9 +7,9 @@ angular
         bindings: {guild: "<", sound: "<"},
         templateUrl: "browse/sounds-by-guild/sound-detail/sound-detail.template.html",
         controller: ["$location", "$scope", "sharedProperties", "SoundDetailChartsHelper", "$sce", "SoundsService",
-            "jacquesToaster", "$state", "$mdDialog",
+            "JacquesToaster", "$state", "$mdDialog",
             function SoundDetailController($location, $scope, sharedProperties, SoundDetailChartsHelper, $sce,
-                                           SoundsService, jacquesToaster, $state, $mdDialog) {
+                                           SoundsService, JacquesToaster, $state, $mdDialog) {
                 $scope.sharedProperties = sharedProperties;
                 $scope.SoundsService = SoundsService;
                 $scope.SoundDetailChartsHelper = SoundDetailChartsHelper;
@@ -120,10 +120,10 @@ angular
 
                 $scope.onFailedDeleteSoundResponse = function(err) {
                     if (err.status >= 400 && err.status < 500) {
-                        jacquesToaster.showToastWithText(err.data.error);
+                        JacquesToaster.showToastWithText(err.data.error);
                         sharedProperties.setUser({});
                     } else {
-                        jacquesToaster.showApiErrorToast();
+                        JacquesToaster.showApiErrorToast();
                     }
                 };
             }

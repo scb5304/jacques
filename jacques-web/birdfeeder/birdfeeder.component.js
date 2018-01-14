@@ -3,8 +3,8 @@
 angular.module("birdfeeder")
     .component("birdfeeder", {
         templateUrl: "birdfeeder/birdfeeder.template.html",
-        controller: ["$scope", "sharedProperties", "UsersService", "jacquesToaster", "$mdDialog",
-            function BirdfeedController($scope, sharedProperties, UsersService, jacquesToaster, $mdDialog) {
+        controller: ["$scope", "sharedProperties", "UsersService", "JacquesToaster", "$mdDialog",
+            function BirdfeedController($scope, sharedProperties, UsersService, JacquesToaster, $mdDialog) {
                 $scope.makingRequest = false;
                 $scope.sharedProperties = sharedProperties;
 
@@ -56,9 +56,9 @@ angular.module("birdfeeder")
                     }
 
                     if (toastMessage) {
-                        jacquesToaster.showToastWithText(toastMessage);
+                        JacquesToaster.showToastWithText(toastMessage);
                     } else {
-                        jacquesToaster.showApiErrorToast();
+                        JacquesToaster.showApiErrorToast();
                     }
                 };
             }

@@ -16,7 +16,7 @@ describe("birdfeeder", function() {
         var UsersService = {
             getUser: function() {}
         };
-        var jacquesToaster = {
+        var JacquesToaster = {
             showToastWithText: function() {},
             showApiErrorToast: function() {}
         };
@@ -33,7 +33,7 @@ describe("birdfeeder", function() {
                 $scope: $scope,
                 sharedProperties: sharedProperties,
                 UsersService: UsersService,
-                jacquesToaster: jacquesToaster,
+                JacquesToaster: JacquesToaster,
                 $mdDialog: mdDialog
             });
         }));
@@ -129,20 +129,20 @@ describe("birdfeeder", function() {
                         return deferred.promise;
                     };
                     spyOn(UsersService, "getUser").and.callThrough();
-                    spyOn(jacquesToaster, "showToastWithText");
+                    spyOn(JacquesToaster, "showToastWithText");
 
                     $scope.submitBirdfeed(testBirdfeed);
                     $scope.$digest();
-                    expect(jacquesToaster.showToastWithText).toHaveBeenCalledWith("Everything is broken.");
+                    expect(JacquesToaster.showToastWithText).toHaveBeenCalledWith("Everything is broken.");
                 });
 
                 it("displays toast with generic error when a specific one doesnt exist", function() {
                     spyOn(UsersService, "getUser").and.callThrough();
-                    spyOn(jacquesToaster, "showApiErrorToast");
+                    spyOn(JacquesToaster, "showApiErrorToast");
 
                     $scope.submitBirdfeed(testBirdfeed);
                     $scope.$digest();
-                    expect(jacquesToaster.showApiErrorToast).toHaveBeenCalled();
+                    expect(JacquesToaster.showApiErrorToast).toHaveBeenCalled();
                 });
             });
         });

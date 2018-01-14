@@ -2,7 +2,7 @@
 
 angular
     .module("jacquesApp")
-    .service("jacquesToaster", function ($mdToast) {
+    .service("JacquesToaster", function ($mdToast) {
         return {
             showApiErrorToast: function () {
                 $mdToast.show(

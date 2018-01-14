@@ -4,8 +4,8 @@ angular
     .module("upload")
     .component("upload", {
         templateUrl: "upload/upload.template.html",
-        controller: ["$scope", "sharedProperties", "SoundsService", "jacquesToaster", "$q",
-            function UploadController($scope, sharedProperties, SoundsService, jacquesToaster, $q) {
+        controller: ["$scope", "sharedProperties", "SoundsService", "JacquesToaster", "$q",
+            function UploadController($scope, sharedProperties, SoundsService, JacquesToaster, $q) {
                 $scope.files = [];
                 $scope.sharedProperties = sharedProperties;
                 $scope.SoundsService = SoundsService;
@@ -33,16 +33,16 @@ angular
                                 $scope.files = [];
                                 $scope.lastUploadedGuildId = user.discord_last_guild_id;
                                 $scope.lastUploadedSoundName = fileName;
-                                jacquesToaster.showToastWithText("Upload success for sound " + fileName + "!");
+                                JacquesToaster.showToastWithText("Upload success for sound " + fileName + "!");
                             }).catch(function(err) {
                                 if (err.data && err.data.error) {
-                                    jacquesToaster.showToastWithText(err.data.error);
+                                    JacquesToaster.showToastWithText(err.data.error);
                                 } else {
-                                    jacquesToaster.showApiErrorToast();
+                                    JacquesToaster.showApiErrorToast();
                                 }
                         });
                     }).catch(function(err) {
-                        jacquesToaster.showToastWithText(err);
+                        JacquesToaster.showToastWithText(err);
                     });
                 };
 
