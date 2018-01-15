@@ -10,7 +10,8 @@ const testDiscordVoiceChannel = {
 };
 
 const testStreamDispatcher = {
-    once: function () {}
+    once: function () {},
+    setVolumeLogarithmic: function() {}
 };
 
 const testDiscordVoiceConnection = {
@@ -28,6 +29,9 @@ const testDiscordVoiceConnection = {
     },
     playStream: function() {
         return testStreamDispatcher;
+    },
+    player: {
+        dispatcher: testStreamDispatcher
     }
 };
 
