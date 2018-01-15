@@ -76,6 +76,11 @@ describe("AppController", function () {
             expect(sideNavCloseMock).toHaveBeenCalled();
         });
 
+        fit("closes the sidenav when the user swipes to the left on the sidenav", function() {
+            $scope.onSidenavSwipedLeft();
+            expect(sideNavCloseMock).toHaveBeenCalled();
+        });
+
         it("opens the sidenav when the user swipes to the right from the edge of the screen", function() {
             $scope.onSidenavSwipedRight();
             expect(sideNavOpenMock).toHaveBeenCalled();
