@@ -11,11 +11,9 @@ afterEach(function() {
 });
 
 describe("jacques-api", function() {
-   it("connects to database, initializing without crashing", function(done) {
+   it("connects to database", function(done) {
        this.sandbox.stub(Db, "connect").callsFake(function() {
-           setTimeout(function() {
-               done();
-           }, 5);
+           done();
        });
        require("./jacques-api");
    })
