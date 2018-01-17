@@ -46,9 +46,19 @@ An AngularJS, [material design](https://material.angularjs.org/latest/) website 
 
 <img src="https://i.imgur.com/aoxgiLi.png"> 
 
-!<img src="https://i.imgur.com/P44YYvA.png">!<img src="https://i.imgur.com/VN3Mi7N.png">
+<img src="https://i.imgur.com/P44YYvA.png"><img src="https://i.imgur.com/VN3Mi7N.png">
 
-Sounds are uploaded after the user has been "authenticated." Jacques uses a poor-mans' authentication where the user types a command, "!birdfeed" on their Discord server. This command enters a 
+##### Sound uploads
+
+Sounds can be uploaded after the user has been "authenticated." Jacques uses a rudimentary authentication where the user types a command, "!birdfeed" on their Discord server. This command enters a User entry (mapping a generated UUID to the discord user's ID) into the database. A direct message is sent to the user that contains this 10-digit UUID ("birdfeed"). The user copies this value, visits the website, and pastes it into the "birdfeeder" to complete authentication. This birdfeed is considered stale after 2 hours, at which point the user must request new birdfeed.
+
+This process verifies that:
+1) The user is a member of a Discord Guild that Jacques belongs to.
+2) The user has at least the "Attach Files" discord permission, allowing server administrators to restrict sound upload access.
+3) The user does not need to enter the Guild ID the submission is for, nor who is submitting it, as that is included in the User object stored server-side. They can therefore perform multiple file uploads in a row without needing to enter any information at all. Plus, I can track the origin of a sound upload with a pretty good guarantee of who is responsible.
+4) The user cannot submit sounds for guilds they are not a member of.
+
+The birdfeed is stored client-side and then included in POST and DELETE requests.
 
 ### jacques-common
 
