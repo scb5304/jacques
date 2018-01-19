@@ -12,7 +12,7 @@
                        ui-sref="soundsByGuild({ guildId: guild.discord_id })"
                        aria-label="guild.discord_name">
                     <span class="prevent-all-caps">
-                        <md-icon class="guild-list-item-icon" md-svg-icon="discord"></md-icon>{{guild.discord_name}}
+                        <md-icon class="guild-list-item-icon" md-svg-icon="discord"></md-icon>{{guild.discord_name.replace('&\amp;', '&')}}
                     </span>
             </md-button>
         </md-list-item>
