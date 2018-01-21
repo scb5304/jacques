@@ -47,6 +47,7 @@
     "discord.js": "11.2.1",
     "dotenv": "4.0.0",
     "express": "4.14.1",
+    "express-rate-limit": "2.11.0",
     "lf-ng-md-file-input": "1.5.3",
     "mkdirp": "0.5.1",
     "moment": "2.20.1",

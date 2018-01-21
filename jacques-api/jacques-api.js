@@ -12,6 +12,21 @@ const statisticsController = require("./statistics/statistics-controller");
 const app = express();
 const router = express.Router();
 const port = 8081;
+const RateLimit = require("express-rate-limit");
+
+//40 requests per minute before limited.
+const limiter = new RateLimit({
+    windowMs: 60 * 1000,
+    max: 40,
+    delayMs: 0
+});
+
+Db.connect().then(function() {
+    logger.info("Jacques API connected to database.");
+});
+
+app.enable("trust proxy");
+app.use(limiter);
 
 app.use(bodyParser.json({
     limit: "700KB"
@@ -20,10 +35,6 @@ app.use(bodyParser.urlencoded({
     extended: true,
     limit: "700KB"
 }));
-
-Db.connect().then(function() {
-    logger.info("Jacques API connected to database.");
-});
 
 router.route("/sounds")
     .get(soundController.getSounds);
