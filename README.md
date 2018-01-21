@@ -80,6 +80,7 @@ Not an independently run process, but a unit-tested module that shares models, d
 * [DiscordJS](https://github.com/hydrabolt/discord.js/) for interfacing with the Discord API to do anything at all involving Discord.
 * [dotenv](https://github.com/motdotla/dotenv) for loading environment variables for a simple .env config file. Helpful for both externalizing sensitive tokens and allowing them to differ on my development environment and 'production' box.
 * [Express](https://github.com/expressjs/express): the standard server framework for Node.js.
+* [Express Rate Limit](https://github.com/nfriedly/express-rate-limit) to prevent one IP address from overwhelming the API.
 * [Angular Material File Input](https://github.com/shuyu/angular-material-fileinput) for supporting file uploads in AngularJS in a material fashion, plus drag-and-drop, preview, and other cool stuff.
 * [mkdirp](https://github.com/substack/node-mkdirp) to create multiple directories in parallel. I'm not even sure if I need this module, to be honest, but I can't find a good reason to remove it.
 * [moment](https://github.com/moment/moment/) for dates/times and math involving dates/times.
@@ -121,24 +122,18 @@ Travis builds Jacques upon any commit to the /develop or /master branch. It inst
 
 As mentioned above, Coveralls (the "coverage" badge at the top of this page) is used to monitor Jacques' unit test code coverage. [Codacy](https://www.codacy.com/app/scb5304/jacques/dashboard) is leveraged for static code analysis. [David](https://david-dm.org/scb5304/jacques) analyzes dependencies to look for new, outdated, or insecure libraries being used by Jacques. One of the funnest parts of developing Jacques has been seeing how easy it is to plug an open source project into these sorts of tools.
 
-### Reflection
+## Reflection
 
 This project has been a learning opportunity more than anything else. I had no Javascript experience to speak of. My prior web experience was limited to [JavaServerFaces](http://www.oracle.com/technetwork/java/javaee/javaserverfaces-139869.html), HTML, CSS, and [Bootstrap](https://getbootstrap.com/). This was my first time building a Node.js application, an AngularJS application, a RESTful API, creating a MongoDB database, etc. I feel that I really accomplished my goal of getting out of my Java/Android comfort zone and making something very different.
-
-At the same time, I tended to overlook delivering actual functionality others would want to use. I'm confident there are other discord bots that can offer both the same functionality with higher quality, with even more features on top of that. Overall, however, I don't regret my decision to focus on the peripherals of the Discord bot, as that's what I had the most fun doing.
 
 Some lessons learned:
 
 1. Architect the application at least a little bit prior to coding it. Simply steaming ahead with code resulted in numerous refactors.
-2. Make sure you're looking at documentation / StackOverflow questions for the right incarnation of AngularJS. It seems that best practices changed rapidly, such as with the introductions of Components, then the use of controllerAs syntax, services vs providers vs controllers, etc.
-3. Take notes of what you're doing, as you do it, so that future you is not miserably trying to figure out how it was done.
-4. Unit test code as you write it, not when you've written most of the application.
-5. Spend less time on a single side project in the future. I have a feeling I could have learned about several other languages, frameworks, etc. in the time I put this project together. At the same time, maybe it's better to do deep dives.
-6. Javascript is pretty cool.
+2. Take notes of what you're doing, as you do it, so that future you is not miserably trying to figure out how it was done.
+3. Unit test code as you write it, not when you've written most of the application.
 
-### Miscellaneous
+## Miscellaneous
 
 * I do not have any plans to modify this codebase beyond bug fixes, dependency management, and minor feature tweaks.
 * I plan to maintain Jacques' website and bot for the forseeable future.
-* I am not content with every aspect of the codebase but have learned to let it rest instead of dwelling on it for all eternity.
 * Special thanks to Evan Walker for the idea of a Discord bot that plays sound clips. Without his suggestion I would have lost out on a really fun side project.
