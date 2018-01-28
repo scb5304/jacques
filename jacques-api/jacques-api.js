@@ -29,11 +29,11 @@ app.enable("trust proxy");
 app.use(limiter);
 
 app.use(bodyParser.json({
-    limit: "700KB"
+    limit: "959KB" // 37% larger than desired maximum of 700KB due to base64 encoded sound.
 }));
 app.use(bodyParser.urlencoded({
     extended: true,
-    limit: "700KB"
+    limit: "959KB"
 }));
 
 router.route("/sounds")
