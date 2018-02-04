@@ -18,12 +18,10 @@ function streamAudio(voiceChannel, volume, streamLink) {
                        const streamOptions = {
                            seek: calculateStreamSeekSeconds(streamLink),
                            volume: volume,
-                           passes: 6
+                           passes: 3
                        };
 
-                       const ytdlStream = ytdl(streamLink, {
-                           filter: "audioonly"
-                       });
+                       const ytdlStream = ytdl(streamLink);
 
                        const dispatcher = connection.playStream(ytdlStream, streamOptions);
                        dispatcher.once("end", function(reason) {
