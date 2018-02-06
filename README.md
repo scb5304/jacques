@@ -102,7 +102,7 @@ Not an independently run process, but a unit-tested module that shares models, d
 * [karma-chrome-launcher](https://github.com/karma-runner/karma-chrome-launcher) to speed up local unit testing by running them in Chrome instead of PhantomJS.
 * [karma-coverage](https://github.com/karma-runner/karma-coverage) to generate code coverage from karma-run client-side unit tests.
 * [karma-jasmine](https://github.com/karma-runner/karma-jasmine) as glue to stick Karma and Jasmine together.
-* [karma-phantomjs-launcher](karma-phantomjs-launcher) so that the client-side browser unit tests can be run without an actual web browser installed.
+* [karma-phantomjs-launcher](https://github.com/karma-runner/karma-phantomjs-launcher) so that the client-side browser unit tests can be run without an actual web browser installed.
 * [Mocha](https://github.com/mochajs/mocha) as the test runner for all server-side unit tests. I plug in Chai and Sinon to do asserts and mocks.
 * [npm-run-all](https://github.com/mysticatea/npm-run-all) to run my unit test scripts for each module in parallel.
 * [nyc](https://github.com/istanbuljs/nyc) to get an lcov code coverage file from each Jacques module's unit tests.
