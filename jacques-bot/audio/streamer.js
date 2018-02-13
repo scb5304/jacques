@@ -21,7 +21,9 @@ function streamAudio(voiceChannel, volume, streamLink) {
                            passes: 3
                        };
 
-                       const ytdlStream = ytdl(streamLink);
+                       const ytdlStream = ytdl(streamLink, {
+                           filter: "audioonly"
+                       });
 
                        const dispatcher = connection.playStream(ytdlStream, streamOptions);
                        dispatcher.once("end", function(reason) {
