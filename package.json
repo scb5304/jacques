@@ -4,20 +4,15 @@
   "description": "Discord soundboard bot + companion website/api",
   "scripts": {
     "start": "node jacques-bot/jacques-bot.js",
-
     "testBot": "mocha './jacques-bot/**/*.spec.js'",
     "coverBot": "nyc --reporter=lcovonly --report-dir=./coverage/bot npm run testBot",
-
     "testApi": "mocha './jacques-api/**/*.spec.js'",
     "coverApi": "nyc --reporter=lcovonly --report-dir=./coverage/api npm run testApi",
-
     "liveServerWeb": "live-server --open=jacques-web --watch=jacques-web/**",
     "testWeb": "karma start",
     "coverWeb": "npm run testWeb",
-
     "testCommon": "mocha './jacques-common/**/*.spec.js'",
     "coverCommon": "nyc --reporter=lcovonly --report-dir=./coverage/common npm run testCommon",
-
     "test": "npm-run-all -p -l testBot testApi testWeb testCommon --silent",
     "cover": "npm-run-all -p -l coverBot coverApi coverWeb coverCommon --silent",
     "coveralls": "npm run cover && grunt lcovMerge && cat ./coverage/lcov-all.info | coveralls"
@@ -57,10 +52,10 @@
     "readdirp": "2.1.0",
     "uid-generator": "1.0.0",
     "winston": "2.3.1",
-    "ytdl-core": "0.14.1"
+    "ytdl-core": "0.20.1"
   },
   "devDependencies": {
-  	"chai": "3.5.0",
+    "chai": "3.5.0",
     "cors": "2.8.4",
     "grunt": "1.0.1",
     "grunt-lcov-merge": "1.2.3",
