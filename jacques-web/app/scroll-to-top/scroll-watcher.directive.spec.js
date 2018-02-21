@@ -4,7 +4,7 @@ describe("directive: svg-circle", function() {
     beforeEach(module("jacquesApp"));
     beforeEach(inject(function($rootScope, $compile) {
         scope = $rootScope.$new();
-        element = "<md-content scroll></md-content>";
+        element = "<md-content scroll-watch></md-content>";
         scope.size = 100;
 
         element = $compile(element)(scope);

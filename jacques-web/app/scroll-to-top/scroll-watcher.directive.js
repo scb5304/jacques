@@ -2,7 +2,7 @@
 
 angular
     .module("jacquesApp")
-    .directive("scroll", function () {
+    .directive("scrollWatch", function () {
         return {
             link: function (scope, elem) {
                 elem.on("scroll", function () {
