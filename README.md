@@ -107,7 +107,7 @@ Not an independently run process, but a unit-tested module that shares models, d
 * [npm-run-all](https://github.com/mysticatea/npm-run-all) to run my unit test scripts for each module in parallel.
 * [nyc](https://github.com/istanbuljs/nyc) to get an lcov code coverage file from each Jacques module's unit tests.
 * [Sinon](https://github.com/sinonjs/sinon) as the stub/spy/mock portion of the Mocha test suite.
-* [Windows-Build-Tools] (https://www.npmjs.com/package/windows-build-tools) to locally develop and run Jacques.
+* [Windows-Build-Tools](https://www.npmjs.com/package/windows-build-tools) to locally develop and run Jacques.
 
 ## Nuts and Bolts
 
