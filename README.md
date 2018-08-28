@@ -107,6 +107,7 @@ Not an independently run process, but a unit-tested module that shares models, d
 * [npm-run-all](https://github.com/mysticatea/npm-run-all) to run my unit test scripts for each module in parallel.
 * [nyc](https://github.com/istanbuljs/nyc) to get an lcov code coverage file from each Jacques module's unit tests.
 * [Sinon](https://github.com/sinonjs/sinon) as the stub/spy/mock portion of the Mocha test suite.
+* [Windows-Build-Tools] (https://www.npmjs.com/package/windows-build-tools) to locally develop and run Jacques.
 
 ## Nuts and Bolts
 
@@ -121,19 +122,3 @@ Travis builds Jacques upon any commit to the /develop or /master branch. It inst
 <img src="https://i.imgur.com/m80IJSn.png">
 
 As mentioned above, Coveralls (the "coverage" badge at the top of this page) is used to monitor Jacques' unit test code coverage. [Codacy](https://www.codacy.com/app/scb5304/jacques/dashboard) is leveraged for static code analysis. [David](https://david-dm.org/scb5304/jacques) analyzes dependencies to look for new, outdated, or insecure libraries being used by Jacques. One of the funnest parts of developing Jacques has been seeing how easy it is to plug an open source project into these sorts of tools.
-
-## Reflection
-
-This project has been a learning opportunity more than anything else. I had no Javascript experience to speak of. My prior web experience was limited to [JavaServerFaces](http://www.oracle.com/technetwork/java/javaee/javaserverfaces-139869.html), HTML, CSS, and [Bootstrap](https://getbootstrap.com/). This was my first time building a Node.js application, an AngularJS application, a RESTful API, creating a MongoDB database, etc. I feel that I really accomplished my goal of getting out of my Java/Android comfort zone and making something very different.
-
-Some lessons learned:
-
-1. Architect the application at least a little bit prior to coding it. Simply steaming ahead with code resulted in numerous refactors.
-2. Take notes of what you're doing, as you do it, so that future you is not miserably trying to figure out how it was done.
-3. Unit test code as you write it, not when you've written most of the application.
-
-## Miscellaneous
-
-* I do not have any plans to modify this codebase beyond bug fixes, dependency management, and minor feature tweaks.
-* I plan to maintain Jacques' website and bot for the forseeable future.
-* Special thanks to Evan Walker for the idea of a Discord bot that plays sound clips. Without his suggestion I would have lost out on a really fun side project.
