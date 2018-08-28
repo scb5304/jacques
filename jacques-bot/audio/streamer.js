@@ -7,7 +7,7 @@ function streamAudio(voiceChannel, volume, streamLink) {
         return;
     }
 
-    ytdl.getInfo(streamLink, function(err, info) {
+    ytdl.getBasicInfo(streamLink, function(err, info) {
        if (err || !info) {
            logger.error(err);
        } else {

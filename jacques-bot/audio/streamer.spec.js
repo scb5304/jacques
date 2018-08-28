@@ -15,7 +15,7 @@ afterEach(function() {
 
 describe("streamer", function() {
     beforeEach(function() {
-        this.sandbox.stub(ytdl, "getInfo").callsFake(function(stream, callback) {
+        this.sandbox.stub(ytdl, "getBasicInfo").callsFake(function(stream, callback) {
             callback(undefined, {});
         });
         this.message = testUtils.createTestDiscordTextChannelMessage();
