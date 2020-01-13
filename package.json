@@ -46,7 +46,7 @@
     "lf-ng-md-file-input": "1.5.3",
     "mkdirp": "0.5.1",
     "moment": "2.20.1",
-    "mongoose": "4.8.1",
+    "mongoose": "5.7.5",
     "mongoose-sanitizer": "1.0.0",
     "node-opus": "0.3.0",
     "readdirp": "2.1.0",
