@@ -39,7 +39,7 @@
                     <span class="sounds-list-item-button-text-name">{{sound.name}}</span>
                     <span class="sounds-list-item-button-text-plays">({{sound.soundEventCount}} plays)</span>
                     <span flex></span>
-                    <span hide-xs layout-align="end end" class="sounds-list-item-button-text-plays">Added {{getFormattedDateFromString(sound.add_date)}}</span>
+                    <span hide-xs layout-align="end end" class="sounds-list-item-button-text-plays">Added by {{sound.added_by}} on {{getFormattedDateFromString(sound.add_date)}}</span>
                 </div>
             </md-button>
         </md-list-item>
