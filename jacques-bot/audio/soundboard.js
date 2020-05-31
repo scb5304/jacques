@@ -38,7 +38,7 @@ function playSound(sound, voiceChannel) {
     fileSystemManager.soundExistsInFileSystem(soundPath).then(function() {
         voiceChannel.join()
             .then(function(connection) {
-                const dispatcher = connection.playFile(soundPath);
+                const dispatcher = connection.play(soundPath);
                 dispatcher.once("end", function() {
                     logger.info("Leaving after playing sound.");
                     connection.disconnect();
