@@ -8,34 +8,30 @@ function streamAudio(voiceChannel, volume, streamLink) {
     }
 
     ytdl.getBasicInfo(streamLink, function(err, info) {
-       if (err || !info) {
+        if (err || !info) {
            logger.error(err);
-       } else {
+        } else {
            //Video exists
            voiceChannel.join()
-               .then(function(connection) {
+               .then(function (connection) {
                    try {
                        const streamOptions = {
                            seek: calculateStreamSeekSeconds(streamLink),
-                           volume: volume,
-                           passes: 3
+                           volume: volume
                        };
+                       const ytdlStream = ytdl(streamLink, {filter: "audioonly", begin: calculateStreamSeekSeconds(streamLink) + "s"});
 
-                       const ytdlStream = ytdl(streamLink, {
-                           filter: "audioonly"
-                       });
-
-                       const dispatcher = connection.playStream(ytdlStream, streamOptions);
-                       dispatcher.once("end", function(reason) {
+                       const dispatcher = connection.play(ytdlStream, streamOptions);
+                       dispatcher.once("end", function (reason) {
                            logger.info("Leaving stream on 'end' event. " + (reason ? reason : ""));
-                           connection.disconnect();
+                           voiceChannel.leave();
                        });
 
-                       dispatcher.once("speaking", function() {
+                       dispatcher.once("speaking", function () {
                            dispatcher.setVolumeLogarithmic(volume);
                        });
 
-                       dispatcher.once("error", function(err) {
+                       dispatcher.once("error", function (err) {
                            logger.error("Leaving stream on 'error' event: " + err);
                            connection.disconnect();
                        });

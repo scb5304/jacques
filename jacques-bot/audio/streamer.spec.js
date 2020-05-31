@@ -25,7 +25,7 @@ describe("streamer", function() {
     describe("streaming audio", function() {
         function assertStreamStartsAt(guildMember, seconds, done) {
             const mockConnection = {
-                playStream: function (ytdlStream, options) {
+                play: function (ytdlStream, options) {
                     assert.equal(options.seek, seconds);
                     done();
                     return {
@@ -34,7 +34,7 @@ describe("streamer", function() {
                     };
                 }
             };
-            guildMember.voiceChannel = {
+            guildMember.voice.channel = {
                 join: function() {
                     return new Promise(function(resolve) {
                         return resolve(mockConnection);
@@ -45,15 +45,15 @@ describe("streamer", function() {
 
         it("does not join the voice channel when no stream link is passed", function() {
             const streamLink = null;
-            const joinVoiceChannelSpy = this.sandbox.spy(this.message.member.voiceChannel, "join");
-            streamer.streamAudio(this.message.member.voiceChannel, 50, streamLink);
+            const joinVoiceChannelSpy = this.sandbox.spy(this.message.member.voice.channel, "join");
+            streamer.streamAudio(this.message.member.voice.channel, 50, streamLink);
             assert.isFalse(joinVoiceChannelSpy.called);
         });
 
         it("joins the voice channel when a stream link is passed", function() {
             const streamLink = "https://www.youtube.com/watch?v=Pp7-iPOZMog";
-            const joinVoiceChannelSpy = this.sandbox.spy(this.message.member.voiceChannel, "join");
-            streamer.streamAudio(this.message.member.voiceChannel, 50, streamLink);
+            const joinVoiceChannelSpy = this.sandbox.spy(this.message.member.voice.channel, "join");
+            streamer.streamAudio(this.message.member.voice.channel, 50, streamLink);
 
             assert.isTrue(joinVoiceChannelSpy.called);
         });
@@ -61,19 +61,19 @@ describe("streamer", function() {
         it("joins at the passed time with seconds argument", function(done) {
             const streamLink = "https://www.youtube.com/watch?v=Pp7-iPOZMog&t=10s";
             assertStreamStartsAt(this.message.member, 10, done);
-            streamer.streamAudio(this.message.member.voiceChannel, 50, streamLink);
+            streamer.streamAudio(this.message.member.voice.channel, 50, streamLink);
         });
 
         it("joins at the passed time with minutes seconds argument", function(done) {
             const streamLink = "https://youtu.be/Pp7-iPOZMog?t=30m43s";
             assertStreamStartsAt(this.message.member, 1843, done);
-            streamer.streamAudio(this.message.member.voiceChannel, 50, streamLink);
+            streamer.streamAudio(this.message.member.voice.channel, 50, streamLink);
         });
 
         it("joins at the passed time with hours minutes seconds argument", function(done) {
             const streamLink = "https://youtu.be/hcJsYFdke1o?t=1h11m22s";
             assertStreamStartsAt(this.message.member, 4282, done);
-            streamer.streamAudio(this.message.member.voiceChannel, 50, streamLink);
+            streamer.streamAudio(this.message.member.voice.channel, 50, streamLink);
         });
 
         it("leaves after the 'end' event is emitted", function(done) {
@@ -88,13 +88,15 @@ describe("streamer", function() {
             //Returned when we join a voice channel. Used to play streams, supplying the test dispatcher.
             //The test is successful if we disconnect, which should occur upon the 'end' event being emitted.
             let testConnection = {
-                playStream: function() {return testDispatcher;},
-                disconnect: function() {done();}
+                play: function() {return testDispatcher;},
             };
-            this.message.member.voiceChannel.join = function() {
+            this.message.member.voice.channel.join = function() {
                 return Promise.resolve(testConnection);
             };
-            streamer.streamAudio(this.message.member.voiceChannel, 50, "https://youtu.be/hcJsYFdke1o")
+            this.message.member.voice.channel.leave = function() {
+                done();
+            };
+            streamer.streamAudio(this.message.member.voice.channel, 50, "https://youtu.be/hcJsYFdke1o")
         });
 
         it("leaves after the 'error' event is emitted", function(done) {
@@ -109,13 +111,13 @@ describe("streamer", function() {
             //Returned when we join a voice channel. Used to play streams, supplying the test dispatcher.
             //The test is successful if we disconnect, which should occur upon the 'error' event being emitted.
             let testConnection = {
-                playStream: function() {return testDispatcher;},
+                play: function() {return testDispatcher;},
                 disconnect: function() {done();}
             };
-            this.message.member.voiceChannel.join = function() {
+            this.message.member.voice.channel.join = function() {
                 return Promise.resolve(testConnection);
             };
-            streamer.streamAudio(this.message.member.voiceChannel, 50, "https://youtu.be/hcJsYFdke1o")
+            streamer.streamAudio(this.message.member.voice.channel, 50, "https://youtu.be/hcJsYFdke1o")
         });
     });
 
@@ -154,12 +156,12 @@ describe("streamer", function() {
             //Returned when we join a voice channel. Used to play streams, supplying the test dispatcher.
             //The test is successful if we set the volume, which should occur upon the 'speaking' event being emitted.
             let testConnection = {
-                playStream: function() {return testDispatcher;},
+                play: function() {return testDispatcher;},
             };
-            this.message.member.voiceChannel.join = function() {
+            this.message.member.voice.channel.join = function() {
                 return Promise.resolve(testConnection);
             };
-            streamer.streamAudio(this.message.member.voiceChannel, 50, "https://youtu.be/hcJsYFdke1o")
+            streamer.streamAudio(this.message.member.voice.channel, 50, "https://youtu.be/hcJsYFdke1o")
         });
     });
 });

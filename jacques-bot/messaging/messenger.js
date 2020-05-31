@@ -25,19 +25,19 @@ function sendDirectMessage(user, message) {
 
 function replyToMessage(message, reply) {
     message.reply(reply).then(function(createdMessage) {
-        createdMessage.delete(3500).catch(logger.error);
+        createdMessage.delete({timeout: 3500}).catch(logger.error);
     });
 }
 
 function deleteMessage(message) {
     if (!message.channel.name.toUpperCase().includes("commands".toUpperCase())) {
-        message.delete(2000).catch(logger.error);
+        message.delete({timeout: 2000}).catch(logger.error);
     }
 }
 
 function printVolume(message, volume) {
     message.reply("Volume is currently at " + (volume * 100) + "%").then(function(message) {
-        message.delete(3500).catch(logger.error);
+        message.delete({timeout: 3500}).catch(logger.error);
     });
 }
 

@@ -13,10 +13,11 @@ function getGuildVolume(guildId) {
             if (guild) {
                 return resolve(guild.volume && guild.volume > 0 ? guild.volume : 0.40);
             } else {
-                return reject("No guild with ID " + guildId + " to get a volume from.");
+                return resolve(0.40);
             }
         }).catch(function(err) {
-            return reject(err);
+            logger.error(err);
+            return resolve(0.40);
         });
     });
 }

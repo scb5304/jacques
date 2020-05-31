@@ -10,7 +10,7 @@ function playRandomSound(message) {
     soundsRepository.getRandomSoundInDiscordGuild(message.member.guild.id)
         .then(function(sound) {
             if (sound) {
-                playSound(sound, message.member.voiceChannel);
+                playSound(sound, message.member.voice.channel);
                 insertSoundEvent(sound, message.member.guild.id, message.member.displayName, "playRandom");
             } else {
                 logger.error("Couldn't get a random sound, there are likely no sounds in the database for this guild.");
@@ -24,7 +24,7 @@ function playTargetedSound(message, soundName) {
     soundsRepository.getSoundByDiscordGuildIdAndName(message.member.guild.id, soundName)
         .then(function(sound) {
             if (sound) {
-                playSound(sound, message.member.voiceChannel);
+                playSound(sound, message.member.voice.channel);
                 insertSoundEvent(sound, message.member.guild.id, message.member.displayName, "playTargeted");
             } else {
                 logger.info("Sound " + soundName + " does not exist.");

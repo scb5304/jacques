@@ -24,6 +24,9 @@ const testDiscordVoiceConnection = {
         };
     },
     channel: testDiscordVoiceChannel,
+    play: function() {
+        return testStreamDispatcher;
+    },
     playFile: function() {
         return testStreamDispatcher;
     },
@@ -51,7 +54,9 @@ const testDiscordGuild = {
 const testDiscordGuildMember = {
     id: testDiscordUser.id,
     displayName: testDiscordUser.name,
-    voiceChannel: testDiscordVoiceChannel,
+    voice: {
+        channel: testDiscordVoiceChannel
+    },
     guild: testDiscordGuild,
     user: testDiscordUser
 };
@@ -91,10 +96,12 @@ const testDiscordTextChannelMessage = {
 };
 
 const testDiscordClient = {
-    guilds: [testDiscordGuild],
+    guilds: {
+        cache: [testDiscordGuild]
+    },
     user: {
         username: "Jacques",
-        setGame: function () {
+        setActivity: function () {
             return Promise.resolve(this);
         }
     },

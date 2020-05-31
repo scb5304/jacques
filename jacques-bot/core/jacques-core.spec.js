@@ -28,7 +28,7 @@ afterEach(function() {
 
 describe("logging in", function() {
     beforeEach(function() {
-        this.bot.guilds = new Discord.Collection();
+        this.bot.guilds.cache = new Discord.Collection();
     });
 
     it("refreshes guilds when the discord client instance was properly set", function() {
@@ -48,7 +48,7 @@ describe("logging in", function() {
 
 describe("guild events", function() {
     beforeEach(function() {
-        this.bot.guilds = new Discord.Collection();
+        this.bot.guilds.cache = new Discord.Collection();
     });
 
     it("refreshes guilds when one is created", function() {
@@ -105,7 +105,7 @@ describe("onMessage", function() {
         });
 
         it("does not route prefix to play random sound if user not in a voice channel", function() {
-            this.message.member.voiceChannel = null;
+            this.message.member.voice.channel = null;
             this.message.content = prefix;
 
             jacques.onMessage(this.message);
@@ -199,8 +199,8 @@ describe("onMessage", function() {
     describe("canceling jacques", function() {
         beforeEach(function() {
             // noinspection JSAnnotator
-            this.message.member.voiceChannel.connection = testUtils.createTestDiscordVoiceConnection();
-            this.disconnectSpy = this.sandbox.spy(this.message.member.voiceChannel.connection, "disconnect");
+            this.message.member.voice.channel.connection = testUtils.createTestDiscordVoiceConnection();
+            this.disconnectSpy = this.sandbox.spy(this.message.member.voice.channel.connection, "disconnect");
         });
 
         it("routes prefix cancel to cancel current voice connection", function() {
@@ -217,7 +217,7 @@ describe("onMessage", function() {
 
     describe("volume control", function() {
         it("doesn't change the volume if the user isn't in a voice channel", function() {
-            this.message.member.voiceChannel = undefined;
+            this.message.member.voice.channel = undefined;
             this.message.content = prefix + "volume 70";
             const updateGuildVolumeSpy = this.sandbox.spy(guildManager, "updateGuildVolume");
 

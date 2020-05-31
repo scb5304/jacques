@@ -39,7 +39,7 @@ describe("soundboard", function() {
         });
 
         it("should query for a random sound name, then join a voice channel", function(done) {
-            this.sandbox.stub(self.message.member.voiceChannel, "join").callsFake(function() {
+            this.sandbox.stub(self.message.member.voice.channel, "join").callsFake(function() {
                 done();
                 return Promise.resolve(testUtils.createTestDiscordVoiceConnection());
             });
@@ -72,7 +72,7 @@ describe("soundboard", function() {
         });
 
         it("should join a voice channel to play the sound", function(done) {
-            this.sandbox.stub(self.message.member.voiceChannel, "join").callsFake(function() {
+            this.sandbox.stub(self.message.member.voice.channel, "join").callsFake(function() {
                 done();
                 return Promise.resolve(testUtils.createTestDiscordVoiceConnection());
             });

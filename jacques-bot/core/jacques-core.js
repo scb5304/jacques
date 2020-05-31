@@ -18,10 +18,10 @@ function onLoggedIn() {
     if (!bot) {
         logger.error("jacques-core did not have its client instance set prior to being logged in.");
     } else {
-        guildManager.refreshGuilds(bot.guilds.array());
+        guildManager.refreshGuilds(bot.guilds.cache.array());
         if (bot.user) {
-            bot.user.setGame(site).then(function(clientUser) {
-                logger.info(clientUser.username + " is playing " + site);
+            bot.user.setActivity(site).then(function(clientUser) {
+                logger.info("Playing " + site);
             });
         }
     }
@@ -41,11 +41,11 @@ function onMessage(message) {
 }
 
 function onGuildCreate() {
-    guildManager.refreshGuilds(bot.guilds.array());
+    guildManager.refreshGuilds(bot.guilds.cache.array());
 }
 
 function onGuildDelete() {
-    guildManager.refreshGuilds(bot.guilds.array());
+    guildManager.refreshGuilds(bot.guilds.cache.array());
 }
 
 function onTextChannelMessage(message) {
@@ -63,8 +63,8 @@ function onTextChannelMessage(message) {
     }
 
     let logMessage = "Valid Jacques message " + message.content + " from " + member.displayName + " on server " + message.guild.name;
-    if (member.voiceChannel) {
-        logMessage += " in voice channel " + member.voiceChannel.name;
+    if (member.voice.channel) {
+        logMessage += " in voice channel " + member.voice.channel.name;
     }
     logger.info(logMessage);
     routeTextChannelMessage(message, cleanedMessageContent);
@@ -122,36 +122,36 @@ function routeTextChannelMessage(message, cleanedMessageContent) {
 }
 
 function playRandomSound(message) {
-    if (!message.member.voiceChannel || alreadySpeaking(message)) {
+    if (!message.member.voice.channel || alreadySpeaking(message)) {
         return;
     }
     soundboard.playRandomSound(message);
 }
 
 function cancelVoiceConnection(message) {
-    if (!message.member.voiceChannel) {
+    if (!message.member.voice.channel) {
         return false;
     }
-    message.member.voiceChannel.leave();
-    const connection = message.member.voiceChannel.connection;
+    message.member.voice.channel.leave();
+    const connection = message.member.voice.channel.connection;
     if (connection) {
         connection.disconnect();
     }
 }
 
 function onStreamAudioMessageReceived(message, commandArgs) {
-    if (!message.member.voiceChannel || alreadySpeaking(message)) {
+    if (!message.member.voice.channel || alreadySpeaking(message)) {
         return;
     }
     const streamLink = commandArgs.length > 1 ? commandArgs[1] : null;
 
-    guildManager.getGuildVolume(message.guild.id).then(function(volume) {
-        streamer.streamAudio(message.member.voiceChannel, volume, streamLink);
+    guildManager.getGuildVolume(message.member.guild.id).then(function(volume) {
+        streamer.streamAudio(message.member.voice.channel, volume, streamLink);
     }).catch(logger.error);
 }
 
 function onVolumeMessageReceived(message, commandArgs) {
-    if (!message.member.voiceChannel) {
+    if (!message.member.voice.channel) {
         return;
     }
 
@@ -208,7 +208,7 @@ function onBirdfeedMessageReceived(message) {
 }
 
 function playTargetedSound(message, commandArgs) {
-    if (!message.member.voiceChannel || alreadySpeaking(message)) {
+    if (!message.member.voice.channel || alreadySpeaking(message)) {
         return;
     }
     const soundArg = commandArgs[0];

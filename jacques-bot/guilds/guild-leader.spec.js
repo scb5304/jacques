@@ -68,16 +68,13 @@ describe("guild-leader", function() {
             });
         });
 
-        it("rejects with an error when a database error occurs", function(done) {
+        it("resolves with default value when a database error occurs", function(done) {
             var testError = "ahhh";
 
-            this.sandbox.stub(guildsRepository, "getGuildById").callsFake(function(guildId) {
+            this.sandbox.stub(guildsRepository, "getGuildById").callsFake(function() {
                 return Promise.reject(testError);
             });
             guildLeader.getGuildVolume(this.testJacquesGuild.discord_id).then(function() {
-                testUtils.throwUnexpectedResolveWhen("a database error occurs");
-            }).catch(function(err) {
-                assert.isTrue(err.includes(testError));
                 done();
             });
         });

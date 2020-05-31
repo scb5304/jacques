@@ -39,7 +39,7 @@
     "body-parser": "1.16.1",
     "chart.js": "2.5.0",
     "coveralls": "2.13.1",
-    "discord.js": "11.4.2",
+    "discord.js": "12.2.0",
     "dotenv": "4.0.0",
     "express": "4.14.1",
     "express-rate-limit": "2.11.0",
@@ -52,7 +52,7 @@
     "readdirp": "2.1.0",
     "uid-generator": "1.0.0",
     "winston": "2.3.1",
-    "ytdl-core": "2.1.2"
+    "ytdl-core": "2.1.5"
   },
   "devDependencies": {
     "chai": "3.5.0",
