@@ -24,7 +24,7 @@ function streamAudio(voiceChannel, volume, streamLink) {
                        const dispatcher = connection.play(ytdlStream, streamOptions);
                        dispatcher.once("end", function (reason) {
                            logger.info("Leaving stream on 'end' event. " + (reason ? reason : ""));
-                           voiceChannel.leave();
+                           connection.disconnect();
                        });
 
                        dispatcher.once("speaking", function () {

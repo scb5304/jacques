@@ -155,7 +155,7 @@ function onVolumeMessageReceived(message, commandArgs) {
         return;
     }
 
-    const currentVoiceConnection = bot.voiceConnections.get(message.guild.id);
+    const currentVoiceConnection = bot.voice.connections.get(message.guild.id);
     const requestedVolume = commandArgs.length > 1 ? commandArgs[1] : null;
 
     if (requestedVolume) {
