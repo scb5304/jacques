@@ -11,7 +11,7 @@ var loggerOptions = {
 	filename: "logs.txt",
 	"colorize": true,
 	level: "silly",
-	handleExceptions: true,
+	handleExceptions: false,
 	humanReadableUnhandledException: true,
 	prettyPrint:true
 };
