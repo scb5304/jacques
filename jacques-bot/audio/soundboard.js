@@ -39,10 +39,6 @@ function playSound(sound, voiceChannel) {
         voiceChannel.join()
             .then(function(connection) {
                 const dispatcher = connection.play(soundPath);
-                dispatcher.on("start", function() {
-                    dispatcher.setVolumeLogarithmic(volume);
-                });
-
                 dispatcher.on("speaking", function (speaking) {
                     if (!speaking) {
                         logger.info("Leaving sound play on 'speaking' event not true");
