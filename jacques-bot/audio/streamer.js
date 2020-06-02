@@ -22,13 +22,16 @@ function streamAudio(voiceChannel, volume, streamLink) {
                        const ytdlStream = ytdl(streamLink, {filter: "audioonly", begin: calculateStreamSeekSeconds(streamLink) + "s"});
 
                        const dispatcher = connection.play(ytdlStream, streamOptions);
-                       dispatcher.once("end", function (reason) {
-                           logger.info("Leaving stream on 'end' event. " + (reason ? reason : ""));
-                           connection.disconnect();
+
+                       dispatcher.once("start", function() {
+                           dispatcher.setVolumeLogarithmic(volume);
                        });
 
-                       dispatcher.once("speaking", function () {
-                           dispatcher.setVolumeLogarithmic(volume);
+                       dispatcher.on("speaking", function (speaking) {
+                           if (!speaking) {
+                               logger.info("Leaving stream on 'speaking' event not true");
+                               connection.disconnect();
+                           }
                        });
 
                        dispatcher.once("error", function (err) {

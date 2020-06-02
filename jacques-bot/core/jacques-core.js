@@ -230,11 +230,11 @@ function parseCommandArgs(messageContent) {
 }
 
 function alreadySpeaking(message) {
-    if (!bot || !bot.voiceConnections) {
+    if (!bot || !bot.voice.connections) {
         return false;
     }
 
-    const currentVoiceConnection = bot.voiceConnections.get(message.guild.id);
+    const currentVoiceConnection = bot.voice.connections.get(message.guild.id);
     if (currentVoiceConnection) {
         messenger.replyToMessage(message, "Already speaking in channel " + currentVoiceConnection.channel.name);
         return true;

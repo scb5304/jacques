@@ -183,7 +183,7 @@ describe("onMessage", function() {
 
         it("doesn't stream a video if jacques is already speaking, and instead sends a reply", function() {
             this.message.content = prefix + "stream";
-            this.sandbox.stub(this.bot.voiceConnections, "get").callsFake(function() {
+            this.sandbox.stub(this.bot.voice.connections, "get").callsFake(function() {
                 return testUtils.createTestDiscordVoiceConnection();
             });
 

@@ -11,6 +11,7 @@ const testDiscordVoiceChannel = {
 
 const testStreamDispatcher = {
     once: function () {},
+    on: function() {},
     setVolumeLogarithmic: function() {}
 };
 
@@ -105,7 +106,9 @@ const testDiscordClient = {
             return Promise.resolve(this);
         }
     },
-    voiceConnections: {get: function() {}}
+    voice: {
+        connections: {get: function() {}}
+    }
 };
 
 const testSoundEvent = {

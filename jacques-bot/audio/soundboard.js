@@ -39,8 +39,19 @@ function playSound(sound, voiceChannel) {
         voiceChannel.join()
             .then(function(connection) {
                 const dispatcher = connection.play(soundPath);
-                dispatcher.once("end", function() {
-                    logger.info("Leaving after playing sound.");
+                dispatcher.on("start", function() {
+                    dispatcher.setVolumeLogarithmic(volume);
+                });
+
+                dispatcher.on("speaking", function (speaking) {
+                    if (!speaking) {
+                        logger.info("Leaving sound play on 'speaking' event not true");
+                        connection.disconnect();
+                    }
+                });
+
+                dispatcher.once("error", function (err) {
+                    logger.error("Leaving sound play on 'error' event: " + err);
                     connection.disconnect();
                 });
             })

@@ -76,25 +76,24 @@ describe("streamer", function() {
             streamer.streamAudio(this.message.member.voice.channel, 50, streamLink);
         });
 
-        it("leaves after the 'end' event is emitted", function(done) {
+        it("leaves after the 'speaking' event is emitted false", function(done) {
             let testDispatcher = {
-                once: function(event, callback) {
-                    if (event === "end") {
-                        callback();
+                on: function(event, callback) {
+                    if (event === "speaking") {
+                        callback(0);
                     }
-                }
+                },
+                once: function () {}
             };
 
             //Returned when we join a voice channel. Used to play streams, supplying the test dispatcher.
             //The test is successful if we disconnect, which should occur upon the 'end' event being emitted.
             let testConnection = {
                 play: function() {return testDispatcher;},
+                disconnect: function() {done();}
             };
             this.message.member.voice.channel.join = function() {
                 return Promise.resolve(testConnection);
-            };
-            this.message.member.voice.channel.leave = function() {
-                done();
             };
             streamer.streamAudio(this.message.member.voice.channel, 50, "https://youtu.be/hcJsYFdke1o")
         });
@@ -105,7 +104,8 @@ describe("streamer", function() {
                     if (event === "error") {
                         callback();
                     }
-                }
+                },
+                on: function () {}
             };
 
             //Returned when we join a voice channel. Used to play streams, supplying the test dispatcher.
@@ -140,10 +140,10 @@ describe("streamer", function() {
             sinon.assert.calledWith(setVolumeSpy, 1);
         });
 
-        it("sets the volume immediately after the 'speaking' event is emitted", function(done) {
+        it("sets the volume immediately after the 'start' event is emitted", function(done) {
             let testDispatcher = {
                 once: function(event, callback) {
-                    if (event === "speaking") {
+                    if (event === "start") {
                         callback();
                     }
                 },
