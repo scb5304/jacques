@@ -172,11 +172,6 @@ function validateSoundPostRequestHasRequiredData(req, res) {
         return false;
     }
 
-    if (!soundData.startsWith(MP3_META_DATA)) {
-        res.status(400).send({error: "Unsupported file type. Jacques only supports MP3 files."});
-        return false;
-    }
-
     return true;
 }
 
