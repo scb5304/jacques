@@ -292,14 +292,6 @@ describe("sounds-controller", function() {
                 });
                 soundsController.postSound(this.req, this.res);
             });
-
-            it("responds with a 400 when the sound data doesn't start with the right metadata", function(done) {
-                this.req.body.soundData = "mp3gibberish";
-                this.sandbox.stub(this.res, "status").callsFake(function(status) {
-                    return testUtils.expectApiResponseStatus(400, status, done);
-                });
-                soundsController.postSound(this.req, this.res);
-            });
         });
 
         describe("while having required data", function() {
