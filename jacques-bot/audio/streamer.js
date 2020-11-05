@@ -7,9 +7,10 @@ function streamAudio(voiceChannel, volume, streamLink) {
         return;
     }
 
-    ytdl.getBasicInfo(streamLink, function(err, info) {
-        if (err || !info) {
-           logger.error(err);
+    ytdl.getBasicInfo(streamLink).then(function(info) {
+        logger.info(info)
+        if (!info) {
+           logger.error("No info returned");
         } else {
            //Video exists
            voiceChannel.join()
@@ -45,6 +46,8 @@ function streamAudio(voiceChannel, volume, streamLink) {
                })
                .catch(logger.error);
        }
+    }).catch(function(err) {
+       logger.error("Could not get ytdl basic info: " + err);
     });
 }
 

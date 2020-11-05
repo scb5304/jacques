@@ -53,7 +53,7 @@
     "readdirp": "2.1.0",
     "uid-generator": "1.0.0",
     "winston": "2.3.1",
-    "ytdl-core": "3.4.1"
+    "ytdl-core": "4.0.3"
   },
   "devDependencies": {
     "chai": "3.5.0",
