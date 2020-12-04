@@ -8,7 +8,6 @@ function streamAudio(voiceChannel, volume, streamLink) {
     }
 
     ytdl.getBasicInfo(streamLink).then(function(info) {
-        logger.info(info)
         if (!info) {
            logger.error("No info returned");
         } else {
