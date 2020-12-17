@@ -169,7 +169,7 @@ function onVolumeMessageReceived(message, commandArgs) {
             } else {
                 volume = requestedVolume;
             }
-            const volumeSet = streamer.changeVolume(message, volume * 100, currentVoiceConnection);
+            const volumeSet = streamer.changeVolume(message, volume, currentVoiceConnection);
             messenger.replyToMessage(message, "Changing volume to " + volumeSet * 100 + "%");
             guildManager.updateGuildVolume(message.guild.id, volumeSet);
         }).catch(logger.error);
