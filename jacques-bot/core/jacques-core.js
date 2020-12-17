@@ -163,9 +163,9 @@ function onVolumeMessageReceived(message, commandArgs) {
 
         guildManager.getGuildVolume(message.guild.id).then(function(volume) {
             if (requestedVolume.startsWith("-")) {
-                volume = volume * 100 - requestedVolume.substring(1);
+                volume = volume * 100 - parseInt(requestedVolume.substring(1));
             } else if (requestedVolume.startsWith("+")) {
-                volume = volume * 100 + requestedVolume.substring(1);
+                volume = volume * 100 + parseInt(requestedVolume.substring(1));
             } else {
                 volume = requestedVolume;
             }
