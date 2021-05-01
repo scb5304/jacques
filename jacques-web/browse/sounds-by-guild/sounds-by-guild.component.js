@@ -8,7 +8,7 @@ angular
         controller: ["$scope",
             function SoundsByGuildController($scope) {
                 $scope.sounds = this.sounds;
-                var storedSelection = localStorage.get("soundSortSelection")
+                var storedSelection = localStorage.getItem("soundSortSelection")
                 if (storedSelection === null) {
                     localStorage.setItem("soundSortSelection", "Alphabetical")
                 }
