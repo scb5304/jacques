@@ -8,7 +8,11 @@ angular
         controller: ["$scope",
             function SoundsByGuildController($scope) {
                 $scope.sounds = this.sounds;
-                $scope.sortSelection = "Alphabetical";
+                var storedSelection = localStorage.get("soundSortSelection")
+                if (storedSelection === null) {
+                    localStorage.setItem("soundSortSelection", "Alphabetical")
+                }
+                $scope.sortSelection = localStorage.getItem("soundSortSelection");
 
                 $scope.$watch("sortSelection", function() {
                     if (!$scope.sounds) {
@@ -18,6 +22,7 @@ angular
                 });
 
                 $scope.onSortOptionSelected = function() {
+                    localStorage.setItem("soundSortSelection", $scope.sortSelection);
                     switch ($scope.sortSelection) {
                         case "Alphabetical":
                             $scope.sounds.sort(function(a, b) {
