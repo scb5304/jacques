@@ -38,7 +38,7 @@
     "app-root-path": "2.0.1",
     "bluebird": "3.5.1",
     "body-parser": "1.16.1",
-    "chart.js": "2.5.0",
+    "chart.js": "2.9.4",
     "coveralls": "2.13.1",
     "discord.js": "12.2.0",
     "dotenv": "4.0.0",
