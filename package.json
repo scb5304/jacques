@@ -58,7 +58,7 @@
   "devDependencies": {
     "chai": "3.5.0",
     "cors": "2.8.4",
-    "grunt": "1.0.1",
+    "grunt": "1.5.2",
     "grunt-lcov-merge": "1.2.3",
     "jasmine-core": "2.6.1",
     "karma": "1.6.0",
